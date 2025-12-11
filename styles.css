@@ -104,6 +104,36 @@ body {
   margin: 0 0 1.75rem 0;
 }
 
+/* Action / CTA area under intro */
+.profile__actions {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.profile__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--accent), #f59e0b);
+  color: #071021;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 8px 18px rgba(251, 191, 36, 0.12);
+  border: 1px solid rgba(0,0,0,0.08);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.profile__cta:hover,
+.profile__cta:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(251, 191, 36, 0.14);
+  outline: none;
+}
+
+
 /* Social links */
 .profile__social {
   list-style: none;
@@ -115,10 +145,16 @@ body {
   margin: 0 0 1.75rem 0;
 }
 
+.profile__social img {
+    border-radius: 50%;
+    max-width: 24px;
+    height: auto;
+}
+
 .profile__social a {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center; 
   padding: 0.5rem 0.95rem;
   border-radius: 999px;
   border: 1px solid rgba(148, 163, 184, 0.6);
@@ -200,4 +236,126 @@ body {
     color: #111827;
     background: linear-gradient(135deg, #facc15, #f97316);
   }
+}
+
+/* Conferences table styles (inside the profile card) */
+.profile .conferences__table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  background: transparent;
+  color: var(--text-main);
+  display: block; /* turn table into a scroll container */
+  max-height: 48vh; /* frame height (adjust as needed) */
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid rgba(148, 163, 184, 0.04);
+  border-radius: 0.6rem;
+}
+
+.profile .conferences__table caption {
+  caption-side: top;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-main);
+  padding: 0.65rem 0.9rem;
+}
+
+/* Keep table internals rendering correctly while outer element scrolls */
+.profile .conferences__table thead,
+.profile .conferences__table tbody,
+.profile .conferences__table tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.profile .conferences__table th,
+.profile .conferences__table td {
+  padding: 0.55rem 0.75rem;
+  text-align: left;
+  font-size: 0.95rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.04);
+  vertical-align: middle;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Sticky header so column titles remain visible while scrolling */
+.profile .conferences__table thead th {
+  position: sticky;
+  top: 0;
+  background: linear-gradient(145deg, rgba(17,24,39,0.98), rgba(15,23,42,0.98));
+  backdrop-filter: blur(4px);
+  z-index: 3;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.profile .conferences__table tbody tr:hover td {
+  background: linear-gradient(90deg, rgba(249,191,36,0.03), rgba(15,23,42,0));
+}
+
+.profile .conferences__table a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.profile .conferences__table a:hover,
+.profile .conferences__table a:focus {
+  text-decoration: underline;
+}
+
+/* Allow the conference name column to wrap if needed while keeping other columns compact */
+.profile .conferences__table td:nth-child(2),
+.profile .conferences__table th:nth-child(2) {
+  white-space: normal;
+  max-width: 40ch;
+  word-break: break-word;
+}
+
+@media (max-width: 720px) {
+  .profile .conferences__table th,
+  .profile .conferences__table td {
+    padding: 0.45rem 0.55rem;
+    font-size: 0.88rem;
+  }
+  .profile .conferences__table td:nth-child(2) { max-width: 30ch; }
+}
+
+@media (max-width: 480px) {
+  .profile .conferences__table th,
+  .profile .conferences__table td {
+    padding: 0.35rem 0.45rem;
+    font-size: 0.82rem;
+  }
+  .profile .conferences__table td:nth-child(2) { max-width: 24ch; }
+}
+
+/* Sortable header styling */
+.profile .conferences__table th.sortable {
+  cursor: pointer;
+}
+.profile .conferences__table th.sortable:focus {
+  outline: 3px solid rgba(251,191,36,0.16);
+  outline-offset: 2px;
+}
+.profile .conferences__table th.sortable::after {
+  content: '\21C5'; /* up/down arrow */
+  display: inline-block;
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-soft);
+}
+.profile .conferences__table th.sortable.sorted-desc::after {
+  content: '\25BC'; /* down */
+  color: var(--accent);
+}
+.profile .conferences__table th.sortable.sorted-asc::after {
+  content: '\25B2'; /* up */
+  color: var(--accent);
 }
