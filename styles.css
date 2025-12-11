@@ -177,6 +177,31 @@ body {
   margin: 0 auto 1.5rem auto;
   border: 3px solid rgba(249, 250, 251, 0.8);
   box-shadow: 0 0 0 4px rgba(15, 23, 42, 0.9);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Avatar link wrapper */
+.profile__avatar-link {
+  display: inline-block;
+  cursor: pointer;
+  text-decoration: none;
+  border-radius: 999px;
+}
+
+.profile__avatar-link:hover .profile__avatar {
+  transform: scale(1.05);
+  box-shadow: 0 0 0 4px rgba(15, 23, 42, 0.9), 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.profile__avatar-link:focus-visible {
+  outline: none;
+}
+
+.profile__avatar-link:focus-visible .profile__avatar {
+  box-shadow: 
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4),
+    0 0 0 10px rgba(15, 23, 42, 0.9);
 }
 
 /* Name & tagline */
