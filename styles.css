@@ -238,11 +238,26 @@ body {
   transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
 
-.profile__cta:hover,
+.profile__cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(251, 191, 36, 0.14);
+  outline: none;
+}
+
 .profile__cta:focus {
   transform: translateY(-2px);
   box-shadow: 0 14px 30px rgba(251, 191, 36, 0.14);
   outline: none;
+}
+
+.profile__cta:focus-visible {
+  outline: none;
+  transform: translateY(-2px);
+  box-shadow: 
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4),
+    0 14px 30px rgba(251, 191, 36, 0.14);
+  border-radius: 999px;
 }
 
 
@@ -279,14 +294,25 @@ body {
     border-color 0.12s ease-out, background 0.12s ease-out;
 }
 
-.profile__social a:hover,
-.profile__social a:focus-visible {
+.profile__social a:hover {
   outline: none;
   border-color: var(--accent);
   background: radial-gradient(circle at top left, #fbbf24, #92400e);
   color: #0b1120;
   transform: translateY(-1px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.55);
+}
+
+.profile__social a:focus-visible {
+  outline: none;
+  border-color: #00ffff;
+  background: radial-gradient(circle at top left, #fbbf24, #92400e);
+  color: #0b1120;
+  transform: translateY(-1px);
+  box-shadow: 
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4),
+    0 10px 25px rgba(0, 0, 0, 0.55);
 }
 
 /* Footer */
@@ -570,6 +596,87 @@ body {
 /* Smooth scroll behavior for all pages */
 html {
   scroll-behavior: smooth;
+}
+
+/* Global high-contrast focus styles for all interactive elements */
+/* Bright cyan border for maximum visibility against dark background */
+*:focus-visible {
+  outline: none;
+  box-shadow: 
+    0 0 0 3px #00ffff, /* Bright cyan inner ring */
+    0 0 0 6px rgba(0, 255, 255, 0.4); /* Softer cyan outer glow */
+  border-radius: 0.25rem;
+}
+
+/* Ensure all focusable elements get the bright border */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: none;
+  box-shadow: 
+    0 0 0 3px #00ffff, /* Bright cyan inner ring */
+    0 0 0 6px rgba(0, 255, 255, 0.4); /* Softer cyan outer glow */
+  border-radius: 0.25rem;
+}
+
+/* Override for elements that already have custom focus styles */
+/* Keep the existing nav link focus style but enhance it */
+.nav__link:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px #00ffff, /* Bright cyan for high contrast */
+    0 0 0 6px rgba(0, 255, 255, 0.5),
+    0 0 0 9px rgba(2, 6, 23, 0.85);
+  border-radius: 0.5rem;
+  transform: translateZ(0);
+}
+
+/* Gallery images - bright focus border */
+.profile__gallery a:focus-visible {
+  outline: none;
+}
+
+.profile__gallery a:focus-visible .gallery__image {
+  outline: none;
+  box-shadow: 
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4);
+  border-radius: 0.5rem;
+}
+
+/* Table links - bright focus border */
+.profile .conferences__table a:focus-visible,
+.tour-dates__table a:focus-visible {
+  outline: none;
+  box-shadow: 
+    0 0 0 2px #00ffff,
+    0 0 0 4px rgba(0, 255, 255, 0.3);
+  border-radius: 0.25rem;
+  padding: 0.1rem 0.2rem;
+  margin: -0.1rem -0.2rem;
+  display: inline-block;
+}
+
+/* Sortable table headers - bright focus border */
+.profile .conferences__table th.sortable:focus-visible {
+  outline: none;
+  box-shadow: 
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4);
+  border-radius: 0.25rem;
+}
+
+/* Scroll-to-top button - bright focus border */
+.scroll-to-top:focus-visible {
+  outline: none;
+  box-shadow: 
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4),
+    0 12px 28px rgba(251, 191, 36, 0.3);
+  border-radius: 50%;
 }
 
 /* Scroll-to-top button */
