@@ -11,8 +11,8 @@
   --bg-soft: #030712;      /* subtle card/backdrop */
   --accent: #fbbf24;       /* warm accent */
   --text-main: #e5e7eb;    /* light gray */
-  --text-muted: #9ca3af;   /* muted gray */
-  --text-soft: #6b7280;
+  --text-muted: #b0b8c4;   /* muted gray - increased contrast */
+  --text-soft: #cbd5e1;    /* soft gray - increased contrast */
   --border-subtle: #1f2933;
   --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.55);
   --radius-xl: 1.75rem;
@@ -399,6 +399,8 @@ body {
   font-weight: 600;
   color: var(--text-main);
   padding: 0.65rem 0.9rem;
+  border-bottom: 2.5px solid var(--accent);
+  display: block;
 }
 
 /* Keep table internals rendering correctly while outer element scrolls */
