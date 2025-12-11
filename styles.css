@@ -43,8 +43,13 @@ body {
   width: 100%;
   max-width: 720px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  padding-bottom: clamp(1rem, 3vw, 2rem);
+  max-height: 100vh;
+  overflow-y: auto;
 }
 
 .profile {
@@ -58,6 +63,7 @@ body {
   box-shadow: var(--shadow-soft);
   padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1rem, 3vw, 2.25rem);
   text-align: center;
+  flex-shrink: 0;
 }
 
 /* Scrollable profile variant (for pages with lots of content) */
@@ -473,7 +479,7 @@ body {
 /* Set column widths for alignment */
 .profile .conferences__table th:nth-child(1),
 .profile .conferences__table td:nth-child(1) {
-  width: 80px;
+  width: 120px;
   white-space: nowrap;
 }
 
@@ -624,5 +630,149 @@ html {
     width: 2.5rem;
     height: 2.5rem;
     font-size: 1.2rem;
+  }
+}
+
+/* Tour Dates Section */
+.tour-dates {
+  width: 100%;
+  margin: 1.5rem 0 0 0;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  background: linear-gradient(135deg, rgba(31,41,55,0.5), rgba(17,24,39,0.5));
+  border: 1px solid rgba(249,191,36,0.1);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+}
+
+.tour-dates__title {
+  font-size: clamp(1.2rem, 3vw, 1.5rem);
+  color: var(--text-main);
+  margin-bottom: 1rem;
+  margin-top: 0;
+  font-weight: 600;
+}
+
+.tour-dates__container {
+  max-height: 48vh;
+  overflow-y: auto;
+  overflow-x: auto;
+  border: 1px solid rgba(249,191,36,0.15);
+  border-radius: 0.5rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tour-dates__table {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.tour-dates__table thead {
+  display: table-header-group;
+}
+
+.tour-dates__table tbody {
+  display: table-row-group;
+}
+
+.tour-dates__table tr {
+  display: table-row;
+  width: 100%;
+  border-bottom: 1px solid rgba(249,191,36,0.08);
+}
+
+.tour-dates__table th {
+  position: sticky;
+  top: 0;
+  background: linear-gradient(145deg, rgba(17,24,39,0.98), rgba(15,23,42,0.98));
+  backdrop-filter: blur(4px);
+  z-index: 3;
+  padding: clamp(0.5rem, 2vw, 0.75rem);
+  text-align: left;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: clamp(0.65rem, 2vw, 0.78rem);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid rgba(249,191,36,0.2);
+}
+
+.tour-dates__table td {
+  padding: clamp(0.5rem, 2vw, 0.75rem);
+  color: var(--text-main);
+  font-size: clamp(0.85rem, 2vw, 0.95rem);
+  word-break: break-word;
+}
+
+/* Column widths: Date, Event, City, Talk */
+.tour-dates__table th:nth-child(1),
+.tour-dates__table td:nth-child(1) {
+  width: 120px;
+  white-space: nowrap;
+}
+
+.tour-dates__table th:nth-child(2),
+.tour-dates__table td:nth-child(2) {
+  width: 200px;
+  white-space: normal;
+}
+
+.tour-dates__table th:nth-child(3),
+.tour-dates__table td:nth-child(3) {
+  width: 120px;
+  white-space: normal;
+}
+
+.tour-dates__table th:nth-child(4),
+.tour-dates__table td:nth-child(4) {
+  width: 200px;
+  white-space: normal;
+}
+
+.tour-dates__table tbody tr:hover td {
+  background: linear-gradient(90deg, rgba(249,191,36,0.03), rgba(15,23,42,0));
+}
+
+.tour-dates__table a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.tour-dates__table a:hover,
+.tour-dates__table a:focus {
+  text-decoration: underline;
+}
+
+/* Responsive adjustments for tour dates */
+@media (max-width: 600px) {
+  .tour-dates {
+    margin: 1rem auto;
+    padding: clamp(0.75rem, 2vw, 1rem);
+  }
+
+  .tour-dates__table th:nth-child(2),
+  .tour-dates__table td:nth-child(2),
+  .tour-dates__table th:nth-child(3),
+  .tour-dates__table td:nth-child(3) {
+    width: 160px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tour-dates {
+    margin: 0.75rem auto;
+    padding: clamp(0.5rem, 1.5vw, 0.75rem);
+  }
+
+  .tour-dates__container {
+    max-height: 40vh;
+  }
+
+  .tour-dates__table th:nth-child(2),
+  .tour-dates__table td:nth-child(2),
+  .tour-dates__table th:nth-child(3),
+  .tour-dates__table td:nth-child(3) {
+    width: 140px;
   }
 }
