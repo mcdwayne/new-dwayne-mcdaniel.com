@@ -38,6 +38,7 @@
         <a class="profile__cta" href="./about.html">About</a>
         <!-- <a class="profile__cta" href="./blog.html">Blog</a> -->
         <a class="profile__cta" href="./conferences.html">Conferences</a>
+        <a class="profile__cta" href="#tour-dates">Tour Dates</a>
       </div>
 
       <ul class="profile__social">
@@ -87,7 +88,7 @@
 
     </section>
 
-    <section class="tour-dates" aria-label="Upcoming tour dates">
+    <section id="tour-dates" class="tour-dates" aria-label="Upcoming tour dates">
       <h2 class="tour-dates__title">Upcoming Tour Dates</h2>
       <div class="tour-dates__container">
         <table class="tour-dates__table">
@@ -126,5 +127,25 @@
           © 2025 Dwayne McDaniel 
       </footer>
   </main>
+  <script>
+    // Smooth-scroll + focus the Tour Dates section for keyboard users
+    document.addEventListener('DOMContentLoaded', function () {
+      var jump = document.querySelector('a[href="#tour-dates"]');
+      var target = document.getElementById('tour-dates');
+      if (!jump || !target) return;
+      jump.addEventListener('click', function (e) {
+        e.preventDefault();
+        // Scroll into view smoothly
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // After scrolling, move focus for keyboard users
+        setTimeout(function () {
+          target.setAttribute('tabindex', '-1');
+          target.focus();
+          // clean up
+          setTimeout(function () { target.removeAttribute('tabindex'); }, 800);
+        }, 500);
+      });
+    });
+  </script>
 </body>
 </html>
