@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>About Dwayne McDaniel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="About Dwayne McDaniel - Developer Advocate at GitGuardian.com" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+</head>
+<body>
+  <main class="page">
+    <section class="profile profile--scrollable" aria-label="About Dwayne McDaniel">
+      <h1 class="profile__name">About Dwayne McDaniel</h1>
+
+      <div class="profile__content">
+        <div class="profile__about">
+          <p>
+            Dwayne McDaniel is a Senior Developer Advocate who has been on a mission to "help people figure stuff out" for over a decade. 
+          </p>
+          <p>At GitGuardian, he specializes in secrets security and non-human identity governance across cloud and DevOps environments. 
+          </p>
+
+          <p>
+            A frequent speaker at events like DevOpsDays and BSides, he helps security and engineering teams better understand complex issues. You can see some of his past talks on Drupal.tv, and WordPress.tv. 
+          </p>
+          <p>
+            Dwayne currently lives in Chicago, right beside Lake Michigan. Outside of tech you might find him leading an event after-party to a Karaoke spot or quietly knitting a new hat.  
+          </p>
+        </div>
+
+        <div class="profile__gallery">
+          <input type="checkbox" id="modal-1" class="gallery__modal-toggle" />
+          <label for="modal-1" class="gallery__modal-overlay"></label>
+          <div class="gallery__modal">
+            <label for="modal-1" class="gallery__modal-close">&times;</label>
+            <img src="./img/DevOpsDay-BirminghamAL.jpg" alt="DevOps Day Birmingham AL" class="gallery__modal-image" />
+          </div>
+          <label for="modal-1" class="gallery__image-wrapper">
+            <img src="./img/DevOpsDay-BirminghamAL.jpg" alt="DevOps Day Birmingham AL" class="gallery__image" />
+          </label>
+
+          <input type="checkbox" id="modal-2" class="gallery__modal-toggle" />
+          <label for="modal-2" class="gallery__modal-overlay"></label>
+          <div class="gallery__modal">
+            <label for="modal-2" class="gallery__modal-close">&times;</label>
+            <img src="./img/Clovis-in-Paris.jpeg" alt="Clovis in Paris" class="gallery__modal-image" />
+          </div>
+          <label for="modal-2" class="gallery__image-wrapper">
+            <img src="./img/Clovis-in-Paris.jpeg" alt="Clovis in Paris" class="gallery__image" />
+          </label>
+
+          <input type="checkbox" id="modal-3" class="gallery__modal-toggle" />
+          <label for="modal-3" class="gallery__modal-overlay"></label>
+          <div class="gallery__modal">
+            <label for="modal-3" class="gallery__modal-close">&times;</label>
+            <img src="./img/dev-mtl.png" alt="Dev MTL" class="gallery__modal-image" />
+          </div>
+          <label for="modal-3" class="gallery__image-wrapper">
+            <img src="./img/dev-mtl.png" alt="Dev MTL" class="gallery__image" />
+          </label>
+
+          <input type="checkbox" id="modal-4" class="gallery__modal-toggle" />
+          <label for="modal-4" class="gallery__modal-overlay"></label>
+          <div class="gallery__modal">
+            <label for="modal-4" class="gallery__modal-close">&times;</label>
+            <img src="./img/Identiverse.jpg" alt="Identiverse" class="gallery__modal-image" />
+          </div>
+          <label for="modal-4" class="gallery__image-wrapper">
+            <img src="./img/Identiverse.jpg" alt="Identiverse" class="gallery__image" />
+          </label>
+
+          <input type="checkbox" id="modal-5" class="gallery__modal-toggle" />
+          <label for="modal-5" class="gallery__modal-overlay"></label>
+          <div class="gallery__modal">
+            <label for="modal-5" class="gallery__modal-close">&times;</label>
+            <img src="./img/Paris-OWASP.jpg" alt="Paris OWASP" class="gallery__modal-image" />
+          </div>
+          <label for="modal-5" class="gallery__image-wrapper">
+            <img src="./img/Paris-OWASP.jpg" alt="Paris OWASP" class="gallery__image" />
+          </label>
+
+          <input type="checkbox" id="modal-6" class="gallery__modal-toggle" />
+          <label for="modal-6" class="gallery__modal-overlay"></label>
+          <div class="gallery__modal">
+            <label for="modal-6" class="gallery__modal-close">&times;</label>
+            <img src="./img/Paris-INCYBER-Canada.jpg" alt="INCYBER Montreal" class="gallery__modal-image" />
+          </div>
+          <label for="modal-5" class="gallery__image-wrapper">
+            <img src="./img/INCYBER-Canada.jpg" alt="INCYBER Montreal" class="gallery__image" />
+          </label>
+        </div>
+      </div>
+
+      <footer class="profile__footer">
+        <small>
+          © 2025 Dwayne McDaniel 
+        </small>
+      </footer>
+
+      <a href="#top" class="scroll-to-top" aria-label="Scroll to top of page">&uarr;</a>
+    </section>
+  </main>
+
+  <script>
+    const scrollButton = document.querySelector('.scroll-to-top');
+    
+    window.addEventListener('scroll', function () {
+      if (window.scrollY > 300) {
+        scrollButton.classList.add('visible');
+      } else {
+        scrollButton.classList.remove('visible');
+      }
+    });
+
+    scrollButton.addEventListener('click', function (e) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
