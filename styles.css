@@ -56,8 +56,9 @@ body {
   padding: 0;
   display: flex;
   justify-content: center;
-  gap: clamp(1rem, 3vw, 2rem);
-  max-width: 720px;
+  gap: clamp(0.6rem, 3vw, 1.2rem);
+  /* shrink nav menu to ~60% of previous max width (720px * 0.6 = 432px) */
+  max-width: 432px;
   margin: 0 auto;
   padding: clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 2rem);
 }
@@ -72,10 +73,44 @@ body {
   transition: all 0.2s ease;
 }
 
+/* Give nav links a distinct, high-contrast amber button background by default */
+.nav__link {
+  background: linear-gradient(135deg, rgba(251,191,36,0.95), #f59e0b);
+  border: 1px solid rgba(170, 120, 0, 0.25);
+  color: #071021; /* dark text for readability */
+  box-shadow: 0 6px 14px rgba(0,0,0,0.35);
+}
+
+/* Hover / focus - deepen amber and increase contrast */
 .nav__link:hover,
-.nav__link:focus {
-  color: var(--accent);
-  background: rgba(249,191,36,0.1);
+.nav__link:focus,
+.nav__link:focus-visible {
+  color: #071021;
+  background: linear-gradient(135deg, #ffd166, #f59e0b);
+  border-color: rgba(0,0,0,0.12);
+  font-weight: 700;
+  transform: translateY(-1px);
+}
+
+/* Active/current page state */
+.nav__link[aria-current="page"] {
+  color: #071021;
+  background: linear-gradient(135deg, var(--accent), #f59e0b);
+  font-weight: 800;
+  box-shadow: 0 10px 30px rgba(251,191,36,0.18);
+}
+
+/* Stronger, high-contrast focus indicator for keyboard users (explicit, not UA-dependent) */
+.nav__link:focus-visible {
+  /* remove default/UA outline so we render a consistent indicator */
+  outline: none;
+  /* layered ring: inner amber ring for clear accent, outer dark ring for contrast against light page elements */
+  box-shadow:
+    0 0 0 3px var(--accent),
+    0 0 0 6px rgba(2,6,23,0.85);
+  border-radius: 0.5rem;
+  /* small offset effect so the ring doesn't overlap the nav background too tightly */
+  transform: translateZ(0);
 }
 
 /* Centered profile card */
@@ -105,6 +140,8 @@ body {
   padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1rem, 3vw, 2.25rem);
   text-align: center;
   flex-shrink: 0;
+  /* Increase profile typography by ~25% for readability */
+  font-size: 1.25em;
 }
 
 /* Scrollable profile variant (for pages with lots of content) */
@@ -144,14 +181,14 @@ body {
 
 /* Name & tagline */
 .profile__name {
-  font-size: clamp(1.5rem, 4vw, 2.3rem);
+  font-size: clamp(1.875rem, 4vw, 2.875rem);
   font-weight: 700;
   letter-spacing: 0.03em;
   margin: 0 0 0.5rem 0;
 }
 
 .profile__tagline {
-  font-size: clamp(0.9rem, 2vw, 1rem);
+  font-size: clamp(1.125rem, 2vw, 1.25rem);
   font-weight: 400;
   color: var(--text-muted);
   margin: 0 0 1.5rem 0;
@@ -170,7 +207,7 @@ body {
 
 /* Intro */
 .profile__intro {
-  font-size: clamp(0.9rem, 2.5vw, 0.98rem);
+  font-size: clamp(1.125rem, 2.5vw, 1.225rem);
   line-height: 1.7;
   color: var(--text-main);
   margin: 0 0 1.5rem 0;
@@ -233,7 +270,7 @@ body {
   padding: 0.5rem 0.95rem;
   border-radius: 999px;
   border: 1px solid rgba(148, 163, 184, 0.6);
-  font-size: 0.85rem;
+  font-size: 1.06rem;
   font-weight: 500;
   text-decoration: none;
   color: var(--text-main);
@@ -254,7 +291,7 @@ body {
 
 /* Footer */
 .profile__footer {
-  font-size: 0.78rem;
+  font-size: 0.98rem;
   color: var(--text-soft);
 }
 
