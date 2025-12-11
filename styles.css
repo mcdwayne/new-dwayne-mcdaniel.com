@@ -507,36 +507,6 @@ body {
   letter-spacing: 0.06em;
 }
 
-/* Sticky columns on small screens: Date and Conference always visible on left */
-@media (max-width: 768px) {
-  .profile .conferences__table th:nth-child(1),
-  .profile .conferences__table td:nth-child(1),
-  .profile .conferences__table th:nth-child(2),
-  .profile .conferences__table td:nth-child(2) {
-    position: sticky;
-    left: 0;
-    background: linear-gradient(90deg, rgba(15,23,42,0.98), transparent);
-    z-index: 2;
-  }
-
-  .profile .conferences__table thead th:nth-child(1),
-  .profile .conferences__table thead th:nth-child(2) {
-    z-index: 4; /* higher for header overlap */
-    background: linear-gradient(145deg, rgba(17,24,39,0.99), rgba(15,23,42,0.99));
-  }
-
-  /* Ensure columns have minimum width for readability */
-  .profile .conferences__table th:nth-child(1),
-  .profile .conferences__table td:nth-child(1) {
-    min-width: 70px;
-  }
-
-  .profile .conferences__table th:nth-child(2),
-  .profile .conferences__table td:nth-child(2) {
-    min-width: 140px;
-  }
-}
-
 .profile .conferences__table tbody tr:hover td {
   background: linear-gradient(90deg, rgba(249,191,36,0.03), rgba(15,23,42,0));
 }
