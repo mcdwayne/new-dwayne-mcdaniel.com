@@ -8,7 +8,6 @@
 /* Color & typography tokens */
 :root {
   --bg: #020617;           /* near-black */
-  --bg-soft: #030712;      /* subtle card/backdrop */
   --accent: #fbbf24;       /* warm accent */
   --text-main: #e5e7eb;    /* light gray */
   --text-muted: #b0b8c4;   /* muted gray - increased contrast */
@@ -98,19 +97,6 @@ body {
   background: linear-gradient(135deg, var(--accent), #f59e0b);
   font-weight: 800;
   box-shadow: 0 10px 30px rgba(251,191,36,0.18);
-}
-
-/* Stronger, high-contrast focus indicator for keyboard users (explicit, not UA-dependent) */
-.nav__link:focus-visible {
-  /* remove default/UA outline so we render a consistent indicator */
-  outline: none;
-  /* layered ring: inner amber ring for clear accent, outer dark ring for contrast against light page elements */
-  box-shadow:
-    0 0 0 3px var(--accent),
-    0 0 0 6px rgba(2,6,23,0.85);
-  border-radius: 0.5rem;
-  /* small offset effect so the ring doesn't overlap the nav background too tightly */
-  transform: translateZ(0);
 }
 
 /* Centered profile card */
@@ -217,17 +203,6 @@ body {
   font-weight: 400;
   color: var(--text-muted);
   margin: 0 0 1.5rem 0;
-}
-
-/* Divider */
-.profile__divider {
-  display: inline-flex;
-  gap: 0.5rem;
-  align-items: center;
-  justify-content: center;
-  color: var(--accent);
-  font-size: 0.8rem;
-  margin-bottom: 1.5rem;
 }
 
 /* Intro */
@@ -379,11 +354,6 @@ body {
   }
 }
 
-.gallery__image-wrapper {
-  cursor: pointer;
-  display: block;
-}
-
 .gallery__image {
   width: 100%;
   height: clamp(120px, 40vw, 250px);
@@ -479,16 +449,6 @@ body {
   -webkit-overflow-scrolling: touch;
   border: 1px solid rgba(148, 163, 184, 0.04);
   border-radius: 0.6rem;
-}
-
-.profile .conferences__table caption {
-  caption-side: top;
-  text-align: left;
-  font-weight: 600;
-  color: var(--text-main);
-  padding: 0.65rem 0.9rem;
-  border-bottom: 2.5px solid var(--accent);
-  display: block;
 }
 
 /* Keep table internals rendering correctly while outer element scrolls */
@@ -623,6 +583,19 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Visually hidden but accessible to screen readers */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
 /* Global high-contrast focus styles for all interactive elements */
 /* Bright cyan border for maximum visibility against dark background */
 *:focus-visible {
@@ -633,22 +606,8 @@ html {
   border-radius: 0.25rem;
 }
 
-/* Ensure all focusable elements get the bright border */
-a:focus-visible,
-button:focus-visible,
-input:focus-visible,
-textarea:focus-visible,
-select:focus-visible,
-[tabindex]:focus-visible {
-  outline: none;
-  box-shadow: 
-    0 0 0 3px #00ffff, /* Bright cyan inner ring */
-    0 0 0 6px rgba(0, 255, 255, 0.4); /* Softer cyan outer glow */
-  border-radius: 0.25rem;
-}
-
 /* Override for elements that already have custom focus styles */
-/* Keep the existing nav link focus style but enhance it */
+/* Nav link focus style - enhanced with bright cyan */
 .nav__link:focus-visible {
   outline: none;
   box-shadow:
@@ -756,8 +715,8 @@ select:focus-visible,
   padding: clamp(1rem, 3vw, 1.5rem);
   background: linear-gradient(135deg, rgba(31,41,55,0.5), rgba(17,24,39,0.5));
   border: 1px solid rgba(249,191,36,0.1);
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow);
+  border-radius: 0.6rem;
+  box-shadow: var(--shadow-soft);
 }
 
 .tour-dates__title {
