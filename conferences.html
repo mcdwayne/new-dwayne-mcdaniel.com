@@ -5,7 +5,349 @@
   <title>Dwayne McDaniel's Conferences</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Dwayne McDaniel - Conferences" />
-  <link rel="stylesheet" href="styles.css" />
+  <style>
+/* Basic reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Color & typography tokens */
+:root {
+  --bg: #020617;
+  --accent: #fbbf24;
+  --text-main: #e5e7eb;
+  --text-muted: #b0b8c4;
+  --text-soft: #cbd5e1;
+  --border-subtle: #1f2933;
+  --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.55);
+  --radius-xl: 1.75rem;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+  background: radial-gradient(circle at top, #111827 0%, var(--bg) 60%);
+  color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0;
+  font-size: clamp(14px, 2vw, 16px);
+  line-height: 1.5;
+}
+
+.nav {
+  width: 100%;
+  background: linear-gradient(135deg, rgba(15,23,42,0.9), rgba(17,24,39,0.95));
+  border-bottom: 1px solid rgba(249,191,36,0.1);
+  backdrop-filter: blur(4px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav__menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  gap: clamp(0.6rem, 3vw, 1.2rem);
+  max-width: 432px;
+  margin: 0 auto;
+  padding: clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 2rem);
+}
+
+.nav__link {
+  color: var(--text-main);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  background: linear-gradient(135deg, rgba(251,191,36,0.95), #f59e0b);
+  border: 1px solid rgba(170, 120, 0, 0.25);
+  color: #071021;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.35);
+}
+
+.nav__link:hover,
+.nav__link:focus,
+.nav__link:focus-visible {
+  color: #071021;
+  background: linear-gradient(135deg, #ffd166, #f59e0b);
+  border-color: rgba(0,0,0,0.12);
+  font-weight: 700;
+  transform: translateY(-1px);
+}
+
+.nav__link[aria-current="page"] {
+  color: #071021;
+  background: linear-gradient(135deg, var(--accent), #f59e0b);
+  font-weight: 800;
+  box-shadow: 0 10px 30px rgba(251,191,36,0.18);
+}
+
+.page {
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  padding-bottom: clamp(1rem, 3vw, 2rem);
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+}
+
+.profile {
+  background: linear-gradient(
+    145deg,
+    rgba(17, 24, 39, 0.95),
+    rgba(15, 23, 42, 0.97)
+  );
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-soft);
+  padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1rem, 3vw, 2.25rem);
+  text-align: center;
+  flex-shrink: 0;
+  font-size: 1.25em;
+}
+
+.profile__name {
+  font-size: clamp(1.875rem, 4vw, 2.875rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  margin: 0 0 0.5rem 0;
+}
+
+.profile__intro {
+  font-size: clamp(1.125rem, 2.5vw, 1.225rem);
+  line-height: 1.7;
+  color: var(--text-main);
+  margin: 0 0 1.5rem 0;
+}
+
+.profile__footer {
+  font-size: 0.98rem;
+  color: var(--text-soft);
+}
+
+.profile .conferences__table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  background: transparent;
+  color: var(--text-main);
+  display: block;
+  max-height: 48vh;
+  overflow-y: auto;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid rgba(148, 163, 184, 0.04);
+  border-radius: 0.6rem;
+}
+
+.profile .conferences__table thead,
+.profile .conferences__table tbody,
+.profile .conferences__table tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.profile .conferences__table th,
+.profile .conferences__table td {
+  padding: clamp(0.3rem, 1.5vw, 0.55rem) clamp(0.4rem, 1vw, 0.75rem);
+  text-align: left;
+  font-size: clamp(0.7rem, 2vw, 0.95rem);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.04);
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profile .conferences__table th:nth-child(1),
+.profile .conferences__table td:nth-child(1) {
+  width: 120px;
+  white-space: nowrap;
+}
+
+.profile .conferences__table th:nth-child(2),
+.profile .conferences__table td:nth-child(2) {
+  width: 180px;
+  white-space: normal;
+}
+
+.profile .conferences__table th:nth-child(3),
+.profile .conferences__table td:nth-child(3),
+.profile .conferences__table th:nth-child(4),
+.profile .conferences__table td:nth-child(4),
+.profile .conferences__table th:nth-child(5),
+.profile .conferences__table td:nth-child(5) {
+  width: 120px;
+  white-space: nowrap;
+}
+
+.profile .conferences__table thead th {
+  position: sticky;
+  top: 0;
+  background: linear-gradient(145deg, rgba(17,24,39,0.98), rgba(15,23,42,0.98));
+  backdrop-filter: blur(4px);
+  z-index: 3;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: clamp(0.65rem, 2vw, 0.78rem);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.profile .conferences__table tbody tr:hover td {
+  background: linear-gradient(90deg, rgba(249,191,36,0.03), rgba(15,23,42,0));
+}
+
+.profile .conferences__table a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.profile .conferences__table a:hover,
+.profile .conferences__table a:focus {
+  text-decoration: underline;
+}
+
+.profile .conferences__table td:nth-child(2),
+.profile .conferences__table th:nth-child(2) {
+  white-space: normal;
+  max-width: 40ch;
+  word-break: break-word;
+}
+
+.profile .conferences__table th.sortable {
+  cursor: pointer;
+}
+
+.profile .conferences__table th.sortable:focus {
+  outline: 3px solid rgba(251,191,36,0.16);
+  outline-offset: 2px;
+}
+
+.profile .conferences__table th.sortable::after {
+  content: '\21C5';
+  display: inline-block;
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-soft);
+}
+
+.profile .conferences__table th.sortable.sorted-desc::after {
+  content: '\25BC';
+  color: var(--accent);
+}
+
+.profile .conferences__table th.sortable.sorted-asc::after {
+  content: '\25B2';
+  color: var(--accent);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+*:focus-visible {
+  outline: none;
+  box-shadow: 
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4);
+  border-radius: 0.25rem;
+}
+
+.nav__link:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.5),
+    0 0 0 9px rgba(2, 6, 23, 0.85);
+  border-radius: 0.5rem;
+  transform: translateZ(0);
+}
+
+.profile .conferences__table a:focus-visible {
+  outline: none;
+  box-shadow: 
+    0 0 0 2px #00ffff,
+    0 0 0 4px rgba(0, 255, 255, 0.3);
+  border-radius: 0.25rem;
+  padding: 0.1rem 0.2rem;
+  margin: -0.1rem -0.2rem;
+  display: inline-block;
+}
+
+.profile .conferences__table th.sortable:focus-visible {
+  outline: none;
+  box-shadow: 
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4);
+  border-radius: 0.25rem;
+}
+
+@media (max-width: 720px) {
+  .profile .conferences__table th,
+  .profile .conferences__table td {
+    padding: 0.4rem 0.5rem;
+    font-size: 0.85rem;
+  }
+  .profile .conferences__table td:nth-child(2) { max-width: 25ch; }
+  
+  .profile .conferences__table {max-height: 40vh;}
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 0.75rem;
+  }
+
+  .profile {
+    padding: clamp(1rem, 3vw, 1.5rem) clamp(0.75rem, 2vw, 1rem);
+  }
+
+  .profile .conferences__table th,
+  .profile .conferences__table td {
+    padding: 0.3rem 0.35rem;
+    font-size: 0.75rem;
+  }
+  .profile .conferences__table td:nth-child(2) { max-width: 18ch; }
+  
+  .profile .conferences__table {
+    max-height: 35vh;
+  }
+}
+  </style>
 </head>
 
 <body>
