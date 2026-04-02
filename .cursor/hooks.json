@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "hooks": {
+    "beforeSubmitPrompt": [
+      {
+        "command": "ggshield secret scan ai-hook"
+      }
+    ],
+    "preToolUse": [
+      {
+        "command": "ggshield secret scan ai-hook"
+      }
+    ],
+    "postToolUse": [
+      {
+        "command": "ggshield secret scan ai-hook"
+      }
+    ]
+  }
+}
