@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>About Dwayne McDaniel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="About Dwayne McDaniel - Developer Advocate at GitGuardian.com" />
+  <style>
+/* Basic reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Color & typography tokens */
+:root {
+  --bg: #020617;
+  --accent: #fbbf24;
+  --text-main: #e5e7eb;
+  --text-muted: #b0b8c4;
+  --text-soft: #cbd5e1;
+  --border-subtle: #1f2933;
+  --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.55);
+  --radius-xl: 1.75rem;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+  background: radial-gradient(circle at top, #111827 0%, var(--bg) 60%);
+  color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0;
+  font-size: clamp(14px, 2vw, 16px);
+  line-height: 1.5;
+}
+
+.nav {
+  width: 100%;
+  background: linear-gradient(135deg, rgba(15,23,42,0.9), rgba(17,24,39,0.95));
+  border-bottom: 1px solid rgba(249,191,36,0.1);
+  backdrop-filter: blur(4px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav__menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  gap: clamp(0.6rem, 3vw, 1.2rem);
+  max-width: 432px;
+  margin: 0 auto;
+  padding: clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 2rem);
+}
+
+.nav__link {
+  color: var(--text-main);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  background: linear-gradient(135deg, rgba(251,191,36,0.95), #f59e0b);
+  border: 1px solid rgba(170, 120, 0, 0.25);
+  color: #071021;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.35);
+}
+
+.nav__link:hover,
+.nav__link:focus,
+.nav__link:focus-visible {
+  color: #071021;
+  background: linear-gradient(135deg, #ffd166, #f59e0b);
+  border-color: rgba(0,0,0,0.12);
+  font-weight: 700;
+  transform: translateY(-1px);
+}
+
+.nav__link[aria-current="page"] {
+  color: #071021;
+  background: linear-gradient(135deg, var(--accent), #f59e0b);
+  font-weight: 800;
+  box-shadow: 0 10px 30px rgba(251,191,36,0.18);
+}
+
+.page {
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  padding-bottom: clamp(1rem, 3vw, 2rem);
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+}
+
+.profile {
+  background: linear-gradient(
+    145deg,
+    rgba(17, 24, 39, 0.95),
+    rgba(15, 23, 42, 0.97)
+  );
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-soft);
+  padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1rem, 3vw, 2.25rem);
+  text-align: center;
+  flex-shrink: 0;
+  font-size: 1.25em;
+}
+
+.profile--scrollable {
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+.profile--scrollable .profile__name {
+  flex-shrink: 0;
+}
+
+.profile--scrollable .profile__content {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 0.5rem;
+}
+
+.profile--scrollable .profile__footer {
+  flex-shrink: 0;
+}
+
+.page > .profile:first-of-type {
+  padding: 0;
+}
+
+.profile__name {
+  font-size: clamp(1.875rem, 4vw, 2.875rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  margin: 0 0 0.5rem 0;
+}
+
+h1, h2 {
+  text-align: center;
+}
+
+a {
+  color: #fef08a;
+}
+
+a:hover,
+a:focus {
+  color: #fde047;
+}
+
+.profile__footer {
+  font-size: 0.98rem;
+  color: var(--text-soft);
+}
+
+.profile__about {
+  text-align: left;
+  font-size: clamp(0.9rem, 2.5vw, 0.98rem);
+  line-height: 1.8;
+  color: var(--text-main);
+  margin: 1.5rem 0 2rem 0;
+}
+
+.profile__about p {
+  margin: 0 0 1rem 0;
+}
+
+.profile__about p:last-child {
+  margin-bottom: 0;
+}
+
+.profile__gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0 1.5rem 0;
+  border-radius: 0.6rem;
+  overflow: visible;
+}
+
+@media (min-width: 600px) {
+  .profile__gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.gallery__image {
+  width: 100%;
+  height: clamp(120px, 40vw, 250px);
+  object-fit: cover;
+  display: block;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gallery__image:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.scroll-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 3rem;
+  height: 3rem;
+  background: linear-gradient(135deg, var(--accent), #f59e0b);
+  color: #071021;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(251, 191, 36, 0.2);
+  border: 1px solid rgba(0,0,0,0.08);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+  z-index: 50;
+  cursor: pointer;
+}
+
+.scroll-to-top:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(251, 191, 36, 0.3);
+}
+
+.scroll-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+*:focus-visible {
+  outline: none;
+  box-shadow: 
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4);
+  border-radius: 0.25rem;
+}
+
+.nav__link:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.5),
+    0 0 0 9px rgba(2, 6, 23, 0.85);
+  border-radius: 0.5rem;
+  transform: translateZ(0);
+}
+
+.profile__gallery a:focus-visible {
+  outline: none;
+}
+
+.profile__gallery a:focus-visible .gallery__image {
+  outline: none;
+  box-shadow: 
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4);
+  border-radius: 0.5rem;
+}
+
+.scroll-to-top:focus-visible {
+  outline: none;
+  box-shadow: 
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4),
+    0 12px 28px rgba(251, 191, 36, 0.3);
+  border-radius: 50%;
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 0.75rem;
+  }
+
+  .profile {
+    padding: clamp(1rem, 3vw, 1.5rem) clamp(0.75rem, 2vw, 1rem);
+  }
+
+  .scroll-to-top {
+    bottom: 1rem;
+    right: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.2rem;
+  }
+}
+  </style>
+</head>
+<body>
+  <nav class="nav" aria-label="Main navigation">
+    <ul class="nav__menu">
+      <li><a class="nav__link" href="./index.html">Home</a></li>
+      <li><a class="nav__link" href="./conferences.html">Conferences</a></li>
+      <li><a class="nav__link" href="./about.html">About</a></li>
+    </ul>
+  </nav>
+  <main class="page">
+    <section class="profile profile--scrollable" aria-label="About Dwayne McDaniel">
+      <div class="profile__content">
+        <div class="profile__about">
+          <h1 class="profile__name">DjangoCon 2026</h1>
+          <article>
+            <h1>DjangoCon US 2026: Raising the Infrastructure While the City Keeps Moving</h1>
+          
+            <p>In the late 1850s, Chicago had a problem beneath its feet. The city was flat, drainage was poor, and a growing population needed a sewer system. Engineers arrived at an audacious solution: raise the streets.</p>
+          
+            <p>Across large parts of Chicago, street grades went up an average of four to five feet, with some sections rising as much as eight feet. Existing buildings had to follow. Hotels, banks, and businesses were literally lifted while the city continued operating around them.</p>
+          
+            <p>That story kept coming back to me during DjangoCon US 2026.</p>
+          
+            <p>The conference brought more than 400 Djangonauts to the voco Chicago Downtown for talks from August 24 through 26, followed by two days of contribution sprints. The schedule covered everything from Django 6 and PostgreSQL to civic technology, code review, AI adoption, and maintaining applications that have accumulated years of history.</p>
+          
+            <p>Across those topics, the same challenge kept surfacing.</p>
+          
+            <p>We have systems that people already depend on. We have communities with established norms. We have applications carrying years of business decisions. Now AI is accelerating how quickly we can modify all of them.</p>
+          
+            <p>The foundations have to evolve while everything above them keeps moving.</p>
+          
+            <p>Here are a few of the sessions that made that especially clear.</p>
+          
+            <h2>Agency Has To Stay In The Architecture</h2>
+          
+            <p>Dawn Wages opened DjangoCon with <em>“Boldly Go, Building Worlds: Is there Room for me on the Bridge?”</em></p>
+          
+            <p>Using Star Trek, Afrofuturism, and her own experience in technology communities, Dawn framed software development as an act of world building. Developers make choices about who gets included, what gets prioritized, and what kind of future a system makes possible.</p>
+          
+            <p>AI gave that message some additional weight.</p>
+          
+            <p>Only a small number of people in the room raised their hands when Dawn asked who was actually building AI systems. Her encouragement was to interrogate what the hyperscalers are offering and understand where those systems come from. She kept returning to human agency, experimentation, accountability to your crew, and making room for people who have historically lacked a seat at the table.</p>
+          
+            <p>That is also a useful way to think about AI-assisted development.</p>
+          
+            <p>Software teams now have tools capable of generating significant amounts of implementation work. That increases the importance of deciding what those tools are allowed to change and who remains accountable for the outcome.</p>
+          
+            <p>Code can become cheap very quickly. Authority remains expensive.</p>
+          
+            <p>An agent that can edit a Django view has one level of authority. An agent that can modify deployment configuration, call production APIs, or retrieve credentials has another. Each additional capability changes the risk profile.</p>
+          
+            <p>Human agency belongs in that architecture. Someone needs to define the boundaries, understand the consequences, and own the result.</p>
+          
+            <p>Dawn ended with the idea that there is room on the bridge because we can help create that room. The same principle applies to the systems we are building around AI. We get to decide what kind of software development environment we create.</p>
+          
+            <h2>Governance Needs A Commit History</h2>
+          
+            <p>Dan Ryan, chair of the Django Software Foundation’s Code of Conduct Working Group, walked through the work of modernizing Django’s Code of Conduct.</p>
+          
+            <p>The previous Code of Conduct dated back to 2012. The modernization effort introduced clearer processes for proposing, reviewing, approving, and publicly announcing changes. The process itself is transparent and versioned. Larger changes can go out to the community for feedback, and modifications leave a visible history behind them.</p>
+          
+            <p>One line from the session captured the shift especially well: <q>Trust us</q> becomes <q>Here’s the commit history.</q></p>
+          
+            <p>The updated guidance also explicitly addresses AI-generated contributions. Contributors remain responsible for reviewing what they submit and applying their own expertise before adding generated material to the community.</p>
+          
+            <p>That approach travels well beyond community governance.</p>
+          
+            <p>Security teams increasingly need the same transition from assumed trust to inspectable trust. A credential should have an owner. A change should have provenance. An automated action should leave evidence behind.</p>
+          
+            <p>Consider the API keys and service credentials powering a typical Django application. The important ownership question extends beyond who originally created a key. The workload needs an accountable owner, while platform and security teams provide the controls that make discovery, rotation, and remediation practical.</p>
+          
+            <p>Without that ownership, a secret can survive longer than the project, employee, or integration that originally needed it.</p>
+          
+            <p>Governance becomes useful when responsibility is visible enough to act on.</p>
+          
+            <h2>Agents Need Context Before Authority</h2>
+          
+            <p>Josh Thomas’s <em>“Agents All the Way Down: How AI Coding Agents Changed How I Write Django”</em> provided one of the clearest examples of both the promise and the limits of agentic development.</p>
+          
+            <p>Josh described a production problem involving a missing boundary map in a hunting lease contract. He was away at Disney World when the issue appeared. Using Codex on a Mac mini, he supplied the audit information and had the agent investigate. It returned possible fixes and a test, allowing him to work through the incident in pieces while standing in line rather than spending hours back at a hotel.</p>
+          
+            <p>The impressive part was the infrastructure underneath that moment.</p>
+          
+            <p>Josh had spent years creating the development loop around the application. The codebase had tests, CI, deployment practices, and conventions he trusted. The application itself carried around 19 years of history.</p>
+          
+            <p>That history affects what an agent sees.</p>
+          
+            <p>Josh pointed out that agents understand Django’s well-established conventions well. Custom domain decisions require more context. A business rule represented clearly in a model, relationship, or constraint gives both future developers and future agents a better starting point.</p>
+          
+            <p>Poor patterns create the opposite effect. An agent can make a local fix, get green tests, and establish a new pattern that another agent later copies.</p>
+          
+            <p>AI can multiply good structure. It can also multiply cognitive debt.</p>
+          
+            <p>Our 2026 State of Secrets Sprawl research found 28.65 million new hardcoded secrets added to public GitHub commits during 2025, a 34% year-over-year increase. Claude Code-assisted commits showed a 3.2% secret leak rate compared with a 1.5% baseline across public GitHub commits.</p>
+          
+            <p>The underlying workflow is becoming much faster. A coding agent can generate a configuration file, wire up a service, create an integration, and prepare a commit in minutes. Credentials inevitably enter some of those workflows.</p>
+          
+            <p>Agents therefore need boundaries before they receive authority. Their access should reflect the task, their actions should be reviewable, and the credentials available to them should have explicit ownership and lifecycle controls.</p>
+          
+            <p>Josh put human review at the center of deciding how a change fits the application. Review depth then follows risk. That principle scales remarkably well from Django code to agent security.</p>
+          
+            <h2>Human Attention Is Load-Bearing Infrastructure</h2>
+          
+            <p>Sarah Boyce used the second-day keynote, <em>“Emails from my Grandad,”</em> to explore something every open source community eventually runs short of: thoughtful human review.</p>
+          
+            <p>Code review serves several purposes. We want to know whether a contribution works, whether it fits the project, and whether someone else can understand and maintain it later. The review process also transfers knowledge between people.</p>
+          
+            <p>Sarah described three ways feedback can become difficult: disagreements about truth, the relationship between reviewer and contributor, and feedback that collides with a person’s identity.</p>
+          
+            <p>Behind all three sits a scarce resource.</p>
+          
+            <p>Human attention.</p>
+          
+            <p>Django is receiving more contributions while its reviewer community is spread thin. Silence on a pull request can last weeks or months because the volunteers with enough context simply lack capacity. Sarah encouraged people to consider spending sprint time reviewing existing contributions as another valuable way to participate.</p>
+          
+            <p>AI makes this problem especially relevant.</p>
+          
+            <p>Generating another patch is becoming easier. Understanding whether that patch belongs in a mature system still requires judgment.</p>
+          
+            <p>Security teams face the same asymmetry. Detection can produce thousands of findings. Agents can produce remediation suggestions at machine speed. People still have a finite amount of attention available to decide which credential presents real risk, which change affects production, and which automated fix deserves approval.</p>
+          
+            <p>Good tooling has to protect that attention.</p>
+          
+            <p>The useful security control provides context close to the decision. It helps people understand ownership, reachability, validity, and potential impact without requiring another afternoon of investigation.</p>
+          
+            <p>Human review works best when machines remove searching and sorting from the reviewer’s workload while leaving judgment where it belongs.</p>
+          
+            <h2>The Work Beneath The Work</h2>
+          
+            <h3>Trust Is Becoming Operational</h3>
+          
+            <p>Across software, <q>trust</q> increasingly needs a concrete implementation.</p>
+          
+            <p>We need to know who owns a credential, who approved a change, and what an automated system actually did. That evidence needs to survive beyond the moment when the decision was made.</p>
+          
+            <p>This is where secrets management increasingly meets non-human identity governance. An API key represents standing authority. A service account represents an actor inside the system. An agent using either one inherits whatever access that identity carries.</p>
+          
+            <p>Inventory, ownership, lifecycle, and evidence become part of the same control problem.</p>
+          
+            <h3>AI Is Compressing The Distance Between Intent And Action</h3>
+          
+            <p>Software development historically inserted friction between an idea and production. Someone wrote code, another person reviewed it, CI ran, and deployment followed.</p>
+          
+            <p>Agents can traverse large parts of that path themselves.</p>
+          
+            <p>That speed is enormously useful. It also shortens the window in which teams can catch a bad assumption. A prompt can become code, configuration, or an API call with very little distance in between.</p>
+          
+            <p>Security controls therefore need to appear inside the workflow. Scoped credentials, clear permissions, automated secret detection, and auditable tool activity give teams usable boundaries at the moment an agent acts.</p>
+          
+            <p>Faster software creation increases the value of those boundaries.</p>
+          
+            <h3>Human Judgment Becomes More Valuable As Output Grows</h3>
+          
+            <p>AI gives us more implementation capacity. It does not give maintainers more hours in the day.</p>
+          
+            <p>The result is a new scaling problem. More code can mean more reviews. More integrations create more machine identities. More generated configurations create more places where credentials can spread.</p>
+          
+            <p>Security teams should spend human attention on decisions that require human context.</p>
+          
+            <p>Machines can discover a secret and connect it to a workload. They can help identify an owner and surface evidence about exposure. Humans can then decide how urgently the credential must be rotated and how to make that change safely.</p>
+          
+            <p>The best automation leaves people with the part that deserves judgment.</p>
+          
+            <h2>Raise The Street And Keep Moving</h2>
+          
+            <p>One of the lightning talks at DjangoCon explicitly returned to Chicago’s history of raising its streets as a lesson for technical debt. The city needed new infrastructure, yet commerce could not simply stop while the work happened.</p>
+          
+            <p>That might be the most fitting image for where software teams find themselves in 2026.</p>
+          
+            <p>We are raising the street underneath systems that already carry real traffic.</p>
+          
+            <p>Legacy Django applications still need to serve users. Open source communities still need to welcome contributors. Security teams still need to protect credentials. Developers are adding AI agents into workflows that already contain years of accumulated conventions and authority.</p>
+          
+            <p>The foundations can change while the system keeps moving.</p>
+          
+            <p>We need explicit ownership for the credentials that power our applications. Agents need scoped authority and reviewable actions. Developers need security controls close to where code gets created. Communities need processes that preserve human judgment and make trust visible.</p>
+          
+            <p>Chicago solved its infrastructure problem one block at a time while life continued above it.</p>
+          
+            <p>Software will likely evolve the same way.</p>
+          
+            <p>We keep the useful parts running, strengthen what sits underneath them, and leave the foundations a little safer for whoever builds on them next.</p>
+          </article>
+          
+        </div>
+      </div>
+
+
+      <a href="#top" class="scroll-to-top" aria-label="Scroll to top of page">&uarr;</a>
+    </section>
+  </main>
+
+  <script>
+    const scrollButton = document.querySelector('.scroll-to-top');
+    
+    window.addEventListener('scroll', function () {
+      if (window.scrollY > 300) {
+        scrollButton.classList.add('visible');
+      } else {
+        scrollButton.classList.remove('visible');
+      }
+    });
+
+    scrollButton.addEventListener('click', function (e) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
