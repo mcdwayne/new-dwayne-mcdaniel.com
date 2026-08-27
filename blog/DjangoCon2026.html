@@ -194,6 +194,33 @@ a:focus {
   margin-bottom: 0;
 }
 
+.session-photo {
+  margin: 1.25rem 0 1.75rem 0;
+  padding: 0;
+  max-width: 100%;
+}
+
+.session-photo a {
+  display: block;
+  line-height: 0;
+}
+
+.session-photo img {
+  width: 100%;
+  height: auto;
+  max-height: min(70vh, 520px);
+  object-fit: cover;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.session-photo figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
 .profile__gallery {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -318,14 +345,41 @@ html {
     font-size: 1.2rem;
   }
 }
+
+.session-photo {
+  margin: 1.25rem 0 1.75rem 0;
+  padding: 0;
+  max-width: 100%;
+}
+
+.session-photo a {
+  display: block;
+  line-height: 0;
+}
+
+.session-photo img {
+  width: 100%;
+  height: auto;
+  max-height: min(70vh, 520px);
+  object-fit: cover;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.session-photo figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-align: center;
+}
   </style>
 </head>
 <body>
   <nav class="nav" aria-label="Main navigation">
     <ul class="nav__menu">
-      <li><a class="nav__link" href="./index.html">Home</a></li>
-      <li><a class="nav__link" href="./conferences.html">Conferences</a></li>
-      <li><a class="nav__link" href="./about.html">About</a></li>
+      <li><a class="nav__link" href="../index.html">Home</a></li>
+      <li><a class="nav__link" href="../conferences.html">Conferences</a></li>
+      <li><a class="nav__link" href="../about.html">About</a></li>
     </ul>
   </nav>
   <main class="page">
@@ -334,173 +388,224 @@ html {
         <div class="profile__about">
           <h1 class="profile__name">DjangoCon 2026</h1>
           <article>
-            <h1>DjangoCon US 2026: Raising the Infrastructure While the City Keeps Moving</h1>
+            <header>
+              <h1>DjangoCon 2026: The Web Is Getting Simpler, Smarter, and More Interesting</h1>
+            </header>
           
-            <p>In the late 1850s, Chicago had a problem beneath its feet. The city was flat, drainage was poor, and a growing population needed a sewer system. Engineers arrived at an audacious solution: raise the streets.</p>
+            <p><strong>Fun Chicago fact:</strong> in the late 1850s, <a href="https://www.encyclopedia.chicagohistory.org/pages/1202.html">Chicago raised large stretches of its streets</a> by roughly four to five feet so the city could install sewers with enough slope to drain properly. Buildings had to come up with them. Even large brick hotels, banks, and business buildings were lifted to the new grade.</p>
           
-            <p>Across large parts of Chicago, street grades went up an average of four to five feet, with some sections rising as much as eight feet. Existing buildings had to follow. Hotels, banks, and businesses were literally lifted while the city continued operating around them.</p>
+            <p>That feels like a pretty good metaphor for DjangoCon US 2026.</p>
           
-            <p>That story kept coming back to me during DjangoCon US 2026.</p>
+            <p>I spent three days hearing people talk about applications that have been running for years, frameworks that have been evolving for decades, browsers that keep absorbing jobs we once handed to JavaScript libraries, and databases that are quietly becoming capable of things that used to require another system entirely. The recurring idea was simple: keep improving the foundations while the application keeps running.</p>
           
-            <p>The conference brought more than 400 Djangonauts to the voco Chicago Downtown for talks from August 24 through 26, followed by two days of contribution sprints. The schedule covered everything from Django 6 and PostgreSQL to civic technology, code review, AI adoption, and maintaining applications that have accumulated years of history.</p>
+            <p>I came away with pages of notes about Django itself, but the most interesting lessons were really about web development in 2026. Mature tools are getting better. The browser is getting surprisingly powerful. Postgres keeps eating more of the stack. AI coding agents are useful when the surrounding engineering system gives them good constraints. Human judgment still shows up everywhere.</p>
           
-            <p>Across those topics, the same challenge kept surfacing.</p>
+            <h2>Twenty years in, Django is still finding useful things to absorb</h2>
           
-            <p>We have systems that people already depend on. We have communities with established norms. We have applications carrying years of business decisions. Now AI is accelerating how quickly we can modify all of them.</p>
+            <p>The biggest Django-specific news came from <a href="https://www.linkedin.com/in/karen-tracey-b616255">Karen Tracey</a> during her keynote on Django 6. Karen walked through a release that adds several capabilities I would have expected teams to solve with separate packages a few years ago.</p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mtyjgxjy4e2j" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreidsp4nn73m7fst2ornzmjrx7qvsr7izj4632ae57rb4jxqndgpsuq" alt="Karen Tracey presenting the Django 6 keynote at DjangoCon US 2026" loading="lazy" />
+              </a>
+              <figcaption>Karen Tracey</figcaption>
+            </figure>
           
-            <p>The foundations have to evolve while everything above them keeps moving.</p>
+            <p>Django 6 now has a background tasks framework, built-in Content Security Policy support, template partials, and support for Python's modern email API. Django 6.1 is already pushing further with model field fetch modes and a new mailers configuration.</p>
           
-            <p>Here are a few of the sessions that made that especially clear.</p>
+            <p>The background tasks work especially caught my attention. Django now gives applications a standard API for defining and enqueueing work outside the request cycle. The execution backend stays pluggable, so an application can match the machinery to the actual job.</p>
           
-            <h2>Agency Has To Stay In The Architecture</h2>
+            <p>That same theme came up in <a href="https://uy.linkedin.com/in/matiasb">Matías Bordese</a>'s talk about teaching Django Tasks to speak Celery. Matías showed how the new task API can sit above different execution engines. Application code talks to Django's task interface while the backend decides how the work runs.</p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mtuaa242a52v" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreigsornffd7wurl5dbxffz3u76zzlv77ggk3swhw5zv7jaalp6amey" alt="Matías Bordese presenting on Django Tasks and Celery at DjangoCon US 2026" loading="lazy" />
+              </a>
+              <figcaption>Matías Bordese</figcaption>
+            </figure>
           
-            <p>Dawn Wages opened DjangoCon with <em>“Boldly Go, Building Worlds: Is there Room for me on the Bridge?”</em></p>
+            <p>This is the kind of framework evolution I love. A common application need gets a shared vocabulary. Projects gain a stable interface. Teams still have room to choose the operational complexity they need.</p>
           
-            <p>Using Star Trek, Afrofuturism, and her own experience in technology communities, Dawn framed software development as an act of world building. Developers make choices about who gets included, what gets prioritized, and what kind of future a system makes possible.</p>
+            <p><a href="https://github.com/wsvincent">Will Vincent</a> made a similar point from the deployment side. Modern Django deployments still involve databases, static assets, HTTPS, background workers, monitoring, and a release process. Will's walkthrough made the whole thing feel much more finite than the giant cloud architecture diagrams we tend to imagine. The application still has a request, some code, some data, and a set of services around it. Most teams get farther by understanding those pieces well than by collecting infrastructure.</p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mtz3pohnlu26" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreia5lh6oqd6nq2btjpwkfnbk6jijx5d2jdh5ld4s2t7l3myh4qpche" alt="Will Vincent presenting on modern Django deployments at DjangoCon US 2026" loading="lazy" />
+              </a>
+              <figcaption>Will Vincent</figcaption>
+            </figure>
           
-            <p>AI gave that message some additional weight.</p>
+            <h2>The frontend keeps getting interesting by getting closer to HTML</h2>
           
-            <p>Only a small number of people in the room raised their hands when Dawn asked who was actually building AI systems. Her encouragement was to interrogate what the hyperscalers are offering and understand where those systems come from. She kept returning to human agency, experimentation, accountability to your crew, and making room for people who have historically lacked a seat at the table.</p>
+            <p>One of my favorite clusters of talks was about frontend development. Several speakers arrived at the same general place from different directions: there is a huge amount of power available before reaching for a large client-side application framework.</p>
           
-            <p>That is also a useful way to think about AI-assisted development.</p>
+            <p><a href="https://github.com/nessita">Natalia Bidart</a> demonstrated this beautifully in her talk about HTMX and Django views. Natalia started with a normal server-rendered Django application, then layered in HTMX a little at a time. Django 6 template partials let the same view return either the full page or the fragment HTMX needs.</p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mtyz7di77e2w" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreigdnyh2sfc7s47xeckdhb4iivedwj55ikuqhknwcpp5r6jqno2yey" alt="Natalia Bidart presenting on HTMX and Django views at DjangoCon US 2026" loading="lazy" />
+              </a>
+              <figcaption>Natalia Bidart</figcaption>
+            </figure>
           
-            <p>Software teams now have tools capable of generating significant amounts of implementation work. That increases the importance of deciding what those tools are allowed to change and who remains accountable for the outcome.</p>
+            <p>The result keeps one template as the source of truth. An inline rename can swap a display element for a form. A POST can update one piece of the page. The Django view and template stay at the center of the flow.</p>
           
-            <p>Code can become cheap very quickly. Authority remains expensive.</p>
+            <p><a href="https://www.linkedin.com/in/kkellydesign">Kasey Kelly</a> explored the same territory from the design-system side. Kasey showed how quickly frontend structure can become its own source of friction. One example started with AI-generated frontend code and ended up as a 16,000-line <code>app.tsx</code> file. His broader point was about building reusable patterns that fit the framework and remain understandable later.</p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mtu4izxeul2j" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreicda4hidsdvo7d5jvnaenzuomcwc3cjkfk3e2zfocxxcmljkauvzi" alt="Kasey Kelly presenting on component-based frontends in Django at DjangoCon US 2026" loading="lazy" />
+              </a>
+              <figcaption>Kasey Kelly</figcaption>
+            </figure>
           
-            <p>An agent that can edit a Django view has one level of authority. An agent that can modify deployment configuration, call production APIs, or retrieve credentials has another. Each additional capability changes the risk profile.</p>
+            <p>Then <a href="https://www.linkedin.com/in/jamessw">James Stuckey Weber</a> finished the conference with a reminder that the browser itself has been busy.</p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mtzcgfeq5k2x" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreicjqmbhrrftwoac2kfaf6qnccp5k63ebzpt7g2sibjyzah2pzhn6m" alt="James Stuckey Weber presenting on modern browser capabilities at DjangoCon US 2026" loading="lazy" />
+              </a>
+              <figcaption>James Stuckey Weber</figcaption>
+            </figure>
           
-            <p>Human agency belongs in that architecture. Someone needs to define the boundaries, understand the consequences, and own the result.</p>
+            <p>James ran through modern browser capabilities including popovers, anchor positioning, lazy image loading, container queries, view transitions, and newer text layout controls. He also pointed to Baseline as a much better way to reason about when features are consistently available across major browsers.</p>
           
-            <p>Dawn ended with the idea that there is room on the bridge because we can help create that room. The same principle applies to the systems we are building around AI. We get to decide what kind of software development environment we create.</p>
+            <p>I had several moments during that talk where my reaction was simply, "The browser already does that?" CSS can now handle interactions and layout behavior that once triggered a hunt for a JavaScript library. HTML has gained richer primitives. The platform has been moving while many of our mental models stayed parked several years back.</p>
           
-            <h2>Governance Needs A Commit History</h2>
+            <p>There is a nice architectural consequence here. Every behavior the browser handles directly is one less custom behavior your application has to own.</p>
           
-            <p>Dan Ryan, chair of the Django Software Foundation’s Code of Conduct Working Group, walked through the work of modernizing Django’s Code of Conduct.</p>
+            <h2>Framework benchmarks are much less interesting than real workloads</h2>
           
-            <p>The previous Code of Conduct dated back to 2012. The modernization effort introduced clearer processes for proposing, reviewing, approving, and publicly announcing changes. The process itself is transparent and versioned. Larger changes can go out to the community for feedback, and modifications leave a visible history behind them.</p>
+            <p><a href="https://www.linkedin.com/in/calvinhp">Calvin Hendryx-Parker</a> and <a href="https://www.linkedin.com/in/frankwiles">Frank Wiles</a> gave a Django versus FastAPI talk that spent surprisingly little time trying to crown a winner. That made it much more useful.</p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mtw4u6ay6a2v" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreiedxztcac5hpvrltl7dvrpoalr76z3ujlscwin3prxurotczt6qfe" alt="Calvin Hendryx-Parker and Frank Wiles presenting the Django versus FastAPI debate at DjangoCon US 2026" loading="lazy" />
+              </a>
+              <figcaption>Calvin Hendryx-Parker and Frank Wiles</figcaption>
+            </figure>
           
-            <p>One line from the session captured the shift especially well: <q>Trust us</q> becomes <q>Here’s the commit history.</q></p>
+            <p>Their benchmark contract included pinned Python versions, multiple concurrency levels, latency, throughput, errors, and resource use. They also built realistic scenarios instead of leaning on a single requests-per-second number.</p>
           
-            <p>The updated guidance also explicitly addresses AI-generated contributions. Contributors remain responsible for reviewing what they submit and applying their own expertise before adding generated material to the community.</p>
+            <p>In one lightweight lookup scenario, FastAPI posted a lower p99 latency than Django. Their larger point was about scale and workload shape. A few milliseconds can become important at enormous request volumes. Most applications encounter bigger gains or losses in database access, data structure, query patterns, and surrounding architecture.</p>
           
-            <p>That approach travels well beyond community governance.</p>
+            <p>The line I wrote down was that async is a workload property. That is a much more useful way to think about it than treating async as a general synonym for faster.</p>
           
-            <p>Security teams increasingly need the same transition from assumed trust to inspectable trust. A credential should have an owner. A change should have provenance. An automated action should leave evidence behind.</p>
+            <p>They also talked about the leverage provided by Django's batteries and ecosystem. A mature package can bring years of accumulated design decisions into a project. That leverage comes with ownership because dependencies age and maintainers move on. AI may make fresh implementation cheaper, while maintenance still belongs to the team shipping the application.</p>
           
-            <p>Consider the API keys and service credentials powering a typical Django application. The important ownership question extends beyond who originally created a key. The workload needs an accountable owner, while platform and security teams provide the controls that make discovery, rotation, and remediation practical.</p>
+            <h2>Postgres keeps volunteering for more jobs</h2>
           
-            <p>Without that ownership, a secret can survive longer than the project, employee, or integration that originally needed it.</p>
+            <p>The database talks may have been my favorite technical rabbit hole of the week.</p>
           
-            <p>Governance becomes useful when responsibility is visible enough to act on.</p>
+            <p><a href="https://www.linkedin.com/in/tobiasmcnulty">Tobias McNulty</a> and <a href="https://www.linkedin.com/in/gerald-carlton-8b816372">Gerald Carlton</a> showed fuzzy name matching across a dataset of 54 million records. Their starting problem sounded ordinary: let staff search for people whose names may have been entered differently over time.</p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mttybsive72x" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreihw7aw4fw3e4jp4zv77o7jg2orh7ve6uspoamjeoq4btrrthy6jhy" alt="Tobias McNulty and Gerald Carlton presenting on fuzzy name matching with PostgreSQL and Django at DjangoCon US 2026" loading="lazy" />
+              </a>
+              <figcaption>Tobias McNulty and Gerald Carlton</figcaption>
+            </figure>
           
-            <h2>Agents Need Context Before Authority</h2>
+            <p>Then reality arrived. People have multiple valid names. Names change. Clerks make typos. Character sets vary. Two people can hear or transcribe the same name differently.</p>
           
-            <p>Josh Thomas’s <em>“Agents All the Way Down: How AI Coding Agents Changed How I Write Django”</em> provided one of the clearest examples of both the promise and the limits of agentic development.</p>
+            <p>Their solution combined several techniques instead of chasing one magical fuzzy-search algorithm. Prefix indexes handled cases that could be narrowed cheaply. Phonetic matching helped with names that sounded alike. Levenshtein distance handled controlled edit distance. Django's ORM could still expose database functions that Django does not wrap natively.</p>
           
-            <p>Josh described a production problem involving a missing boundary map in a hunting lease contract. He was away at Disney World when the issue appeared. Using Codex on a Mac mini, he supplied the audit information and had the agent investigate. It returned possible fixes and a test, allowing him to work through the incident in pieces while standing in line rather than spending hours back at a hotel.</p>
+            <p>The coolest part was the scale. Search-as-you-type over tens of millions of records sounds like a problem that automatically demands a separate search platform. Tobias and Gerald showed how far PostgreSQL can go when the query strategy and indexes are designed around the actual search behavior.</p>
           
-            <p>The impressive part was the infrastructure underneath that moment.</p>
+            <p><a href="https://www.linkedin.com/in/elizabeth-garrett-christensen">Elizabeth Christensen</a> then gave everyone a tour of PostgreSQL 18 and 19, and the list of capabilities was kind of ridiculous.</p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mtwscqyvu22m" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreigcv5xgg3pytavtvvoqh5kqcesf3tfsdr75krxsbgx72hipm27vwm" alt="Elizabeth Christensen presenting on PostgreSQL 18 and 19 at DjangoCon US 2026" loading="lazy" />
+              </a>
+              <figcaption>Elizabeth Christensen</figcaption>
+            </figure>
           
-            <p>Josh had spent years creating the development loop around the application. The codebase had tests, CI, deployment practices, and conventions he trusted. The application itself carried around 19 years of history.</p>
+            <p>Postgres 18 brings UUIDv7 support, virtual generated columns, temporal constraints, async I/O improvements, OAuth 2.0 support, and more. Elizabeth also covered work landing around graph queries, richer conflict handling, query planning, and extensions that connect Postgres to object and columnar storage.</p>
           
-            <p>That history affects what an agent sees.</p>
+            <p>Postgres increasingly feels like a platform hiding inside a database server. Search, geospatial work, graph-shaped relationships, analytics, and application data can live much closer together than they once did.</p>
           
-            <p>Josh pointed out that agents understand Django’s well-established conventions well. Custom domain decisions require more context. A business rule represented clearly in a model, relationship, or constraint gives both future developers and future agents a better starting point.</p>
+            <h2>AI coding gets better when the codebase gives the agent somewhere obvious to stand</h2>
           
-            <p>Poor patterns create the opposite effect. An agent can make a local fix, get green tests, and establish a new pattern that another agent later copies.</p>
+            <p>AI showed up all over DjangoCon, but <a href="https://github.com/joshuadavidthomas">Josh Thomas</a> gave the talk that stuck with me most.</p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mtucrgyrbg2v" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreiajnw4ygc5bmuzua4ob6hinrdf2bep2sikld7e4vfi5tr4sx4wsd4" alt="Josh Thomas presenting on AI coding agents at DjangoCon US 2026" loading="lazy" />
+              </a>
+              <figcaption>Josh Thomas</figcaption>
+            </figure>
           
-            <p>AI can multiply good structure. It can also multiply cognitive debt.</p>
+            <p>Josh described debugging a production issue from a Disney World line. He handed an agent audit logs from a failed workflow. The agent proposed fixes and a test, and Josh was able to review enough of the result from his phone to get the incident moving.</p>
           
-            <p>Our 2026 State of Secrets Sprawl research found 28.65 million new hardcoded secrets added to public GitHub commits during 2025, a 34% year-over-year increase. Claude Code-assisted commits showed a 3.2% secret leak rate compared with a 1.5% baseline across public GitHub commits.</p>
+            <p>The fun part of the story was the remote debugging. The useful part was everything that made it possible.</p>
           
-            <p>The underlying workflow is becoming much faster. A coding agent can generate a configuration file, wire up a service, create an integration, and prepare a commit in minutes. Credentials inevitably enter some of those workflows.</p>
+            <p>Josh had spent years building a reliable development loop around the application. The project had tests, CI, deployment conventions, and a codebase shaped by long-running domain knowledge. The agent could operate inside a system that already knew how changes should move toward production.</p>
           
-            <p>Agents therefore need boundaries before they receive authority. Their access should reflect the task, their actions should be reviewable, and the credentials available to them should have explicit ownership and lifecycle controls.</p>
+            <p>His strongest advice was to go with the grain of Django. Agents know common Django conventions well. Custom patterns require more context. Clear models, relationships, and constraints also give both humans and agents an obvious place to begin.</p>
           
-            <p>Josh put human review at the center of deciding how a change fits the application. Review depth then follows risk. That principle scales remarkably well from Django code to agent security.</p>
+            <p>Josh also showed the danger of plausible local fixes. An agent can produce code that passes tests while introducing a new pattern that slowly spreads through the codebase. Cheap code generation can create expensive cognitive debt when every small fix invents a new way to solve the same problem.</p>
           
-            <h2>Human Attention Is Load-Bearing Infrastructure</h2>
+            <p><a href="https://github.com/dawnwages">Dawn Wages</a> approached AI from a wider angle in the opening keynote. Dawn talked about agency, experimentation, community, and the responsibility to interrogate the systems we are being handed. Her message fit the technical talks better than I expected. Developers still choose the world their tools create. We still decide which abstractions become normal, which defaults get copied, and who gets room to participate.</p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mttir4pibj2o" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreidp4wj5jkrtqbxb7wtcqim54mfkm7xb6lwq6dcmo7xoc5nts473ma" alt="Dawn Wages presenting the opening keynote at DjangoCon US 2026" loading="lazy" />
+              </a>
+              <figcaption>Dawn Wages</figcaption>
+            </figure>
           
-            <p>Sarah Boyce used the second-day keynote, <em>“Emails from my Grandad,”</em> to explore something every open source community eventually runs short of: thoughtful human review.</p>
+            <h2>Testing still works best when each test pays for its own complexity</h2>
           
-            <p>Code review serves several purposes. We want to know whether a contribution works, whether it fits the project, and whether someone else can understand and maintain it later. The review process also transfers knowledge between people.</p>
+            <p><a href="https://www.linkedin.com/in/monicaoyugi">Monica Oyugi</a> gave one of the most immediately practical talks with a walkthrough of the testing pyramid in Django.</p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mtwaa3bcme2l" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreiggyictgvdsxjmqwbfsh2cni774354figlpsammmsxt54kllq6vhi" alt="Monica Oyugi presenting on the testing pyramid in Django at DjangoCon US 2026" loading="lazy" />
+              </a>
+              <figcaption>Monica Oyugi</figcaption>
+            </figure>
           
-            <p>Sarah described three ways feedback can become difficult: disagreements about truth, the relationship between reviewer and contributor, and feedback that collides with a person’s identity.</p>
+            <p>Her rough target was a large base of fast unit tests, a smaller layer of integration tests, and a thin layer of end-to-end browser tests. The exact percentages are less interesting than the decision behind them: use the cheapest level that can prove the behavior you care about.</p>
           
-            <p>Behind all three sits a scarce resource.</p>
+            <p>One line from Monica went straight into my notes: keep the middle of the system real and use mocks at the edges. Integration tests should still exercise the real database and the real application behavior. External boundaries are where controlled fakes become useful.</p>
           
-            <p>Human attention.</p>
+            <p>Before adding a slow test, ask whether it needs the database. Before adding an end-to-end test, ask whether it needs the full request and browser flow. Those small choices compound into a test suite developers can actually afford to run.</p>
           
-            <p>Django is receiving more contributions while its reviewer community is spread thin. Silence on a pull request can last weeks or months because the volunteers with enough context simply lack capacity. Sarah encouraged people to consider spending sprint time reviewing existing contributions as another valuable way to participate.</p>
+            <h2>Code review is still one of the most human parts of software development</h2>
           
-            <p>AI makes this problem especially relevant.</p>
+            <p>The most memorable talk about code had surprisingly little code in it.</p>
           
-            <p>Generating another patch is becoming easier. Understanding whether that patch belongs in a mature system still requires judgment.</p>
+            <p><a href="https://de.linkedin.com/in/svboyce">Sarah Boyce</a> used emails from her grandfather about her paintings to explore how people receive feedback. She broke difficult feedback reactions into three triggers: truth, relationship, and identity.</p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mtvyst4duo2u" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreibfdnxlblviss2mdgu4e7ykeygyb7xkbmkpbu45ran3mawwjgezda" alt="Sarah Boyce presenting the Day 2 keynote at DjangoCon US 2026" loading="lazy" />
+              </a>
+              <figcaption>Sarah Boyce</figcaption>
+            </figure>
           
-            <p>Security teams face the same asymmetry. Detection can produce thousands of findings. Agents can produce remediation suggestions at machine speed. People still have a finite amount of attention available to decide which credential presents real risk, which change affects production, and which automated fix deserves approval.</p>
+            <p>That framing maps painfully well to code review. A comment can be technically wrong. A comment can land differently because of who wrote it. A tiny criticism can feel like a verdict on your ability as a developer.</p>
           
-            <p>Good tooling has to protect that attention.</p>
+            <p>Sarah also talked about the limited supply of reviewer attention in open source. A contribution can sit for weeks because volunteers have limited time. Silence often means capacity is gone for the moment.</p>
           
-            <p>The useful security control provides context close to the decision. It helps people understand ownership, reachability, validity, and potential impact without requiring another afternoon of investigation.</p>
+            <p>Her phrase "human attention is the prize" stuck with me. Review is where code becomes shared knowledge. It is where someone else checks whether the change works, fits the project, and can still be understood after the original author has moved on.</p>
           
-            <p>Human review works best when machines remove searching and sorting from the reviewer’s workload while leaving judgment where it belongs.</p>
+            <p>That becomes even more important as AI lowers the cost of producing code. Generating another patch is cheap. Careful review, domain judgment, and long-term ownership remain scarce.</p>
           
-            <h2>The Work Beneath The Work</h2>
+            <h2>My big DjangoCon takeaway: the web platform has more leverage than I remembered</h2>
           
-            <h3>Trust Is Becoming Operational</h3>
+            <p>I went into DjangoCon expecting a lot of Django. I left thinking much more broadly about the web stack.</p>
           
-            <p>Across software, <q>trust</q> increasingly needs a concrete implementation.</p>
+            <p>Django is absorbing common application patterns such as background tasks and template partials. PostgreSQL is handling search workloads and growing into new data shapes. Browsers are shipping layout, interaction, and transition features that remove whole categories of custom frontend code.</p>
           
-            <p>We need to know who owns a credential, who approved a change, and what an automated system actually did. That evidence needs to survive beyond the moment when the decision was made.</p>
+            <p>At the same time, the talks kept coming back to judgment. Choose a framework based on the workload. Shape data so the domain is obvious. Give AI agents conventions they can follow. Put expensive tests where they earn their keep. Spend human review time on the decisions that affect the future of the application.</p>
           
-            <p>This is where secrets management increasingly meets non-human identity governance. An API key represents standing authority. A service account represents an actor inside the system. An agent using either one inherits whatever access that identity carries.</p>
+            <p>That combination made DjangoCon feel unusually optimistic to me.</p>
           
-            <p>Inventory, ownership, lifecycle, and evidence become part of the same control problem.</p>
+            <p>The coolest web development in 2026 is coming from understanding how much the tools already know how to do, then putting the pieces together with a little more intention.</p>
           
-            <h3>AI Is Compressing The Distance Between Intent And Action</h3>
-          
-            <p>Software development historically inserted friction between an idea and production. Someone wrote code, another person reviewed it, CI ran, and deployment followed.</p>
-          
-            <p>Agents can traverse large parts of that path themselves.</p>
-          
-            <p>That speed is enormously useful. It also shortens the window in which teams can catch a bad assumption. A prompt can become code, configuration, or an API call with very little distance in between.</p>
-          
-            <p>Security controls therefore need to appear inside the workflow. Scoped credentials, clear permissions, automated secret detection, and auditable tool activity give teams usable boundaries at the moment an agent acts.</p>
-          
-            <p>Faster software creation increases the value of those boundaries.</p>
-          
-            <h3>Human Judgment Becomes More Valuable As Output Grows</h3>
-          
-            <p>AI gives us more implementation capacity. It does not give maintainers more hours in the day.</p>
-          
-            <p>The result is a new scaling problem. More code can mean more reviews. More integrations create more machine identities. More generated configurations create more places where credentials can spread.</p>
-          
-            <p>Security teams should spend human attention on decisions that require human context.</p>
-          
-            <p>Machines can discover a secret and connect it to a workload. They can help identify an owner and surface evidence about exposure. Humans can then decide how urgently the credential must be rotated and how to make that change safely.</p>
-          
-            <p>The best automation leaves people with the part that deserves judgment.</p>
-          
-            <h2>Raise The Street And Keep Moving</h2>
-          
-            <p>One of the lightning talks at DjangoCon explicitly returned to Chicago’s history of raising its streets as a lesson for technical debt. The city needed new infrastructure, yet commerce could not simply stop while the work happened.</p>
-          
-            <p>That might be the most fitting image for where software teams find themselves in 2026.</p>
-          
-            <p>We are raising the street underneath systems that already carry real traffic.</p>
-          
-            <p>Legacy Django applications still need to serve users. Open source communities still need to welcome contributors. Security teams still need to protect credentials. Developers are adding AI agents into workflows that already contain years of accumulated conventions and authority.</p>
-          
-            <p>The foundations can change while the system keeps moving.</p>
-          
-            <p>We need explicit ownership for the credentials that power our applications. Agents need scoped authority and reviewable actions. Developers need security controls close to where code gets created. Communities need processes that preserve human judgment and make trust visible.</p>
-          
-            <p>Chicago solved its infrastructure problem one block at a time while life continued above it.</p>
-          
-            <p>Software will likely evolve the same way.</p>
-          
-            <p>We keep the useful parts running, strengthen what sits underneath them, and leave the foundations a little safer for whoever builds on them next.</p>
+            <p>Chicago once solved a massive infrastructure problem by raising the city while everyone kept going about their business. Django and the web seem to be pulling off their own quieter version of the same trick.</p>
           </article>
           
         </div>
