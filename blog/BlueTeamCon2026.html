@@ -1,0 +1,737 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>BlueTeamCon 2026: Good Defense Starts Before Anything Goes Wrong | Dwayne's Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Recap of BlueTeamCon 2026 in Chicago: incident response, malware, vulnerabilities, and AI security—with lessons for blue teams." />
+  <meta name="author" content="Dwayne McDaniel" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="Security, BlueTeamCon, Incident Response, Malware, Vulnerabilities, AI Security, Dwayne McDaniel, Dwayne's Blog" />
+  <link rel="canonical" href="https://dwayne-mcdaniel.com/blog/BlueTeamCon2026.html" />
+  <link rel="icon" type="image/x-icon" href="../img/favicon_io/favicon.ico" />
+
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="Dwayne's Blog" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="BlueTeamCon 2026: Good Defense Starts Before Anything Goes Wrong" />
+  <meta property="og:description" content="Recap of BlueTeamCon 2026 in Chicago: incident response, malware, vulnerabilities, and AI security—with lessons for blue teams." />
+  <meta property="og:url" content="https://dwayne-mcdaniel.com/blog/BlueTeamCon2026.html" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="article:author" content="Dwayne McDaniel" />
+  <meta property="article:section" content="Conferences" />
+  <meta property="article:tag" content="BlueTeamCon" />
+  <meta property="article:tag" content="Security" />
+  <meta property="article:tag" content="CyberSecurity" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="BlueTeamCon 2026: Good Defense Starts Before Anything Goes Wrong" />
+  <meta name="twitter:description" content="Recap of BlueTeamCon 2026 in Chicago: incident response, malware, vulnerabilities, and AI security." />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "BlueTeamCon 2026: Good Defense Starts Before Anything Goes Wrong",
+    "description": "BlueTeamCon 2026 in Chicago: incident response, malware, vulnerabilities, and AI security—with lessons for blue teams.",
+    "author": {
+      "@type": "Person",
+      "name": "Dwayne McDaniel",
+      "url": "https://dwayne-mcdaniel.com/"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Dwayne McDaniel",
+      "url": "https://dwayne-mcdaniel.com/"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://dwayne-mcdaniel.com/blog/BlueTeamCon2026.html"
+    },
+    "url": "https://dwayne-mcdaniel.com/blog/BlueTeamCon2026.html",
+    "isPartOf": {
+      "@type": "Blog",
+      "name": "Dwayne's Blog",
+      "url": "https://dwayne-mcdaniel.com/blog.html"
+    },
+    "about": ["BlueTeamCon", "Security", "CyberSecurity", "Incident Response", "Malware", "Vulnerabilities", "AI Security"],
+    "inLanguage": "en-US"
+  }
+  </script>
+  <style>
+/* Basic reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Color & typography tokens */
+:root {
+  --bg: #020617;
+  --accent: #fbbf24;
+  --text-main: #e5e7eb;
+  --text-muted: #b0b8c4;
+  --text-soft: #cbd5e1;
+  --border-subtle: #1f2933;
+  --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.55);
+  --radius-xl: 1.75rem;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+  background: radial-gradient(circle at top, #111827 0%, var(--bg) 60%);
+  color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0;
+  font-size: clamp(14px, 2vw, 16px);
+  line-height: 1.5;
+}
+
+.nav {
+  width: 100%;
+  background: linear-gradient(135deg, rgba(15,23,42,0.9), rgba(17,24,39,0.95));
+  border-bottom: 1px solid rgba(249,191,36,0.1);
+  backdrop-filter: blur(4px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav__menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  gap: clamp(0.6rem, 3vw, 1.2rem);
+  max-width: 432px;
+  margin: 0 auto;
+  padding: clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 2rem);
+}
+
+.nav__link {
+  color: var(--text-main);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  background: linear-gradient(135deg, rgba(251,191,36,0.95), #f59e0b);
+  border: 1px solid rgba(170, 120, 0, 0.25);
+  color: #071021;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.35);
+}
+
+.nav__link:hover,
+.nav__link:focus,
+.nav__link:focus-visible {
+  color: #071021;
+  background: linear-gradient(135deg, #ffd166, #f59e0b);
+  border-color: rgba(0,0,0,0.12);
+  font-weight: 700;
+  transform: translateY(-1px);
+}
+
+.nav__link[aria-current="page"] {
+  color: #071021;
+  background: linear-gradient(135deg, var(--accent), #f59e0b);
+  font-weight: 800;
+  box-shadow: 0 10px 30px rgba(251,191,36,0.18);
+}
+
+.page {
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  padding-bottom: clamp(1rem, 3vw, 2rem);
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+}
+
+.profile {
+  background: linear-gradient(
+    145deg,
+    rgba(17, 24, 39, 0.95),
+    rgba(15, 23, 42, 0.97)
+  );
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-soft);
+  padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1rem, 3vw, 2.25rem);
+  text-align: center;
+  flex-shrink: 0;
+  font-size: 1.25em;
+}
+
+.profile--scrollable {
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+.profile--scrollable .profile__name {
+  flex-shrink: 0;
+}
+
+.profile--scrollable .profile__content {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 0.5rem;
+}
+
+.profile--scrollable .profile__footer {
+  flex-shrink: 0;
+}
+
+.page > .profile:first-of-type {
+  padding: 0;
+}
+
+.profile__name {
+  font-size: clamp(1.875rem, 4vw, 2.875rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  margin: 0 0 0.5rem 0;
+}
+
+h1, h2 {
+  text-align: center;
+}
+
+a {
+  color: #fef08a;
+}
+
+a:hover,
+a:focus {
+  color: #fde047;
+}
+
+.profile__footer {
+  font-size: 0.98rem;
+  color: var(--text-soft);
+}
+
+.profile__about {
+  text-align: left;
+  font-size: clamp(0.9rem, 2.5vw, 0.98rem);
+  line-height: 1.8;
+  color: var(--text-main);
+  margin: 1.5rem 0 2rem 0;
+}
+
+.profile__about p {
+  margin: 0 0 1rem 0;
+}
+
+.profile__about p:last-child {
+  margin-bottom: 0;
+}
+
+.session-photo {
+  margin: 1.25rem 0 1.75rem 0;
+  padding: 0;
+  max-width: 100%;
+}
+
+.session-photo a {
+  display: block;
+  line-height: 0;
+}
+
+.session-photo img {
+  width: 100%;
+  height: auto;
+  max-height: min(70vh, 520px);
+  object-fit: cover;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.session-photo figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.profile__gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0 1.5rem 0;
+  border-radius: 0.6rem;
+  overflow: visible;
+}
+
+@media (min-width: 600px) {
+  .profile__gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.gallery__image {
+  width: 100%;
+  height: clamp(120px, 40vw, 250px);
+  object-fit: cover;
+  display: block;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gallery__image:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.scroll-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 3rem;
+  height: 3rem;
+  background: linear-gradient(135deg, var(--accent), #f59e0b);
+  color: #071021;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(251, 191, 36, 0.2);
+  border: 1px solid rgba(0,0,0,0.08);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+  z-index: 50;
+  cursor: pointer;
+}
+
+.scroll-to-top:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(251, 191, 36, 0.3);
+}
+
+.scroll-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+*:focus-visible {
+  outline: none;
+  box-shadow: 
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4);
+  border-radius: 0.25rem;
+}
+
+.nav__link:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.5),
+    0 0 0 9px rgba(2, 6, 23, 0.85);
+  border-radius: 0.5rem;
+  transform: translateZ(0);
+}
+
+.profile__gallery a:focus-visible {
+  outline: none;
+}
+
+.profile__gallery a:focus-visible .gallery__image {
+  outline: none;
+  box-shadow: 
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4);
+  border-radius: 0.5rem;
+}
+
+.scroll-to-top:focus-visible {
+  outline: none;
+  box-shadow: 
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4),
+    0 12px 28px rgba(251, 191, 36, 0.3);
+  border-radius: 50%;
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 0.75rem;
+  }
+
+  .profile {
+    padding: clamp(1rem, 3vw, 1.5rem) clamp(0.75rem, 2vw, 1rem);
+  }
+
+  .scroll-to-top {
+    bottom: 1rem;
+    right: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.2rem;
+  }
+}
+
+.session-photo {
+  margin: 1.25rem 0 1.75rem 0;
+  padding: 0;
+  max-width: 100%;
+}
+
+.session-photo a {
+  display: block;
+  line-height: 0;
+}
+
+.session-photo img {
+  width: 100%;
+  height: auto;
+  max-height: min(70vh, 520px);
+  object-fit: cover;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.session-photo figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+  </style>
+</head>
+<body>
+  <nav class="nav" aria-label="Main navigation">
+    <ul class="nav__menu">
+      <li><a class="nav__link" href="../index.html">Home</a></li>
+      <li><a class="nav__link" href="../conferences.html">Conferences</a></li>
+      <li><a class="nav__link" href="../about.html">About</a></li>
+    </ul>
+  </nav>
+  <main class="page">
+    <section class="profile profile--scrollable" aria-label="Dwayne's Blog: BlueTeamCon 2026">
+      <div class="profile__content">
+        <div class="profile__about">
+          <p class="profile__name">Dwayne's Blog</p>
+          <article itemscope itemtype="https://schema.org/BlogPosting">
+            <header>
+              <h1 itemprop="headline">BlueTeamCon 2026: Better Security Comes From Better Paths</h1>
+            </header>
+
+  <p>In 1900, Chicago engineers reversed the flow of the Chicago River.</p>
+
+  <p>The city’s drinking water came from Lake Michigan, while the river carried sewage toward the same lake. Chicago eventually addressed the problem by changing the direction of the system itself. The Metropolitan Water Reclamation District built the Chicago Sanitary and Ship Canal, sending the river away from Lake Michigan and toward the Mississippi River system. <a href="https://mwrd.org/what-we-do/history-protecting-our-water-environment">The Metropolitan Water Reclamation District has the full history.</a></p>
+
+  <p>More than a century later, that is still a useful model for solving hard problems. Sometimes the system needs a better path.</p>
+
+  <p>That idea showed up repeatedly at <a href="https://blueteamcon.com/">BlueTeamCon 2026</a>, held September 10 through 13 in Chicago. Across talks about vulnerability management, AI agents, identity, incident response, malware, AppSec, containers, and security operations, speakers kept returning to the same basic principles. Reduce unnecessary exposure. Make secure behavior easier. Put clear boundaries around powerful systems. Practice before the crisis. Give people enough context to make good decisions.</p>
+
+  <p>AI is making many security problems move faster. The underlying work remains very familiar.</p>
+
+  <h2>Security Still Depends on People Knowing How to Work Together</h2>
+
+  <p>Keynote speaker <a href="https://bsky.app/profile/lookitup.baby">Ian Coldwater</a> opened the conference with “We Keep Us Safe,” a talk grounded in community defense and the response of people in the Twin Cities to a crisis.</p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mvddjx36tk2a" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreih3xygubdzs22cl2oqbww3bsthok2o7b2mhgf6xay3r77uvfgo5sa" alt="Ian Coldwater delivering the We Keep Us Safe keynote at BlueTeamCon 2026." loading="lazy" />
+              </a>
+              <figcaption>Ian Coldwater delivering the “We Keep Us Safe” keynote at BlueTeamCon 2026. Photo from my Bluesky stream.</figcaption>
+            </figure>
+
+  <p>The security lesson was direct. Relationships need to exist before they become critical.</p>
+
+  <p>Organizations need people across departments and levels who already know how to communicate. Teams need an understanding of how information moves through the organization, who can make decisions, and who can help when normal processes stop working. Those skills become muscle memory through repeated use.</p>
+
+  <p>Security is part technology and part Layer 8, the unpredictable human layer. People get tired. They get scared. They misunderstand each other. They also improvise, share information, solve problems, and care for people around them. Technical systems still depend on those human networks.</p>
+
+  <p>That same idea appeared later in Nousheen Begum’s talk on building security awareness before people ever enter the workplace. Password habits, oversharing, manipulation, urgency, and trust become part of daily digital life long before an employee sits through corporate security training.</p>
+
+  <p>Security awareness works better as literacy than ceremony. People build habits over years. Organizations eventually inherit those habits.</p>
+
+  <p>Both talks put people directly inside the security architecture.</p>
+
+  <h2>Vulnerability Management Needs Less Stuff to Manage</h2>
+
+  <p><a href="https://www.linkedin.com/in/lennyzeltser/">Lenny Zeltser</a> started his vulnerability management talk with SATAN, the Security Administrator Tool for Analyzing Networks, and the panic it generated when it appeared in the 1990s.</p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mvdfsb7qfi25" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreiguj67ihzdozhzycbrrtxahuhpqx3ffgmgwsd52erruwffv2lmvrm" alt="Lenny Zeltser speaking about vulnerability management at BlueTeamCon 2026." loading="lazy" />
+              </a>
+              <figcaption>Lenny Zeltser presenting “Vulnerability Management: The Leadership Playbook” at BlueTeamCon 2026. Photo from my Bluesky stream.</figcaption>
+            </figure>
+
+  <p>Today, AI vulnerability discovery is creating another surge of anxiety. The number of vulnerabilities continues climbing, while defenders still have finite testing windows, engineers, maintenance windows, and attention.</p>
+
+  <p>Patching speed has a ceiling.</p>
+
+  <p>Lenny proposed a broader leadership strategy: shrink what needs protection, look beyond scanner output, prioritize with organizational context, and apply pressure where it will actually change the environment.</p>
+
+  <p>An abandoned SaaS pilot, an old test environment, an unused account, or an overlapping tool creates work simply by continuing to exist. Removing that asset removes an entire category of future decisions.</p>
+
+  <p>That also means CVSS should begin a conversation rather than finish one. An internet-facing authentication service holding customer data carries a very different risk from an isolated test system with no sensitive information and no reachable path from the internet. Exploitation signals, reachability, compensating controls, data sensitivity, and the risk of making the change all belong in the decision.</p>
+
+  <p>Security teams know their own terrain better than attackers do. That is a defender advantage worth using.</p>
+
+  <p>The same lifecycle problem appeared in Justin Murphy’s session on OpenEoX. End of life, end of maintenance, end of security support, and similar product lifecycle events are often trapped in web pages, PDFs, and vendor-specific formats. OpenEoX is working toward a machine-readable standard that can connect lifecycle data to SBOMs, VEX, and vulnerability management workflows.</p>
+
+  <p>Better prioritization starts with knowing what exists, what still matters, and what can disappear.</p>
+
+  <h2>The Governed Path Should Be the Easy Path</h2>
+
+  <p>Security becomes a bottleneck when every decision requires a security team to manually inspect somebody else’s work.</p>
+
+  <p><a href="https://www.linkedin.com/in/adamschaal/">Adam Schaal</a> described that problem from his time managing AppSec at AWS. His team faced roughly 1,400 security reviews a year. Developer productivity had accelerated, while the review process remained heavily dependent on people moving tickets back and forth.</p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mvdivyb3ik2n" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreie6m3hybptcqkopuuc5vswhamh442x35hdmvbmkgccfrv23cwenue" alt="Adam Schaal presenting Too Big to Review at BlueTeamCon 2026." loading="lazy" />
+              </a>
+              <figcaption>Adam Schaal presenting “Too Big to Review: Scaling AppSec to Zero at Fortune #1.” Photo from my Bluesky stream.</figcaption>
+            </figure>
+
+  <p>The response was secure-by-default golden paths.</p>
+
+  <p>AWS CDK was already where developers worked, so the team pushed security controls into that workflow. Default properties could be injected automatically. Deterministic checks could run before human review. Tasks with clear right and wrong answers could be automated.</p>
+
+  <p>Adam said those deterministic automations produced a 30 percent time savings in one year and saved 1,480 pentester days. Human attention could move toward work that actually required human judgment.</p>
+
+  <p>Johnathon Rhoades approached the same problem from agent governance.</p>
+
+  <p>His central rule was simple: shape the path.</p>
+
+  <p>A useful guardrail intercepts the action, expresses the policy clearly, enforces it consistently, logs what happened, and keeps human approval separate. A block should also explain enough that the person or agent can move toward the acceptable path.</p>
+
+  <p>Controls also need to fail loudly. A security mechanism that silently stops working creates false confidence. A control that creates so much friction that people disable it has created another failure mode.</p>
+
+  <p><a href="https://www.linkedin.com/in/britton-hayes/">Britton Hayes</a> and <a href="https://ie.linkedin.com/in/joakimp">Joakim Pedersen</a> reached the same conclusion while describing the work behind an AI-driven security team at Notion.</p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mvdwybzcoi2i" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreihq74n7uniyomwu4l3sh4piy4abd75e47go6wm65ctnbdbe4woyt4" alt="Britton Hayes and Joakim Pedersen presenting Paving the Road for AI-Driven Security Teams at BlueTeamCon 2026." loading="lazy" />
+              </a>
+              <figcaption>Britton Hayes and Joakim Pedersen presenting “Paving the Road for AI-Driven Security Teams.” Photo from my Bluesky stream.</figcaption>
+            </figure>
+
+  <p>Their first attempts at agent-driven infrastructure exposed weak process foundations. Terraform state locking was missing. Applies happened from laptops. Feature branches became stale. Parallel work became dangerous.</p>
+
+  <p>They fixed the road first.</p>
+
+  <p>Terraform applies moved into CI/CD. State locking and a merge queue established deterministic boundaries. Agents could generate plans and guide checks, while deployment remained inside the controlled workflow.</p>
+
+  <p>The same lesson carried into detection engineering and alert triage. When they needed deterministic output, they built deterministic tools and constrained agents to use them. Smaller agents received bounded jobs. Humans kept the final call for consequential actions.</p>
+
+  <p>The agents became useful because the surrounding system became clearer.</p>
+
+  <h2>AI Makes Permissions and Trust Boundaries More Important</h2>
+
+  <p>AI appeared in nearly every part of the conference, usually attached to a familiar security problem.</p>
+
+  <p><a href="https://www.linkedin.com/in/aria-langerdrome/">Aria Langer</a> used Scrooge McDuck’s Demon Dog to explain defense in depth and excessive privilege.</p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mvdjdg3iev2v" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreifu4euetp5k7lx7wuuogi24stpn4ymrnztoapirjsobmtb6tc3dnm" alt="Aria Langer explaining defense in depth at BlueTeamCon 2026." loading="lazy" />
+              </a>
+              <figcaption>Aria Langer presenting “The Demon Dog of Defense In Depth.” Photo from my Bluesky stream.</figcaption>
+            </figure>
+
+  <p>Her formula for the Demon Dog was an identity, excessive privilege, and ambiguity.</p>
+
+  <p>That identity could belong to a human, a non-human workload, or an AI system. The same risk appears when permissions accumulate over time, ownership becomes unclear, and an identity can reach far more than its current purpose requires.</p>
+
+  <p>AI increases the speed and reach of those permissions. Access control still determines the blast radius.</p>
+
+  <p>A system with excessive privilege can move through segmentation while every individual security control behaves exactly as configured. Least privilege therefore becomes part of the architecture, rather than cleanup work around the edges.</p>
+
+  <p>Ofir Balassiano and Golan Myers pushed that discussion down to the endpoint.</p>
+
+  <p>Developer machines now contain browsers, plugins, coding agents, MCP servers, skills, local configuration files, repositories, caches, and multiple applications capable of influencing each other.</p>
+
+  <p>Configuration files have effectively become control planes.</p>
+
+  <p>A file that changes how an agent executes commands carries a different security meaning from an ordinary preference file. The operating system’s traditional user-level trust model gives both files access through the same user context, even though one may shape the behavior of a powerful autonomous tool.</p>
+
+  <p>That creates a need for more granular trust boundaries inside the user’s environment. File integrity, configuration auditing, application-level controls, and visibility into which applications can modify agent behavior all become part of endpoint security.</p>
+
+  <p>AI gives excessive privilege, confused deputies, unsafe configuration, and weak trust boundaries more ways to act.</p>
+
+  <h2>Identity Security Continues After Login</h2>
+
+  <p>A successful authentication event tells only part of the story.</p>
+
+  <p><a href="https://www.linkedin.com/in/marko16/">Mark Orlando</a> described the “second front” of detection as the activity that happens after authentication.</p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mvdsmr74wn2d" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreibluewuylqx6olveakyupxtb4la3mbrtuphzmhhwgxqu5lvz57pr4" alt="Mark Orlando presenting identity and browser attack detection at BlueTeamCon 2026." loading="lazy" />
+              </a>
+              <figcaption>Mark Orlando presenting “The Second Front: Detecting LOTL Off the Endpoint.” Photo from my Bluesky stream.</figcaption>
+            </figure>
+
+  <p>A user may authenticate successfully and then appear from a different geography. A session token may be replayed. An attacker may abuse OAuth consent. Device code phishing can lead a victim through a completely legitimate login flow while the attacker controls the transaction around it.</p>
+
+  <p>The difficult part is that much of this activity uses legitimate traffic and legitimate identity infrastructure.</p>
+
+  <p>Mark’s approach centers on understanding where each technique actually executes and ensuring telemetry exists there. Session replay belongs in identity and session data. Browser attacks require browser context. OAuth abuse requires visibility into grants and application relationships.</p>
+
+  <p>High-impact techniques with zero coverage deserve attention first.</p>
+
+  <p>Andrea Ibiassi showed the architecture side of the same problem through real-world Zero Trust incident response.</p>
+
+  <p>In several incidents, a breach created the organizational clarity needed to map application dependencies, enforce least privilege, segment access, and replace flat network trust with identity-aware access.</p>
+
+  <p>One case moved 30,000 users through containment and recovery in under two weeks. Another expanded Zero Trust enforcement from hundreds of developers to 1,700 users while introducing YubiKeys and risk-tiered segmentation.</p>
+
+  <p>Identity becomes the decision point. Least privilege determines what happens after authentication.</p>
+
+  <p>Tom Cross focused on another identity boundary that receives far less attention: credential reset.</p>
+
+  <p>Help desks operate under pressure to restore access quickly. Attackers know it. Public information, SIM swapping, deepfake voice tools, compromised sessions, and convincing social engineering can all target the moment an identity is re-issued access.</p>
+
+  <p>A stronger reset process can include cool-off periods, multiple approvals for exceptions, richer verification, and monitoring immediately after a reset. The reset itself deserves the same security engineering as authentication.</p>
+
+  <h2>GitHub Is Part Development Platform, Part Adversary Infrastructure</h2>
+
+  <p><a href="https://www.linkedin.com/in/justin-borland-a1b42b57/">Justin Borland</a> opened day two with “The Malware Is Coming from Inside the Repo.”</p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mvfup3hgsc2p" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreieapmudhvu75ztmtkn5b4sxxzyuh2lmxwq3hxfixinkpe3wmla3oy" alt="Justin Borland presenting GitHub malware research at BlueTeamCon 2026." loading="lazy" />
+              </a>
+              <figcaption>Justin Borland presenting “The Malware Is Coming from Inside the Repo.” Photo from my Bluesky stream.</figcaption>
+            </figure>
+
+  <p>GitHub provides attackers with almost everything needed for a convincing developer lure: free hosting, fast distribution, a trusted developer domain, and workflows such as <code>git clone</code>, opening a project in VS Code, and running package installation commands that developers perform constantly.</p>
+
+  <p>Some DPRK campaigns use repositories as part of fake job interviews. A developer clones the lure, opens it locally, and malicious configuration such as <code>tasks.json</code> helps trigger the next stage.</p>
+
+  <p>Justin’s research system continuously pulls public GitHub activity, applies queries and YARA signatures, enriches the results, preserves useful history, and then uses AI to assist with triage.</p>
+
+  <p>The important piece is the deterministic spine underneath it.</p>
+
+  <p>AI output has to show evidence. Findings must be fact-checkable. A rule firing provides a lead, while repository context, provenance, runtime-delivered payloads, and decoded infrastructure help establish the verdict.</p>
+
+  <p>That distinction becomes particularly important when researchers, victims, attackers, and malware analysts may all publish copies of similar malicious code.</p>
+
+  <p>Advait Patel made a closely related point about containers.</p>
+
+  <p>Single events create noise. Sequences create meaning.</p>
+
+  <p><code>curl</code> inside a container can be routine. <code>curl</code> followed by a write into <code>/usr/bin</code> carries far more signal. A shell, metadata endpoint access, writes to system paths, runtime package installation, and privileged execution become much more useful when the sequence and container context are considered together.</p>
+
+  <p>Every risky runtime shape prevented at admission also removes a future class of alerts.</p>
+
+  <p>Detection improves when evidence has context.</p>
+
+  <h2>Incident Response Has to Be Practiced Under Pressure</h2>
+
+  <p><a href="https://www.linkedin.com/in/richardsuls/">Richard Suls</a> used the analogy of learning to drive with traffic cones. Reading the driver’s manual does not create the physical and mental habits needed to operate a vehicle under real conditions.</p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mvdojmbqyf25" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreidjmuwpz3ih2dnaqbbxbypxcztec7bhb3cjp6wvgnir3rcsu553ny" alt="Richard Suls presenting incident response exercises at BlueTeamCon 2026." loading="lazy" />
+              </a>
+              <figcaption>Richard Suls presenting “Game of Cones: Why Your Crisis Plan Shouldn’t Melt Under Pressure.” Photo from my Bluesky stream.</figcaption>
+            </figure>
+
+  <p>Incident response works the same way.</p>
+
+  <p>Richard separated crisis management exercises for senior leadership from technical tabletop exercises for responders. Executives need to practice decisions around ransom payments, regulators, communications, business continuity, and authority. Technical teams need to practice detection, containment, eradication, and recovery.</p>
+
+  <p>Good injects force decisions. They escalate. They introduce ambiguity. They involve regulators, media, legal teams, unavailable staff, broken dependencies, and outdated assumptions.</p>
+
+  <p>The exercise ends, then the actual work starts. Hot debriefs capture immediate observations. Cold debriefs turn those findings into owners, deadlines, updated playbooks, and remediation work.</p>
+
+  <p>Ron Dilley pushed that concept further by examining panic and choking during real incidents.</p>
+
+  <p>Panic causes people to think too little. Choking causes experienced people to overthink actions they already know how to perform.</p>
+
+  <p>Pressure can create both.</p>
+
+  <p>Exercises therefore need a clock, uncertainty, real decision makers, changing conditions, and measurable outcomes. The scenario should react to what the team actually does. Teams should practice frequently enough that skills survive between incidents.</p>
+
+  <p>An incident response plan serves as a reminder. The team needs enough practiced skill to operate when reality stops matching the document.</p>
+
+  <p>“You do not rise to the occasion. You fall to the level of your training.”</p>
+
+  <p>That principle connected directly back to Ian Coldwater’s opening keynote. Readiness comes from relationships and skills established before they are urgently needed.</p>
+
+  <h2>Better Security Changes the Flow</h2>
+
+  <p>BlueTeamCon 2026 covered a huge range of defensive security work, but the same architectural pattern appeared again and again.</p>
+
+  <p>Shrink the attack surface before creating another queue.</p>
+
+  <p>Build secure defaults into the tools people already use.</p>
+
+  <p>Put deterministic controls around work that has deterministic answers.</p>
+
+  <p>Give AI bounded jobs, reliable tools, and limited authority.</p>
+
+  <p>Treat identity, sessions, configuration, and permissions as part of the security boundary.</p>
+
+  <p>Collect evidence where the attack actually happens.</p>
+
+  <p>Practice crisis decisions before the crisis arrives.</p>
+
+  <p>Build relationships before the organization needs them.</p>
+
+  <p>Chicago once solved a massive public health problem by changing the direction its system flowed. Security teams can apply the same principle on a smaller scale every day.</p>
+
+            <p>Make the governed path clear enough that people can follow it, make dangerous paths harder to reach, and build enough practice into the system that everyone knows where to go when the pressure arrives.</p>
+          </article>
+        </div>
+      </div>
+
+      <a href="#top" class="scroll-to-top" aria-label="Scroll to top of page">&uarr;</a>
+    </section>
+  </main>
+
+  <script>
+    const scrollButton = document.querySelector('.scroll-to-top');
+
+    window.addEventListener('scroll', function () {
+      if (window.scrollY > 300) {
+        scrollButton.classList.add('visible');
+      } else {
+        scrollButton.classList.remove('visible');
+      }
+    });
+
+    scrollButton.addEventListener('click', function (e) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
