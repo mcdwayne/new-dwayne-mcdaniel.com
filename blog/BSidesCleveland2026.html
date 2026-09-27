@@ -1,0 +1,709 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>BSides Cleveland 2026: Reducing the Paths Attackers Can Use | Dwayne's Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Recap of BSides Cleveland 2026's Blue Team track: ghost admins, AI governance, supply chain pruning, inductive compliance, zero-trust CI/CD, and AI in the SOC." />
+  <meta name="author" content="Dwayne McDaniel" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="Security, BSides Cleveland, BSidesCLE, Non-Human Identities, AI Governance, Supply Chain Security, CI/CD, GitOps, SOC, AI Security, Dwayne McDaniel, Dwayne's Blog" />
+  <link rel="canonical" href="https://dwayne-mcdaniel.com/blog/BSidesCleveland2026.html" />
+  <link rel="icon" type="image/x-icon" href="../img/favicon_io/favicon.ico" />
+
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="Dwayne's Blog" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="BSides Cleveland 2026: Reducing the Paths Attackers Can Use" />
+  <meta property="og:description" content="Recap of BSides Cleveland 2026's Blue Team track: ghost admins, AI governance, supply chain pruning, inductive compliance, zero-trust CI/CD, and AI in the SOC." />
+  <meta property="og:url" content="https://dwayne-mcdaniel.com/blog/BSidesCleveland2026.html" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="article:author" content="Dwayne McDaniel" />
+  <meta property="article:section" content="Conferences" />
+  <meta property="article:tag" content="BSides Cleveland" />
+  <meta property="article:tag" content="Security" />
+  <meta property="article:tag" content="CyberSecurity" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="BSides Cleveland 2026: Reducing the Paths Attackers Can Use" />
+  <meta name="twitter:description" content="Recap of the BSides Cleveland 2026 Blue Team track: identity, AI governance, supply chain, compliance, CI/CD, and the SOC." />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "BSides Cleveland 2026: Reducing the Paths Attackers Can Use",
+    "description": "BSides Cleveland 2026 Blue Team track: ghost admins, AI governance, supply chain pruning, inductive compliance, zero-trust CI/CD, and AI in the SOC.",
+    "author": {
+      "@type": "Person",
+      "name": "Dwayne McDaniel",
+      "url": "https://dwayne-mcdaniel.com/"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Dwayne McDaniel",
+      "url": "https://dwayne-mcdaniel.com/"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://dwayne-mcdaniel.com/blog/BSidesCleveland2026.html"
+    },
+    "url": "https://dwayne-mcdaniel.com/blog/BSidesCleveland2026.html",
+    "isPartOf": {
+      "@type": "Blog",
+      "name": "Dwayne's Blog",
+      "url": "https://dwayne-mcdaniel.com/blog.html"
+    },
+    "about": ["BSides Cleveland", "Security", "CyberSecurity", "Non-Human Identities", "AI Governance", "Supply Chain Security", "CI/CD", "Security Operations"],
+    "inLanguage": "en-US"
+  }
+  </script>
+  <style>
+/* Basic reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Color & typography tokens */
+:root {
+  --bg: #020617;
+  --accent: #fbbf24;
+  --text-main: #e5e7eb;
+  --text-muted: #b0b8c4;
+  --text-soft: #cbd5e1;
+  --border-subtle: #1f2933;
+  --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.55);
+  --radius-xl: 1.75rem;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+  background: radial-gradient(circle at top, #111827 0%, var(--bg) 60%);
+  color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0;
+  font-size: clamp(14px, 2vw, 16px);
+  line-height: 1.5;
+}
+
+.nav {
+  width: 100%;
+  background: linear-gradient(135deg, rgba(15,23,42,0.9), rgba(17,24,39,0.95));
+  border-bottom: 1px solid rgba(249,191,36,0.1);
+  backdrop-filter: blur(4px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav__menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  gap: clamp(0.6rem, 3vw, 1.2rem);
+  max-width: 432px;
+  margin: 0 auto;
+  padding: clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 2rem);
+}
+
+.nav__link {
+  color: var(--text-main);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  background: linear-gradient(135deg, rgba(251,191,36,0.95), #f59e0b);
+  border: 1px solid rgba(170, 120, 0, 0.25);
+  color: #071021;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.35);
+}
+
+.nav__link:hover,
+.nav__link:focus,
+.nav__link:focus-visible {
+  color: #071021;
+  background: linear-gradient(135deg, #ffd166, #f59e0b);
+  border-color: rgba(0,0,0,0.12);
+  font-weight: 700;
+  transform: translateY(-1px);
+}
+
+.nav__link[aria-current="page"] {
+  color: #071021;
+  background: linear-gradient(135deg, var(--accent), #f59e0b);
+  font-weight: 800;
+  box-shadow: 0 10px 30px rgba(251,191,36,0.18);
+}
+
+.page {
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  padding-bottom: clamp(1rem, 3vw, 2rem);
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+}
+
+.profile {
+  background: linear-gradient(
+    145deg,
+    rgba(17, 24, 39, 0.95),
+    rgba(15, 23, 42, 0.97)
+  );
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-soft);
+  padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1rem, 3vw, 2.25rem);
+  text-align: center;
+  flex-shrink: 0;
+  font-size: 1.25em;
+}
+
+.profile--scrollable {
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+.profile--scrollable .profile__name {
+  flex-shrink: 0;
+}
+
+.profile--scrollable .profile__content {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 0.5rem;
+}
+
+.profile--scrollable .profile__footer {
+  flex-shrink: 0;
+}
+
+.page > .profile:first-of-type {
+  padding: 0;
+}
+
+.profile__name {
+  font-size: clamp(1.875rem, 4vw, 2.875rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  margin: 0 0 0.5rem 0;
+}
+
+h1, h2 {
+  text-align: center;
+}
+
+a {
+  color: #fef08a;
+}
+
+a:hover,
+a:focus {
+  color: #fde047;
+}
+
+.profile__footer {
+  font-size: 0.98rem;
+  color: var(--text-soft);
+}
+
+.profile__about {
+  text-align: left;
+  font-size: clamp(0.9rem, 2.5vw, 0.98rem);
+  line-height: 1.8;
+  color: var(--text-main);
+  margin: 1.5rem 0 2rem 0;
+}
+
+.profile__about p {
+  margin: 0 0 1rem 0;
+}
+
+.profile__about p:last-child {
+  margin-bottom: 0;
+}
+
+.session-photo {
+  margin: 1.25rem 0 1.75rem 0;
+  padding: 0;
+  max-width: 100%;
+}
+
+.session-photo a {
+  display: block;
+  line-height: 0;
+}
+
+.session-photo img {
+  width: 100%;
+  height: auto;
+  max-height: min(70vh, 520px);
+  object-fit: cover;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.session-photo figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.profile__gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0 1.5rem 0;
+  border-radius: 0.6rem;
+  overflow: visible;
+}
+
+@media (min-width: 600px) {
+  .profile__gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.gallery__image {
+  width: 100%;
+  height: clamp(120px, 40vw, 250px);
+  object-fit: cover;
+  display: block;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gallery__image:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.scroll-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 3rem;
+  height: 3rem;
+  background: linear-gradient(135deg, var(--accent), #f59e0b);
+  color: #071021;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(251, 191, 36, 0.2);
+  border: 1px solid rgba(0,0,0,0.08);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+  z-index: 50;
+  cursor: pointer;
+}
+
+.scroll-to-top:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(251, 191, 36, 0.3);
+}
+
+.scroll-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+*:focus-visible {
+  outline: none;
+  box-shadow: 
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4);
+  border-radius: 0.25rem;
+}
+
+.nav__link:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.5),
+    0 0 0 9px rgba(2, 6, 23, 0.85);
+  border-radius: 0.5rem;
+  transform: translateZ(0);
+}
+
+.profile__gallery a:focus-visible {
+  outline: none;
+}
+
+.profile__gallery a:focus-visible .gallery__image {
+  outline: none;
+  box-shadow: 
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4);
+  border-radius: 0.5rem;
+}
+
+.scroll-to-top:focus-visible {
+  outline: none;
+  box-shadow: 
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4),
+    0 12px 28px rgba(251, 191, 36, 0.3);
+  border-radius: 50%;
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 0.75rem;
+  }
+
+  .profile {
+    padding: clamp(1rem, 3vw, 1.5rem) clamp(0.75rem, 2vw, 1rem);
+  }
+
+  .scroll-to-top {
+    bottom: 1rem;
+    right: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.2rem;
+  }
+}
+
+.session-photo {
+  margin: 1.25rem 0 1.75rem 0;
+  padding: 0;
+  max-width: 100%;
+}
+
+.session-photo a {
+  display: block;
+  line-height: 0;
+}
+
+.session-photo img {
+  width: 100%;
+  height: auto;
+  max-height: min(70vh, 520px);
+  object-fit: cover;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.session-photo figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+  </style>
+</head>
+<body>
+  <nav class="nav" aria-label="Main navigation">
+    <ul class="nav__menu">
+      <li><a class="nav__link" href="../index.html">Home</a></li>
+      <li><a class="nav__link" href="../conferences.html">Conferences</a></li>
+      <li><a class="nav__link" href="../about.html">About</a></li>
+    </ul>
+  </nav>
+  <main class="page">
+    <section class="profile profile--scrollable" aria-label="Dwayne's Blog: BSides Cleveland 2026">
+      <div class="profile__content">
+        <div class="profile__about">
+          <p class="profile__name">Dwayne's Blog</p>
+          <article itemscope itemtype="https://schema.org/BlogPosting">
+            <header>
+              <h1 itemprop="headline">BSides Cleveland 2026: Reducing the Paths Attackers Can Use</h1>
+            </header>
+
+  <p>
+    Cleveland helped show the world what electric street lighting could become. On April 29, 1879, inventor Charles F. Brush demonstrated 12 arc lamps in Public Square. The successful demonstration attracted international attention and helped establish Cleveland as an early pioneer in electric street lighting.
+    <a href="https://case.edu/ech/articles/e/electrical-and-electronics-industries">Learn more from Case Western Reserve University</a>.
+  </p>
+
+  <p>
+    Almost 150 years later, BSides Cleveland brought another group of technologists together to talk about systems undergoing major change.
+  </p>
+
+  <p>
+    BSides Cleveland 2026 took over the Tinkham Veale University Center at Case Western Reserve University on September 26. The Blue Team track covered identity, AI governance, supply chain security, infrastructure compliance, CI/CD, and security operations. Across those topics, one larger theme kept emerging. Security gets stronger when teams reduce dangerous paths before attackers or autonomous systems can use them.
+    <a href="https://www.bsidescle.com/events/2026-conference.php">View the BSides Cleveland 2026 schedule</a>.
+  </p>
+
+  <p>
+    That theme started with hidden administrative access and carried all the way through the final session on using AI inside a SOC.
+  </p>
+
+  <h2>Ghost Admins Hide Outside Traditional Identity Governance</h2>
+
+  <p>
+    Craig Birch started the Blue Team track with <strong>“Ghost Admins: How Attackers Own Environments Without Touching a User Account.”</strong>
+  </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mwgi6kf55j2i" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreiaeonuzaoxbp5i5cggcnwwewqhojbixkg6n7tsju2dlll7ofhpx6m" alt="Craig Birch presenting Ghost Admins at BSides Cleveland 2026." loading="lazy" />
+              </a>
+              <figcaption>Craig Birch presenting “Ghost Admins: How Attackers Own Environments Without Touching a User Account.” Photo from my Bluesky stream.</figcaption>
+            </figure>
+
+  <p>
+    Craig defined a ghost admin as a non-human identity or trusted path capable of administrative impact without receiving the governance expected for privileged access. App registrations and service principals can become ghost admins. Managed identities, gMSAs, and abandoned service accounts can create the same problem.
+  </p>
+
+  <p>
+    Attackers have learned how to use these paths. Craig walked through five attack scenarios involving app registration hijacking, managed identity abuse, orphaned gMSAs, Service Connection Point manipulation, and Intune policy tampering. Each example showed how trusted infrastructure can accumulate powerful access outside normal human identity controls.
+  </p>
+
+  <p>
+    App registration hijacking was a particularly clear example. Someone with sufficient application rights can add a credential to an existing trusted application. That credential lets the attacker impersonate the application and inherit its permissions. The resulting authentication can blend into legitimate machine activity.
+  </p>
+
+  <p>
+    Craig's defensive recommendations started with inventory. Organizations need to know which non-human identities exist, what privileges they hold, and who owns them. Credential hygiene and lifecycle management then shrink the number of forgotten paths waiting to become privileged access.
+  </p>
+
+  <h2>AI Governance Needs Security Triggers Earlier</h2>
+
+  <p>
+    Elizabeth Wadsworth followed with <strong>“Positive Intent Is Not a Control.”</strong>
+  </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mwgl23utqf2r" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreidp5dp7nodypyb25st3rbrbqzfltkl4xw4igwf3uanoo5hjtcsjhq" alt="Elizabeth Wadsworth presenting Positive Intent Is Not a Control at BSides Cleveland 2026." loading="lazy" />
+              </a>
+              <figcaption>Elizabeth Wadsworth presenting “Positive Intent Is Not a Control.” Photo from my Bluesky stream.</figcaption>
+            </figure>
+
+  <p>
+    Her talk moved AI security upstream into the decisions that determine what an AI system will eventually be capable of doing. An application team can make consequential security decisions while selecting data sources, connecting external models, or deciding how much authority an agent should receive. Security expertise needs a way into that process before those decisions become architecture.
+  </p>
+
+  <p>
+    Elizabeth gave governance teams six useful areas to examine. They need to understand what the system can access and what actions it can take. They also need visibility into its connections and outside influences. Authority and potential consequences complete the picture.
+  </p>
+
+  <p>
+    These are security triggers. A governance team does not need to diagnose prompt injection or choose a technical control. It needs enough structure to recognize when IAM, AppSec, security architecture, or another specialist needs to enter the process.
+  </p>
+
+  <p>
+    Her recommendation was to turn security expertise into an interface the rest of the AI lifecycle can use. Define entry conditions and escalation paths. Establish required artifacts and reassessment triggers. Security can then reach risky decisions while they are still decisions.
+  </p>
+
+  <h2>Cybersecurity Fundamentals Still Win</h2>
+
+  <p>
+    Jerod Brennen brought the conversation back to fundamentals with <strong>“The Common Sense Security Framework: Revisited and Revised.”</strong>
+  </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mwgose6a7i2k" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreifvikvmstfhtv27q37pu6ps5xvgomsgllaofdvaohbwcqglfz4r7y" alt="Jerod Brennen presenting The Common Sense Security Framework at BSides Cleveland 2026." loading="lazy" />
+              </a>
+              <figcaption>Jerod Brennen presenting “The Common Sense Security Framework: Revisited and Revised.” Photo from my Bluesky stream.</figcaption>
+            </figure>
+
+  <p>
+    The Common Sense Security Framework is now ten years old. Jerod revisited it against current security research and found plenty of evidence supporting the original approach. His framework organizes security around governing risk and protecting identities. Devices, networks, and data form another group of core concerns. People, partnerships, and uptime round out the model.
+  </p>
+
+  <p>
+    One of the strongest points was his treatment of technical debt. Business leaders use debt strategically all the time. Security debt also needs an owner and a repayment plan. Unpatched systems and skipped hardening steps can compound when that plan disappears.
+  </p>
+
+  <p>
+    Jerod also returned repeatedly to defense in depth. Security programs should make it difficult for one mistake to become a damaging event. Endpoint controls can contain a bad click. Tested backups can keep ransomware from becoming a prolonged outage.
+  </p>
+
+  <p>
+    His practical recommendations were familiar for a reason. Phishing-resistant MFA, reduced standing privilege, and tested backups solve real problems. Incident response exercises with executives prepare the business for the day those layers are needed.
+  </p>
+
+  <h2>Removing Dependencies Removes Attack Surface</h2>
+
+  <p>
+    Jim Ender's <strong>“Hardening Supply Chain Security by Pruning JavaScript Dependencies”</strong> delivered perhaps the most direct security strategy of the day.
+  </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mwgvrpaivt2k" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreifvuavdgaariopuvty5q7bhjn5syfkkpyehroypbtnboxrnagrtje" alt="Jim Ender presenting on pruning JavaScript dependencies at BSides Cleveland 2026." loading="lazy" />
+              </a>
+              <figcaption>Jim Ender presenting “Hardening Supply Chain Security by Pruning JavaScript Dependencies.” Photo from my Bluesky stream.</figcaption>
+            </figure>
+
+  <p>
+    Delete things you do not need.
+  </p>
+
+  <p>
+    Jim demonstrated <code>knip</code>, which helps identify unused files, exports, and dependencies in JavaScript projects. He also highlighted the e18e ecosystem cleanup effort, which looks for opportunities to replace bloated packages with smaller alternatives or native functionality.
+  </p>
+
+  <p>
+    Developers get smaller bundles and faster builds. Operations teams have less software to maintain. Security teams inherit fewer packages that can become supply chain attack paths later.
+  </p>
+
+  <p>
+    That turns dependency removal into a useful security metric. Every safely removed dependency eliminates something that could eventually require investigation or patching. Jim's message fit neatly with the rest of the day. Reducing attackable material can be one of the most effective security controls available.
+  </p>
+
+  <h2>Security Can Depend on the Path Between Two States</h2>
+
+  <p>
+    Kavin Muthuselvan took the prevention theme into infrastructure with <strong>“Inductive Compliance: Lightweight &amp; Noninvasive Transition-Gating for Declarative Infrastructure.”</strong>
+  </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mwgybydhpu2t" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreiai6jdlrxascdcudeqkqcmyippgm3eq7yz4oez45doilaqtjdmqsm" alt="Kavin Muthuselvan presenting Inductive Compliance at BSides Cleveland 2026." loading="lazy" />
+              </a>
+              <figcaption>Kavin Muthuselvan presenting “Inductive Compliance: Lightweight &amp; Noninvasive Transition-Gating for Declarative Infrastructure.” Photo from my Bluesky stream.</figcaption>
+            </figure>
+
+  <p>
+    Kavin focused on configuration drift and the intermediate states systems pass through during change. A final configuration can appear compliant while the path used to reach it introduced risk. Temporary changes can leave behind dangerous conditions. Rollbacks can also restore sensitive functionality on top of a compromised state.
+  </p>
+
+  <p>
+    His model of inductive compliance makes transitions part of the authorization decision. Start from a known compliant state. Allow the local system to apply changes that preserve defined policy. Each transition becomes something the system can evaluate before applying it.
+  </p>
+
+  <p>
+    The proof of concept used NixOS and declarative infrastructure. It also explored projected state as a way to verify policy while limiting how much host information needs to be disclosed centrally.
+  </p>
+
+  <p>
+    Kavin summarized one of the most interesting ideas of the day in a short phrase: security is path-dependent. Preventing dangerous state transitions gives defenders another option beyond discovering drift after it has already happened.
+  </p>
+
+  <h2>Zero-Trust CI/CD Reduces Direct Production Access</h2>
+
+  <p>
+    Shashi Kumar Munugoti continued into deployment security with <strong>“Zero-Trust CI/CD: Securing Kubernetes and GitOps Pipelines for Regulated Enterprises.”</strong>
+  </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mwh3k5pguf24" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreihqips7d45yq7ikgaxiubindaqilioftf7altnl3rn5h5nu5gayou" alt="Shashi Kumar Munugoti presenting Zero-Trust CI/CD at BSides Cleveland 2026." loading="lazy" />
+              </a>
+              <figcaption>Shashi Kumar Munugoti presenting “Zero-Trust CI/CD: Securing Kubernetes and GitOps Pipelines for Regulated Enterprises.” Photo from my Bluesky stream.</figcaption>
+            </figure>
+
+  <p>
+    Regulated organizations need to move software while producing evidence that changes were controlled. Manual approvals and inconsistent environments make that harder. Excessive production access and weak traceability add even more risk.
+  </p>
+
+  <p>
+    Shashi's model followed four stages: declare, verify, reconcile, and observe.
+  </p>
+
+  <p>
+    Pull-based GitOps was central to the approach. An agent running inside the cluster reconciles the desired state stored in Git. The deployment path can operate with less direct human access to production and create a durable record connecting changes back to commits and approvals.
+  </p>
+
+  <p>
+    The identity model was equally important. Every workload should prove that it belongs in the environment before receiving access. Automation can then enforce policy while preserving the traceability required by regulated organizations.
+  </p>
+
+  <h2>AI Can Do the Boring Work Without Owning the Decision</h2>
+
+  <p>
+    Michael Blanchard closed the main run of Blue Team sessions with <strong>“The SOC Intern That Never Sleeps: Lessons Learned Using AI for Security Operations.”</strong>
+  </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mwh6wgkkmq2y" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreihlglyo43b7igfyxagu2hg6sqvpsylyuvomd4vlksnkjyq7jsscou" alt="Michael Blanchard presenting The SOC Intern That Never Sleeps at BSides Cleveland 2026." loading="lazy" />
+              </a>
+              <figcaption>Michael Blanchard presenting “The SOC Intern That Never Sleeps: Lessons Learned Using AI for Security Operations.” Photo from my Bluesky stream.</figcaption>
+            </figure>
+
+  <p>
+    His analogy for AI inside the SOC was simple and useful. Treat it like an intern.
+  </p>
+
+  <p>
+    AI can read large amounts of material quickly. It can summarize timelines and draft hunting queries. It can also confidently produce the wrong answer while carrying zero accountability for the outcome.
+  </p>
+
+  <p>
+    Michael demonstrated AI compressing roughly 20 minutes of context gathering into a couple of minutes. That is useful time savings for an analyst. The system still required verification before anyone escalated, closed, or remediated an incident.
+  </p>
+
+  <p>
+    His guardrails focused on making mistakes easier to catch. Ground responses in the available evidence. Require citations back to source events. Give the system room to say when the evidence does not support a conclusion.
+  </p>
+
+  <blockquote>
+    <p>“Never automate accountability.”</p>
+  </blockquote>
+
+  <p>
+    AI can draft and accelerate the repetitive parts of security work. Humans remain responsible for judgment and consequential decisions.
+  </p>
+
+  <h2>Move Security Closer to the Action</h2>
+
+  <p>
+    Your author closed the Blue Team track with <strong>“Stop Agents From Leaking Your Secrets: AI Hooks To The Rescue.”</strong> The session looked at bringing security controls into the agent workflow itself, close to the moment an AI coding assistant reads files, runs tools, or handles development context.    
+  </p
+
+
+  <p>
+    Each approach moves control closer to the point where risk becomes action.
+  </p>
+
+  <p>
+    Security teams will always need detection and response. They can also shape systems so fewer dangerous paths exist in the first place. Inventory what has access. Remove what no longer serves a purpose. Limit authority and put enforcement where decisions are made.
+  </p>
+
+  <p>
+    Charles Brush used Cleveland's Public Square to demonstrate a new way to light a city in 1879.
+  </p>
+
+  <p>
+    BSides Cleveland 2026 spent a day examining how to safely wire up what comes next.
+  </p>
+          </article>
+        </div>
+      </div>
+
+      <a href="#top" class="scroll-to-top" aria-label="Scroll to top of page">&uarr;</a>
+    </section>
+  </main>
+
+</body>
+</html>

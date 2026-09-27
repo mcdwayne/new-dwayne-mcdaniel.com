@@ -1,0 +1,769 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>WeAreDevelopers World Congress North America 2026: Trust Moves Into the System | Dwayne's Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Recap of WeAreDevelopers World Congress North America 2026 in San José: agent sandboxes, supply chain security, zero trust agents, independent verification, and authorization as infrastructure." />
+  <meta name="author" content="Dwayne McDaniel" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="Security, WeAreDevelopers, World Congress North America, AI Agents, Agentic Development, Docker Sandboxes, Software Supply Chain, Authorization, AuthZEN, Zero Trust, Dwayne McDaniel, Dwayne's Blog" />
+  <link rel="canonical" href="https://dwayne-mcdaniel.com/blog/WeAreDevelopersWordCongressNorthAmerica2026.html" />
+  <link rel="icon" type="image/x-icon" href="../img/favicon_io/favicon.ico" />
+
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="Dwayne's Blog" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="WeAreDevelopers World Congress North America 2026: Trust Moves Into the System" />
+  <meta property="og:description" content="Recap of WeAreDevelopers World Congress North America 2026 in San José: agent sandboxes, supply chain security, zero trust agents, independent verification, and authorization as infrastructure." />
+  <meta property="og:url" content="https://dwayne-mcdaniel.com/blog/WeAreDevelopersWordCongressNorthAmerica2026.html" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="article:author" content="Dwayne McDaniel" />
+  <meta property="article:section" content="Conferences" />
+  <meta property="article:tag" content="WeAreDevelopers" />
+  <meta property="article:tag" content="Security" />
+  <meta property="article:tag" content="AI Agents" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="WeAreDevelopers World Congress North America 2026: Trust Moves Into the System" />
+  <meta name="twitter:description" content="Recap of WeAreDevelopers World Congress North America 2026: agent sandboxes, supply chain trust, zero trust agents, and authorization." />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "WeAreDevelopers World Congress North America 2026: Trust Moves Into the System",
+    "description": "Recap of WeAreDevelopers World Congress North America 2026 in San José: agent sandboxes, supply chain security, zero trust agents, independent verification, and authorization as infrastructure.",
+    "author": {
+      "@type": "Person",
+      "name": "Dwayne McDaniel",
+      "url": "https://dwayne-mcdaniel.com/"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Dwayne McDaniel",
+      "url": "https://dwayne-mcdaniel.com/"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://dwayne-mcdaniel.com/blog/WeAreDevelopersWordCongressNorthAmerica2026.html"
+    },
+    "url": "https://dwayne-mcdaniel.com/blog/WeAreDevelopersWordCongressNorthAmerica2026.html",
+    "isPartOf": {
+      "@type": "Blog",
+      "name": "Dwayne's Blog",
+      "url": "https://dwayne-mcdaniel.com/blog.html"
+    },
+    "about": [
+      "WeAreDevelopers",
+      "Security",
+      "AI Agents",
+      "Agentic Development",
+      "Software Supply Chain",
+      "Authorization",
+      "Zero Trust"
+    ],
+    "inLanguage": "en-US"
+  }
+  </script>
+  <style>
+/* Basic reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Color & typography tokens */
+:root {
+  --bg: #020617;
+  --accent: #fbbf24;
+  --text-main: #e5e7eb;
+  --text-muted: #b0b8c4;
+  --text-soft: #cbd5e1;
+  --border-subtle: #1f2933;
+  --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.55);
+  --radius-xl: 1.75rem;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+  background: radial-gradient(circle at top, #111827 0%, var(--bg) 60%);
+  color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0;
+  font-size: clamp(14px, 2vw, 16px);
+  line-height: 1.5;
+}
+
+.nav {
+  width: 100%;
+  background: linear-gradient(135deg, rgba(15,23,42,0.9), rgba(17,24,39,0.95));
+  border-bottom: 1px solid rgba(249,191,36,0.1);
+  backdrop-filter: blur(4px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav__menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  gap: clamp(0.6rem, 3vw, 1.2rem);
+  max-width: 432px;
+  margin: 0 auto;
+  padding: clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 2rem);
+}
+
+.nav__link {
+  color: var(--text-main);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  background: linear-gradient(135deg, rgba(251,191,36,0.95), #f59e0b);
+  border: 1px solid rgba(170, 120, 0, 0.25);
+  color: #071021;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.35);
+}
+
+.nav__link:hover,
+.nav__link:focus,
+.nav__link:focus-visible {
+  color: #071021;
+  background: linear-gradient(135deg, #ffd166, #f59e0b);
+  border-color: rgba(0,0,0,0.12);
+  font-weight: 700;
+  transform: translateY(-1px);
+}
+
+.nav__link[aria-current="page"] {
+  color: #071021;
+  background: linear-gradient(135deg, var(--accent), #f59e0b);
+  font-weight: 800;
+  box-shadow: 0 10px 30px rgba(251,191,36,0.18);
+}
+
+.page {
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  padding-bottom: clamp(1rem, 3vw, 2rem);
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+}
+
+.profile {
+  background: linear-gradient(
+    145deg,
+    rgba(17, 24, 39, 0.95),
+    rgba(15, 23, 42, 0.97)
+  );
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-soft);
+  padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1rem, 3vw, 2.25rem);
+  text-align: center;
+  flex-shrink: 0;
+  font-size: 1.25em;
+}
+
+.profile--scrollable {
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+.profile--scrollable .profile__name {
+  flex-shrink: 0;
+}
+
+.profile--scrollable .profile__content {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 0.5rem;
+}
+
+.profile--scrollable .profile__footer {
+  flex-shrink: 0;
+}
+
+.page > .profile:first-of-type {
+  padding: 0;
+}
+
+.profile__name {
+  font-size: clamp(1.875rem, 4vw, 2.875rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  margin: 0 0 0.5rem 0;
+}
+
+h1, h2 {
+  text-align: center;
+}
+
+a {
+  color: #fef08a;
+}
+
+a:hover,
+a:focus {
+  color: #fde047;
+}
+
+.profile__footer {
+  font-size: 0.98rem;
+  color: var(--text-soft);
+}
+
+.profile__about {
+  text-align: left;
+  font-size: clamp(0.9rem, 2.5vw, 0.98rem);
+  line-height: 1.8;
+  color: var(--text-main);
+  margin: 1.5rem 0 2rem 0;
+}
+
+.profile__about p {
+  margin: 0 0 1rem 0;
+}
+
+.profile__about p:last-child {
+  margin-bottom: 0;
+}
+
+.session-photo {
+  margin: 1.25rem 0 1.75rem 0;
+  padding: 0;
+  max-width: 100%;
+}
+
+.session-photo a {
+  display: block;
+  line-height: 0;
+}
+
+.session-photo img {
+  width: 100%;
+  height: auto;
+  max-height: min(70vh, 520px);
+  object-fit: cover;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.session-photo figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.profile__gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0 1.5rem 0;
+  border-radius: 0.6rem;
+  overflow: visible;
+}
+
+@media (min-width: 600px) {
+  .profile__gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.gallery__image {
+  width: 100%;
+  height: clamp(120px, 40vw, 250px);
+  object-fit: cover;
+  display: block;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gallery__image:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.scroll-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 3rem;
+  height: 3rem;
+  background: linear-gradient(135deg, var(--accent), #f59e0b);
+  color: #071021;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(251, 191, 36, 0.2);
+  border: 1px solid rgba(0,0,0,0.08);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+  z-index: 50;
+  cursor: pointer;
+}
+
+.scroll-to-top:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(251, 191, 36, 0.3);
+}
+
+.scroll-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+*:focus-visible {
+  outline: none;
+  box-shadow: 
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4);
+  border-radius: 0.25rem;
+}
+
+.nav__link:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.5),
+    0 0 0 9px rgba(2, 6, 23, 0.85);
+  border-radius: 0.5rem;
+  transform: translateZ(0);
+}
+
+.profile__gallery a:focus-visible {
+  outline: none;
+}
+
+.profile__gallery a:focus-visible .gallery__image {
+  outline: none;
+  box-shadow: 
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4);
+  border-radius: 0.5rem;
+}
+
+.scroll-to-top:focus-visible {
+  outline: none;
+  box-shadow: 
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4),
+    0 12px 28px rgba(251, 191, 36, 0.3);
+  border-radius: 50%;
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 0.75rem;
+  }
+
+  .profile {
+    padding: clamp(1rem, 3vw, 1.5rem) clamp(0.75rem, 2vw, 1rem);
+  }
+
+  .scroll-to-top {
+    bottom: 1rem;
+    right: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.2rem;
+  }
+}
+
+.session-photo {
+  margin: 1.25rem 0 1.75rem 0;
+  padding: 0;
+  max-width: 100%;
+}
+
+.session-photo a {
+  display: block;
+  line-height: 0;
+}
+
+.session-photo img {
+  width: 100%;
+  height: auto;
+  max-height: min(70vh, 520px);
+  object-fit: cover;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.session-photo figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+  </style>
+</head>
+<body>
+  <nav class="nav" aria-label="Main navigation">
+    <ul class="nav__menu">
+      <li><a class="nav__link" href="../index.html">Home</a></li>
+      <li><a class="nav__link" href="../conferences.html">Conferences</a></li>
+      <li><a class="nav__link" href="../about.html">About</a></li>
+    </ul>
+  </nav>
+  <main class="page">
+    <section class="profile profile--scrollable" aria-label="Dwayne's Blog: WeAreDevelopers World Congress North America 2026">
+      <div class="profile__content">
+        <div class="profile__about">
+          <p class="profile__name">Dwayne's Blog</p>
+          <article itemscope itemtype="https://schema.org/BlogPosting">
+            <header>
+              <h1 itemprop="headline">WeAreDevelopers World Congress North America 2026: Trust Moves Into the System</h1>
+            </header>
+
+  <p>
+    There is more than one famous San José.
+  </p>
+
+  <p>
+    San José, Costa Rica, is home to the National Theatre, which opened in 1897 and became an important part of the country's cultural identity. More than a century later, another San José hosted a very different kind of gathering focused on what people are building next.
+  </p>
+
+  <p>
+    <a href="https://www.wearedevelopers.com/world-congress-north-america/">WeAreDevelopers World Congress North America</a>
+    made its United States debut September 23 through 25 at the McEnery Convention Center in San José, California. Hundreds of sessions covered software engineering, infrastructure, AI, security, and the rapidly evolving world of agentic development.
+  </p>
+
+  <p>
+    Across three days, one theme kept surfacing. Developers want agents that can do more work with less supervision. Giving software that level of autonomy requires moving trust into the systems surrounding those agents.
+  </p>
+
+  <p>
+    Prompts can provide instructions. Infrastructure has to enforce the boundaries.
+  </p>
+
+  <h2>Agentic Development Needs Plumbing</h2>
+
+  <p>
+    <a href="https://www.wearedevelopers.com/world-congress-north-america/agenda/sessions/tools-sandboxes-and-the-plumbing-of-agentic-development-1325767">Oleg Šelajev</a>
+    from Docker provided one of the clearest starting points with <strong>“Tools, Sandboxes, and the Plumbing of Agentic Development.”</strong>
+  </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mw7k5h2ilv2q" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreiegdzq6zb65imt2zyazw6m2kb7q23rguvwwa4cgs3atl23frvjxre" alt="Oleg Šelajev presenting Tools, Sandboxes, and the Plumbing of Agentic Development at WeAreDevelopers World Congress North America 2026." loading="lazy" />
+              </a>
+              <figcaption>Oleg Šelajev presenting “Tools, Sandboxes, and the Plumbing of Agentic Development.” Photo from my Bluesky stream.</figcaption>
+            </figure>
+
+  <p>
+    A lot of the AI conversation still focuses on models and prompts. Oleg went lower in the stack and looked at what an agent actually needs to perform useful development work. It needs an environment, tools, context, and access to external systems. It also needs a repeatable way to receive all of those things.
+  </p>
+
+  <p>
+    Docker Sandboxes supplied the isolated environment in his example. The agent could work with the selected project and run containers inside its own sandbox. The surrounding host stayed outside that workspace boundary.
+  </p>
+
+  <p>
+    Oleg then expanded the model into teams of agents. One agent could develop while another reviewed the work. Separate contexts help keep those responsibilities independent. His point that a model should not review its own work would return again later in the conference from a completely different speaker.
+  </p>
+
+  <p>
+    The harder problems started when those agents needed outside services. Credentials, network configuration, MCP connections, and coding policies become part of the environment. Docker kits offered a way to package those requirements so teams could create repeatable agent environments instead of configuring every sandbox by hand.
+  </p>
+
+  <p>
+    That plumbing becomes part of the security model.
+  </p>
+
+  <h2>Autonomy Requires Boundaries the Agent Cannot Rewrite</h2>
+
+  <p>
+    <a href="https://www.wearedevelopers.com/world-congress-north-america/agenda/sessions/supply-chain-security-when-agents-write-the-code-1325770">Ajeet Raina</a>
+    continued with <strong>“Supply Chain Security When Agents Write the Code.”</strong>
+  </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mw7nhdfqj42d" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreihmxt2qvbkfl3mdenhwsi5nqa7cmtn5qk54q6j3d5f4lsyjgem4xa" alt="Ajeet Raina presenting Supply Chain Security When Agents Write the Code at WeAreDevelopers World Congress North America 2026." loading="lazy" />
+              </a>
+              <figcaption>Ajeet Raina presenting “Supply Chain Security When Agents Write the Code.” Photo from my Bluesky stream.</figcaption>
+            </figure>
+
+  <p>
+    His demo showed how quickly an unrestricted coding agent could become dangerous. An agent with broad host access could search for credentials and use what it found. It could choose dependencies and generate container files while pulling software from public registries.
+  </p>
+
+  <p>
+    Ajeet organized the security response around evidence, baselines, gates, and boundaries. Teams need to know what entered the build and where those components came from. SBOMs provide inventory, while provenance and attestations establish origin and build history.
+  </p>
+
+  <p>
+    The same principle applies at runtime. An agent needs room to work inside a defined environment. Network policy can control where it connects. Credential isolation can keep sensitive authentication material outside the agent's direct reach.
+  </p>
+
+  <p>
+    Dan Ndombe reinforced that idea later with <strong>“Give the Agent Its Own Machine.”</strong> His framing was wonderfully direct. As agents become more autonomous, the boundary around them needs to become stronger.
+  </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mw7qs5xe6k2r" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreifoxsn5z6nayij7klpfeubwfwumioidap7yu46aapvutvayhkr6we" alt="Dan Ndombe presenting Give the Agent Its Own Machine at WeAreDevelopers World Congress North America 2026." loading="lazy" />
+              </a>
+              <figcaption>Dan Ndombe presenting “Give the Agent Its Own Machine.” Photo from my Bluesky stream.</figcaption>
+            </figure>
+
+  <p>
+    Docker Sandboxes use a microVM and expose only the workspace selected for the agent. Network rules and credential handling can be enforced outside that environment. An agent can still make a bad decision, while the surrounding infrastructure limits how far that decision can reach.
+  </p>
+
+  <h2>Trust Has to Become a Property of the System</h2>
+
+  <p>
+    The opening keynote on day two pulled many of those ideas together.
+  </p>
+
+  <p>
+    <a href="https://www.wearedevelopers.com/world-congress-north-america/agenda/sessions/manufacturing-trust-speed-and-safety-in-the-age-of-agents-1318895">Mark Cavage</a>,
+    Michael Irwin, and Hervé Bizira presented <strong>“Manufacturing Trust: Speed and Safety in the Age of Agents.”</strong>
+  </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mwbtgtumns2c" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreihiftrea4ccc6idntxzvbztcoz33q4cc3tunphvsb6m46nygq27sq" alt="The Manufacturing Trust opening keynote at WeAreDevelopers World Congress North America 2026." loading="lazy" />
+              </a>
+              <figcaption>The day two opening keynote, “Manufacturing Trust: Speed and Safety in the Age of Agents.” Photo from my Bluesky stream.</figcaption>
+            </figure>
+
+  <p>
+    The traditional software development process relies heavily on humans. People review code, approve changes, and watch systems move through deployment. Agents can generate and execute work faster than people can inspect every individual action.
+  </p>
+
+  <p>
+    That changes where trust has to live.
+  </p>
+
+  <p>
+    Mark described four requirements for an agentic software factory: containment, control, choice, and capacity. Containment defines what an agent can reach. Control requires enough observability and enforcement to stop unsafe behavior. Choice lets teams change models and tools without rebuilding the surrounding security architecture. Capacity makes the system repeatable enough to operate large numbers of agents.
+  </p>
+
+  <p>
+    The session described a need for enforceable boundaries around nondeterministic agents. Isolation, restricted access, auditability, and reproducibility create an environment that can continue to enforce policy even when an agent behaves unexpectedly.
+  </p>
+
+  <p>
+    Agent security starts looking a lot like every other mature security discipline at that point. Trust comes from architecture and enforceable controls.
+  </p>
+
+  <h2>Responsible AI Needs Checkpoints and Contracts</h2>
+
+  <p>
+    <a href="https://www.wearedevelopers.com/world-congress-north-america/agenda/sessions/responsible-ai-architecture-with-zero-trust-agents-1149618">Ashok Prakash</a>
+    from Apple approached the same challenge through <strong>“Responsible AI Architecture with Zero Trust Agents.”</strong>
+  </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mwbtxiqgv42t" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreifwcgx4mgxs2ip63cm76vmbnov65kmkg2bafg2ooja3ywwwqk45r4" alt="Ashok Prakash presenting Responsible AI Architecture with Zero Trust Agents at WeAreDevelopers World Congress North America 2026." loading="lazy" />
+              </a>
+              <figcaption>Ashok Prakash presenting “Responsible AI Architecture with Zero Trust Agents.” Photo from my Bluesky stream.</figcaption>
+            </figure>
+
+  <p>
+    Ashok focused on the systems around long-running agents. These agents interact with models and tools while accumulating context over time. Their architecture needs a way to constrain those interactions.
+  </p>
+
+  <p>
+    His reference design introduced explicit checkpoints and budgets into the agent loop. Teams could limit steps, tokens, tools, or overall execution time. Actions could also be classified according to whether an agent could perform them automatically, assist a human with them, or leave them entirely to a person.
+  </p>
+
+  <p>
+    Tool access became a contract. Each tool could define expected inputs and outputs along with its risk level. Rate limits and data classifications could travel with that contract. Policy engines could then make deterministic decisions around the agent's proposed actions.
+  </p>
+
+  <p>
+    That architecture gives human approval a more useful role. A person can receive a bounded decision with the relevant context instead of watching an agent execute every individual step.
+  </p>
+
+  <p>
+    Autonomy becomes easier to manage when the system knows which actions deserve scrutiny.
+  </p>
+
+  <h2>The Reviewer Cannot Be the Author</h2>
+
+  <p>
+    <a href="https://www.wearedevelopers.com/world-congress-north-america/agenda/sessions/the-reviewer-can-t-be-the-author-independent-verification-for-ai-generated-code-1301688">Manish Kapur</a>
+    brought the trust discussion back into code with <strong>“The Reviewer Can't Be the Author: Independent Verification for AI-Generated Code.”</strong>
+  </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mwcd3g4syr2c" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreifmvif2f6ndp7mgsstn22comk5rvyton7aer7uhcu6ec24ohizu7m" alt="Manish Kapur presenting The Reviewer Can't Be the Author at WeAreDevelopers World Congress North America 2026." loading="lazy" />
+              </a>
+              <figcaption>Manish Kapur presenting “The Reviewer Can't Be the Author: Independent Verification for AI-Generated Code.” Photo from my Bluesky stream.</figcaption>
+            </figure>
+
+  <p>
+    AI-generated code creates an interesting psychological problem. Output that looks polished becomes easier to accept. Small failures can survive because the code reads well and the reviewer expects the model to be right. Manish described the accumulating result as verification debt.
+  </p>
+
+  <p>
+    His answer was independent verification.
+  </p>
+
+  <p>
+    The system that generates code should have a separate verification layer using different methods. Algorithmic analysis can find issues that can be determined mechanically. A separate agent can provide another layer of review. CI can enforce quality gates before code reaches production.
+  </p>
+
+  <p>
+    Oleg had made the same observation a day earlier while discussing multi-agent development. A model reviewing its own work brings the same assumptions and patterns into both creation and review. Independent systems create a better chance of catching failures.
+  </p>
+
+  <p>
+    The larger pattern goes beyond code. Agentic systems need separation of duties.
+  </p>
+
+  <h2>Authorization Is Becoming Infrastructure</h2>
+
+  <p>
+    One of the most useful sessions for understanding where agent security is heading came from
+    <a href="https://www.wearedevelopers.com/world-congress-north-america/agenda/sessions/it-passed-auth-then-production-caught-fire-1191230">Alex Olivier</a>
+    with <strong>“It Passed Auth, Then Production Caught Fire.”</strong>
+  </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mwchggwsxm2r" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreibkr6j6fkse5atn3wmtmffod2lkfl6eeufykxa57suusyrsvix6we" alt="Alex Olivier presenting It Passed Auth, Then Production Caught Fire at WeAreDevelopers World Congress North America 2026." loading="lazy" />
+              </a>
+              <figcaption>Alex Olivier presenting “It Passed Auth, Then Production Caught Fire.” Photo from my Bluesky stream.</figcaption>
+            </figure>
+
+  <p>
+    Modern authorization decisions are scattered throughout applications. API gateways make decisions. Middleware and handlers make more. Feature flags and agents add additional decision points.
+  </p>
+
+  <p>
+    That fragmentation gets harder to reason about as machine identities multiply. One service may allow an operation while another silently skips it. An older role system can continue enforcing rules nobody remembers. Each component can behave as designed while the entire workflow fails.
+  </p>
+
+  <p>
+    Alex argued that authorization should be treated like a dependency. It needs ownership, service-level expectations, and a runbook. Decisions should also be explainable so teams can trace an outcome back to the policy version and inputs that produced it.
+  </p>
+
+  <p>
+    The emerging AuthZEN model gives these systems a common contract between policy enforcement points and policy decision points. An authorization request can describe a subject, an action, and a resource. The policy system can then return a predictable decision.
+  </p>
+
+  <p>
+    Agents make this architecture increasingly important. An autonomous system can call many tools across many services. Every one of those boundaries becomes another place where the enterprise needs to decide whether that agent should be allowed to take that action.
+  </p>
+
+  <p>
+    Authentication establishes who or what is making the request. Authorization determines what happens next.
+  </p>
+
+  <h2>Software Supply Chain Trust Is Becoming More Explicit</h2>
+
+  <p>
+    Jeroen van Erp approached trust from another familiar direction with <strong>“Stop Running Mystery Meat in Production.”</strong>
+  </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mwbw63ptb72d" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreiejvo77ggnv7bjuxd7rujxrk6hbgwbxjyk35eujp7vgkfvjefxwmq" alt="Jeroen van Erp presenting Stop Running Mystery Meat in Production at WeAreDevelopers World Congress North America 2026." loading="lazy" />
+              </a>
+              <figcaption>Jeroen van Erp presenting “Stop Running Mystery Meat in Production.” Photo from my Bluesky stream.</figcaption>
+            </figure>
+
+  <p>
+    His food analogy worked because modern applications arrive with a long ingredient list. Application libraries sit on top of language runtimes. Those runtimes depend on operating system packages and container images. A simple base image can bring far more software into production than the application itself requires.
+  </p>
+
+  <p>
+    Jeroen organized software trust around provenance, attestation, and introspection. Provenance answers where something came from and how it was built. Attestation provides evidence about who approved or signed it. Introspection lets teams understand what is actually inside the artifact.
+  </p>
+
+  <p>
+    This lined up almost perfectly with Ajeet's earlier agentic supply chain talk.
+  </p>
+
+  <p>
+    Agents can accelerate how software gets assembled. The organization still needs to know what was assembled, where every component came from, and which policies were satisfied before it entered production.
+  </p>
+
+  <p>
+    Trust becomes a process carried alongside the artifact.
+  </p>
+
+  <h2>The Agentic Era Is Moving Security Into the Architecture</h2>
+
+  <p>
+    WeAreDevelopers World Congress North America covered far more than AI security. The sheer size of the event made it possible to wander from container hardening to Kafka data contracts and PHP engine exploits within a few hours.
+  </p>
+
+  <p>
+    Agentic development still dominated many of the conversations your author followed.
+  </p>
+
+  <p>
+    Agents need identities and scoped authority. They need constrained environments and controlled access to credentials. Their output needs independent verification.
+  </p>
+
+  <p>
+    The software they assemble needs provenance. Their actions need enough context and auditability for humans to understand what happened.
+  </p>
+
+  <p>
+    Developers are building systems that can take increasingly meaningful actions on their behalf.
+  </p>
+
+  <p>
+    The next phase of agentic development will depend on how well the industry builds the trust layer around them.
+  </p>
+
+  <p>
+    Two cities named San José ended up providing a fitting bookend. One became known for investing in a national theater that has endured for more than a century. The other spent three days hosting developers working out how today's rapidly changing technology might be built to last.
+  </p>
+          </article>
+        </div>
+      </div>
+
+      <a href="#top" class="scroll-to-top" aria-label="Scroll to top of page">&uarr;</a>
+    </section>
+  </main>
+
+</body>
+</html>
