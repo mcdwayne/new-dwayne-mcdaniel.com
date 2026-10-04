@@ -1,0 +1,722 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>CornCon 2026: Security Has to Work in the Real World | Dwayne's Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Recap of CornCon 2026 in Davenport, Iowa: attacker economics, trust as resilience infrastructure, farm and critical infrastructure security, human governance of AI agents, and credential rotation at scale." />
+  <meta name="author" content="Dwayne McDaniel" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="Security, CornCon, CornCon 2026, Davenport, AI Agents, Critical Infrastructure, Agriculture Security, Credential Rotation, AI Governance, Security Leadership, Dwayne McDaniel, Dwayne's Blog" />
+  <link rel="canonical" href="https://dwayne-mcdaniel.com/blog/CornCon2026.html" />
+  <link rel="icon" type="image/x-icon" href="../img/favicon_io/favicon.ico" />
+
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="Dwayne's Blog" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="CornCon 2026: Security Has to Work in the Real World" />
+  <meta property="og:description" content="Recap of CornCon 2026 in Davenport, Iowa: attacker economics, trust as resilience infrastructure, farm and critical infrastructure security, human governance of AI agents, and credential rotation at scale." />
+  <meta property="og:url" content="https://dwayne-mcdaniel.com/blog/CornCon2026.html" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="article:author" content="Dwayne McDaniel" />
+  <meta property="article:section" content="Conferences" />
+  <meta property="article:tag" content="CornCon" />
+  <meta property="article:tag" content="Security" />
+  <meta property="article:tag" content="AI Agents" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="CornCon 2026: Security Has to Work in the Real World" />
+  <meta name="twitter:description" content="Recap of CornCon 2026: trust, farm security, critical infrastructure, AI agent governance, and credential rotation." />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "CornCon 2026: Security Has to Work in the Real World",
+    "description": "Recap of CornCon 2026 in Davenport, Iowa: attacker economics, trust as resilience infrastructure, farm and critical infrastructure security, human governance of AI agents, and credential rotation at scale.",
+    "author": {
+      "@type": "Person",
+      "name": "Dwayne McDaniel",
+      "url": "https://dwayne-mcdaniel.com/"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Dwayne McDaniel",
+      "url": "https://dwayne-mcdaniel.com/"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://dwayne-mcdaniel.com/blog/CornCon2026.html"
+    },
+    "url": "https://dwayne-mcdaniel.com/blog/CornCon2026.html",
+    "isPartOf": {
+      "@type": "Blog",
+      "name": "Dwayne's Blog",
+      "url": "https://dwayne-mcdaniel.com/blog.html"
+    },
+    "about": [
+      "CornCon",
+      "Security",
+      "AI Agents",
+      "Critical Infrastructure",
+      "Credential Rotation",
+      "AI Governance"
+    ],
+    "inLanguage": "en-US"
+  }
+  </script>
+  <style>
+/* Basic reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Color & typography tokens */
+:root {
+  --bg: #020617;
+  --accent: #fbbf24;
+  --text-main: #e5e7eb;
+  --text-muted: #b0b8c4;
+  --text-soft: #cbd5e1;
+  --border-subtle: #1f2933;
+  --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.55);
+  --radius-xl: 1.75rem;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+  background: radial-gradient(circle at top, #111827 0%, var(--bg) 60%);
+  color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0;
+  font-size: clamp(14px, 2vw, 16px);
+  line-height: 1.5;
+}
+
+.nav {
+  width: 100%;
+  background: linear-gradient(135deg, rgba(15,23,42,0.9), rgba(17,24,39,0.95));
+  border-bottom: 1px solid rgba(249,191,36,0.1);
+  backdrop-filter: blur(4px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav__menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  gap: clamp(0.6rem, 3vw, 1.2rem);
+  max-width: 432px;
+  margin: 0 auto;
+  padding: clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 2rem);
+}
+
+.nav__link {
+  color: var(--text-main);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  background: linear-gradient(135deg, rgba(251,191,36,0.95), #f59e0b);
+  border: 1px solid rgba(170, 120, 0, 0.25);
+  color: #071021;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.35);
+}
+
+.nav__link:hover,
+.nav__link:focus,
+.nav__link:focus-visible {
+  color: #071021;
+  background: linear-gradient(135deg, #ffd166, #f59e0b);
+  border-color: rgba(0,0,0,0.12);
+  font-weight: 700;
+  transform: translateY(-1px);
+}
+
+.nav__link[aria-current="page"] {
+  color: #071021;
+  background: linear-gradient(135deg, var(--accent), #f59e0b);
+  font-weight: 800;
+  box-shadow: 0 10px 30px rgba(251,191,36,0.18);
+}
+
+.page {
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  padding-bottom: clamp(1rem, 3vw, 2rem);
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+}
+
+.profile {
+  background: linear-gradient(
+    145deg,
+    rgba(17, 24, 39, 0.95),
+    rgba(15, 23, 42, 0.97)
+  );
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-soft);
+  padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1rem, 3vw, 2.25rem);
+  text-align: center;
+  flex-shrink: 0;
+  font-size: 1.25em;
+}
+
+.profile--scrollable {
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+.profile--scrollable .profile__name {
+  flex-shrink: 0;
+}
+
+.profile--scrollable .profile__content {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 0.5rem;
+}
+
+.profile--scrollable .profile__footer {
+  flex-shrink: 0;
+}
+
+.page > .profile:first-of-type {
+  padding: 0;
+}
+
+.profile__name {
+  font-size: clamp(1.875rem, 4vw, 2.875rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  margin: 0 0 0.5rem 0;
+}
+
+h1, h2 {
+  text-align: center;
+}
+
+a {
+  color: #fef08a;
+}
+
+a:hover,
+a:focus {
+  color: #fde047;
+}
+
+.profile__footer {
+  font-size: 0.98rem;
+  color: var(--text-soft);
+}
+
+.profile__about {
+  text-align: left;
+  font-size: clamp(0.9rem, 2.5vw, 0.98rem);
+  line-height: 1.8;
+  color: var(--text-main);
+  margin: 1.5rem 0 2rem 0;
+}
+
+.profile__about p {
+  margin: 0 0 1rem 0;
+}
+
+.profile__about p:last-child {
+  margin-bottom: 0;
+}
+
+.profile__about blockquote {
+  margin: 1.25rem 0;
+  padding: 0.5rem 1rem;
+  border-left: 3px solid var(--accent);
+  color: var(--text-soft);
+  font-style: italic;
+}
+
+.session-photo {
+  margin: 1.25rem 0 1.75rem 0;
+  padding: 0;
+  max-width: 100%;
+}
+
+.session-photo a {
+  display: block;
+  line-height: 0;
+}
+
+.session-photo img {
+  width: 100%;
+  height: auto;
+  max-height: min(70vh, 520px);
+  object-fit: cover;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.session-photo figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.profile__gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0 1.5rem 0;
+  border-radius: 0.6rem;
+  overflow: visible;
+}
+
+@media (min-width: 600px) {
+  .profile__gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.gallery__image {
+  width: 100%;
+  height: clamp(120px, 40vw, 250px);
+  object-fit: cover;
+  display: block;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gallery__image:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.scroll-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 3rem;
+  height: 3rem;
+  background: linear-gradient(135deg, var(--accent), #f59e0b);
+  color: #071021;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(251, 191, 36, 0.2);
+  border: 1px solid rgba(0,0,0,0.08);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+  z-index: 50;
+  cursor: pointer;
+}
+
+.scroll-to-top:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(251, 191, 36, 0.3);
+}
+
+.scroll-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+*:focus-visible {
+  outline: none;
+  box-shadow: 
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4);
+  border-radius: 0.25rem;
+}
+
+.nav__link:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.5),
+    0 0 0 9px rgba(2, 6, 23, 0.85);
+  border-radius: 0.5rem;
+  transform: translateZ(0);
+}
+
+.profile__gallery a:focus-visible {
+  outline: none;
+}
+
+.profile__gallery a:focus-visible .gallery__image {
+  outline: none;
+  box-shadow: 
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4);
+  border-radius: 0.5rem;
+}
+
+.scroll-to-top:focus-visible {
+  outline: none;
+  box-shadow: 
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4),
+    0 12px 28px rgba(251, 191, 36, 0.3);
+  border-radius: 50%;
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 0.75rem;
+  }
+
+  .profile {
+    padding: clamp(1rem, 3vw, 1.5rem) clamp(0.75rem, 2vw, 1rem);
+  }
+
+  .scroll-to-top {
+    bottom: 1rem;
+    right: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.2rem;
+  }
+}
+  </style>
+</head>
+<body>
+  <nav class="nav" aria-label="Main navigation">
+    <ul class="nav__menu">
+      <li><a class="nav__link" href="../index.html">Home</a></li>
+      <li><a class="nav__link" href="../conferences.html">Conferences</a></li>
+      <li><a class="nav__link" href="../about.html">About</a></li>
+    </ul>
+  </nav>
+  <main class="page">
+    <section class="profile profile--scrollable" aria-label="Dwayne's Blog: CornCon 2026">
+      <div class="profile__content">
+        <div class="profile__about">
+          <p class="profile__name">Dwayne's Blog</p>
+          <article itemscope itemtype="https://schema.org/BlogPosting">
+            <header>
+              <h1 itemprop="headline">CornCon 2026: Security Has to Work in the Real World</h1>
+            </header>
+
+            <p>
+              Davenport, Iowa, is home to the official Guinness World Record holder for the largest spoon collection in the world.
+            </p>
+
+            <p>
+              The Mississippi Spoon Gallery holds <strong>38,162 spoons</strong>. The collection ranges from souvenir pieces and antique silverware to spoons from around the world.
+              <a href="https://www.guinnessworldrecords.com/news/2026/3/get-the-scoop-spoon-fanatic-opens-her-own-museum-after-collecting-over-30000-utensils" target="_blank" rel="noopener">Guinness officially recognized the collection</a>
+              after all 38,162 pieces were counted and cataloged.
+            </p>
+
+            <p>
+              A collection that large becomes far more useful when someone knows what is in it, where it belongs, and why each piece is worth keeping. That turned out to be an unexpectedly good setup for CornCon 2026.
+            </p>
+
+            <p>
+              <a href="https://corncon.net/" target="_blank" rel="noopener">CornCon</a>
+              returned to Davenport with 425 attendees. The main conference ran October 2 and 3, following the CISO Executive Summit on October 1. Across talks about AI, critical infrastructure, credentials, agriculture, governance, and security leadership, speakers kept returning to one larger idea.
+            </p>
+
+            <p>
+              Security has to work in the real world.
+            </p>
+
+            <p>
+              Controls have to survive contact with people. Governance has to survive urgency. Infrastructure has to keep working when failure carries physical consequences. AI systems have to operate inside boundaries that account for what agents can actually do.
+            </p>
+
+            <p>
+              The strongest security program is the one people and systems can still use when things get weird.
+            </p>
+
+  <h2>Making the Enterprise a Harder Target</h2>
+
+  <p>
+    <a href="https://whova.com/embedded/speaker_detail/moHHtsILJDkAoZkDQbVKyZqiSRnMXDKopQ8Tl8K54FI%3D/54315727/" target="_blank" rel="noopener">JD Eger</a> from ThreatLocker opened with <strong>“Attack Vectors &amp; AI: How to Make Your Business a Hard Target.”</strong>
+  </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mwvq32eked26" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreia4awnqgtpaa2n2ghe5hz3ps6q3naurn5i4wpm2ctlgygut7nix2u" alt="JD Eger presenting the opening keynote at CornCon 2026." loading="lazy" />
+              </a>
+              <figcaption>JD Eger presenting “Attack Vectors &amp; AI: How to Make Your Business a Hard Target.” Photo from my Bluesky stream.</figcaption>
+            </figure>
+
+  <p>
+    His framing started with attacker economics. Cybercrime is industrialized, and many organizations get hit because they are reachable through the same scalable paths, such as phishing, stolen credentials, and remote access tools, that work against thousands of other victims.
+  </p>
+
+  <p>
+    JD's goal was practical: make attacking the organization too slow, too noisy, or too expensive.
+  </p>
+
+  <p>
+    AI adds speed to both sides. In one demonstration, an AI system recognized that its instructions increasingly resembled ransomware and continued anyway when told to proceed.
+  </p>
+
+  <p>
+    A model can reason about an action and still arrive at a dangerous outcome. Reliable protection comes from controlling what a system can execute, reach, and access before recovery becomes necessary.
+  </p>
+
+  <h2>Trust May Be Security's Most Important Infrastructure</h2>
+
+  <p>
+    <a href="https://whova.com/embedded/speaker_detail/moHHtsILJDkAoZkDQbVKyZqiSRnMXDKopQ8Tl8K54FI%3D/53736753/" target="_blank" rel="noopener">Robert Wagner</a> followed with one of the most human talks of the conference, <strong>“Why Nobody Trusts Us.”</strong>
+  </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mwvqfhyxns2w" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreie7gwzr4fmptqjqktlx4mgtxwwfixkem2g45seobfnoqg2jnbf4ye" alt="Robert Wagner presenting Why Nobody Trusts Us at CornCon 2026." loading="lazy" />
+              </a>
+              <figcaption>Robert Wagner presenting “Why Nobody Trusts Us” at CornCon 2026. Photo from my Bluesky stream.</figcaption>
+            </figure>
+
+  <p>
+    Robert focused on something most organizations barely measure: do people trust security enough to call? Teams rarely announce they have lost faith. They stop asking, work around slow processes, and solve problems themselves, and the dashboard looks cleaner as those conversations disappear.
+  </p>
+
+  <p>
+    He summed it up with one of the best lines of the conference:
+  </p>
+
+  <blockquote>
+    <p>“Relationships are resilience infrastructure.”</p>
+  </blockquote>
+
+  <p>
+    Trust decides whether incidents get reported early, whether developers ask before inventing workarounds, and whether leaders believe security's numbers. The secure path has to be the fast path, and findings should arrive with options and a recommendation instead of a flat “this isn't secure.”
+  </p>
+
+  <p>
+    Robert also encouraged a phrase security professionals often struggle to say: “I don't know. Let me find out.” Trust can grow from investigating a problem together.
+  </p>
+
+  <h2>Cybersecurity Gets Very Real on a Farm</h2>
+
+  <p>
+    <a href="https://whova.com/embedded/speaker_detail/moHHtsILJDkAoZkDQbVKyZqiSRnMXDKopQ8Tl8K54FI%3D/53513108/" target="_blank" rel="noopener">Kristin King</a> made the consequences of cyber risk physical with <strong>“Securing What Feeds Us: How Cyber Risk Reaches the Modern Farm.”</strong>
+  </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mwvuqlt7ps2n" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreie4vxqjdkr24icq4i7nn4oh3ccicnfphtp25ytwgmpfxrgfqefl5y" alt="Kristin King presenting Securing What Feeds Us at CornCon 2026." loading="lazy" />
+              </a>
+              <figcaption>Kristin King presenting “Securing What Feeds Us: How Cyber Risk Reaches the Modern Farm.” Photo from my Bluesky stream.</figcaption>
+            </figure>
+
+  <p>
+    Modern farms run on robotic milking equipment, real-time animal data, mobile apps, and GPS. Kristin described a ransomware attack on a robotic dairy parlor. The farm refused the $10,000 demand, but losing real-time herd data cost it a cow and a calf.
+  </p>
+
+  <p>
+    Her line for the larger problem was perfect:
+  </p>
+
+  <blockquote>
+    <p>“Biology does not have a maintenance window.”</p>
+  </blockquote>
+
+  <p>
+    Cows still need food and ventilation still has to work, often on thin margins with no IT staff. Security advice has to fit inside work that already fills every available hour. Her advice: translate, show up, build small, and ask better questions. Security expertise becomes useful when it speaks the language of the people doing the work.
+  </p>
+
+  <h2>Some Systems Have Consequences You Cannot Restore From Backup</h2>
+
+  <p>
+    <a href="https://whova.com/embedded/speaker_detail/moHHtsILJDkAoZkDQbVKyZqiSRnMXDKopQ8Tl8K54FI%3D/54262790/" target="_blank" rel="noopener">Joshua Corman</a> and <a href="https://whova.com/embedded/speaker_detail/moHHtsILJDkAoZkDQbVKyZqiSRnMXDKopQ8Tl8K54FI%3D/54262743/" target="_blank" rel="noopener">David Etue</a> widened that physical-world conversation with <strong>“The Army of the 12 Million Chaos Monkeys on Life-Safety Critical Infrastructure.”</strong>
+  </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mwvwe4dkw42q" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreidlxmrs5rfk622h5us2ndfbkdo6dldanfpculswwifsv3bibcqsom" alt="Joshua Corman and David Etue presenting at CornCon 2026." loading="lazy" />
+              </a>
+              <figcaption>Joshua Corman and David Etue discussing life-safety critical infrastructure at CornCon 2026. Photo from my Bluesky stream.</figcaption>
+            </figure>
+
+  <p>
+    Chaos Monkey deliberately exercises failure to build resilience. Critical infrastructure is harder. A server can be rebuilt, but a patient, water supply, or community may not recover the same way. Hospitals, military bases, and data centers all depend on water, so one disruption cascades.
+  </p>
+
+  <p>
+    Joshua and David pushed for hazard analysis and engineering thinking, including the ability to operate manually when digital systems fail. AI acts at machine speed, and accidents can cause harm without malice. For systems like these, resilience has to exist before the incident.
+  </p>
+
+  <h2>AI Governance Eventually Reaches the Human Handoff</h2>
+
+  <p>
+    <a href="https://whova.com/embedded/speaker_detail/moHHtsILJDkAoZkDQbVKyZqiSRnMXDKopQ8Tl8K54FI%3D/53513094/" target="_blank" rel="noopener">John Kwarsick</a>'s <strong>“Who Governs the Agents? The Human Governance Gap in Cybersecurity and AI”</strong> turned the discussion toward a problem hiding inside many AI strategies.
+  </p>
+
+  <p>
+    “Human in the loop” looks comforting on a slide, but it says little about whether that human can actually take control.
+  </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mww3hdl2pp2q" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreicos74wlkjywjd6yvnz4nrqdyg5xs2o267445k74cxgigllc7hshe" alt="John Kwarsick presenting Who Governs the Agents? at CornCon 2026." loading="lazy" />
+              </a>
+              <figcaption>John Kwarsick presenting “Who Governs the Agents? The Human Governance Gap in Cybersecurity and AI.” Photo from my Bluesky stream.</figcaption>
+            </figure>
+
+  <p>
+    John described agents as software that pursues a goal, picks its next steps, and uses whatever access it holds. When that automation is wrong, can an analyst stop it in time, with the authority and practice to do so? Skills also fade after months of approving recommendations.
+  </p>
+
+  <p>
+    His fix is to test the handoff: give an analyst several agent decisions, make one wrong, and see whether they catch it. Oversight is only a real control when people can actually exercise it.
+  </p>
+
+  <h2>Credential Rotation Starts With Knowing What Exists</h2>
+
+  <p>
+    <a href="https://whova.com/embedded/speaker_detail/moHHtsILJDkAoZkDQbVKyZqiSRnMXDKopQ8Tl8K54FI%3D/53513095/" target="_blank" rel="noopener">Mayank Sethi</a> delivered one of the most directly actionable talks with <strong>“From Click Ops to Closed Loop: Rotating 1000+ Database Credentials Without an Outage.”</strong>
+  </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mww62rjovh2n" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreigfobhauzjeg2uvvj4pgqxi6nsj7hwn72z5kgta5gwr33qbnbgr2y" alt="Mayank Sethi presenting From Click Ops to Closed Loop at CornCon 2026." loading="lazy" />
+              </a>
+              <figcaption>Mayank Sethi presenting “From Click Ops to Closed Loop: Rotating 1000+ Database Credentials Without an Outage.” Photo from my Bluesky stream.</figcaption>
+            </figure>
+
+  <p>
+    The team faced more than 1,000 service accounts across about 150 application teams. Rotating everything at once can break everything, so the work began with inventory: who owned each credential, what depended on it, and when it was last used.
+  </p>
+
+  <p>
+    Ownership records were stale. Once owners could see their accounts and last logins, some asked to disable unused ones themselves. About 80 percent of the credentials were rotated within three months.
+  </p>
+
+  <p>
+    Mayank's shortest summary may have been the most important:
+  </p>
+
+  <blockquote>
+    <p>“Discover before you rotate.”</p>
+  </blockquote>
+
+  <h2>AI Is Forcing Security to Revisit Old Assumptions</h2>
+
+  <p>
+    <a href="https://whova.com/embedded/speaker_detail/moHHtsILJDkAoZkDQbVKyZqiSRnMXDKopQ8Tl8K54FI%3D/54690560/" target="_blank" rel="noopener">Gadi Evron</a> closed CornCon with <strong>“From Security Program Building to Vulnerability Research: Our Narratives and Being AI Native.”</strong>
+  </p>
+
+  <p>
+    Gadi looked at where AI is heading. Autonomous vulnerability discovery is speeding up how quickly flaws are found, and natural language lets citizen coders build software without traditional pipelines.
+  </p>
+
+  <p>
+    He argued for securing agents themselves, working toward safe autonomous patching, and preparing for an agentic software supply chain. One line tied it together:
+  </p>
+
+  <blockquote>
+    <p>“The agent is now the perimeter.”</p>
+  </blockquote>
+
+  <p>
+    An agent's permissions and credentials determine how far a mistake can travel, and automation is compressing the window between discovery and exploitation. The work starts with examining what agents can reach and controlling their most consequential actions.
+  </p>
+
+  <h2>Security Has to Fit the World It Protects</h2>
+
+  <p>
+    CornCon covered a remarkable amount of territory for a conference with 425 attendees.
+  </p>
+
+  <p>
+    Farms and water systems brought cybersecurity into the physical world. Robert Wagner brought it into relationships. Mayank Sethi brought it into the messy reality of credential ownership. John Kwarsick brought it into the moment a human needs to take control from an agent.
+  </p>
+
+  <p>
+    AI appeared throughout the conference, but many of the strongest lessons were much older.
+  </p>
+
+  <p>
+    Know what exists.
+  </p>
+
+  <p>
+    Understand who owns it.
+  </p>
+
+  <p>
+    Limit unnecessary access.
+  </p>
+
+  <p>
+    Build controls around real behavior.
+  </p>
+
+  <p>
+    Practice recovery before the emergency.
+  </p>
+
+  <p>
+    Give people a secure path they can actually use.
+  </p>
+
+  <p>
+    Your author also delivered <strong>“From Pets to Cattle to Agents: Evolving Identity and Security for Workloads,”</strong> looking at how identity has changed as infrastructure moved from individually managed servers to ephemeral workloads and now increasingly autonomous agents. The same evolution raises a familiar question. How should a system prove who or what it is, and how much authority should it receive once that identity is trusted?
+  </p>
+
+  <p>
+    Davenport's 38,162 spoons became a world record because someone took the time to know exactly what was in the collection.
+  </p>
+
+  <p>
+    Security teams face a considerably stranger collection.
+  </p>
+
+  <p>
+    Credentials, applications, infrastructure, people, agents, and dependencies keep accumulating. Every one of them has a history and a purpose. Some have quietly outlived both.
+  </p>
+
+  <p>
+    CornCon 2026 showed what happens when security starts examining the whole collection.
+  </p>
+          </article>
+        </div>
+      </div>
+
+      <a href="#top" class="scroll-to-top" aria-label="Scroll to top of page">&uarr;</a>
+    </section>
+  </main>
+
+</body>
+</html>
