@@ -1,0 +1,711 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>dev2next 2026: The Context Is the Engineering | Dwayne's Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Recap of dev2next 2026 in Lone Tree, Colorado: architecture tradeoffs, changing best practices, AI verification, secure agent design, accessibility, leadership, and the engineering context that makes software work." />
+  <meta name="author" content="Dwayne McDaniel" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="dev2next, dev2next 2026, Software Architecture, AI Agents, Software Design, Accessibility, Software Security, Developer Leadership, MCP, Dwayne McDaniel, Dwayne's Blog" />
+  <link rel="canonical" href="https://dwayne-mcdaniel.com/blog/Dev2Next2026.html" />
+  <link rel="icon" type="image/x-icon" href="../img/favicon_io/favicon.ico" />
+
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="Dwayne's Blog" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="dev2next 2026: The Context Is the Engineering" />
+  <meta property="og:description" content="Recap of dev2next 2026: architecture tradeoffs, changing best practices, AI verification, secure agent design, accessibility, and leadership." />
+  <meta property="og:url" content="https://dwayne-mcdaniel.com/blog/Dev2Next2026.html" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="article:author" content="Dwayne McDaniel" />
+  <meta property="article:section" content="Conferences" />
+  <meta property="article:tag" content="dev2next" />
+  <meta property="article:tag" content="Software Architecture" />
+  <meta property="article:tag" content="AI Agents" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="dev2next 2026: The Context Is the Engineering" />
+  <meta name="twitter:description" content="Lessons from dev2next 2026 on architecture, AI, security, accessibility, leadership, and keeping engineering practices connected to their context." />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "dev2next 2026: The Context Is the Engineering",
+    "description": "Recap of dev2next 2026 in Lone Tree, Colorado: architecture tradeoffs, changing best practices, AI verification, secure agent design, accessibility, leadership, and the engineering context that makes software work.",
+    "author": {
+      "@type": "Person",
+      "name": "Dwayne McDaniel",
+      "url": "https://dwayne-mcdaniel.com/"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Dwayne McDaniel",
+      "url": "https://dwayne-mcdaniel.com/"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://dwayne-mcdaniel.com/blog/Dev2Next2026.html"
+    },
+    "url": "https://dwayne-mcdaniel.com/blog/Dev2Next2026.html",
+    "isPartOf": {
+      "@type": "Blog",
+      "name": "Dwayne's Blog",
+      "url": "https://dwayne-mcdaniel.com/blog.html"
+    },
+    "about": [
+      "dev2next",
+      "Software Architecture",
+      "Software Design",
+      "AI Agents",
+      "Software Security",
+      "Accessibility",
+      "Developer Leadership"
+    ],
+    "inLanguage": "en-US"
+  }
+  </script>
+  <style>
+/* Basic reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Color & typography tokens */
+:root {
+  --bg: #020617;
+  --accent: #fbbf24;
+  --text-main: #e5e7eb;
+  --text-muted: #b0b8c4;
+  --text-soft: #cbd5e1;
+  --border-subtle: #1f2933;
+  --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.55);
+  --radius-xl: 1.75rem;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+  background: radial-gradient(circle at top, #111827 0%, var(--bg) 60%);
+  color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0;
+  font-size: clamp(14px, 2vw, 16px);
+  line-height: 1.5;
+}
+
+.nav {
+  width: 100%;
+  background: linear-gradient(135deg, rgba(15,23,42,0.9), rgba(17,24,39,0.95));
+  border-bottom: 1px solid rgba(249,191,36,0.1);
+  backdrop-filter: blur(4px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav__menu {
+  list-style: none;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  gap: clamp(0.6rem, 3vw, 1.2rem);
+  max-width: 432px;
+  padding: clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 2rem);
+}
+
+.nav__link {
+  text-decoration: none;
+  font-weight: 500;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  background: linear-gradient(135deg, rgba(251,191,36,0.95), #f59e0b);
+  border: 1px solid rgba(170, 120, 0, 0.25);
+  color: #071021;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.35);
+}
+
+.nav__link:hover,
+.nav__link:focus,
+.nav__link:focus-visible {
+  color: #071021;
+  background: linear-gradient(135deg, #ffd166, #f59e0b);
+  border-color: rgba(0,0,0,0.12);
+  font-weight: 700;
+  transform: translateY(-1px);
+}
+
+.page {
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  padding-bottom: clamp(1rem, 3vw, 2rem);
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+}
+
+.profile {
+  background: linear-gradient(
+    145deg,
+    rgba(17, 24, 39, 0.95),
+    rgba(15, 23, 42, 0.97)
+  );
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-soft);
+  padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1rem, 3vw, 2.25rem);
+  text-align: center;
+  flex-shrink: 0;
+  font-size: 1.25em;
+}
+
+.profile--scrollable {
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+.profile--scrollable .profile__content {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 0.5rem;
+}
+
+.page > .profile:first-of-type {
+  padding: 0;
+}
+
+.profile__name {
+  font-size: clamp(1.875rem, 4vw, 2.875rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  margin: 0 0 0.5rem 0;
+}
+
+h1, h2 {
+  text-align: center;
+}
+
+a {
+  color: #fef08a;
+}
+
+a:hover,
+a:focus {
+  color: #fde047;
+}
+
+.profile__about {
+  text-align: left;
+  font-size: clamp(0.9rem, 2.5vw, 0.98rem);
+  line-height: 1.8;
+  color: var(--text-main);
+  margin: 1.5rem 0 2rem 0;
+}
+
+.profile__about p {
+  margin: 0 0 1rem 0;
+}
+
+.profile__about p:last-child {
+  margin-bottom: 0;
+}
+
+.profile__about blockquote {
+  margin: 1.25rem 0;
+  padding: 0.5rem 1rem;
+  border-left: 3px solid var(--accent);
+  color: var(--text-soft);
+  font-style: italic;
+}
+
+.session-photo {
+  margin: 1.25rem 0 1.75rem 0;
+  padding: 0;
+  max-width: 100%;
+}
+
+.session-photo a {
+  display: block;
+  line-height: 0;
+}
+
+.session-photo img {
+  width: 100%;
+  height: auto;
+  max-height: min(70vh, 520px);
+  object-fit: cover;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.session-photo figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.scroll-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 3rem;
+  height: 3rem;
+  background: linear-gradient(135deg, var(--accent), #f59e0b);
+  color: #071021;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(251, 191, 36, 0.2);
+  border: 1px solid rgba(0,0,0,0.08);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+  z-index: 50;
+  cursor: pointer;
+}
+
+.scroll-to-top:hover {
+  color: #071021;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(251, 191, 36, 0.3);
+}
+
+.scroll-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+*:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4);
+  border-radius: 0.25rem;
+}
+
+.nav__link:focus-visible {
+  box-shadow:
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.5),
+    0 0 0 9px rgba(2, 6, 23, 0.85);
+  border-radius: 0.5rem;
+}
+
+.scroll-to-top:focus-visible {
+  box-shadow:
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4),
+    0 12px 28px rgba(251, 191, 36, 0.3);
+  border-radius: 50%;
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 0.75rem;
+  }
+
+  .profile {
+    padding: clamp(1rem, 3vw, 1.5rem) clamp(0.75rem, 2vw, 1rem);
+  }
+
+  .scroll-to-top {
+    bottom: 1rem;
+    right: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.2rem;
+  }
+}
+  </style>
+</head>
+<body>
+  <nav class="nav" aria-label="Main navigation">
+    <ul class="nav__menu">
+      <li><a class="nav__link" href="../index.html">Home</a></li>
+      <li><a class="nav__link" href="../conferences.html">Conferences</a></li>
+      <li><a class="nav__link" href="../about.html">About</a></li>
+    </ul>
+  </nav>
+  <main class="page">
+    <section class="profile profile--scrollable" aria-label="Dwayne's Blog: dev2next 2026">
+      <div class="profile__content">
+        <div class="profile__about">
+          <p class="profile__name">Dwayne's Blog</p>
+          <article itemscope itemtype="https://schema.org/BlogPosting">
+            <header>
+              <h1 itemprop="headline">dev2next 2026: The Context Is the Engineering</h1>
+            </header>
+
+            <p>
+              Lone Tree, Colorado, had its name before it had a signature tree. The name came from a residential and golf-course development. City leaders planted a 14-foot blue spruce at Lone Tree Parkway and Yosemite Street in 1997.
+            </p>
+
+            <p>
+              The city eventually built the context its name implied.
+            </p>
+
+            <p>
+              <a href="https://www.dev2next.com/" target="_blank" rel="noopener">dev2next 2026</a> ran October 12 through 15 in Lone Tree. Four days of sessions covered architecture, AI, and software delivery. The constraints surrounding a decision emerged as the central theme.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mxptowler72n" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreighsmlvdgbdnraw7ttxgri2ffs6hukw4wrthddidueaxtunh7qngy" alt="Venkat Subramaniam delivering the opening remarks at dev2next 2026." loading="lazy" />
+              </a>
+              <figcaption><a href="https://www.linkedin.com/in/vsubramaniam" target="_blank" rel="noopener">Venkat Subramaniam</a> opening dev2next 2026. Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Best practices work inside specific constraints. Architectures serve particular problems. AI output becomes useful when a system supplies boundaries, evidence, and verification. Context shapes every one of those engineering decisions.
+            </p>
+
+            <h2>Best Practices Have Expiration Dates</h2>
+
+            <p>
+              <a href="https://www.linkedin.com/in/neal4d" target="_blank" rel="noopener">Neal Ford</a> and <a href="https://www.linkedin.com/in/markrichards3" target="_blank" rel="noopener">Mark Richards</a> opened with <strong>“Why Does Yesterday's Best Practice Become Tomorrow's Anti-pattern?”</strong> Successful practices often outlive the conditions that made them useful.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mxpv4slrcb2j" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreig4kqqbaq6icya5ezcalwkfkiy72wnzn5okzrwiyskrzkztpzkzsu" alt="Neal Ford and Mark Richards presenting the opening keynote at dev2next 2026." loading="lazy" />
+              </a>
+              <figcaption>Neal Ford and Mark Richards presenting “Why Does Yesterday's Best Practice Become Tomorrow's Anti-pattern?” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Hungarian notation communicated type information before modern development environments surfaced it automatically. Long-lived branches fit version-control systems that forced teams toward them. Big design up front responded to slow and expensive feedback.
+            </p>
+
+            <p>
+              Better tools changed those constraints. Line-by-line comments can discourage expressive code and leave stale explanations behind. Continuous integration and feature flags made shorter branches practical.
+            </p>
+
+            <p>
+              Scale can also reverse the advice. DRY reduces duplicated knowledge inside a monolith. Shared abstractions across services can couple teams that need independent deployments. Distributed systems duplicate data to gain locality and resilience.
+            </p>
+
+            <p>
+              Slogans create another failure mode. Test coverage becomes engineering theater when the percentage replaces confidence. Heavyweight approval boards correlate with slower and less stable delivery. Microservices add network boundaries before many teams need them.
+            </p>
+
+            <blockquote>
+              <p>“An anti-pattern is a good practice whose context died, but the practice is still walking.”</p>
+            </blockquote>
+
+            <p>
+              Regular review keeps a sound decision connected to current conditions.
+            </p>
+
+            <h2>Architecture Makes Tradeoffs Visible</h2>
+
+            <p>
+              <a href="https://www.linkedin.com/in/rajugandhi" target="_blank" rel="noopener">Raju Gandhi's</a> <strong>“Exploring Architecture Patterns: A Qualitative Analysis”</strong> gave that review process a practical shape. An architecture pattern affects system topology and capabilities. Every pattern exchanges one set of benefits for another.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mxrd6mudiq2j" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreibguix6t7o6gkxe7i3dslkyncafuwgakefvgjoydnpixpxywadpdy" alt="Raju Gandhi presenting Exploring Architecture Patterns at dev2next 2026." loading="lazy" />
+              </a>
+              <figcaption>Raju Gandhi presenting “Exploring Architecture Patterns: A Qualitative Analysis.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Orchestration and choreography showed the exchange clearly. A central orchestrator knows the workflow state and can coordinate recovery. Choreography distributes control while requiring each service to understand more events and failure paths.
+            </p>
+
+            <p>
+              A multi-broker design can contain failures while increasing cost. A gateway can simplify access while losing FIFO ordering. Architecture records which tradeoffs fit the workload.
+            </p>
+
+            <p>
+              <a href="https://www.linkedin.com/in/simonbrownjersey" target="_blank" rel="noopener">Simon Brown's</a> keynote, <strong>“The Lost Art of Software Design,”</strong> focused on enough up-front design to establish a coherent starting point. Architecture captures significant decisions whose later change would be expensive.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mxrq4l5y5t26" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreibjj3lppfjzlhaqtr2kw4xcyl7tm4yaiz5vormkrl4tvenwzfktrq" alt="Simon Brown presenting The Lost Art of Software Design at dev2next 2026." loading="lazy" />
+              </a>
+              <figcaption>Simon Brown presenting “The Lost Art of Software Design.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              A useful diagram acts like a map. It helps a team discuss communication paths, technology choices, and responsibilities. Richer diagrams produce richer design conversations.
+            </p>
+
+            <p>
+              Simon called the starting point a primitive whole. A basic version of the complete idea can evolve coherently. Agile teams still need technical leadership and a shared vocabulary.
+            </p>
+
+            <h2>Generated Code Still Needs Memory</h2>
+
+            <p>
+              <a href="https://spring.io/team/jzheaux/" target="_blank" rel="noopener">Josh Cummings</a> explored disposable software in <strong>“DRY Is Dead (Sometimes): What Happens When Code Is Cheaper Than Thinking.”</strong> He built a daily journal as a self-contained HTML application. Each page gathered current data at build time and could be discarded the next day.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mxs3av24no2w" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreihtdl7l5v4ryvkc3ipmdnz7bqqrvcb2uouwdjlo7yju6nnqmpqpx4" alt="Josh Cummings presenting DRY Is Dead Sometimes at dev2next 2026." loading="lazy" />
+              </a>
+              <figcaption>Josh Cummings presenting “DRY Is Dead (Sometimes): What Happens When Code Is Cheaper Than Thinking.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Daily regeneration from an English specification forgot previous lessons. Autosave failed again, integration fields drifted, and controls changed shape. The specification preserved intent while losing implementation knowledge.
+            </p>
+
+            <p>
+              Copying the previous application stabilized the interface and preserved fixes. Review prevented old bugs from becoming permanent. Josh's experiment settled on copy-forward plus review.
+            </p>
+
+            <p>
+              DRY protects knowledge as much as code. Tests and reviewed examples preserve executable lessons that an ambiguous specification can lose. Cheap generation increases the value of knowing which behavior must survive.
+            </p>
+
+            <h2>AI Reliability Comes From the Surrounding System</h2>
+
+            <p>
+              <a href="https://www.wearedevelopers.com/@rustam-mehmandarov" target="_blank" rel="noopener">Rustam Mehmandarov's</a> <strong>“Taming the Chaos: Security and Predictability in LLM-Powered Applications”</strong> applied defense in depth to model interactions. Length checks, PII reduction, and a cheaper local screening model each remove part of the risk. Allowlists and scoped tools constrain what the model can reach.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mxttr7tmrr2h" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreiemropq25ujssp5emojuhkat7cgk3g3lzqnojaqwms6au3qzca2vu" alt="Rustam Mehmandarov presenting on security and predictability in LLM-powered applications at dev2next 2026." loading="lazy" />
+              </a>
+              <figcaption>Rustam Mehmandarov presenting “Taming the Chaos: Security and Predictability in LLM-Powered Applications.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Critical extraction can use synthetic verification. The model reconstructs the source from its structured result, and the system compares both versions. The extra model call raises token cost while providing evidence of faithfulness.
+            </p>
+
+            <p>
+              Deterministic validation should enforce permissions and data rules. Clear verdicts such as accepted, needs review, or rejected make failure safe. MCP tools also need scopes and idempotent writes.
+            </p>
+
+            <p>
+              <a href="https://www.linkedin.com/in/edeandrea" target="_blank" rel="noopener">Eric Deandrea</a> extended this approach in <strong>“Rethinking Testing Practices in the AI Era.”</strong> Evaluations measure whether a model response meets a quality threshold. His strategy covered individual traces, complete sessions, and long-term drift.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mxrujc2afh2v" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreiadfdtp6o4vxupwtfq52wwfl7ostmp65ev4neqwrt6wxxjrgjnsme" alt="Eric Deandrea presenting Rethinking Testing Practices in the AI Era at dev2next 2026." loading="lazy" />
+              </a>
+              <figcaption>Eric Deandrea presenting “Rethinking Testing Practices in the AI Era.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              A single response can look reasonable while the conversation fails its goal. Session-level evaluation measures sentiment and task completion across the full user journey. Production traces provide strong evidence for future test cases.
+            </p>
+
+            <h2>Agents Need Certified Data and Declared Authority</h2>
+
+            <p>
+              <a href="https://www.thoughtworks.com/profiles/p/pramod-sadalage" target="_blank" rel="noopener">Pramod Sadalage</a> and <a href="https://www.thoughtworks.com/en-us/profiles/p/premanand-chandrasekaran" target="_blank" rel="noopener">Prem Chandrasekaran</a> opened the final day with <strong>“Making Your Data Ready for Agentic AI.”</strong> Humans bring unwritten context to a dashboard. They recognize stale tables and suspicious totals. Agents tend to treat every value as truth.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mxwdqzfcpw2g" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreidt7xpjnk6talecwmx4kc4ca4xyopktusfzp54vindinrm4qvnvwy" alt="Pramod Sadalage and Prem Chandrasekaran presenting Making Your Data Ready for Agentic AI at dev2next 2026." loading="lazy" />
+              </a>
+              <figcaption>Pramod Sadalage and Prem Chandrasekaran presenting “Making Your Data Ready for Agentic AI.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Data contracts and freshness service-level agreements turn those habits into infrastructure. Certified data layers reduce the chance of stale values driving confident actions. Lineage records the data and policy version behind each decision.
+            </p>
+
+            <p>
+              Tracing also needs to capture why an agent chose an action. Inputs and timestamps cannot explain a credit decision six months later. The recorded reason closes that audit gap.
+            </p>
+
+            <p>
+              Staged autonomy lets each capability earn authority. An agent can begin in shadow mode and move through supervised actions. Reversible operations can advance faster than payments or ledger corrections.
+            </p>
+
+            <p>
+              Private data, untrusted content, and outside communication form a lethal trifecta. Removing one side limits exfiltration risk. Declared rules should decide whether a proposed action runs.
+            </p>
+
+            <h2>Convenience Belongs in the Threat Model</h2>
+
+            <p>
+              <a href="https://www.linkedin.com/in/noregressions" target="_blank" rel="noopener">Steve Poole's</a> <strong>“curl | bash | hacked: The Unseen Dangers in Your Dev Lifecycle”</strong> examined a command copied from official documentation every day. Piping a download into a shell combines retrieval and execution. The user loses the chance to inspect what will run.
+            </p>
+
+            <p>
+              Packages, build tools, and GitHub Actions create similar execution paths. Steve demonstrated history suppression, library hijacking, and reverse shells. Malicious code can also exfiltrate data through DNS.
+            </p>
+
+            <p>
+              Downloading first creates space for inspection and validation. Workflow changes deserve approval. Containers can limit the reach of third-party code.
+            </p>
+
+            <h2>AI Workflow Design Should Reduce Friction</h2>
+
+            <p>
+              <a href="https://www.linkedin.com/in/brentlaster" target="_blank" rel="noopener">Brent Laster's</a> session on AI workflow friction described the verification tax around generated code. Faster drafting can lead to longer review queues and larger pull requests. Developers also lose focus while moving among assistants, chat applications, and review bots.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mxuexy5iof26" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreifbglockquibvtuadr4iqtgy26yswrw6qaawovi745qblbxgua52i" alt="Brent Laster presenting on AI workflow friction at dev2next 2026." loading="lazy" />
+              </a>
+              <figcaption>Brent Laster presenting on AI workflow friction. Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Brent recommended treating an agent like a confident intern. Give it context, constraints, and a bounded task. Review at checkpoints and expand its scope as it proves reliable.
+            </p>
+
+            <p>
+              Persistent context needs the right home. Instructions files carry rules needed in every session. Retrieval finds relevant knowledge, while skills encode repeatable workflows.
+            </p>
+
+            <p>
+              <a href="https://www.linkedin.com/in/habuma" target="_blank" rel="noopener">Craig Walls</a> connected skills with MCP during a combined community meetup. Skills provide domain workflows. MCP provides controlled access to tools and resources.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mxuvzghhf32y" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreiffmgdg35h3x4cw3gkedvnxonfr7fbbeiizqyzrmdpxfjlhn53yfq" alt="Craig Walls presenting Generative AI Superpowers at the dev2next 2026 combined meetup." loading="lazy" />
+              </a>
+              <figcaption>Craig Walls presenting “Generative AI Superpowers: Building and Using MCP in Java with Spring AI.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Carefully designed MCP capabilities keep context costs small. Five focused tools can serve an agent better than 50 thin API wrappers. Good workflow design reduces friction while preserving clear boundaries.
+            </p>
+
+            <h2>Leadership and Accessibility Expand the System Boundary</h2>
+
+            <p>
+              <a href="https://www.linkedin.com/in/racheljoi" target="_blank" rel="noopener">Rachel Kibler's</a> keynote, <strong>“Mission Possible: Leading as an Individual Contributor,”</strong> framed leadership as a process. It begins when someone sees dissatisfaction and offers a useful direction. Others grant that leadership by choosing to follow.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mxualuqt3r2p" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreida44e3rcd7o4ckf36yicgd3kpv64tzsm5rcvywegch5in3djzzja" alt="Rachel Kibler presenting Mission Possible: Leading as an Individual Contributor at dev2next 2026." loading="lazy" />
+              </a>
+              <figcaption>Rachel Kibler presenting “Mission Possible: Leading as an Individual Contributor.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              A leader may raise urgency with facts or lower the temperature by creating space. Communication may provide information, empathy, or a solution. The situation determines which response helps.
+            </p>
+
+            <p>
+              Individual contributors can document onboarding, invite quiet voices into a discussion, and mentor peers. These actions create culture and move teams toward a shared vision.
+            </p>
+
+            <blockquote>
+              <p>“Documentation is a kindness to those around you.”</p>
+            </blockquote>
+
+            <p>
+              <a href="https://www.linkedin.com/in/lucy-greco-968b491" target="_blank" rel="noopener">Lucia Greco</a> brought the people using the software into the same system view with <strong>“Accessibility Across the Whole Software Lifecycle.”</strong> Vision, hearing, and motor barriers can be permanent or temporary. Situations such as bright sunlight can create similar barriers.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mxulgdmohe27" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreig4mvmpulbdlknydbk77px6qhjpsjuqnyfa5xrv77wp3qtvtgrj6u" alt="Lucia Greco presenting Accessibility Across the Whole Software Lifecycle at dev2next 2026." loading="lazy" />
+              </a>
+              <figcaption>Lucia Greco presenting “Accessibility Across the Whole Software Lifecycle.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Accessibility belongs in use cases, design reviews, and testing. Early work costs less than retrofits or emergency remediation. Support tickets provide evidence about barriers that reached production.
+            </p>
+
+            <p>
+              Teams can fix a component while the file is open, add accessibility to review checklists, and write missing user scenarios. A placeholder cannot provide a durable field label. Users who enter the use case are more likely to enter the finished product.
+            </p>
+
+            <h2>Failure Handling Is Architecture Too</h2>
+
+            <p>
+              <a href="https://www.linkedin.com/in/kitomann" target="_blank" rel="noopener">Kito Mann's</a> <strong>“Expect the Unexpected: Handling Exceptions in Enterprise Applications”</strong> connected the conference themes to failure. Recoverable exceptions should be caught, logged, and communicated when appropriate. Other failures should travel to the layer equipped to handle them.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mxwjloqexu2w" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreiccdkt4zgoosbm3mdchtnqb7ltzncuhsthhnsdygmlinnnvpxif3u" alt="Kito Mann presenting Expect the Unexpected at dev2next 2026." loading="lazy" />
+              </a>
+              <figcaption>Kito Mann presenting “Expect the Unexpected: Handling Exceptions in Enterprise Applications.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Meaningful exception types preserve domain context. Circuit breakers and bulkheads control how failures spread. Observability shows where the damage began.
+            </p>
+
+            <p>
+              Automation increases the value of consistent failure handling. Systems act faster, so their boundaries and recovery paths must be ready before an incident.
+            </p>
+
+            <h2>Keep Reconnecting the Decision to the Problem</h2>
+
+            <p>
+              dev2next connected architecture, AI, and team leadership through one durable practice. Engineers need to preserve the reason behind each decision.
+            </p>
+
+            <p>
+              Tools improve and constraints disappear. Scale can invert old assumptions. Metrics can replace the outcomes they were meant to represent. Regular review keeps practices connected to the problems they solve.
+            </p>
+
+            <p>
+              Lone Tree eventually planted the tree its name implied. Software teams inherit patterns and rules long after the surrounding landscape has changed. Good engineering looks at that landscape again.
+            </p>
+          </article>
+        </div>
+      </div>
+
+      <a href="#top" class="scroll-to-top" aria-label="Scroll to top of page">&uarr;</a>
+    </section>
+  </main>
+
+  <script>
+    const scrollContainer = document.querySelector('.profile__content');
+    const scrollButton = document.querySelector('.scroll-to-top');
+
+    scrollContainer.addEventListener('scroll', function () {
+      scrollButton.classList.toggle('visible', scrollContainer.scrollTop > 300);
+    });
+
+    scrollButton.addEventListener('click', function (event) {
+      event.preventDefault();
+      scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
