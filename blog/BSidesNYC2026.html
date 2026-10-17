@@ -1,0 +1,749 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>BSidesNYC 2026: Trust Has an Attack Surface | Dwayne's Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Recap of BSidesNYC 2026: surveillance infrastructure, GitHub Actions, authorization phishing, passive intelligence, security logging, ransomware, LLM tools, leadership, and extension supply chains." />
+  <meta name="author" content="Dwayne McDaniel" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="BSidesNYC, BSidesNYC 2026, Cybersecurity, GitHub Actions, OAuth Phishing, Passive Intelligence, Ransomware, LLM Security, VS Code Extensions, Supply Chain Security, Dwayne McDaniel, Dwayne's Blog" />
+  <link rel="canonical" href="https://dwayne-mcdaniel.com/blog/BSidesNYC2026.html" />
+  <link rel="icon" type="image/x-icon" href="../img/favicon_io/favicon.ico" />
+
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="Dwayne's Blog" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="BSidesNYC 2026: Trust Has an Attack Surface" />
+  <meta property="og:description" content="Lessons from BSidesNYC 2026 on surveillance, CI/CD, OAuth phishing, public data, ransomware, LLM tools, and software supply chains." />
+  <meta property="og:url" content="https://dwayne-mcdaniel.com/blog/BSidesNYC2026.html" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="article:author" content="Dwayne McDaniel" />
+  <meta property="article:section" content="Conferences" />
+  <meta property="article:tag" content="BSidesNYC" />
+  <meta property="article:tag" content="Cybersecurity" />
+  <meta property="article:tag" content="Supply Chain Security" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="BSidesNYC 2026: Trust Has an Attack Surface" />
+  <meta name="twitter:description" content="Lessons from BSidesNYC 2026 on the trusted connections attackers turn into paths through our systems." />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "BSidesNYC 2026: Trust Has an Attack Surface",
+    "description": "Recap of BSidesNYC 2026: surveillance infrastructure, GitHub Actions, authorization phishing, passive intelligence, security logging, ransomware, LLM tools, leadership, and extension supply chains.",
+    "author": {
+      "@type": "Person",
+      "name": "Dwayne McDaniel",
+      "url": "https://dwayne-mcdaniel.com/"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Dwayne McDaniel",
+      "url": "https://dwayne-mcdaniel.com/"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://dwayne-mcdaniel.com/blog/BSidesNYC2026.html"
+    },
+    "url": "https://dwayne-mcdaniel.com/blog/BSidesNYC2026.html",
+    "isPartOf": {
+      "@type": "Blog",
+      "name": "Dwayne's Blog",
+      "url": "https://dwayne-mcdaniel.com/blog.html"
+    },
+    "about": [
+      "BSidesNYC",
+      "Cybersecurity",
+      "CI/CD Security",
+      "OAuth",
+      "LLM Security",
+      "Ransomware",
+      "Supply Chain Security"
+    ],
+    "inLanguage": "en-US"
+  }
+  </script>
+  <style>
+/* Basic reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Color & typography tokens */
+:root {
+  --bg: #020617;
+  --accent: #fbbf24;
+  --text-main: #e5e7eb;
+  --text-muted: #b0b8c4;
+  --text-soft: #cbd5e1;
+  --border-subtle: #1f2933;
+  --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.55);
+  --radius-xl: 1.75rem;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+  background: radial-gradient(circle at top, #111827 0%, var(--bg) 60%);
+  color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0;
+  font-size: clamp(14px, 2vw, 16px);
+  line-height: 1.5;
+}
+
+.nav {
+  width: 100%;
+  background: linear-gradient(135deg, rgba(15,23,42,0.9), rgba(17,24,39,0.95));
+  border-bottom: 1px solid rgba(249,191,36,0.1);
+  backdrop-filter: blur(4px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav__menu {
+  list-style: none;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  gap: clamp(0.6rem, 3vw, 1.2rem);
+  max-width: 432px;
+  padding: clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 2rem);
+}
+
+.nav__link {
+  text-decoration: none;
+  font-weight: 500;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  background: linear-gradient(135deg, rgba(251,191,36,0.95), #f59e0b);
+  border: 1px solid rgba(170, 120, 0, 0.25);
+  color: #071021;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.35);
+}
+
+.nav__link:hover,
+.nav__link:focus,
+.nav__link:focus-visible {
+  color: #071021;
+  background: linear-gradient(135deg, #ffd166, #f59e0b);
+  border-color: rgba(0,0,0,0.12);
+  font-weight: 700;
+  transform: translateY(-1px);
+}
+
+.page {
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  padding-bottom: clamp(1rem, 3vw, 2rem);
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+}
+
+.profile {
+  background: linear-gradient(
+    145deg,
+    rgba(17, 24, 39, 0.95),
+    rgba(15, 23, 42, 0.97)
+  );
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-soft);
+  padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1rem, 3vw, 2.25rem);
+  text-align: center;
+  flex-shrink: 0;
+  font-size: 1.25em;
+}
+
+.profile--scrollable {
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+.profile--scrollable .profile__content {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 0.5rem;
+}
+
+.page > .profile:first-of-type {
+  padding: 0;
+}
+
+.profile__name {
+  font-size: clamp(1.875rem, 4vw, 2.875rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  margin: 0 0 0.5rem 0;
+}
+
+h1, h2 {
+  text-align: center;
+}
+
+a {
+  color: #fef08a;
+}
+
+a:hover,
+a:focus {
+  color: #fde047;
+}
+
+.profile__about {
+  text-align: left;
+  font-size: clamp(0.9rem, 2.5vw, 0.98rem);
+  line-height: 1.8;
+  color: var(--text-main);
+  margin: 1.5rem 0 2rem 0;
+}
+
+.profile__about p {
+  margin: 0 0 1rem 0;
+}
+
+.profile__about p:last-child {
+  margin-bottom: 0;
+}
+
+.profile__about blockquote {
+  margin: 1.25rem 0;
+  padding: 0.5rem 1rem;
+  border-left: 3px solid var(--accent);
+  color: var(--text-soft);
+  font-style: italic;
+}
+
+.session-photo {
+  margin: 1.25rem 0 1.75rem 0;
+  padding: 0;
+  max-width: 100%;
+}
+
+.session-photo a {
+  display: block;
+  line-height: 0;
+}
+
+.session-photo img {
+  width: 100%;
+  height: auto;
+  max-height: min(70vh, 520px);
+  object-fit: cover;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.session-photo figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.scroll-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 3rem;
+  height: 3rem;
+  background: linear-gradient(135deg, var(--accent), #f59e0b);
+  color: #071021;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(251, 191, 36, 0.2);
+  border: 1px solid rgba(0,0,0,0.08);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+  z-index: 50;
+  cursor: pointer;
+}
+
+.scroll-to-top:hover {
+  color: #071021;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(251,191,36,0.3);
+}
+
+.scroll-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+*:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4);
+  border-radius: 0.25rem;
+}
+
+.nav__link:focus-visible {
+  box-shadow:
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.5),
+    0 0 0 9px rgba(2, 6, 23, 0.85);
+  border-radius: 0.5rem;
+}
+
+.scroll-to-top:focus-visible {
+  box-shadow:
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4),
+    0 12px 28px rgba(251, 191, 36, 0.3);
+  border-radius: 50%;
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 0.75rem;
+  }
+
+  .profile {
+    padding: clamp(1rem, 3vw, 1.5rem) clamp(0.75rem, 2vw, 1rem);
+  }
+
+  .scroll-to-top {
+    bottom: 1rem;
+    right: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.2rem;
+  }
+}
+  </style>
+</head>
+<body>
+  <nav class="nav" aria-label="Main navigation">
+    <ul class="nav__menu">
+      <li><a class="nav__link" href="../index.html">Home</a></li>
+      <li><a class="nav__link" href="../conferences.html">Conferences</a></li>
+      <li><a class="nav__link" href="../about.html">About</a></li>
+    </ul>
+  </nav>
+  <main class="page">
+    <section class="profile profile--scrollable" aria-label="Dwayne's Blog: BSidesNYC 2026">
+      <div class="profile__content">
+        <div class="profile__about">
+          <p class="profile__name">Dwayne's Blog</p>
+          <article itemscope itemtype="https://schema.org/BlogPosting">
+            <header>
+              <h1 itemprop="headline">BSidesNYC 2026: Trust Has an Attack Surface</h1>
+            </header>
+
+            <p>
+              New York City runs on connections. Subway lines, fiber, financial networks, and millions of daily relationships keep the city moving. Every connection creates a path for something valuable. Every path also creates a place where trust can be redirected.
+            </p>
+
+            <p>
+              <a href="https://bsidesnyc.org/" target="_blank" rel="noopener">BSidesNYC 2026</a> filled John Jay College of Criminal Justice on October 17. The event sold out, welcomed about 1,400 people, and recorded a 14 percent increase in check-ins. Organizers even ran out of badges.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3my35s7byrx2n" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreiaurqa7xchhbdcp5zbq5zvmo2hcp7woyfucothoa526gcroiet5qe" alt="Opening remarks at BSidesNYC 2026." loading="lazy" />
+              </a>
+              <figcaption><a href="https://www.runzero.com/authors/huxley-barbee/" target="_blank" rel="noopener">Huxley Barbee</a> opening BSidesNYC 2026. Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              The sessions moved through civil liberties, CI/CD, identity, open data, malware, leadership, and developer tooling. A shared concern ran through all of them. Systems rely on trusted relationships, and attackers look for the places where those relationships grant more authority than anyone intended.
+            </p>
+
+            <p>
+              Trust has an attack surface.
+            </p>
+
+            <h2>Some Systems Should Stay Unbuilt</h2>
+
+            <p>
+              <a href="https://www.eff.org/about/staff/eva-galperin" target="_blank" rel="noopener">Eva Galperin</a>, Director of Cybersecurity at the Electronic Frontier Foundation, opened with <strong>“Do Not Build the Torment Nexus.”</strong> Her keynote connected surveillance infrastructure, AI-generated authority, and centralized power.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3my36ihrtnx2v" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreibab536wvraixydcszqbmpbdzdcx3yrcfq4537xob6faz6uffkidm" alt="Eva Galperin presenting the opening keynote at BSidesNYC 2026." loading="lazy" />
+              </a>
+              <figcaption>Eva presenting “Do Not Build the Torment Nexus.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              AI news slop can attach plausible quotes to plausible experts who do not exist. Grammarly's former expert-review feature used AI to select experts and extrapolate writing advice under their names. Eva described the resulting dispute as “Sloppergate.” Generated credibility can become misappropriated identity at product scale.
+            </p>
+
+            <p>
+              Flock camera networks showed the physical version of the same problem. Broadly shared location data supported searches beyond local jurisdictions. Residents and officials in Verona, Wisconsin, chose to end their contract, yet removing the cameras took a protracted fight. More than 270 cities have rejected Flock contracts through the <a href="https://deflock.me/" target="_blank" rel="noopener">DeFlock movement</a>.
+            </p>
+
+            <p>
+              Communications backdoors carry the same structural risk. Salt Typhoon reportedly persisted inside major telecommunications providers and reached systems created for lawful interception. A privileged path built for one authority becomes a target for every capable adversary.
+            </p>
+
+            <p>
+              AI expands the amount of data these systems can process. Much of the current pitch repackages big data with faster analysis and broader automation. The core questions remain familiar. Who holds the data, who can search it, and how can that power be used against people?
+            </p>
+
+            <blockquote>
+              <p>“The answer needs to be no. We're not going to build that.”</p>
+            </blockquote>
+
+            <p>
+              Eva's closing advice was direct. Decentralize power, refuse anticipatory obedience, and future-proof work against authoritarian use. Technical possibility does not create an obligation to ship.
+            </p>
+
+            <h2>CI/CD Trust Extends Through Every Dependency</h2>
+
+            <p>
+              <a href="https://www.linkedin.com/in/kennedy-toomey" target="_blank" rel="noopener">Kennedy Toomey</a> and <a href="https://www.linkedin.com/in/maxsaltonstall/" target="_blank" rel="noopener">Max Saltonstall</a> presented <strong>“Rethinking CI/CD Security in the Age of GitHub Actions.”</strong> Their data showed that 71 percent of organizations never pinned actions to a full commit SHA. Only one percent always did.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3my3bh3ozc42m" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreibauhzzo5desolkylhj6jhdrjxg2uzl5uad5cqmausxiu77qvx2yy" alt="Kennedy Toomey presenting on GitHub Actions security at BSidesNYC 2026." loading="lazy" />
+              </a>
+              <figcaption>Kennedy presenting “Rethinking CI/CD Security in the Age of GitHub Actions.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              A tag is a movable pointer. Pinning to a commit makes the selected version explicit, yet direct pinning covers only the first layer. An action can call other actions, and every transitive dependency adds another trusted execution path.
+            </p>
+
+            <p>
+              Common workflow attacks exploit risky triggers, untrusted input, and excessive permissions. A <code>pull_request_target</code> workflow can combine attacker-controlled code with repository write access or secrets. Shell interpolation can turn issue titles and branch names into command injection.
+            </p>
+
+            <p>
+              S1ngularity also demonstrated why teams must repair vulnerable workflows across every active branch. Fixing the default branch leaves old branches available as alternate paths. The March compromises of Trivy and KICS actions showed how quickly poisoned tags can spread through trusted automation.
+            </p>
+
+            <p>
+              <a href="https://github.blog/changelog/2026-10-14-github-actions-workflow-lockfiles-in-public-preview/" target="_blank" rel="noopener">GitHub's new workflow dependency locking preview</a> aims to capture direct and transitive actions in a lockfile. Teams still need safer triggers, minimal permissions, dependency scanning, and detection. Every public workflow should expect continuous adversarial testing.
+            </p>
+
+            <h2>Authorization Phishing Goes Around Strong Authentication</h2>
+
+            <p>
+              <a href="https://www.linkedin.com/in/luke-jennings-042b5619b/" target="_blank" rel="noopener">Luke Jennings</a> demonstrated <strong>“Authorization Phishing: Phishing, but Without the Creds.”</strong> Passkeys and security keys protect authentication. OAuth abuse can target the authorization granted after identity has already been proven.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3my3hqx4xjh2w" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreibirzgf2aocbgctfur6bblpcn3rly5nftbnl7dvt3jubgvdckyp7i" alt="Luke Jennings presenting Authorization Phishing at BSidesNYC 2026." loading="lazy" />
+              </a>
+              <figcaption>Luke presenting “Authorization Phishing: Phishing, but Without the Creds.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Device code phishing abuses a flow designed for input-constrained devices such as televisions and printers. The victim signs in on a legitimate Microsoft page and approves a code controlled by the attacker. The resulting OAuth tokens reach the attacker even when the victim uses a YubiKey.
+            </p>
+
+            <p>
+              ConsentFix targets pre-approved applications and steals an OAuth authorization code. A victim may copy a localhost URL into an attacker-controlled page after completing a legitimate sign-in. The exchange feels trustworthy because much of it happens on the real identity provider.
+            </p>
+
+            <p>
+              Conditional access can block device code flows, but configurations vary by tenant and resource. A policy left in report-only mode provides observations without enforcement. Device-compliance requirements stopped device code phishing in Luke's tests while ConsentFix still succeeded.
+            </p>
+
+            <p>
+              Security awareness training has to cover authorization prompts, device codes, and copy-and-paste instructions. Strong authentication solves one stage of the attack. Teams also need to test what tokens can authorize and which applications can receive them.
+            </p>
+
+            <h2>Publicly Reachable Data Can Become Passive Intelligence</h2>
+
+            <p>
+              <a href="https://www.linkedin.com/in/pxquirk/" target="_blank" rel="noopener">Ringmast4r</a> presented <strong>“5.6 Million Domains, 400 GB of Code, Zero Alerts: How Nation-States Conduct Passive Intelligence.”</strong> This section honors the session's no-photo policy.
+            </p>
+
+            <p>
+              The research began with public websites, exposed repositories, and metadata. Images on a Venezuelan news site retained EXIF data that could help identify contributors. Government technology stacks exposed hardcoded credentials, environment files, and election-control systems through public code.
+            </p>
+
+            <p>
+              The work expanded into <a href="https://odint.io/" target="_blank" rel="noopener">ODINT</a>, a nonprofit effort to document and audit public-sector technology. The findings crossed borders and data types. Open endpoints exposed civil records, police dispatch data, and government archives.
+            </p>
+
+            <p>
+              One Mexican university connection led to 177 federal endpoints and tens of gigabytes of accessible data. A Juárez police system exposed millions of records, including locations and caller details, until it was quietly closed. Similar mistakes appeared in Haiti, Rwanda, Peru, and other countries.
+            </p>
+
+            <p>
+              Four patterns repeated across the research. Organizations collected too much data. Old files remained online. Sensitive material sat inside public directories. Individual mistakes reached national scale.
+            </p>
+
+            <p>
+              Passive collection can continue for years without triggering a traditional alert. A defender eventually closing the door cannot know how many scanners already copied what was behind it.
+            </p>
+
+            <h2>Log Value Requires Evidence and Human Judgment</h2>
+
+            <p>
+              <a href="https://monaghadiri.com/about/" target="_blank" rel="noopener">Mona Ghadiri</a> used the economics of the penny to frame <strong>“It Costs More to Make Than It's Worth: Lessons from the Penny for Your Sentinel Deployment.”</strong> A penny costs about 3.5 cents to manufacture. Security teams make a similar mistake when they compare ingestion cost with the apparent daily use of a log source.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3my3jpmiuhc2a" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreidl2newhhghbhkgobubcgqviba2itfigtubr2vlbpyo6tpruuejwi" alt="Mona Ghadiri presenting on Microsoft Sentinel logging costs at BSidesNYC 2026." loading="lazy" />
+              </a>
+              <figcaption>Mona presenting “It Costs More to Make Than It's Worth.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Her entity-mapping review flagged 82 of 262 enabled rules. Nearly one-third of those rules depended on data relationships that could break when a table moved or disappeared. A low-volume source may support a long detection window or provide a rare event that completes an investigation.
+            </p>
+
+            <p>
+              Table insights can compare day-over-week fluctuations, top daily costs, and the last time data supported a detection. Actual contracts and billing context also belong in the calculation because list prices can misrepresent the decision.
+            </p>
+
+            <p>
+              Mona's proposed advisor keeps evidence and uncertainty visible. AI can identify dependencies and suggest options. Humans should approve changes because they carry the operational context and accountability for what the SOC can still see.
+            </p>
+
+            <h2>Owning the Hardware Changes the Reading Experience</h2>
+
+            <p>
+              <a href="https://insider.phd/" target="_blank" rel="noopener">Katie Paxton-Fear</a> brought embedded systems and digital ownership together in <strong>“Off The (Book)Shelf Hacking: Hackable eReaders.”</strong> E-readers are custom Linux or Android computers with unusual screens, strict resource limits, and active modding communities.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3my3lbtppp32v" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreibeisuyhwnhp62gmo7n5irgj3eryk2fp7d4s5jcbc7dzzxaqzuxhu" alt="Katie Paxton-Fear presenting on hackable eReaders at BSidesNYC 2026." loading="lazy" />
+              </a>
+              <figcaption>Katie presenting “Off The (Book)Shelf Hacking: Hackable eReaders.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Kindle jailbreaks such as WinterBreak use flaws in active-content handling to run custom code. The <a href="https://kindlemodding.org/" target="_blank" rel="noopener">Kindle Modding Wiki</a> documents the community's tools and techniques. KOReader adds PDF support, synchronization, and alternative library management.
+            </p>
+
+            <p>
+              Android-based readers provide broader software choices at the cost of battery life and interface polish. Tiny devices such as the Xteink X4C create a different challenge. Its ESP32 platform has roughly 400 KB of RAM, so ordinary string handling and large libraries can overwhelm the device.
+            </p>
+
+            <p>
+              Community firmware has to treat every allocation as an engineering decision. That constraint encourages a deeper relationship with the hardware. A reader becomes something its owner can inspect, change, and understand.
+            </p>
+
+            <h2>Ransomware Uses Familiar Paths at Industrial Speed</h2>
+
+            <p>
+              <a href="https://sessionize.com/antoine-valadon/" target="_blank" rel="noopener">Antoine Valadon</a> walked through <strong>“You're Qilin Me! Dissecting Qilin's 2026 Attack on TWU Local 100.”</strong> Qilin operates as a Russian-speaking ransomware-as-a-service group and has remained among the most active ransomware operations.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3my3n5mkcgi2h" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreid5tnovp4kwxoack3svfn4uhwqhtplyrrpc2xfwvgpfbxmtq7spji" alt="Antoine Valadon presenting a Qilin ransomware case study at BSidesNYC 2026." loading="lazy" />
+              </a>
+              <figcaption>Antoine presenting “You're Qilin Me!” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              The suspected path into the union began with phishing against an administrative login. The attacker relayed valid credentials and the MFA exchange, then used the resulting access for takeover. MFA completed successfully inside an attacker-controlled session.
+            </p>
+
+            <p>
+              Qilin's workflow follows a repeatable sequence. Gain access, steal data, reduce visibility, detonate ransomware, and reuse the method while defenders are still piecing together the incident. The union confirmed exposure affecting about 67,000 people, while dark-web conversations suggested roughly 551 GB of stolen data.
+            </p>
+
+            <p>
+              Antoine emphasized recovery plans aligned with CISA's Cross-Sector Cybersecurity Performance Goals. Behavioral hunting offers more durable coverage than a single indicator. Recovery practice decides how quickly operations return after the familiar path works again.
+            </p>
+
+            <h2>Malware Samples Can Carry Live Credentials</h2>
+
+            <p>
+              <a href="https://empiricaldefense.com/" target="_blank" rel="noopener">Jonathan Fuller</a> examined an overlooked consequence of shared malware in <strong>“When Malware Analysis Leaks Passwords: What Shared Samples Reveal.”</strong> A sample may contain credentials that remain valid after researchers upload and exchange it.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3my3spjkdsn2v" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreigzysz35nuj3xthgw44ivbfregj7eogpd7lylvntxu7d732mauipu" alt="Jonathan Fuller presenting on credentials exposed through shared malware samples at BSidesNYC 2026." loading="lazy" />
+              </a>
+              <figcaption>Jonathan presenting “When Malware Analysis Leaks Passwords.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Extraction alone does not prove compromise. Jonathan described a chain that moves from leaked material to recovery, authentication, and pivoting. Analysts have to connect a credential with the endpoint and code path that actually uses it.
+            </p>
+
+            <p>
+              API relationships provide that evidence. WinHTTP calls transfer a host, request handle, and credentials across separate functions. Database connectors may reveal the username and password closer to the network call. Following values backward through assembly shows how each field was produced.
+            </p>
+
+            <p>
+              The stopping point depends on the access boundary. Static analysis can decode and emit a masked record. Symbolic analysis can expand into the caller when the value remains unresolved. The practical workflow is locate, recover, and record.
+            </p>
+
+            <h2>Vulnerabilities Emerge Between Components</h2>
+
+            <p>
+              <a href="https://www.linkedin.com/in/arielfogel" target="_blank" rel="noopener">Ariel Fogel</a> explored <strong>“Weirder Machines: Compositional Attack Surfaces at the LLM-Tool Boundary.”</strong> His examples focused on behavior that appeared only after several locally reasonable components passed data to one another.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3my3w5frc6j26" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreihbka2ampgdzddwdcr2h2fbebz3oxxzc3fh5jpzi7igwx4pstgdgy" alt="Ariel Fogel presenting on compositional attack surfaces in LLM tool systems at BSidesNYC 2026." loading="lazy" />
+              </a>
+              <figcaption>Ariel presenting “Weirder Machines.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              His n8n research treated the entire automation chain as a weird machine. A user-controlled value moved through an expression language and reached host authority. Local checks covered each stage while the handoff created the exploit.
+            </p>
+
+            <p>
+              Coding agents have the same shape. A model emits shell text, an evaluator classifies it, and a shell expands it. Ariel showed how trusted shell built-ins and parameter expansion created zero-click execution paths around approval logic.
+            </p>
+
+            <p>
+              Human approval also degrades under decision fatigue. A prompt offers limited protection when the dangerous operation appears only after several transformations. Security reviews need to trace data and authority across the complete composition.
+            </p>
+
+            <p>
+              The model is one component inside a much stranger machine. The exploitable instruction set includes every parser, template language, shell feature, and credentialed tool surrounding it.
+            </p>
+
+            <h2>Leadership Grows Through Action</h2>
+
+            <p>
+              <a href="https://www.palmtreesec.com/work" target="_blank" rel="noopener">Chris Maenner</a> shifted the conversation toward career growth with <strong>“The Accidental Leader: An Engineer's Path to Startups and Conferences.”</strong> Technical work prepares people to lead by teaching them how to learn, recover, and earn trust.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3my3xac7pjl27" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreiaubrbtznj7dveix6nuxlx6ud5wqyentgqia3z4lnq4ryeuxfcvlq" alt="Chris Maenner presenting The Accidental Leader at BSidesNYC 2026." loading="lazy" />
+              </a>
+              <figcaption>Chris presenting “The Accidental Leader.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Chris described failing an IT role at Facebook because enterprise security demanded deeper web-application knowledge. Learning Next.js helped fill that gap. The failure became preparation for later work.
+            </p>
+
+            <p>
+              Volunteer communities make influence especially visible. A title cannot compel people who are donating their time. Leaders keep the group functional, create room for fun, and act with enough integrity to retain trust.
+            </p>
+
+            <blockquote>
+              <p>“Action builds confidence.”</p>
+            </blockquote>
+
+            <p>
+              Bravery means moving before confidence arrives. A new role, a startup, and a conference stage each become possible through the first concrete step. Career paths take shape through accumulated decisions rather than a complete map.
+            </p>
+
+            <h2>An Extension ID Is a Supply-Chain Boundary</h2>
+
+            <p>
+              <a href="https://www.aikido.dev/team-members/raphael-silva" target="_blank" rel="noopener">Raphael Silva</a> closed the day with <strong>“Install Me Maybe: Turning Claimable VS Code Extension IDs into Supply-Chain Attacks.”</strong> VS Code extensions run with access to workspace files, terminals, tasks, and Git operations. Automatic updates keep that code present for a long time.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3my3yu2oxn42a" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreihwjzwpdflt6rqjlcxcg7zwtgs7ocpi2iw2udcc6qzi5f2hloifxq" alt="Raphael Silva presenting on claimable VS Code extension IDs at BSidesNYC 2026." loading="lazy" />
+              </a>
+              <figcaption>Raphael presenting “Install Me Maybe.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              An identifier such as <code>publisher.extension</code> looks portable while its ownership remains marketplace-specific. Microsoft Marketplace and Open VSX maintain separate namespaces. A trusted extension in one registry can point to an unclaimed publisher in another.
+            </p>
+
+            <p>
+              The attack combines name takeover with dependency confusion. A repository or dev container recommends a trusted ID. An editor resolves that ID through a different registry. The attacker claims the available namespace, publishes the extension, and gains code execution when installation triggers.
+            </p>
+
+            <p>
+              Raphael scanned popular extensions and GitHub repositories, then published clearly labeled research extensions with minimal collection. His project found 2,056 claimable namespaces associated with 187 million installs. The extensions received almost two million callbacks from about 180,000 distinct IP addresses and led to more than 300 reports.
+            </p>
+
+            <p>
+              Organization-wide allowlists can limit approved extensions by marketplace. Teams can restrict unknown installations, review dev containers and onboarding templates, and add a cooling-off period before newly published versions reach developers. Endpoint protection provides another layer around the editor process.
+            </p>
+
+            <p>
+              Open VSX has since strengthened ownership checks and added review for suspicious publication attempts. Registry identity needs an explicit chain of ownership because a familiar string can conceal a different publisher.
+            </p>
+
+            <h2>Follow the Authority Through the Whole System</h2>
+
+            <p>
+              BSidesNYC 2026 kept returning to trusted paths that crossed boundaries.
+            </p>
+
+            <p>
+              A lawful-intercept system carried privileged communications. A GitHub Action reached secrets through a workflow trigger. An OAuth flow issued a token after a legitimate sign-in. An extension ID moved between marketplaces while keeping the same familiar shape.
+            </p>
+
+            <p>
+              Composed systems make these paths hard to see. Each component can behave as designed while the complete chain produces an outcome nobody reviewed. Scale then turns one overlooked path into millions of records, thousands of repositories, or hundreds of thousands of developer environments.
+            </p>
+
+            <p>
+              Security work has to follow data and authority across the entire chain. Identify what can invoke the path. Record which identity it uses. Limit what it can reach. Test the handoffs where one component turns untrusted input into trusted action.
+            </p>
+
+            <p>
+              New York's connections create its strength. BSidesNYC showed how careful engineering can keep those connections from becoming someone else's route through the system.
+            </p>
+          </article>
+        </div>
+      </div>
+
+      <a href="#top" class="scroll-to-top" aria-label="Scroll to top of page">&uarr;</a>
+    </section>
+  </main>
+
+  <script>
+    const scrollContainer = document.querySelector('.profile__content');
+    const scrollButton = document.querySelector('.scroll-to-top');
+
+    scrollContainer.addEventListener('scroll', function () {
+      scrollButton.classList.toggle('visible', scrollContainer.scrollTop > 300);
+    });
+
+    scrollButton.addEventListener('click', function (event) {
+      event.preventDefault();
+      scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
