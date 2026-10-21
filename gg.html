@@ -103,6 +103,51 @@
       background: #11051f;
       box-shadow: 0 1.5rem 4rem rgb(8 0 20 / 35%);
     }
+
+    .qr-codes {
+      margin-top: clamp(5rem, 12vw, 8rem);
+    }
+
+    .qr-codes h2 {
+      margin: 0 0 2rem;
+      font-size: clamp(1.5rem, 4vw, 2.25rem);
+    }
+
+    .qr-code-list {
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: center;
+      align-items: flex-start;
+      gap: clamp(1rem, 5vw, 3rem);
+    }
+
+    .qr-code {
+      flex: 0 1 20rem;
+      min-width: 0;
+      margin: 0;
+    }
+
+    .qr-code a,
+    .qr-code__image {
+      display: block;
+      width: 100%;
+      padding: 0.75rem;
+      background: #fff;
+      border-radius: 1rem;
+      box-shadow: 0 1.5rem 4rem rgb(8 0 20 / 35%);
+    }
+
+    .qr-code img {
+      display: block;
+      width: 100%;
+    }
+
+    .qr-code figcaption {
+      margin-top: 1rem;
+      color: #f7faff;
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      font-weight: 700;
+    }
   </style>
 </head>
 <body>
@@ -122,6 +167,23 @@
       <iframe src="https://www.youtube-nocookie.com/embed/Ly1mGsBh1fQ" title="How to deal with credentials risk when deploying AI" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
       <iframe src="https://www.youtube-nocookie.com/embed/5HieiHoZ3n4" title="Who on the team should own credentials?" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
     </div>
+    <section class="qr-codes" aria-labelledby="connect-heading">
+      <h2 id="connect-heading">Connect with Dwayne</h2>
+      <div class="qr-code-list">
+        <figure class="qr-code">
+          <a href="https://www.linkedin.com/in/dwaynemcdaniel/" target="_blank" rel="noopener">
+            <img src="img/linkedin-qr.png" alt="QR code for Dwayne McDaniel's LinkedIn profile">
+          </a>
+          <figcaption>LinkedIn</figcaption>
+        </figure>
+        <figure class="qr-code">
+          <span class="qr-code__image">
+            <img src="img/gg-1-min-qr.png" alt="QR code for the GitGuardian one-minute interview">
+          </span>
+          <figcaption>GitGuardian 1-Question Interview</figcaption>
+        </figure>
+      </div>
+    </section>
   </main>
 </body>
 </html>
