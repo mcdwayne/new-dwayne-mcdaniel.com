@@ -1,0 +1,675 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>AGNTCon + MCPCon 2026: Building The Open And Secure Internet Of Agents | Dwayne's Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Highlights from AGNTCon + MCPCon North America 2026 in San Jose, where the agent community explored open infrastructure, MCP security, identity, authorization, agent skills, and the future of connected AI." />
+  <meta name="author" content="Dwayne McDaniel" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="AGNTCon, MCPCon, AGNTCon 2026, MCPCon 2026, Model Context Protocol, AI Agents, Agentic AI, Agent Security, OAuth, Agent Skills, Open Source, Dwayne McDaniel, Dwayne's Blog" />
+  <link rel="canonical" href="https://dwayne-mcdaniel.com/blog/AGNTConMCPConNorthAmerica2026.html" />
+  <link rel="icon" type="image/x-icon" href="../img/favicon_io/favicon.ico" />
+
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="Dwayne's Blog" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="AGNTCon + MCPCon 2026: Building The Open And Secure Internet Of Agents" />
+  <meta property="og:description" content="Highlights from AGNTCon + MCPCon 2026 on open agent infrastructure, MCP security, identity, authorization, agent skills, and connected AI." />
+  <meta property="og:url" content="https://dwayne-mcdaniel.com/blog/AGNTConMCPConNorthAmerica2026.html" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="article:author" content="Dwayne McDaniel" />
+  <meta property="article:section" content="Conferences" />
+  <meta property="article:tag" content="AGNTCon" />
+  <meta property="article:tag" content="MCPCon" />
+  <meta property="article:tag" content="Agent Security" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AGNTCon + MCPCon 2026: Building The Open And Secure Internet Of Agents" />
+  <meta name="twitter:description" content="Highlights from two packed days exploring open infrastructure, MCP security, identity, authorization, and agent skills." />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "AGNTCon + MCPCon 2026: Building The Open And Secure Internet Of Agents",
+    "description": "Highlights from AGNTCon + MCPCon North America 2026 in San Jose, where the agent community explored open infrastructure, MCP security, identity, authorization, agent skills, and the future of connected AI.",
+    "author": {
+      "@type": "Person",
+      "name": "Dwayne McDaniel",
+      "url": "https://dwayne-mcdaniel.com/"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Dwayne McDaniel",
+      "url": "https://dwayne-mcdaniel.com/"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://dwayne-mcdaniel.com/blog/AGNTConMCPConNorthAmerica2026.html"
+    },
+    "url": "https://dwayne-mcdaniel.com/blog/AGNTConMCPConNorthAmerica2026.html",
+    "isPartOf": {
+      "@type": "Blog",
+      "name": "Dwayne's Blog",
+      "url": "https://dwayne-mcdaniel.com/blog.html"
+    },
+    "about": [
+      "AGNTCon",
+      "MCPCon",
+      "Model Context Protocol",
+      "AI Agents",
+      "Agent Security",
+      "OAuth",
+      "Open Source"
+    ],
+    "inLanguage": "en-US"
+  }
+  </script>
+  <style>
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #020617;
+  --accent: #fbbf24;
+  --text-main: #e5e7eb;
+  --text-muted: #b0b8c4;
+  --text-soft: #cbd5e1;
+  --border-subtle: #1f2933;
+  --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.55);
+  --radius-xl: 1.75rem;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+  background: radial-gradient(circle at top, #111827 0%, var(--bg) 60%);
+  color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0;
+  font-size: clamp(14px, 2vw, 16px);
+  line-height: 1.5;
+}
+
+.nav {
+  width: 100%;
+  background: linear-gradient(135deg, rgba(15,23,42,0.9), rgba(17,24,39,0.95));
+  border-bottom: 1px solid rgba(249,191,36,0.1);
+  backdrop-filter: blur(4px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav__menu {
+  list-style: none;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  gap: clamp(0.6rem, 3vw, 1.2rem);
+  max-width: 432px;
+  padding: clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 2rem);
+}
+
+.nav__link {
+  text-decoration: none;
+  font-weight: 500;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  background: linear-gradient(135deg, rgba(251,191,36,0.95), #f59e0b);
+  border: 1px solid rgba(170, 120, 0, 0.25);
+  color: #071021;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.35);
+}
+
+.nav__link:hover,
+.nav__link:focus,
+.nav__link:focus-visible {
+  color: #071021;
+  background: linear-gradient(135deg, #ffd166, #f59e0b);
+  border-color: rgba(0,0,0,0.12);
+  font-weight: 700;
+  transform: translateY(-1px);
+}
+
+.page {
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  padding-bottom: clamp(1rem, 3vw, 2rem);
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+}
+
+.profile {
+  background: linear-gradient(
+    145deg,
+    rgba(17, 24, 39, 0.95),
+    rgba(15, 23, 42, 0.97)
+  );
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-soft);
+  padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1rem, 3vw, 2.25rem);
+  text-align: center;
+  flex-shrink: 0;
+  font-size: 1.25em;
+}
+
+.profile--scrollable {
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+.profile--scrollable .profile__content {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 0.5rem;
+}
+
+.page > .profile:first-of-type {
+  padding: 0;
+}
+
+.profile__name {
+  font-size: clamp(1.875rem, 4vw, 2.875rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  margin: 0 0 0.5rem 0;
+}
+
+h1,
+h2 {
+  text-align: center;
+}
+
+a {
+  color: #fef08a;
+}
+
+a:hover,
+a:focus {
+  color: #fde047;
+}
+
+.profile__about {
+  text-align: left;
+  font-size: clamp(0.9rem, 2.5vw, 0.98rem);
+  line-height: 1.8;
+  color: var(--text-main);
+  margin: 1.5rem 0 2rem 0;
+}
+
+.profile__about p {
+  margin: 0 0 1rem 0;
+}
+
+.profile__about p:last-child {
+  margin-bottom: 0;
+}
+
+.profile__about blockquote {
+  margin: 1.25rem 0;
+  padding: 0.5rem 1rem;
+  border-left: 3px solid var(--accent);
+  color: var(--text-soft);
+  font-style: italic;
+}
+
+.session-photo {
+  margin: 1.25rem 0 1.75rem 0;
+  padding: 0;
+  max-width: 100%;
+}
+
+.session-photo a {
+  display: block;
+  line-height: 0;
+}
+
+.session-photo img {
+  width: 100%;
+  height: auto;
+  max-height: min(70vh, 520px);
+  object-fit: cover;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.session-photo figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.scroll-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 3rem;
+  height: 3rem;
+  background: linear-gradient(135deg, var(--accent), #f59e0b);
+  color: #071021;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(251, 191, 36, 0.2);
+  border: 1px solid rgba(0,0,0,0.08);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+  z-index: 50;
+  cursor: pointer;
+}
+
+.scroll-to-top:hover {
+  color: #071021;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(251,191,36,0.3);
+}
+
+.scroll-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+*:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4);
+  border-radius: 0.25rem;
+}
+
+.nav__link:focus-visible {
+  box-shadow:
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.5),
+    0 0 0 9px rgba(2, 6, 23, 0.85);
+  border-radius: 0.5rem;
+}
+
+.scroll-to-top:focus-visible {
+  box-shadow:
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4),
+    0 12px 28px rgba(251, 191, 36, 0.3);
+  border-radius: 50%;
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 0.75rem;
+  }
+
+  .profile {
+    padding: clamp(1rem, 3vw, 1.5rem) clamp(0.75rem, 2vw, 1rem);
+  }
+
+  .scroll-to-top {
+    bottom: 1rem;
+    right: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.2rem;
+  }
+}
+  </style>
+</head>
+<body>
+  <nav class="nav" aria-label="Main navigation">
+    <ul class="nav__menu">
+      <li><a class="nav__link" href="../index.html">Home</a></li>
+      <li><a class="nav__link" href="../conferences.html">Conferences</a></li>
+      <li><a class="nav__link" href="../about.html">About</a></li>
+    </ul>
+  </nav>
+  <main class="page">
+    <section class="profile profile--scrollable" aria-label="Dwayne's Blog: AGNTCon and MCPCon North America 2026">
+      <div class="profile__content">
+        <div class="profile__about">
+          <p class="profile__name">Dwayne's Blog</p>
+          <article itemscope itemtype="https://schema.org/BlogPosting">
+            <header>
+              <h1 itemprop="headline">AGNTCon + MCPCon 2026: Building The Open And Secure Internet Of Agents</h1>
+            </header>
+
+            <p>
+              San Jose has a long history of connecting technologies in unexpected ways. The first Chuck E. Cheese opened there in 1977, combining pizza, arcade games, and singing animatronic animals under one roof. <a href="https://www.chuckecheese.com/our-history/" target="_blank" rel="noopener">The official history</a> calls it the first family entertainment center to bring all three together.
+            </p>
+
+            <p>
+              It turned out to be a very effective system. The games gave families a reason to stay, the pizza gave them a reason to gather, and the giant singing mouse made the whole experience hard to forget.
+            </p>
+
+            <p>
+              Nearly 50 years later, more than 3,500 people came to San Jose for <a href="https://events.linuxfoundation.org/agntcon-mcpcon-north-america/" target="_blank" rel="noopener">AGNTCon + MCPCon North America 2026</a>. Across two days and more than 150 talks, the community explored another connected system: an open internet of AI agents.
+            </p>
+
+            <p>
+              The technical pieces are coming together quickly. Model Context Protocol, or MCP, connects agents to tools and data. OAuth grants access. Skills teach agents how to complete specialized work. Yet connection alone does not create trust. Agents also need durable identities, enforceable permissions, reliable context, and software supply chain controls.
+            </p>
+
+            <p>
+              <a href="https://aaif.io/staff" target="_blank" rel="noopener">Angie Jones</a> opened the event on behalf of the Agentic AI Foundation with a call to build this internet of agents in the open. Here are just a few highlights from two packed days.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3myi2qvzhvi2k" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreihzpuah7zzr5op2gbvpq4ylfs37ge66gtg323sospn54a4t2gt6yy" alt="Angie delivering the opening remarks at AGNTCon and MCPCon 2026." loading="lazy" />
+              </a>
+              <figcaption>Angie opening AGNTCon + MCPCon 2026. Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <h2>Keeping The Agentic Internet Open</h2>
+
+            <p>
+              One of the event's biggest questions appeared in the title of the opening keynote. <a href="https://aaif.io/author/manik-surtani" target="_blank" rel="noopener">Manik Surtani</a>, CTO and co-founder of the Agentic AI Foundation, asked <strong>“Who Keeps It Open?”</strong>
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3myi3afik5d23" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreid6k6pmxst6ri6oprqzcqt7nfddkrdjn4jlk4ynxhuz6mhzvdcaqi" alt="Manik presenting Who Keeps It Open at AGNTCon and MCPCon 2026." loading="lazy" />
+              </a>
+              <figcaption>Manik presenting “Who Keeps It Open?” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Goose began inside Block, while MCP began inside Anthropic. Both grew far beyond their original companies. An open source license made the code available, but the founding companies still controlled important pieces such as trademarks and roadmaps.
+            </p>
+
+            <p>
+              That matters when the technology becomes shared infrastructure. Organizations need confidence that one competitor cannot suddenly redirect the project or close off a critical piece. The Agentic AI Foundation provides a neutral home where competing organizations can work on the common plumbing. At the time of the event, it had 305 members, ten projects, and eight working groups.
+            </p>
+
+            <blockquote>
+              <p>“Neutral governance makes open permanent.”</p>
+            </blockquote>
+
+            <p>
+              Agentic commerce makes the stakes especially clear. Agents will increasingly influence what gets purchased, where it comes from, and which service handles the transaction. Whoever controls the protocol can end up controlling a very valuable gate.
+            </p>
+
+            <p>
+              Open governance gives the community a way to build those rails together. Manik's call to action was straightforward: demand open systems, contribute to the commons, and build in the open.
+            </p>
+
+            <h2>MCP Is Growing Into Production Infrastructure</h2>
+
+            <p>
+              MCP gives AI applications a standard way to connect with external tools and data. <a href="https://dsp.sh/about/" target="_blank" rel="noopener">David Soria Parra</a>, co-creator of MCP and Member of Technical Staff at Anthropic, showed how quickly the protocol is moving beyond basic tool calls in <strong>“MCP and the Era of Connectivity.”</strong>
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3myi4e7drpe23" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreigcuywggitrt7cd2ope3nc32fld7257kbeznu5khcxrctxetz3kym" alt="David presenting MCP and the Era of Connectivity at AGNTCon and MCPCon 2026." loading="lazy" />
+              </a>
+              <figcaption>David presenting “MCP and the Era of Connectivity.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Production work rarely fits into one quick request and response. Some jobs continue for minutes, hours, or even days. MCP Tasks give long-running work a durable object that clients can check, while MCP Events let servers report progress. Elicitation gives the server a standard way to pause and ask a human for information or approval.
+            </p>
+
+            <p>
+              Anyone who has watched an agent confidently invent a missing value can appreciate the ability to make it stop and ask.
+            </p>
+
+            <p>
+              Skills are becoming part of this story as well. A server can expose a tool, while a skill explains the domain-specific process for using that tool correctly. Authorization can determine which skills a user receives after signing in. The connection then carries tools, knowledge, and policy together.
+            </p>
+
+            <h3>OAuth Meets A Lot More Clients</h3>
+
+            <p>
+              Connecting agents to services brings an old security question into a new environment: who is asking for access?
+            </p>
+
+            <p>
+              <a href="https://aaronparecki.com/about/" target="_blank" rel="noopener">Aaron Parecki</a>, Senior Director of Identity Standards at Okta, answered that question with a useful standards history lesson in <strong>“Evolution, not Revolution: How MCP is Reshaping OAuth.”</strong> Most of OAuth still works well for MCP. Client identification needed some attention.
+            </p>
+
+            <p>
+              Traditional OAuth applications receive a client ID when a developer registers them with a service. MCP clients can meet a server for the first time in production. Dynamic Client Registration, or DCR, initially solved this by letting each client register itself, but it could leave an authorization server managing thousands of records for what was really one application.
+            </p>
+
+            <p>
+              Client ID Metadata Documents, or CIMD, offer a more stable option. The client ID becomes a URL containing public information about the application, its operator, and its approved redirect addresses. MCP gave this older idea an urgent use case.
+            </p>
+
+            <p>
+              Of course, fetching metadata from a URL creates its own risks. Servers still need defenses against server-side request forgery, or SSRF, along with clear rules for localhost, redirects, and domains that change ownership. Every convenient new connection still needs a threat model.
+            </p>
+
+            <h3>Identity Must Survive Every Hop</h3>
+
+            <p>
+              <a href="https://den.dev/about/" target="_blank" rel="noopener">Den Delimarsky</a>, Member of Technical Staff at Anthropic and Lead Maintainer of MCP, reported 4.17 billion downloads since the reference servers and specification first appeared. A mistake at that scale can travel very far, very fast.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3myimdnud6t2k" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreiclt56ntls3rgjhiu67blxjhbgazhhtl67td5tn4s22cuif65decu" alt="Den presenting MCP Security Two Years In at AGNTCon and MCPCon 2026." loading="lazy" />
+              </a>
+              <figcaption>Den presenting “MCP Security, Two Years In.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              The maintainers are coordinating guidance across SDKs and languages, with a two-day target for triaging critical reports and seven days for fixing them. Conformance tests help turn the specification into a contract every implementation can verify.
+            </p>
+
+            <p>
+              Demonstrating Proof of Possession, or DPoP, binds a token to cryptographic material held by the intended client. A stolen token becomes far less useful when the attacker also needs the matching key. Workload Identity Federation replaces long-lived credentials with short-lived identities from the runtime. Workload Authorization Grants can preserve the identity of an individual agent as a request moves through a platform and into an MCP server.
+            </p>
+
+            <p>
+              That provides an answer shared service accounts often hide: which agent performed the action?
+            </p>
+
+            <h2>The Model Proposes; Policy Decides</h2>
+
+            <p>
+              Open standards and durable identities establish who is involved. The next challenge is controlling what an agent can actually do.
+            </p>
+
+            <p>
+              <a href="https://www2.eecs.berkeley.edu/Faculty/Homepages/song.html" target="_blank" rel="noopener">Dawn Song</a>, Professor of Computer Science at UC Berkeley, presented research on the rapidly improving ability of AI systems to find and exploit vulnerabilities in <strong>“Towards Building Safe &amp; Secure Agentic AI.”</strong>
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3myijckmukr23" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreieh73lmi5esncwn2gcru7j2aeuqgvosz7zh4zxyhcndhulmbqvtae" alt="Dawn presenting Towards Building Safe and Secure Agentic AI at AGNTCon and MCPCon 2026." loading="lazy" />
+              </a>
+              <figcaption>Dawn presenting “Towards Building Safe &amp; Secure Agentic AI.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              CyberGym measures how well AI systems find vulnerabilities in large open source projects. ExploitGym examines autonomous exploitation. Together, the projects show that AI-driven attacks are becoming a practical security challenge.
+            </p>
+
+            <p>
+              The same models can also help defenders generate formal proofs, verify software properties, and improve detections. The larger lesson is that probabilistic systems become much safer when deterministic controls can independently check their work. High-risk interactions are the natural place to start, especially where an agent can move money, expose sensitive data, or affect physical systems.
+            </p>
+
+            <p>
+              <a href="https://uchibeke.com/about-me/" target="_blank" rel="noopener">Uchi Uchibeke</a>, founder and CEO of APort, showed this approach in action. His team invited 1,149 people to attack agents in a public capture-the-flag exercise, producing 4,371 human-written attacks and 225,964 completed evaluations across 14 models.
+            </p>
+
+            <p>
+              Attackers repeatedly convinced models operating under permissive policies to propose prohibited actions. A restrictive policy blocked every payment attack across 879 attempts. The agent could suggest an action, but an independent authorization check decided whether it could execute.
+            </p>
+
+            <blockquote>
+              <p>The model proposes. Policy decides.</p>
+            </blockquote>
+
+            <p>
+              Prompts provide instructions. Sandboxes limit which resources an agent can reach. Authorization checks whether a specific action is allowed right now. Post-action checks preserve evidence for detection and investigation. Each layer creates another opportunity to prevent or contain a bad outcome.
+            </p>
+
+            <p>
+              Regulated industries also need evidence explaining why an action was allowed. <a href="https://lucasbeeler.net/" target="_blank" rel="noopener">Lucas Beeler</a>, Senior Solutions Architect at Aerospike, presented an architecture for producing that evidence in <strong>“Beyond LLMs in a Loop: Building Trusted Agents in Regulated Industries.”</strong>
+            </p>
+
+            <p>
+              In this model, the LLM translates human intent into a declarative plan. Other systems gather evidence about the environment and applicable rules. Automated reasoning checks whether the plan is internally consistent and agrees with the organization's defined universe.
+            </p>
+
+            <p>
+              If policy sets the maximum permitted exposure at $80 million, a plan proposing $92 million fails before execution. A human reviewer then sees the plan and the evidence supporting it. The model explains; policy enforces; the reviewer decides.
+            </p>
+
+            <h2>Agent Supply Chains Need Continuous Trust</h2>
+
+            <p>
+              Software supply chain security already asks where a package came from and whether anyone changed it. Agents add a new wrinkle: a tool's instructions and behavior can change after a user approves it.
+            </p>
+
+            <p>
+              <a href="https://sessionize.com/charit-upadhyay/" target="_blank" rel="noopener">Charit Upadhyay</a>, Senior Site Reliability Engineer at Adobe, demonstrated this problem in <strong>“MCP Rug Pulls in the Wild: Live Attacks and How to Stop Them.”</strong>
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3myipztn2ed25" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreie5f5kz2hxgekdl466shgjrjsucnwjnoi7kcc4aftuqx4vad7b4si" alt="Charit presenting MCP Rug Pulls in the Wild at AGNTCon and MCPCon 2026." loading="lazy" />
+              </a>
+              <figcaption>Charit presenting “MCP Rug Pulls in the Wild.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Charit demonstrated an MCP package that behaved safely for 15 versions and gained thousands of users. A later patch added three malicious lines telling the agent to exfiltrate inbox data and hide the activity. The tool name and schema stayed the same, so the original approval still appeared valid.
+            </p>
+
+            <p>
+              His proposed defenses include signing tool definitions, detecting changes, and monitoring runtime behavior. Package signatures identify the publisher. Definition integrity verifies that the tool still represents what the user approved. A changed definition should trigger a new review.
+            </p>
+
+            <p>
+              Agent skills create a related risk. <a href="https://lirantal.com/" target="_blank" rel="noopener">Liran Tal</a>, Head of Developer Relations and Community at Snyk, showed how a skill file can turn an agent into a confused deputy in <strong>“Your AI Agent Installed Malware Because a SKILL.md Told It To.”</strong>
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3myl2uccawb2y" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreigriaxptz35ggflu6r34ye75fzxwfkomlo2nk5h3j5cm6mgl3tqoq" alt="Liran presenting on malicious agent skills at AGNTCon and MCPCon 2026." loading="lazy" />
+              </a>
+              <figcaption>Liran presenting “Your AI Agent Installed Malware Because a SKILL.md Told It To.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              A skill might look like a harmless Markdown document, but its instructions can download files, install dependencies, run commands, and contact external servers. The user trusts the agent. The agent trusts the skill. A malicious instruction can exploit that chain to reach the user's machine and credentials.
+            </p>
+
+            <p>
+              Liran's threat model covers data at rest, resource access, execution context, toxic data flows, and trust boundaries. Behavioral analysis can help reveal what a skill is trying to accomplish, including malicious actions hidden behind plausible setup steps.
+            </p>
+
+            <p>
+              <a href="https://www.linkedin.com/in/michael-r-larson-77124b27" target="_blank" rel="noopener">Michael R. Larson</a>, Senior Applied AI Software Engineer at Christensen Solutions, followed with a practical process for <strong>“Shipping Agent Skills Safely: CI/CD, Evals, and Guardrails.”</strong> His guidance will sound familiar to anyone who has built a software delivery pipeline: version the skill, evaluate it, review it, and release it.
+            </p>
+
+            <p>
+              Start with five to ten representative tasks and known failure modes. Add deterministic assertions. Test adversarial input and portability across agent platforms. Run the evaluation again whenever the skill or model changes. Skills are software for agents, and established software supply chain practices provide a strong starting point for making them safer.
+            </p>
+
+            <h2>Agents Still Need The Right Context</h2>
+
+            <p>
+              An agent can access the right systems and still produce the wrong answer when it lacks business context. <a href="https://www.linkedin.com/in/theamitnaik" target="_blank" rel="noopener">Amit Naik</a>, Vice President of AI Architecture at CData, demonstrated this problem in <strong>“Stop Making Agents Guess: Engineering Context at the Gateway.”</strong>
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3myl6leba342k" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreiczmqjdptjwi7dxkhxl7vl5tywqb3uwzmcqwcicuq2lfr3gyj2rxi" alt="Amit presenting Stop Making Agents Guess at AGNTCon and MCPCon 2026." loading="lazy" />
+              </a>
+              <figcaption>Amit presenting “Stop Making Agents Guess.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              He asked three agents, “What enterprise revenue is at risk this quarter?” Sales operations answered $6.8 million. Finance said $2.1 million. Customer success returned $4.9 million. All three responded confidently because each system understood revenue risk differently.
+            </p>
+
+            <p>
+              Enterprise context includes where contracts live, how accounts connect to support tickets, what “risk” means, and even when the quarter begins. People absorb this knowledge over time. Agents need a reliable way to retrieve it.
+            </p>
+
+            <p>
+              A context engine at the gateway can give authorized agents the same approved definitions and relationships. It can also provide only the knowledge needed for one precise call instead of loading an entire schema. Amit reported a 90 percent reduction in token use in the evaluated setup. More importantly, shared definitions help prevent three agents from confidently producing three incompatible answers.
+            </p>
+
+            <h2>Building A Trustworthy Internet Of Agents</h2>
+
+            <p>
+              Across all these talks, one lesson kept surfacing: the agentic future depends on more than smarter models.
+            </p>
+
+            <p>
+              Open protocols let tools and services work together. Neutral governance keeps shared infrastructure open. Durable identities show which agent is acting, even when a request crosses multiple systems. Deterministic authorization checks consequential actions before execution.
+            </p>
+
+            <p>
+              Tools and skills need signatures, evaluations, and continuous monitoring. Gateways need enough context to help agents understand the organizations they serve. Humans need clear points where they can approve, correct, or stop the work.
+            </p>
+
+            <p>
+              The good news is that none of these problems must be solved alone. Open source communities, standards bodies, researchers, vendors, and practitioners are already building the controls together. Community is an operational control, especially when the infrastructure affects everyone.
+            </p>
+
+            <p>
+              San Jose's first Chuck E. Cheese became memorable by connecting food, games, and entertainment into one coordinated experience. Nearly five decades later, agent builders gathered in the same city to connect models, tools, data, identity, and infrastructure. Pizza and animatronic mice are optional this time. Open standards and strong security controls are essential.
+            </p>
+          </article>
+        </div>
+      </div>
+
+      <a href="#top" class="scroll-to-top" aria-label="Scroll to top of page">&uarr;</a>
+    </section>
+  </main>
+
+  <script>
+    const scrollContainer = document.querySelector('.profile__content');
+    const scrollButton = document.querySelector('.scroll-to-top');
+
+    scrollContainer.addEventListener('scroll', function () {
+      scrollButton.classList.toggle('visible', scrollContainer.scrollTop > 300);
+    });
+
+    scrollButton.addEventListener('click', function (event) {
+      event.preventDefault();
+      scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
