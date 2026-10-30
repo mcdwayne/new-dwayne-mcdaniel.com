@@ -1,0 +1,706 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>MITechCon 2026: Build the Guardrails Into the System | Dwayne's Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Recap of Michigan Technology Conference 2026 in Rochester: enterprise AI, agent safety, mission-critical code, AI enablement, context engineering, edge computing, and software architecture." />
+  <meta name="author" content="Dwayne McDaniel" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="MITechCon, Michigan Technology Conference, Enterprise AI, AI Agents, Mission-Critical Code, Context Engineering, Edge AI, Software Architecture, Dwayne McDaniel, Dwayne's Blog" />
+  <link rel="canonical" href="https://dwayne-mcdaniel.com/blog/MITechCon2026.html" />
+  <link rel="icon" type="image/x-icon" href="../img/favicon_io/favicon.ico" />
+
+  <meta property="og:site_name" content="Dwayne's Blog" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="MITechCon 2026: Build the Guardrails Into the System" />
+  <meta property="og:description" content="Lessons from MITechCon 2026 on enterprise AI, agent safety, mission-critical code, context engineering, edge computing, and architecture." />
+  <meta property="og:url" content="https://dwayne-mcdaniel.com/blog/MITechCon2026.html" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="article:author" content="Dwayne McDaniel" />
+  <meta property="article:section" content="Conferences" />
+  <meta property="article:tag" content="MITechCon" />
+  <meta property="article:tag" content="Enterprise AI" />
+  <meta property="article:tag" content="Software Architecture" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="MITechCon 2026: Build the Guardrails Into the System" />
+  <meta name="twitter:description" content="Lessons from MITechCon 2026 on safe AI adoption, deterministic controls, critical code, context, edge systems, and architecture." />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "MITechCon 2026: Build the Guardrails Into the System",
+    "description": "Recap of Michigan Technology Conference 2026 in Rochester: enterprise AI, agent safety, mission-critical code, AI enablement, context engineering, edge computing, and software architecture.",
+    "author": {
+      "@type": "Person",
+      "name": "Dwayne McDaniel",
+      "url": "https://dwayne-mcdaniel.com/"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Dwayne McDaniel",
+      "url": "https://dwayne-mcdaniel.com/"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://dwayne-mcdaniel.com/blog/MITechCon2026.html"
+    },
+    "url": "https://dwayne-mcdaniel.com/blog/MITechCon2026.html",
+    "isPartOf": {
+      "@type": "Blog",
+      "name": "Dwayne's Blog",
+      "url": "https://dwayne-mcdaniel.com/blog.html"
+    },
+    "about": [
+      "Michigan Technology Conference",
+      "Enterprise AI",
+      "AI Agent Safety",
+      "Mission-Critical Software",
+      "Context Engineering",
+      "Edge AI",
+      "Software Architecture"
+    ],
+    "inLanguage": "en-US"
+  }
+  </script>
+
+  <style>
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #020617;
+  --accent: #fbbf24;
+  --text-main: #e5e7eb;
+  --text-muted: #b0b8c4;
+  --text-soft: #cbd5e1;
+  --border-subtle: #1f2933;
+  --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.55);
+  --radius-xl: 1.75rem;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+  background: radial-gradient(circle at top, #111827 0%, var(--bg) 60%);
+  color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0;
+  font-size: clamp(14px, 2vw, 16px);
+  line-height: 1.5;
+}
+
+.nav {
+  width: 100%;
+  background: linear-gradient(135deg, rgba(15,23,42,0.9), rgba(17,24,39,0.95));
+  border-bottom: 1px solid rgba(249,191,36,0.1);
+  backdrop-filter: blur(4px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav__menu {
+  list-style: none;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  gap: clamp(0.6rem, 3vw, 1.2rem);
+  max-width: 432px;
+  padding: clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 2rem);
+}
+
+.nav__link {
+  text-decoration: none;
+  font-weight: 500;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  background: linear-gradient(135deg, rgba(251,191,36,0.95), #f59e0b);
+  border: 1px solid rgba(170, 120, 0, 0.25);
+  color: #071021;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.35);
+}
+
+.nav__link:hover,
+.nav__link:focus,
+.nav__link:focus-visible {
+  color: #071021;
+  background: linear-gradient(135deg, #ffd166, #f59e0b);
+  border-color: rgba(0,0,0,0.12);
+  font-weight: 700;
+  transform: translateY(-1px);
+}
+
+.page {
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  padding-bottom: clamp(1rem, 3vw, 2rem);
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+}
+
+.profile {
+  background: linear-gradient(
+    145deg,
+    rgba(17, 24, 39, 0.95),
+    rgba(15, 23, 42, 0.97)
+  );
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-soft);
+  padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1rem, 3vw, 2.25rem);
+  text-align: center;
+  flex-shrink: 0;
+  font-size: 1.25em;
+}
+
+.profile--scrollable {
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+.profile--scrollable .profile__content {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 0.5rem;
+}
+
+.page > .profile:first-of-type {
+  padding: 0;
+}
+
+.profile__name {
+  font-size: clamp(1.875rem, 4vw, 2.875rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  margin: 0 0 0.5rem 0;
+}
+
+h1,
+h2 {
+  text-align: center;
+}
+
+a {
+  color: #fef08a;
+}
+
+a:hover,
+a:focus {
+  color: #fde047;
+}
+
+.profile__about {
+  text-align: left;
+  font-size: clamp(0.9rem, 2.5vw, 0.98rem);
+  line-height: 1.8;
+  color: var(--text-main);
+  margin: 1.5rem 0 2rem 0;
+}
+
+.profile__about p {
+  margin: 0 0 1rem 0;
+}
+
+.profile__about p:last-child {
+  margin-bottom: 0;
+}
+
+.profile__about blockquote {
+  margin: 1.25rem 0;
+  padding: 0.5rem 1rem;
+  border-left: 3px solid var(--accent);
+  color: var(--text-soft);
+  font-style: italic;
+}
+
+.session-photo {
+  margin: 1.25rem 0 1.75rem 0;
+  padding: 0;
+  max-width: 100%;
+}
+
+.session-photo a {
+  display: block;
+  line-height: 0;
+}
+
+.session-photo img {
+  width: 100%;
+  height: auto;
+  max-height: min(70vh, 520px);
+  object-fit: cover;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.session-photo figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.scroll-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 3rem;
+  height: 3rem;
+  background: linear-gradient(135deg, var(--accent), #f59e0b);
+  color: #071021;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(251, 191, 36, 0.2);
+  border: 1px solid rgba(0,0,0,0.08);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+  z-index: 50;
+  cursor: pointer;
+}
+
+.scroll-to-top:hover {
+  color: #071021;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(251,191,36,0.3);
+}
+
+.scroll-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+*:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4);
+  border-radius: 0.25rem;
+}
+
+.nav__link:focus-visible {
+  box-shadow:
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.5),
+    0 0 0 9px rgba(2, 6, 23, 0.85);
+  border-radius: 0.5rem;
+}
+
+.scroll-to-top:focus-visible {
+  box-shadow:
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4),
+    0 12px 28px rgba(251, 191, 36, 0.3);
+  border-radius: 50%;
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 0.75rem;
+  }
+
+  .profile {
+    padding: clamp(1rem, 3vw, 1.5rem) clamp(0.75rem, 2vw, 1rem);
+  }
+
+  .scroll-to-top {
+    bottom: 1rem;
+    right: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.2rem;
+  }
+}
+  </style>
+</head>
+<body>
+  <nav class="nav" aria-label="Main navigation">
+    <ul class="nav__menu">
+      <li><a class="nav__link" href="../index.html">Home</a></li>
+      <li><a class="nav__link" href="../conferences.html">Conferences</a></li>
+      <li><a class="nav__link" href="../about.html">About</a></li>
+    </ul>
+  </nav>
+
+  <main class="page">
+    <section class="profile profile--scrollable" aria-label="Dwayne's Blog: MITechCon 2026">
+      <div class="profile__content">
+        <div class="profile__about">
+          <p class="profile__name">Dwayne's Blog</p>
+          <article itemscope itemtype="https://schema.org/BlogPosting">
+            <header>
+              <h1 itemprop="headline">MITechCon 2026: Build the Guardrails Into the System</h1>
+            </header>
+
+            <p>
+              Rochester was founded by the Graham family in 1817 and named after Rochester, New York. It became the first European settlement in Oakland County. It was later the birthplace of Madonna and hosts the <a href="https://www.downtownrochestermi.com/the-big-bright-light-show" target="_blank" rel="noopener">The Big, Bright Light Show</a> which is a holiday light display that is one of the largest in the world with over 1.5 million lights bringing holiday cheer to the community.
+            </p>
+
+            <p>
+              More than two centuries later, the city welcomed Michigan's technology community to examine another kind of foundation. The systems surrounding a new capability determine how safely people can use it and how much lasting value it creates.
+            </p>
+
+            <p>
+              <a href="https://www.mitechcon.org/" target="_blank" rel="noopener">Michigan Technology Conference 2026</a> ran October 29 and 30 at Oakland University in Rochester. The sold-out event brought together 300 technology practitioners for 48 sessions across ten topic areas.
+            </p>
+
+            <p>
+              AI appeared throughout the program. The strongest sessions treated AI as one component inside a larger operating system of permissions, checks, data, people, and recovery plans.
+            </p>
+
+            <p>
+              Durable guardrails live in the system.
+            </p>
+
+            <h2>Build What Creates a Competitive Advantage</h2>
+
+            <p>
+              <a href="https://www.linkedin.com/in/jason-bressler" target="_blank" rel="noopener">Jason Bressler</a>, EVP and CTO at UWM, opened with <strong>“Build vs. Buy in the AI Era.”</strong> His framework began with a practical observation. No single answer works for every capability.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3myzds2brfb2v" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreicmagbkcupbdfeyp32t3thf5esjx2km3m5yjydtkrbperatnsc2pe" alt="Jason presenting Build vs. Buy in the AI Era at MITechCon 2026." loading="lazy" />
+              </a>
+              <figcaption>Jason presenting “Build vs. Buy in the AI Era.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Teams should ask whether a capability differentiates the business, how much control it requires, and how deeply it must integrate. Long-term cost and the pace of AI development also shape the answer.
+            </p>
+
+            <p>
+              UWM chose ownership for systems that depend on proprietary processes and permissions. Its ChatUWM assistant began with internal process guides and training material. The company later opened parts of the experience to loan officers and used their questions as direct market research.
+            </p>
+
+            <p>
+              Adoption decides whether that investment produces value. Jason called for teams to redesign workflows, challenge existing processes, and keep experimenting. Faster execution of an unchanged process captures only part of AI's potential.
+            </p>
+
+            <p>
+              Technical leadership also requires deep business context. Engineers gain leverage when they understand how the organization operates and can connect technology decisions to business outcomes.
+            </p>
+
+            <h2>A Deterministic Gate Can Stop a Dangerous Tool Call</h2>
+
+            <p>
+              <a href="https://www.linkedin.com/in/sqllocks" target="_blank" rel="noopener">Jonathan Stewart</a>, also known as SQLLocks, presented <strong>“Your AI Agent Just Ran DELETE Without WHERE. Now What?”</strong> The title came from a real failure. An agent ran a destructive infrastructure command against production after skipping the normal confirmation.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3myzhp3pvxl2v" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreidigveyqqkxcuqixvxhx546p2mwqtszkb3soh6puxhm5rdtzkmyde" alt="Jonathan presenting agent safety controls at MITechCon 2026." loading="lazy" />
+              </a>
+              <figcaption>Jonathan presenting a deterministic gate for agent tool calls. Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Prompt instructions provide guidance that can disappear inside a long conversation or lose to competing instructions. Jonathan placed a small program between the agent and its tools. The gate inspects every call and blocks recognized destructive commands before they reach the target system.
+            </p>
+
+            <p>
+              The example gate used about 200 lines of JavaScript. It added roughly 50 milliseconds to a tool call and required no model, network, or database.
+            </p>
+
+            <p>
+              A useful gate still allows safe work. Jonathan described it as a tripwire with a known perimeter. Exact command matching catches obvious destructive calls, while database permissions provide a deeper boundary.
+            </p>
+
+            <p>
+              Agents should receive the smallest account that can complete the job. Read access comes first. Write access belongs only where the workflow needs it, and delete permission can remain unavailable.
+            </p>
+
+            <p>
+              Recovery begins before the first write. Create a restore point, understand the recovery window, and rehearse the restore process. During an incident, stop the agent, record the time, and plan the repair before changing more state.
+            </p>
+
+            <h2>Reliable Operations Form a Closed Loop</h2>
+
+            <p>
+              <a href="https://www.linkedin.com/in/robert-gray-iii-a5959562" target="_blank" rel="noopener">Robert Gray III</a> explored <strong>“The Invisible Stack: Black-Ops of Modern Enterprise.”</strong> Customers see outcomes while the operational disciplines behind them remain largely invisible.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3myzlw5vt552l" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreidaenl3ve724zqpm4jp6n7tuknpiia43q3bqwhzy7q2kazrpcdqii" alt="Robert presenting The Invisible Stack at MITechCon 2026." loading="lazy" />
+              </a>
+              <figcaption>Robert presenting “The Invisible Stack.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              His model connected DevOps, DataOps, AIOps, and FinOps in one loop. Delivery velocity produces a cost signature. Cost signals influence data and AI priorities. Trusted data supports prediction, and prediction enables safer delivery.
+            </p>
+
+            <p>
+              Fragmented incident, root-cause, and change data breaks that loop. Robert described a three-phase roadmap built around visibility, prediction, and action. Normalized operational data supports a shared source of truth. Predictive scoring can then feed CI/CD decisions in real time.
+            </p>
+
+            <p>
+              The resulting incident command center cut major-incident resolution time by 50 percent and reduced the number of people involved by 70 percent. Ownership after launch kept the system useful. A cross-functional group continued setting priorities, tracking value, and governing changes.
+            </p>
+
+            <h2>Critical Code Needs Predictable Limits</h2>
+
+            <p>
+              <a href="https://trailheadtechnology.com/about-us/our-team/jonathan-j-tower/" target="_blank" rel="noopener">Jonathan “J.” Tower</a> brought safety-critical engineering into modern application development with <strong>“Mission-Critical Code: What NASA's Power of Ten Can Teach Us.”</strong>
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3myzrnvir5j22" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreifjpmueckiy232y3n7ulo4bwak6cdxczcdr6w6m3b7rb3mfogkh74" alt="J. presenting NASA's Power of Ten at MITechCon 2026." loading="lazy" />
+              </a>
+              <figcaption>J. applying NASA's Power of Ten to modern software. Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              The history began with Margaret Hamilton and the Apollo guidance computer. Unexpected radar input overloaded the system during the lunar landing, while priority scheduling preserved the work required to land.
+            </p>
+
+            <p>
+              Later failures showed the stakes closer to Earth. A race condition in the Therac-25 radiation machine delivered massive overdoses. A software defect at Knight Capital created millions of dollars in losses within minutes.
+            </p>
+
+            <p>
+              NASA's original Power of Ten rules targeted C and C++. J. translated their goals into modern development. Predictable loops need explicit bounds. Collections and caches need size limits. Functions should remain short enough to understand and review.
+            </p>
+
+            <p>
+              Return values require checks, and static analysis should run continuously. Roslyn analyzers, CodeQL, and SonarQube can turn local rules into automated guardrails.
+            </p>
+
+            <p>
+              Every organization can define its own power of ten. The rules should match the consequences of failure and remain enforceable through tooling.
+            </p>
+
+            <h2>Purpose, Curiosity, and Honesty Strengthen Architecture</h2>
+
+            <p>
+              <a href="https://www.linkedin.com/in/sarahfwimberley" target="_blank" rel="noopener">Sarah Wimberley</a> shared <strong>“Three Lessons from a Woman in Enterprise Architecture.”</strong> Her lessons connected purpose, curiosity, and authenticity with better technical leadership.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mz22cnmzxh2l" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreicbwxlhb7gwoq6caq6tawitvlc3uypyo3tu5z3wvhwz57ue5lcrom" alt="Sarah presenting lessons from enterprise architecture at MITechCon 2026." loading="lazy" />
+              </a>
+              <figcaption>Sarah presenting lessons from enterprise architecture. Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Purpose improves motivation, resilience, and decision-making. Honest goals provide useful fuel because people invest more consistently in work they genuinely value.
+            </p>
+
+            <p>
+              Curiosity pushes architects to dig deeper and approach a system with empathy. Authenticity builds trust and makes room for people to contribute ideas that differ from the dominant view.
+            </p>
+
+            <p>
+              Sarah also encouraged leaders to acknowledge where their knowledge ends. Visible limits create a professional roadmap and reduce the exhaustion of pretending to have every answer.
+            </p>
+
+            <blockquote>
+              <p>“Be better, not right.”</p>
+            </blockquote>
+
+            <h2>AI Enablement Should Raise the Floor</h2>
+
+            <p>
+              <a href="https://www.linkedin.com/in/broadbentadam" target="_blank" rel="noopener">Adam Broadbent</a> reported on a five-phase enterprise rollout in <strong>“Floors, Not Ceilings: Lessons from 6 Months of AI Enablement at a $10B Company.”</strong>
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mz3y2tqmcx2u" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreiaswmkonjclposd72ahwssbr3rpiga5drtrhaykroncvrzn446u3y" alt="Adam presenting lessons from an enterprise AI enablement program at MITechCon 2026." loading="lazy" />
+              </a>
+              <figcaption>Adam presenting “Floors, Not Ceilings.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              The rollout started by collecting engineers' fears before training. People raised concerns about surveillance, job stability, and pressure to maximize token usage. Those fears gave the program a more realistic starting point.
+            </p>
+
+            <p>
+              Security controls initially blocked so much network access that the coding assistant became an expensive autocomplete tool. The team adjusted the boundary and kept deterministic checks around consequential actions.
+            </p>
+
+            <blockquote>
+              <p>“A rule is a hope. A check is a fact.”</p>
+            </blockquote>
+
+            <p>
+              Early productivity estimates reached 300 percent when AI calculated the result. A grounded review found about 30 percent improvement, alongside a 43 percent increase in bugs. Ten people generated 58 percent of all sessions.
+            </p>
+
+            <p>
+              Those numbers shifted the goal toward capability. Leaders began asking what each person could do now that they could not do before. A learning ladder gave engineers clear skills and levels, while facilitators focused on quieter people who needed help taking the first step.
+            </p>
+
+            <h2>Context Costs Drive Agent Architecture</h2>
+
+            <p>
+              <a href="https://www.linkedin.com/in/rajkumar-sakthivel" target="_blank" rel="noopener">Rajkumar Sakthivel</a> examined the economics of context in <strong>“Your AI Reads Entire Files. It Only Needs 6%. Here's How We Fixed It.”</strong>
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mz43pvfj3w25" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreibadf374n7vugtxtbmhmc7chxwxsiou557aedmpadbqby362s4dxe" alt="Rajkumar presenting context engineering for AI coding agents at MITechCon 2026." loading="lazy" />
+              </a>
+              <figcaption>Rajkumar presenting a targeted context layer for coding agents. Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Input accounted for about 90 percent of token spending in the project. Better prompts, model settings, and output compression produced little improvement.
+            </p>
+
+            <p>
+              The team inserted a local search layer between the codebase and the model API. Tree-sitter parsed the code, hybrid retrieval found relevant sections, and a confidence score filtered the final context. The intentionally simple architecture reduced the material sent to the model.
+            </p>
+
+            <p>
+              Team memory created a harder problem. Each developer's agent accumulated decisions in separate local folders. Sharing everything threatened privacy, while sharing nothing encouraged teams to contradict one another.
+            </p>
+
+            <p>
+              Rajkumar separated personal memory from explicit shared records. Local network synchronization and Git signals helped surface relevant decisions at query time. Fully local, private, and team-aware memory remains an open design challenge.
+            </p>
+
+            <h2>Edge AI Starts With Physical Constraints</h2>
+
+            <p>
+              <a href="https://www.linkedin.com/in/qimata" target="_blank" rel="noopener">Jared Rhodes</a> mapped the edge from regional infrastructure to leaf devices in <strong>“AI on the Edge.”</strong> Latency, connectivity, privacy, and bandwidth determine where inference belongs.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mz4c2sn3a22l" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreihyk7ugc73e2kjtkhp7vwgu54etvx32oj42vf2tixckwiknky3mva" alt="Jared presenting AI on the Edge at MITechCon 2026." loading="lazy" />
+              </a>
+              <figcaption>Jared presenting “AI on the Edge.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Emergency-response training provided one example. Smoke from a simulated disaster could disrupt connectivity, so local inference kept critical analysis available. Traffic cameras offered another. Pole-mounted hardware processed video and sent smaller telemetry streams to the transportation facility.
+            </p>
+
+            <p>
+              Industrial sites add financial and safety pressure. Pipeline and factory downtime can cost hundreds of thousands of dollars per hour. Remote locations may also sit hours away from the nearest technician.
+            </p>
+
+            <p>
+              Model selection begins with memory, speed, accuracy, portability, and maintenance. False negatives can carry severe consequences, so the acceptable accuracy tradeoff depends on the use case.
+            </p>
+
+            <p>
+              Distillation, quantization, and pruning can fit capable models onto smaller hardware. Fleet orchestration then handles versions and deployment across cloud and edge environments.
+            </p>
+
+            <h2>Communication Structures Become Software Structures</h2>
+
+            <p>
+              <a href="https://www.linkedin.com/in/iamluisfernandez" target="_blank" rel="noopener">Luis Fernandez</a> connected organization design with system design in <strong>“Don't Let Your Org Chart Write Bad Code.”</strong>
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mz4grlxo2c2l" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreibqhqi5asrdmze5qaf3qcypurx27clmkfpmxmmj2ulajtwt55x3iu" alt="Luis presenting Don't Let Your Org Chart Write Bad Code at MITechCon 2026." loading="lazy" />
+              </a>
+              <figcaption>Luis presenting “Don't Let Your Org Chart Write Bad Code.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Essential complexity comes from the problem itself. Accidental complexity enters through the people, structures, and decisions surrounding the work.
+            </p>
+
+            <p>
+              Large software systems have many authors across teams. Communication paths shape the interfaces and boundaries those teams create. Conway's law explains why the same technical design can produce very different systems inside different organizations.
+            </p>
+
+            <p>
+              Luis compared a standardized fast-food kitchen with a Michelin restaurant. Standardized roles let one operation absorb staff changes. Specialized expertise makes the other operation more dependent on particular people.
+            </p>
+
+            <p>
+              Architecture has to account for those human dependencies. Team Topologies offers patterns for shaping communication so the organization can support the system it wants to build.
+            </p>
+
+            <h2>Design the Boundary Before Granting the Capability</h2>
+
+            <p>
+              MITechCon 2026 showed how much of technology's value comes from the structures around it.
+            </p>
+
+            <p>
+              Build-versus-buy decisions depend on business context. Agent safety depends on executable gates and restricted accounts. Critical code depends on explicit limits. AI enablement depends on training, measurement, and checks that survive pressure.
+            </p>
+
+            <p>
+              Context layers can reduce cost. Edge architectures can preserve service through weak connectivity. Team design can reduce the accidental complexity that becomes software.
+            </p>
+
+            <p>
+              Your author presented <strong>“Probably Secure: What We Misunderstand About AI and Determinism Is Making Us Less Secure.”</strong> The session explored the same conference-wide lesson. Probabilistic systems create useful options, while deterministic controls enforce the boundaries around consequential actions.
+            </p>
+
+            <p>
+              Rochester's first settlement established a foundation for the communities that followed across Oakland County. Modern technology programs need foundations of their own. Permissions, recovery plans, shared context, and enforceable checks give powerful tools a safe place to operate.
+            </p>
+
+            <p>
+              Build the guardrails into the system.
+            </p>
+          </article>
+        </div>
+      </div>
+
+      <a href="#top" class="scroll-to-top" aria-label="Scroll to top of page">&uarr;</a>
+    </section>
+  </main>
+
+  <script>
+    const scrollContainer = document.querySelector('.profile__content');
+    const scrollButton = document.querySelector('.scroll-to-top');
+
+    scrollContainer.addEventListener('scroll', function () {
+      scrollButton.classList.toggle('visible', scrollContainer.scrollTop > 300);
+    });
+
+    scrollButton.addEventListener('click', function (event) {
+      event.preventDefault();
+      scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
