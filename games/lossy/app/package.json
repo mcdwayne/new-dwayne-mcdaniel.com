@@ -1,0 +1,29 @@
+{
+  "name": "lossyinc-range",
+  "productName": "LossyInc Range",
+  "version": "1.1.0",
+  "description": "Point-and-click secrets incident adventure for practicing GitGuardian remediation",
+  "author": "Dwayne McDaniel <dwayne.mcdaniel@gitguardian.com>",
+  "private": true,
+  "main": "main.js",
+  "scripts": {
+    "start": "node copy-web.js && electron .",
+    "dist": "node copy-web.js && electron-builder --publish never",
+    "dist:linux": "node copy-web.js && electron-builder --linux --publish never",
+    "dist:win": "node copy-web.js && electron-builder --win --publish never",
+    "dist:mac": "node copy-web.js && electron-builder --mac --publish never"
+  },
+  "build": {
+    "appId": "com.lossyinc.range",
+    "productName": "LossyInc Range",
+    "files": ["main.js", "web/**", "build/icon.png"],
+    "directories": { "output": "dist", "buildResources": "build" },
+    "linux": { "target": ["AppImage"], "category": "Education", "icon": "build/icon.png", "maintainer": "Dwayne McDaniel <dwayne.mcdaniel@gitguardian.com>" },
+    "win": { "target": ["nsis", "portable"], "icon": "build/icon-256.png" },
+    "mac": { "target": ["dmg", "zip"], "category": "public.app-category.education", "icon": "build/icon.png", "identity": null }
+  },
+  "devDependencies": {
+    "electron": "^33.2.1",
+    "electron-builder": "^25.1.8"
+  }
+}

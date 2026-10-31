@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Learning Jeopardy!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- ===================== TITLE SCREEN ===================== -->
+<section id="screen-title" class="screen active">
+  <div class="starfield" id="starfield"></div>
+  <div class="title-wrap">
+    <h1 class="title-logo">JEOPARDY<span class="bang">!</span></h1>
+    <p class="title-sub">A Networking &amp; Security Learning Edition</p>
+
+    <div id="bestRecord" class="best-record" hidden></div>
+
+    <div class="panel">
+      <div class="panel-label">Difficulty</div>
+      <div class="difficulty-row">
+        <button class="diff-btn" data-diff="easy">Easy</button>
+        <button class="diff-btn selected" data-diff="normal">Normal</button>
+        <button class="diff-btn" data-diff="hard">Hard</button>
+      </div>
+      <p id="difficultyBlurb" class="difficulty-blurb"></p>
+
+      <div class="panel-label">Contestants</div>
+      <div class="player-count-row">
+        <button class="count-btn" data-count="1">1 Player</button>
+        <button class="count-btn" data-count="2">2 Players</button>
+        <button class="count-btn" data-count="3">3 Players</button>
+      </div>
+      <div id="playerNameInputs" class="player-name-inputs"></div>
+      <button id="beginBtn" class="nes-btn big" hidden>Start Game</button>
+    </div>
+
+    <p class="title-footnote">Pick an answer for points, or click the Host for help &mdash; he'll tell you the answer, but you won't score.</p>
+  </div>
+</section>
+
+<!-- ===================== BOARD SCREEN ===================== -->
+<section id="screen-board" class="screen">
+  <header class="board-header">
+    <div class="round-banner" id="roundBanner">Jeopardy!</div>
+    <div class="scoreboard" id="scoreboard"></div>
+  </header>
+
+  <div id="turnBanner" class="turn-banner"></div>
+
+  <div class="board-wrap">
+    <div id="categoryRow" class="category-row"></div>
+    <div id="cellGrid" class="cell-grid"></div>
+  </div>
+</section>
+
+<!-- ===================== CLUE OVERLAY ===================== -->
+<section id="screen-clue" class="screen overlay">
+  <div class="stage-layout">
+    <div class="tv-frame">
+      <div id="clueStage" class="tv-screen"></div>
+    </div>
+    <div id="clueHostDock" class="host-dock"></div>
+  </div>
+</section>
+
+<!-- ===================== ROUND TRANSITION ===================== -->
+<section id="screen-transition" class="screen overlay">
+  <div class="transition-card">
+    <h2 id="transitionTitle"></h2>
+    <div id="transitionBody" class="transition-body"></div>
+    <button id="transitionBtn" class="nes-btn big"></button>
+  </div>
+</section>
+
+<!-- ===================== FINAL JEOPARDY ===================== -->
+<section id="screen-final" class="screen overlay">
+  <div class="stage-layout">
+    <div class="tv-frame">
+      <div id="finalStage" class="tv-screen"></div>
+    </div>
+    <div id="finalHostDock" class="host-dock"></div>
+  </div>
+</section>
+
+<!-- ===================== RESULTS SCREEN ===================== -->
+<section id="screen-results" class="screen">
+  <div class="transition-card">
+    <h2>Final Scores</h2>
+    <div id="resultsBody" class="transition-body"></div>
+    <button id="playAgainBtn" class="nes-btn big">Play Again</button>
+    <button id="newGameBtn" class="nes-btn">New Game / Change Players</button>
+  </div>
+</section>
+
+<script src="data.js"></script>
+<script src="audio.js"></script>
+<script src="host.js"></script>
+<script src="game.js"></script>
+</body>
+</html>

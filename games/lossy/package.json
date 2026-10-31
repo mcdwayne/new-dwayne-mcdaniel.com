@@ -1,0 +1,18 @@
+{
+  "name": "lossyinc-range",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A point-and-click secrets-incident adventure for practicing GitGuardian remediation. Single HTML file; no backend.",
+  "scripts": {
+    "build": "python3 build.py",
+    "test": "python3 build.py && node tests/playthrough.js",
+    "screenshots": "node tests/screenshots.js",
+    "serve": "python3 -m http.server 8000",
+    "a11y": "node tests/a11y.js"
+  },
+  "devDependencies": {
+    "axe-core": "^4.14.0",
+    "jsdom": "^24.1.3",
+    "playwright": "^1.63.0"
+  }
+}
