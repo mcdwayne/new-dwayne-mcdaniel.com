@@ -125,3 +125,7 @@ Third-party consoles (Vault, GitHub, SendGrid, Google Cloud, CI/CD, the AI provi
 ## Release-note coverage
 
 Every GitGuardian SaaS release from November 2025 to October 2026 is mapped to the game in [RELEASE-COVERAGE.md](RELEASE-COVERAGE.md): what's simulated, what was added, what's on the backlog and what's out of scope. On Tuesday, **Push to vault** on the incident is the fastest way through step 2 (Secure storage): it stores the leaked value so consumers can move to Vault before you rotate.
+
+## Perfect-start codes
+
+To jump a room straight to a later day with a clean record, enter one of these on the title screen (Enter a save code): `LR-PERF-TUE`, `LR-PERF-WED`, `LR-PERF-THU`, `LR-PERF-ULT`. Each starts that level at 9:00 AM with every earlier day at a perfect 100.

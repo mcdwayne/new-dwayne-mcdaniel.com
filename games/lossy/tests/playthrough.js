@@ -128,10 +128,14 @@ async function ult(h,variant){const {$,cmd,pc,sh,pick,bye,revoke,say,G,click,d}=
    pc('[data-gg="inventory"]');const inv=/kv\/lending\/openai/.test($(".win.act").textContent);pc('[data-gg="secmgr"]');const sm=/read\/write/.test($(".win.act").textContent);pc('[data-gg="perimeter"]');const cov=/Coverage hub/.test($(".win.act").textContent);
    say("  search hits:",hits,"| pushed:",ok,"in",dt,"min | mention:",men,"| inventory:",inv,"| secrets managers:",sm,"| coverage hub:",cov);
    if(hits===1&&ok&&dt<=2&&men&&inv&&sm&&cov)S.dayWon=true;else S.dead="push-failed";});
+ if(which==="all"||which==="perfect")await play("PERFECT-START CODES",async h=>{const {$,click,say,G}=h;click($('[data-tt="new"]'));click($('[data-namego]'));h.drain();const g=G();const res=[];let ok=true;
+   for(const [code,day,want] of [["LR-PERF-TUE",1,[0,0,0]],["lr perf wed",2,[100,0,0]],["LR-PERF-THU",3,[100,100,0]],["LR-PERF-ULT",4,[0,0,0]]]){g.restoreFromCode(code);const S=g.S;const sc=[S.score[1],S.score[2],S.score[3]];
+     const good=S.day===day&&S.t===0&&!S.dead&&JSON.stringify(sc)===JSON.stringify(want)&&(day<2||day===4||S.results[1]==="won")&&(day<3||day===4||S.results[2]==="won");if(!good)ok=false;res.push(`${code}=>day ${S.day} ${JSON.stringify(sc)} ${good?"ok":"BAD"}`);}
+   const plain=g.decodeSave("LR-0000-0000");say("  ",res.join("; "),"| normal code still decodes:",plain.day===1);if(ok&&plain.day===1)g.S.dayWon=true;else g.S.dead="perfect-failed";});
  if(which==="all"||which==="ult")await play("ULTIMATE: by the book",async h=>ult(h));
  if(which==="all"||which==="ultorder")await play("ULTIMATE: revoke before Vault token",async h=>ult(h,"order"));
  if(which==="all"||which==="ultreset")await play("ULTIMATE: reset the honeytoken",async h=>ult(h,"reset"));
  if(which==="all"||which==="ultearly")await play("ULTIMATE: inventory before isolating",async h=>ult(h,"early"));
- const want={"PUSH TO VAULT":["won"],"NAME + IN-PERSON":["won"],"USE AND TALK":["won"],"SAVE CODES":["won"],"SLACK THE DEVELOPER":["won"],"NAS01 OVER SSH":["won"],"AI HOOKS STOP":["won"],"ULTIMATE: AI hooks":["playbook"],"WEEK":["won"],"DAY 2 TRAP":["restolen"],"ULTIMATE: by the book":["won"],"ULTIMATE: revoke":["playbook"],"ULTIMATE: reset":["playbook"],"ULTIMATE: inventory":["playbook"]};
+ const want={"PERFECT-START":["won"],"PUSH TO VAULT":["won"],"NAME + IN-PERSON":["won"],"USE AND TALK":["won"],"SAVE CODES":["won"],"SLACK THE DEVELOPER":["won"],"NAS01 OVER SSH":["won"],"AI HOOKS STOP":["won"],"ULTIMATE: AI hooks":["playbook"],"WEEK":["won"],"DAY 2 TRAP":["restolen"],"ULTIMATE: by the book":["won"],"ULTIMATE: revoke":["playbook"],"ULTIMATE: reset":["playbook"],"ULTIMATE: inventory":["playbook"]};
  const bad=RESULTS.filter(r=>{const k=Object.keys(want).find(k=>r.name.startsWith(k));if(!k)return !!r.errors.length;const w=want[k][0];return r.errors.length||(w==="won"?!r.won:r.dead!==w);});
  console.log(bad.length?`\nFAILED: ${bad.map(r=>r.name).join(", ")}`:`\nAll ${RESULTS.length} playthroughs behaved as expected.`);process.exit(bad.length?1:0);})();

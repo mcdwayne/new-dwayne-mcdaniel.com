@@ -22,6 +22,8 @@ Three ways, same game:
 python3 build.py --web-root ..   # rebuilds index.html here, writes ../lossy.html (landing page) and shots/
 ```
 
+**Deploy to the site folder:** `npm run deploy-to-site` builds straight into `~/Documents/dwayne-mcdaniel-site/games`: the game, the landing page and the screenshots. Set `SITE_GAMES` to build somewhere else. It needs only Python, so no `npm install` first.
+
 Opening the file directly works too:
 
 - Double-click the file, or
@@ -30,7 +32,16 @@ Opening the file directly works too:
 
 Progress saves to your browser's local storage; **Continue** on the title screen picks it up.
 
-**Save codes.** Menu → **Save code** condenses the current game into 32 bits, shown as `LR-XXXX-XXXX`. **Enter a save code** on the title screen rebuilds it on any device: the level, the time (to the nearest 6 minutes), which earlier days you won, and up to 17 milestones for the day (what's fixed, what's broken, what went public). You can type anything: a real code rebuilds your game, a mistyped one still loads (a 5-bit checksum flags about 97% of typos with a warning), and any other text is hashed into a code and gives you some game, possibly one you arrive at too late to win. It's lossy on purpose: exact dialogue, timeline wording and partial progress on lost earlier days aren't kept, and points are recalculated. The layout is documented at the top of `src/js/10b-savecode.js`.
+**Save codes.** Menu → **Save code** condenses the current game into 32 bits, shown as `LR-XXXX-XXXX`. **Enter a save code** on the title screen rebuilds it on any device: the level, the time (to the nearest 6 minutes), which earlier days you won, and up to 17 milestones for the day (what's fixed, what's broken, what went public). You can type anything: a real code rebuilds your game, a mistyped one still loads (a 5-bit checksum flags about 97% of typos with a warning), and any other text is hashed into a code and gives you some game, possibly one you arrive at too late to win. **Perfect starts:** four reserved codes start a level at 9:00 AM with every earlier day at a perfect 100. That means every fix and every bonus, not just a win.
+
+| Code | Starts | Score so far |
+|---|---|---|
+| `LR-PERF-TUE` | Tuesday | 0 of 300 |
+| `LR-PERF-WED` | Wednesday | 100 (Tuesday perfect) |
+| `LR-PERF-THU` | Thursday | 200 (Tuesday and Wednesday perfect) |
+| `LR-PERF-ULT` | ULTIMATE | 0 of 100 |
+
+Normal codes keep their meaning: a won earlier day is rebuilt as a standard clear, not a perfect one. It's lossy on purpose: exact dialogue, timeline wording and partial progress on lost earlier days aren't kept, and points are recalculated. The layout is documented at the top of `src/js/10b-savecode.js`.
 
 ### Controls
 

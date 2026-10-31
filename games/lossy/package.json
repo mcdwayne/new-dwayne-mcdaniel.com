@@ -8,7 +8,8 @@
     "test": "python3 build.py && node tests/playthrough.js",
     "screenshots": "node tests/screenshots.js",
     "serve": "python3 -m http.server 8000",
-    "a11y": "node tests/a11y.js"
+    "a11y": "node tests/a11y.js",
+    "deploy-to-site": "python3 build.py --web-root \"${SITE_GAMES:-$HOME/Documents/dwayne-mcdaniel-site/games}\""
   },
   "devDependencies": {
     "axe-core": "^4.14.0",
