@@ -132,10 +132,18 @@ async function ult(h,variant){const {$,cmd,pc,sh,pick,bye,revoke,say,G,click,d}=
    for(const [code,day,want] of [["LR-PERF-TUE",1,[0,0,0]],["lr perf wed",2,[100,0,0]],["LR-PERF-THU",3,[100,100,0]],["LR-PERF-ULT",4,[0,0,0]]]){g.restoreFromCode(code);const S=g.S;const sc=[S.score[1],S.score[2],S.score[3]];
      const good=S.day===day&&S.t===0&&!S.dead&&JSON.stringify(sc)===JSON.stringify(want)&&(day<2||day===4||S.results[1]==="won")&&(day<3||day===4||S.results[2]==="won");if(!good)ok=false;res.push(`${code}=>day ${S.day} ${JSON.stringify(sc)} ${good?"ok":"BAD"}`);}
    const plain=g.decodeSave("LR-0000-0000");say("  ",res.join("; "),"| normal code still decodes:",plain.day===1);if(ok&&plain.day===1)g.S.dayWon=true;else g.S.dead="perfect-failed";});
+ if(which==="all"||which==="frame")await play("MONITOR FRAME INTACT ON EVERY GITGUARDIAN PAGE",async h=>{const {$,click,cmd,pc,say,G,d}=h;click($('[data-tt="new"]'));click($('[data-namego]'));h.drain();
+   const bad=[];const chk=l=>{const off=$("[data-pcclose]");if(!off||!off.parentElement.classList.contains("bezel"))bad.push(l);};
+   const visit=()=>{for(const p of ["list","perimeter","endpoints","honeytokens","map","inventory","playbooks","workflow","secmgr"]){pc(`[data-gg="${p}"]`);chk(p);}};
+   cmd("use monitor");pc('[data-pc="gg"]');pc('[data-wmax="gg"]');visit();pc('[data-gg="list"]');pc('[data-openinc="1017"]');chk("incident 1017");pc('[data-gg="endpoints"]');pc('[data-ep="dana-mbp"]');chk("endpoint");
+   for(const day of [2,3,4]){const g=G();g.restoreFromCode(["","","LR-PERF-WED","LR-PERF-THU","LR-PERF-ULT"][day]);h.drain();g.openPC("gg");
+     if(day===4){g.S.f.binder=true;g.S.f.isolated=true;for(const id of [1401,1402,1403]){g.S.incs[id].created=true;}}
+     for(const id of g.dayIncs?[]:[]){}const ids={2:[1102,1103],3:[1219],4:[1401,1402,1403]}[day];for(const id of ids){g.openPC("gg");d.querySelector('[data-gg="list"]').click();const r=d.querySelector(`[data-openinc="${id}"]`);if(r){r.click();chk("incident "+id);}else bad.push("no row "+id);}}
+   say("  broken frame on:",bad.join(", ")||"none");if(bad.length)G().S.dead="frame-broken";else G().S.dayWon=true;});
  if(which==="all"||which==="ult")await play("ULTIMATE: by the book",async h=>ult(h));
  if(which==="all"||which==="ultorder")await play("ULTIMATE: revoke before Vault token",async h=>ult(h,"order"));
  if(which==="all"||which==="ultreset")await play("ULTIMATE: reset the honeytoken",async h=>ult(h,"reset"));
  if(which==="all"||which==="ultearly")await play("ULTIMATE: inventory before isolating",async h=>ult(h,"early"));
- const want={"PERFECT-START":["won"],"PUSH TO VAULT":["won"],"NAME + IN-PERSON":["won"],"USE AND TALK":["won"],"SAVE CODES":["won"],"SLACK THE DEVELOPER":["won"],"NAS01 OVER SSH":["won"],"AI HOOKS STOP":["won"],"ULTIMATE: AI hooks":["playbook"],"WEEK":["won"],"DAY 2 TRAP":["restolen"],"ULTIMATE: by the book":["won"],"ULTIMATE: revoke":["playbook"],"ULTIMATE: reset":["playbook"],"ULTIMATE: inventory":["playbook"]};
+ const want={"MONITOR FRAME":["won"],"PERFECT-START":["won"],"PUSH TO VAULT":["won"],"NAME + IN-PERSON":["won"],"USE AND TALK":["won"],"SAVE CODES":["won"],"SLACK THE DEVELOPER":["won"],"NAS01 OVER SSH":["won"],"AI HOOKS STOP":["won"],"ULTIMATE: AI hooks":["playbook"],"WEEK":["won"],"DAY 2 TRAP":["restolen"],"ULTIMATE: by the book":["won"],"ULTIMATE: revoke":["playbook"],"ULTIMATE: reset":["playbook"],"ULTIMATE: inventory":["playbook"]};
  const bad=RESULTS.filter(r=>{const k=Object.keys(want).find(k=>r.name.startsWith(k));if(!k)return !!r.errors.length;const w=want[k][0];return r.errors.length||(w==="won"?!r.won:r.dead!==w);});
  console.log(bad.length?`\nFAILED: ${bad.map(r=>r.name).join(", ")}`:`\nAll ${RESULTS.length} playthroughs behaved as expected.`);process.exit(bad.length?1:0);})();
