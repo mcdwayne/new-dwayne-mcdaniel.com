@@ -88,6 +88,8 @@ function danaOptions(){const opts=[];const i=INC(1017);
   opts.push(["Who else uses this key?",()=>{const p=reveal(1017,"cron","from "+P.dana)+award("assess",1);
     return {t:`"repayments-svc and the ledger-batch pipeline. Oh, and the support ticket summarizer on nas01 in the server closet. It's a cron job. The key's pasted right into the crontab. Gary set it up. Gary also set up the marketing digest on there with the SendGrid key, same way."`,p};}]);
   if(i.shared&&!i.feedback)opts.push(["Did you get the incident I shared?",()=>{i.feedback=true;tl(1017,"Feedback submitted by "+P.dana+": key also used by the nas01 support summarizer cron");return {t:`"Yep, filled in the feedback form. I noted the nas01 cron so it's on the record."`};}]);
+  if(!S.f.mcpFixed&&INC(1017).opened)opts.push(["Can you take the key out of .mcp.json?",()=>{S.f.mcpFixed=true;advance(2);tl(1017,P.dana+" removed the key from .mcp.json and pushed (commit 9b2e7d1). It's still in git history.");
+    return {t:`"Done. .mcp.json reads it from the environment now, pushed to main." She winces. "It's still in the git history, though. Removing it from the file doesn't make it safe. The key itself has to be rotated."`};}]);
   {const o=aiHooksOption("dana");if(o)opts.push(o);}
   opts.push(["Never mind.",null]);return opts;}
 function raviOptions(){const opts=[];

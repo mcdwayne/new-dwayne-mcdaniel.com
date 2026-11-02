@@ -25,7 +25,7 @@ function ciCur(){for(const id of dayIncs(S.day)){if(!INC(id))continue;for(const 
 function resAward(id){if(INC(id).status==="RESOLVED"&&!INC(id).key.v1)aw(id,"resolved");}
 function revokeKey(id,how){const i=INC(id),d=DEF[id];i.key.v1=false;tl(id,how==="gg"?"Secret revoked from GitGuardian":`Secret revoked in ${PROVNAME[d.prov]}`);const p=aw(id,"revoke");
   advance(how==="gg"?2:3);if(S.dead)return {};const pb=PBK();
-  if(how==="gg"||pb.autoResolve){tl(id,"Validity re-checked: invalid");if(pb.autoResolve&&!["RESOLVED","IGNORED"].includes(i.status)&&i.created){i.status="RESOLVED";i.resolvedHow="revoked";tl(id,"Incident resolved by playbook: valid secret revoked");resAward(id);}}
+  if(how==="gg"||pb.autoResolve){tl(id,"Validity re-checked: invalid");i.vLast=false;i.vAt=short(S.t);if(pb.autoResolve&&!["RESOLVED","IGNORED"].includes(i.status)&&i.created){i.status="RESOLVED";i.resolvedHow="revoked";tl(id,"Incident resolved by playbook: valid secret revoked");resAward(id);}}
   const down=consOf(id).filter(k=>!healthy(id,k)&&i.cons[k].known);
   for(const k of down)msgBox(`ALERT ${d.cons[k].name}: credential rejected (401). It was still using the old ${d.det}.${{repay:"\n\nThe noon disbursement run depends on it.",api:"\n\nPassword reset emails are failing.",sync:"\n\nField teams sync at 1:00 PM.",release:"\n\nThe release train leaves at 2:00 PM."}[k]||""}`,"Pager");
   return {toast:`${p?"+"+p+" · ":""}Revoked. ${down.length?down.length+" known consumer(s) now failing.":"No known consumer broke."}`};}
@@ -33,10 +33,10 @@ function needPB(n,label){return PB.ok(n,label);}
 document.addEventListener("click",e=>{const b=e.target.closest("button,tr[data-openinc],tr[data-ep],[data-vsel],[data-vtab]");if(!b||b.disabled)return;const d=b.dataset;if(!document.getElementById("pcroot")||e.target.closest("#msglayer"))return;
   const R=()=>renderPC();
   if(d.pc==="ssh"){modal=null;PL().innerHTML="";return openTerm("nas01",{via:"pc"});}
-  if(d.pc){modal=null;if(d.pc==="gg"&&!WM.wins.some(w=>w.app==="gg"))ggRoute={page:"list"};openWin(d.pc);return R();}
+  if(d.pc){modal=null;if(d.pc==="gg"){if(!WM.wins.some(w=>w.app==="gg"))ggRoute={page:"list"};ggRefresh();}openWin(d.pc);return R();}
   if("pcclose" in d)return closePC();
   if(d.mail){mailSel=d.mail;return R();}
-  if(d.openinc){openWin("gg");ggRoute={page:"incident",id:d.openinc};const id=+d.openinc;if(DEF[id]&&INC(id)&&!INC(id).opened){INC(id).opened=true;aw(id,"open");tl(id,"Incident opened by you");}checkAwards();return R();}
+  if(d.openinc){openWin("gg");ggRoute={page:"incident",id:d.openinc};const id=+d.openinc;recheck(id,"automatically");if(DEF[id]&&INC(id)&&!INC(id).opened){INC(id).opened=true;aw(id,"open");tl(id,"Incident opened by you");}checkAwards();return R();}
   if(d.gg){openWin("gg");ggRoute={page:d.gg};if(S.dead)return after();return R();}
   if(d.ggmap){ggRoute={page:"map",id:d.ggmap};return R();}
   if(d.ep){openWin("gg");ggRoute={page:"endpoint",host:d.ep};return R();}
@@ -45,10 +45,11 @@ document.addEventListener("click",e=>{const b=e.target.closest("button,tr[data-o
   if(d.ggshare){if(INC(+d.ggshare).shared)return;modal={k:"share",id:+d.ggshare};return R();}
   if(d.ggm){const [k,id]=d.ggm.split(":");modal={k,id:+id};return R();}
   if(d.ggreopen)return pcAct(()=>{INC(+d.ggreopen).status="TRIGGERED";tl(+d.ggreopen,"Incident reopened");return {toast:"Reopened."};});
-  if(d.ggcheck)return pcAct(()=>{const id=+d.ggcheck,i=INC(id);i.checked=true;tl(id,"Validity checked: "+(i.key.v1?"valid":"invalid"));const p=aw(id,"check");advance(2);
+  if(d.ggrefresh)return pcAct(()=>{ggRefresh("on refresh");return {toast:"Validity and presence re-checked."};});
+  if(d.ggcheck)return pcAct(()=>{const id=+d.ggcheck,i=INC(id);i.checked=true;i.vLast=!!i.key.v1;i.vAt=short(S.t);tl(id,"Validity checked: "+(i.key.v1?"valid":"invalid"));const p=aw(id,"check");advance(2);
     if(!i.key.v1&&PBK().autoResolve&&!["RESOLVED","IGNORED"].includes(i.status)){i.status="RESOLVED";i.resolvedHow="revoked";tl(id,"Incident resolved by playbook: valid secret revoked");resAward(id);}
     return {toast:(p?`+${p} · `:"")+"Validity: "+(i.key.v1?"Valid. It works.":"Invalid.")};});
-  if(d.ggpresence)return pcAct(()=>{const id=+d.ggpresence;INC(id).presence=true;if(id===1017)award("presence",1);tl(id,"Presence check: present in default branch");return {toast:"Still present in the repository."};});
+  if(d.ggpresence)return pcAct(()=>{const id=+d.ggpresence,i=INC(id),p=presentNow(id);i.presence={p,at:short(S.t)};if(id===1017)award("presence",1);tl(id,"Presence check: "+(p?"present in default branch":"no longer in default branch (still in git history)"));return {toast:p?"Still present in the repository.":"Gone from the default branch, but still in git history: rotate the key."};});
   if(d.ggnote)return pcAct(()=>{const v=(document.getElementById("ggnote")||{}).value||"Remediation in progress";tl(+d.ggnote,"Note: "+v);const men=Object.values(P).filter(n=>new RegExp("@"+n.split(" ")[0],"i").test(v));if(men.length)tl(+d.ggnote,"Mentioned "+men.join(", ")+" (notified by email)");return {toast:men.length?"Note added. "+men.join(", ")+" notified.":"Note added."};});
   if(d.ggowner)return pcAct(()=>{const id=+d.ggowner;INC(id).owner=P.amara;tl(id,"Owner set: "+P.amara+" (Mapwende)");const p=award("owner",3);return {toast:(p?`+${p} · `:"")+"Owner set."};});
   if(d.pb)return pcAct(()=>{const pb=PBK();pb[d.pb]=!pb[d.pb];return {toast:"Playbook "+(pb[d.pb]?"enabled.":"disabled.")};});

@@ -36,6 +36,7 @@ const PAGE = "file://" + path.join(__dirname, "..", "index.html");
     ["GitGuardian secrets managers", () => { GAME.openPC("gg"); document.querySelector('[data-gg="secmgr"]').click(); }],
     ["GitGuardian perimeter", () => { GAME.openPC("gg"); document.querySelector('[data-gg="perimeter"]').click(); }],
     ["Vault", () => GAME.openPC("vault")],
+    ["Vault integrations", () => { GAME.openPC("vault"); document.querySelector('[data-vtab="integrations"]').click(); }],
     ["CI/CD", () => GAME.openPC("ci")],
     ["Slack", () => GAME.openPC("slack")],
     ["GitHub", () => GAME.openPC("github")],

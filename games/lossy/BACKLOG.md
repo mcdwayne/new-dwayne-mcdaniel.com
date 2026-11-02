@@ -36,6 +36,8 @@ Last updated: 2026-11-02
 |  |  |  |  | D-25 LR-26 Rotate SendGrid and GitHub from Vault after the first manual rotation |
 |  |  |  |  | D-26 LR-27 Four-day week: Friday is ULTIMATE, scored out of 400 |
 |  |  |  |  | D-27 LR-28 Save code on every end-of-day screen |
+|  |  |  |  | D-28 LR-29 Validity and presence re-checked on every open and refresh |
+|  |  |  |  | D-29 LR-30 Vault › Integrations: provider options and rotation status |
 
 Ready means the card is clear enough to start. Backlog means it needs a decision or design first (see Open questions).
 
@@ -71,6 +73,8 @@ Ready means the card is clear enough to start. Backlog means it needs a decision
 | LR-26 | Rotate SendGrid and GitHub keys from Vault after the first manual rotation | Done | S | LR-13 | Once you've made a new SendGrid or GitHub key yourself and it's the current version in Vault, Vault shows Rotate now; it makes and stores a fresh key and revokes the previous one; consumers reading from Vault keep working, hardcoded copies break and page you | Scored? (Built unscored) |
 | LR-27 | ULTIMATE is also the last day of the week (Friday), with the week scored out of 400; it stays playable on its own | Done | M | none | New week runs Tuesday to Friday; Thursday ends with Go home, Friday is ULTIMATE; scores add up to 400 with ranks scaled; ULTIMATE on its own stays out of 100; Friday save codes tell the two apart; LR-PERF-FRI; every description updated | none |
 | LR-28 | Show the save code at the end of each day | Done | S | LR-07 | End-of-day, death and end-of-week screens show the code with a Copy button and explain that it brings anyone back to that moment, with no back end | none |
+| LR-29 | Presence and validity checks re-run every time GitGuardian is opened or refreshed, matching reality | Done | S | none | Opening GitGuardian, opening an incident or pressing Refresh re-checks validity (and presence once checked); results show a checked-at time; changes land on the timeline; Dana can take the key out of .mcp.json so presence can really change (still in git history) | none |
+| LR-30 | Make the Vault-to-provider integration options visible | Done | S | LR-26 | Vault has an Integrations › Rotation page, always available, showing for GitHub, SendGrid, OpenAI and Google Cloud what Vault can really do (scheduled rotation, the community GitHub engine, no SendGrid engine, manual-only OpenAI, the Google Cloud engine), the status of each and what's missing, with Rotate now when ready; incidents point to it | none |
 
 ## Done
 
@@ -103,5 +107,7 @@ Ready means the card is clear enough to start. Backlog means it needs a decision
 | D-25 | LR-26: Rotate now in Vault for SendGrid and GitHub, unlocked by one manual rotation stored in Vault; Vault consumers survive, hardcoded copies break and page you | 2026-11-02 |
 | D-26 | LR-27: Four-day week: Thursday leads into Friday ULTIMATE; week scored out of 400 with scaled ranks; ULTIMATE on its own still out of 100; Thursday leftovers go to on-call; console tabs reset each day; Friday save codes record week vs standalone; LR-PERF-FRI | 2026-11-02 |
 | D-27 | LR-28: Save code with Copy on every end-of-day screen (win, loss, end of week); explains anyone can load it and there's no back end | 2026-11-02 |
+| D-28 | LR-29: Validity and presence re-checked on opening GitGuardian, opening an incident, or Refresh; checked-at times; timeline notes changes; Dana can remove the key from .mcp.json (presence changes, history remains) | 2026-11-02 |
+| D-29 | LR-30: Vault › Integrations › Rotation page with real per-provider options and status; Rotate now from there; incident Secrets manager line points to it | 2026-11-02 |
 
 Release-note audit (Nov 2025 to Oct 2026): see docs/RELEASE-COVERAGE.md.

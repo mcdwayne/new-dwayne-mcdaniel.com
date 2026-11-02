@@ -144,3 +144,16 @@ The real-world numbers in Part 2 come from GitGuardian's State of Secrets Sprawl
 The incident page follows the product's layout, based on GitGuardian's interactive demo. It has Overview, Occurrences, Remediation and Activity tabs, and an Incident details panel on the right. The exploration map is the first card on Overview. Clicking it opens the full map: consumers on the left, the secret in the middle, and the resources it can reach on the right. Once the secret is in Vault, lossy-vault appears under it, with the path and version, and consumers that read from Vault connect through it. A secret that isn't vaulted shows no vault on the map.
 
 For SendGrid and GitHub keys, once a player has made a new key by hand and stored it as the current version in Vault, Vault shows **Rotate now**. Rotation stores a fresh key and revokes the previous one. Consumers reading from Vault keep working, and hardcoded copies break and page the player. It isn't scored.
+
+Vault's **Integrations › Rotation** page, always available, lays out what Vault can really do for each provider, the status of each option, and what's missing:
+
+- **GitHub:** scheduled rotation, plus the community GitHub secrets engine, which issues one-hour GitHub App tokens. It's described as the long-term fix and isn't installed.
+- **SendGrid:** scheduled rotation only. There's no Vault engine.
+- **OpenAI:** manual rotation only.
+- **Google Cloud:** the official secrets engine. A keyless identity is better still.
+
+**Rotate now** appears there once a provider is ready.
+
+## Validity and presence stay current
+
+Validity and presence are re-checked whenever GitGuardian is opened, an incident is opened, or **↻ Refresh** is pressed on the incident. Each result shows the time it was checked, and any change is written on the timeline. Revoking a key at the provider (outside GitGuardian) shows up as Invalid the next time GitGuardian looks, or straight away if the auto-resolve playbook is on. On Tuesday, Dana can take the key out of `.mcp.json`. Presence then reads "Removed from default branch", but the key is still in git history, so it still has to be rotated.

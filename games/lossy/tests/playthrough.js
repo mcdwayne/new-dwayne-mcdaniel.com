@@ -146,12 +146,12 @@ async function ult(h,variant){const {$,cmd,pc,sh,pick,bye,revoke,say,G,click,d}=
      for(const id of g.dayIncs?[]:[]){}const ids={2:[1102,1103],3:[1219],4:[1401,1402,1403]}[day];for(const id of ids){g.openPC("gg");d.querySelector('[data-gg="list"]').click();const r=d.querySelector(`[data-openinc="${id}"]`);if(r){r.click();chk("incident "+id);}else bad.push("no row "+id);}}
    say("  broken frame on:",bad.join(", ")||"none");if(bad.length)G().S.dead="frame-broken";else G().S.dayWon=true;});
  if(which==="all"||which==="rotate")await play("VAULT ROTATION FOR SENDGRID AND GITHUB (LR-26)",async h=>{const {$,click,say,G,w,d,pc}=h;click($('[data-tt="new"]'));click($('[data-namego]'));h.drain();const g=G();g.restoreFromCode("LR-PERF-WED");h.drain();
-   const S=g.S;const i=S.incs[1103];i.created=true;i.opened=true;g.openPC("vault");d.querySelector('[data-vsel="kv/plimbo/sendgrid"]')&&d.querySelector('[data-vsel="kv/plimbo/sendgrid"]').click();const before=!!$('[data-vrotate="1103"]');
+   const S=g.S;const i=S.incs[1103];i.created=true;i.opened=true;g.openPC("vault");d.querySelector('[data-vsel="kv/plimbo/sendgrid"]')&&d.querySelector('[data-vsel="kv/plimbo/sendgrid"]').click();const before=!!$('[data-vrotate="1103"]');d.querySelector('[data-vtab="integrations"]').click();const intBefore=/Not set up/.test(d.querySelector('.win.act').textContent)&&!$('[data-vrotate="1103"]');
    i.key.v1=false;i.key.v2=true;i.v2made=true;S.vault["kv/plimbo/sendgrid"]=["v1","v2"];i.cons.api.on="vault";i.cons.api.pending=null;S.incs[1103].cons.digest.known=true;
-   g.openPC("vault");d.querySelector('[data-vsel="kv/plimbo/sendgrid"]').click();const shown=!!$('[data-vrotate="1103"]');const digestBefore=w.eval("conOn(1103,'digest')");
+   g.openPC("vault");d.querySelector('[data-vtab="integrations"]').click();const intAfter=!!$('[data-vrotate="1103"]');d.querySelector('[data-vsel="kv/plimbo/sendgrid"]').click();const shown=!!$('[data-vrotate="1103"]');const digestBefore=w.eval("conOn(1103,'digest')");
    pc('[data-vrotate="1103"]');const apiOk=w.eval("healthy(1103,'api')");const ver=S.vault["kv/plimbo/sendgrid"].length;const hardBroke=w.eval("conOn(1103,'digest')")==="hard-v1"||!w.eval("healthy(1103,'digest')");
    say("  button before manual rotation:",before,"| after:",shown,"| rotations:",i.rot,"versions:",ver,"| api on Vault healthy:",apiOk,"| digest:",digestBefore);
-   if(!before&&shown&&i.rot===1&&ver===3&&apiOk)S.dayWon=true;else S.dead="rotate-failed";});
+   say("  Integrations page: not set up before:",intBefore,"| Rotate now after:",intAfter);if(!before&&intBefore&&intAfter&&shown&&i.rot===1&&ver===3&&apiOk)S.dayWon=true;else S.dead="rotate-failed";});
  if(which==="all"||which==="tutorial")await play("TRAINING LEVEL (LR-24)",async h=>{const {$,click,cmd,pc,say,G,wait,d}=h;
    const hasBtn=!!$('[data-tt="tut"]');click($('[data-tt="tut"]'));await wait(50);const g=G();const n=()=>g.TUT.n;const tick=()=>wait(320);const log=[];
    click($("[data-tutnext]"));await tick();log.push(n());cmd("use monitor");await tick();log.push(n());pc('[data-pc="gg"]');await tick();log.push(n());pc("[data-pcclose]");await tick();log.push(n());
@@ -162,10 +162,19 @@ async function ult(h,variant){const {$,cmd,pc,sh,pick,bye,revoke,say,G,click,d}=
    click($("[data-tutnext]"));await wait(50);const named=!!$("#namein");
    say("  other doors locked:",locked,"| button:",hasBtn,"| steps seen:",log.join(","),"| reached end:",!!atEnd,"| score 0:",noScore,"| no death:",noDeath,"| saved:",!!saved,"| Start Tuesday asks for a name:",named);
    if(locked&&hasBtn&&atEnd&&noScore&&noDeath&&!saved&&named)S.dayWon=true;else S.dead="tutorial-failed";});
+ if(which==="all"||which==="recheck")await play("VALIDITY AND PRESENCE RE-CHECK ON OPEN (LR-29)",async h=>{const {$,click,cmd,pc,pick,bye,say,G,d}=h;click($('[data-tt="new"]'));click($('[data-namego]'));h.drain();
+   cmd("use monitor");pc('[data-pc="gg"]');pc('[data-openinc="1017"]');pc('[data-ggpresence="1017"]');const p1=G().S.incs[1017].presence.p;pc('[data-pcclose]');
+   cmd("go hallway");cmd("go dev pit");cmd("talk dana");pick("take the key out");bye();cmd("go hallway");cmd("go desk");
+   const tlHas=re=>G().S.incs[1017].timeline.some(x=>re.test(x[1]));cmd("use monitor");pc('[data-pc="gg"]');const p2=G().S.incs[1017].presence.p;const autoP=tlHas(/Presence re-checked automatically: no longer/);
+   pc('[data-pc="ai"]');pc('[data-pnew="1017"]');pc('[data-mpnew="1017"]');pc('[data-mclose]');pc('[data-prevoke="1017:v1"]');pc('[data-mprevoke="1017:v1"]');h.drain();
+   const before=tlHas(/Validity re-checked automatically: invalid/);pc('[data-pc="gg"]');pc('[data-gg="list"]');pc('[data-openinc="1017"]');const after=tlHas(/Validity re-checked[^:]*: invalid/);
+   const shown=/Invalid/.test(d.querySelector('.win.act').textContent);pc('[data-ggrefresh="1017"]');
+   say("  presence first:",p1,"| after Dana's fix, on reopen:",p2,"(timeline:",autoP+") | provider revoke seen only after reopening:",!before,"->",after,"| shows Invalid:",shown);
+   if(p1===true&&p2===false&&autoP&&after&&shown)G().S.dayWon=true;else G().S.dead="recheck-failed";});
  if(which==="all"||which==="ult")await play("ULTIMATE: by the book",async h=>ult(h));
  if(which==="all"||which==="ultorder")await play("ULTIMATE: revoke before Vault token",async h=>ult(h,"order"));
  if(which==="all"||which==="ultreset")await play("ULTIMATE: reset the honeytoken",async h=>ult(h,"reset"));
  if(which==="all"||which==="ultearly")await play("ULTIMATE: inventory before isolating",async h=>ult(h,"early"));
- const want={"FOUR-DAY WEEK":["won"],"TRAINING LEVEL":["won"],"VAULT ROTATION":["won"],"MONITOR FRAME":["won"],"PERFECT-START":["won"],"PUSH TO VAULT":["won"],"NAME + IN-PERSON":["won"],"USE AND TALK":["won"],"SAVE CODES":["won"],"SLACK THE DEVELOPER":["won"],"NAS01 OVER SSH":["won"],"AI HOOKS STOP":["won"],"ULTIMATE: AI hooks":["playbook"],"WEEK":["won"],"DAY 2 TRAP":["restolen"],"ULTIMATE: by the book":["won"],"ULTIMATE: revoke":["playbook"],"ULTIMATE: reset":["playbook"],"ULTIMATE: inventory":["playbook"]};
+ const want={"VALIDITY AND PRESENCE":["won"],"FOUR-DAY WEEK":["won"],"TRAINING LEVEL":["won"],"VAULT ROTATION":["won"],"MONITOR FRAME":["won"],"PERFECT-START":["won"],"PUSH TO VAULT":["won"],"NAME + IN-PERSON":["won"],"USE AND TALK":["won"],"SAVE CODES":["won"],"SLACK THE DEVELOPER":["won"],"NAS01 OVER SSH":["won"],"AI HOOKS STOP":["won"],"ULTIMATE: AI hooks":["playbook"],"WEEK":["won"],"DAY 2 TRAP":["restolen"],"ULTIMATE: by the book":["won"],"ULTIMATE: revoke":["playbook"],"ULTIMATE: reset":["playbook"],"ULTIMATE: inventory":["playbook"]};
  const bad=RESULTS.filter(r=>{const k=Object.keys(want).find(k=>r.name.startsWith(k));if(!k)return !!r.errors.length;const w=want[k][0];return r.errors.length||(w==="won"?!r.won:r.dead!==w);});
  console.log(bad.length?`\nFAILED: ${bad.map(r=>r.name).join(", ")}`:`\nAll ${RESULTS.length} playthroughs behaved as expected.`);process.exit(bad.length?1:0);})();
