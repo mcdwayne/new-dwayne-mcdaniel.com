@@ -77,11 +77,12 @@ button,input,select,textarea{font:inherit;color:inherit}
 /* GitGuardian-like dashboard (structure follows the documented incident page) */
 .gg{display:grid;grid-template-columns:210px minmax(0,1fr);min-height:100%}
 @media (max-width:760px){.gg{grid-template-columns:minmax(0,1fr)}.gg nav{display:none}}
-.gg nav{background:#fff;border-right:1px solid #E3E6EC;padding:14px 10px;display:grid;align-content:start;gap:2px}
-.gg nav .ws{font:700 15px var(--f-ui);padding:4px 8px 12px}
-.gg nav .grp{font:600 11px var(--f-ui);text-transform:uppercase;letter-spacing:.06em;color:#545C6E;padding:10px 8px 4px}
-.gg nav button{background:none;border:0;text-align:left;padding:6px 8px;border-radius:6px;cursor:pointer;color:#2B3141;font:500 13.5px var(--f-ui)}
-.gg nav button[aria-current="page"]{background:#EEF1FF;color:#2D3FD8}
+.gg nav{background:#1B2233;border-right:1px solid #0E1320;padding:14px 10px;display:grid;align-content:start;gap:2px}
+.gg nav .ws{font:700 15px var(--f-ui);padding:4px 8px 12px;color:#fff}
+.gg nav .grp{font:600 11.5px var(--f-ui);color:#A9B1C4;padding:12px 8px 4px}
+.gg nav button{background:none;border:0;text-align:left;padding:6px 8px 6px 18px;border-radius:6px;cursor:pointer;color:#E6E9F0;font:500 13.5px var(--f-ui)}
+.gg nav button:hover{background:#262F45}
+.gg nav button[aria-current="page"]{background:#3A4560;color:#fff}
 .gg main{padding:18px 22px;display:grid;gap:14px;align-content:start;min-width:0}
 .crumb{font:13px var(--f-ui);color:#545C6E}.crumb button{background:none;border:0;color:#2D3FD8;cursor:pointer;padding:0;font:inherit}
 .gg h1{margin:0;font:600 22px/1.2 var(--f-ui)}
@@ -346,6 +347,51 @@ table.t tr.click{cursor:pointer}table.t tr.click:hover td{background:#F7F8FB}
   .parser{grid-column:2;grid-row:5;border:0}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* LR-25: incident page laid out like the product */
+.ggi{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:14px;align-items:start}
+.ggimain{display:grid;gap:12px;min-width:0}
+.ggpanels,.ggpanel{display:grid;gap:14px;min-width:0}
+.ggpanel[hidden]{display:none}
+.ggaside{background:#fff;border:1px solid #E3E6EC;border-radius:10px;padding:14px;display:grid;gap:10px;min-width:0}
+.ggaside h3{margin:0;font:600 14px var(--f-ui)}
+.ggaside .kv{grid-template-columns:96px minmax(0,1fr)}
+.ggact{display:flex;gap:6px;flex-wrap:wrap}
+.ggaside .kv dd{min-width:0}.ggaside .pill{white-space:normal;max-width:100%}
+.xcard{padding:0!important;overflow:hidden}
+.xtoggle{all:unset;box-sizing:border-box;width:100%;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 16px;cursor:pointer;font:500 13.5px var(--f-ui);color:#1B1F29}
+.xtoggle>span:first-child{display:grid;gap:2px}
+.xtoggle:focus-visible{outline:3px solid #2D3FD8;outline-offset:-3px}
+.xs{font-size:12px;color:#545C6E;font-weight:400}
+.xmap{display:grid;gap:12px;padding:12px 16px 16px;border-top:1px solid #E3E6EC;background-color:#FAFBFD;background-image:radial-gradient(#D7DCE6 1px,transparent 1px);background-size:16px 16px}
+.xh{font:600 12px var(--f-ui);color:#545C6E;margin-bottom:6px}
+.xcols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.xnodes{display:grid;gap:8px}
+.xrow .xnodes{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+.xnode{background:#fff;border:1px solid #D5DAE4;border-left:4px solid #9AA1B2;border-radius:8px;padding:8px 10px;display:grid;gap:3px;text-align:left;font:13px var(--f-ui);color:#1B1F29;min-width:0;overflow-wrap:anywhere}
+button.xnode{cursor:pointer}
+.xnode small{color:#545C6E;font-size:11.5px}
+.xnode.ok{border-left-color:#1D7A3D}.xnode.leak{border-left-color:#C27C0E}.xnode.down{border-left-color:#B42318}
+.xnode.empty{border-style:dashed;border-left-width:1px;background:#F7F8FB}
+.kv.fb{grid-template-columns:minmax(0,1fr)}.kv.fb dd{margin:0 0 6px;color:#1B1F29}
+@media (max-width:980px){.ggi{grid-template-columns:minmax(0,1fr)}.ggaside{order:-1}.xcols{grid-template-columns:minmax(0,1fr)}}
+
+/* LR-24: training coach */
+#coach{position:fixed;z-index:80;left:12px;top:12px;width:min(360px,calc(100vw - 24px));max-height:calc(100vh - 24px);overflow:auto;background:#fff;color:#111;border:4px double #0000AA;box-shadow:0 0 0 4px #fff,6px 6px 0 4px rgba(0,0,0,.5);padding:12px 14px;font:15px/1.45 var(--f-ui);display:grid;gap:8px}
+#coach .ch{display:flex;justify-content:space-between;font:15px var(--f-term);color:#0000AA}
+#coach .ct{font:600 17px var(--f-pix)}
+#coach .cx{white-space:pre-line}
+#coach .cb{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+#coach button{background:#C8C8C8;border:2px solid;border-color:#FFF #555 #555 #FFF;padding:6px 12px;font:15px var(--f-pix);cursor:pointer;color:#111}
+#coach button.sub{background:none;border-color:transparent;text-decoration:underline;padding:6px 4px}
+#coach .cw{font:15px var(--f-term);color:#555}
+#tutbox{position:fixed;z-index:79;pointer-events:none;border:4px solid #39FF14;border-radius:8px;box-shadow:0 0 0 2px #062B00,0 0 14px 4px rgba(57,255,20,.75);animation:tutp 1s ease-in-out infinite}
+#tutarrow{position:fixed;z-index:79;pointer-events:none;width:64px;height:40px;transform:rotate(var(--rot,0deg));filter:drop-shadow(0 0 6px rgba(57,255,20,.8));animation:tutb 1s ease-in-out infinite}
+#tutarrow svg{display:block}
+@keyframes tutp{50%{border-color:#B6FF9E;box-shadow:0 0 0 2px #062B00,0 0 26px 10px rgba(57,255,20,.95)}}
+@keyframes tutb{50%{transform:rotate(var(--rot,0deg)) translateX(8px)}}
+@media (prefers-reduced-motion:reduce){#tutbox,#tutarrow{animation:none}}
+@media (max-width:760px){#coach{top:calc(6px + env(safe-area-inset-top,0px))!important;left:8px!important;right:8px;bottom:auto;width:auto;max-height:42vh;font-size:14px;padding:10px 12px}}
 </style>
 
 </head>
@@ -369,19 +415,19 @@ table.t tr.click{cursor:pointer}table.t tr.click:hover td{background:#F7F8FB}
 
 /* ============================== world constants ============================== */
 /* stamped by build.py: the same ID appears on the title screen, in the menu and on the landing page */
-const BUILD="a5116411";
+const BUILD="b28a19aa";
 const P={dana:"Dana Holm",ravi:"Ravi Okafor",amara:"Amara Diallo",coo:"Kofi Lopez",head:"Jae Ueda",isla:"Isla Dimitrov"};
 const COMPANY=["Lossy Inc","Lossy Incorporated","LOSSI"];
 const START=9*60;
 const DAYS={
  1:{name:"Tuesday",short:"Tue",title:"The Agent Committed It",npc:"dana",audit:210,
-   intro:()=>`Tuesday, 9:00 AM. ${COMPANY[0]}.\n\nYou're ${playerName()}, the newest member of the security team. ${P.head} is at a conference and left you the keys, figuratively. Your desk phone just buzzed: an email from GitGuardian.\n\nYOUR GOAL TODAY: kill the leaked key without breaking anything before the 12:00 disbursement run, then tell ${P.coo} it's handled.\n\nThis is day 1 of 3. Win or lose, tomorrow comes, and anything you leave broken comes with it.`},
+   intro:()=>`Tuesday, 9:00 AM. ${COMPANY[0]}.\n\nYou're ${playerName()}, the newest member of the security team. ${P.head} is at a conference and left you the keys, figuratively. Your desk phone just buzzed: an email from GitGuardian.\n\nYOUR GOAL TODAY: kill the leaked key without breaking anything before the 12:00 disbursement run, then tell ${P.coo} it's handled.\n\nThis is day 1 of 4. Win or lose, tomorrow comes, and anything you leave broken comes with it. Friday is ULTIMATE.`},
  2:{name:"Wednesday",short:"Wed",title:"The Worm in the Lockfile",npc:"ravi",audit:360,
    intro:()=>`Wednesday, 9:00 AM. ${COMPANY[1]}. Legal finished the rebrand overnight; the old letterhead is in the recycling.\n\nGitGuardian Public Monitoring caught two of your secrets in a brand-new public GitHub repository, plimbo-bot/env-dump-7f3a. A poisoned npm package, colorfmt 4.1.2, ran its install script inside Plimbo's CI last night, scooped up the environment, and published it.\n\nEvery CI run that still installs that package leaks whatever secrets it can see. Including new ones.\n\nYOUR GOAL TODAY: stop the worm, kill the stolen keys, and keep Plimbo's password resets and the 2:00 PM app-store release working. Then tell ${P.coo}.`},
  3:{name:"Thursday",short:"Thu",title:"Ghost of the Acquisition",npc:"amara",audit:360,
    intro:()=>`Thursday, 9:00 AM. ${COMPANY[2]}. The new logo is a lowercase "lossi" with no explanation.\n\nGitGuardian Public Monitoring found a Google Cloud service account key inside a public Docker image from Terravox, the mapping startup the company acquired in 2022. Nobody from Terravox works here anymore. Mapwende, the NGO line, runs on that project, and flood-response teams download offline maps at 1:00 PM.\n\nYOUR GOAL TODAY: kill the public key, keep Mapwende's maps flowing, and find whatever else still uses it. GitGuardian can't revoke Google Cloud keys for you, and nobody here has admin on that project. Yet.`},
  4:{name:"Friday",short:"ULT",title:"ULTIMATE: Patient Zero",npc:"ravi",audit:300,ultimate:true,
-   intro:()=>`Friday, 9:00 AM. ULTIMATE.\n\nAt 3:12 AM the decoy AWS key that Endpoint Protection planted on ${P.ravi}'s MacBook was used from an IP abroad. Nobody uses a decoy by accident: an infostealer is on that laptop.\n\nThe damage is already done. By 3:40 AM the attacker had used Ravi's GitHub token to clone private repositories and read secrets out of Vault with his Vault token. You can't undo that. You can only stop it going further.\n\nThere is exactly one way through: the incident playbook in your desk drawer (IR-07, Endpoint Compromise). Do every step, in order. Skip one, or do one early, and you lose.\n\nGo get the binder.`}};
+   intro:()=>`Friday, 9:00 AM. ULTIMATE${S&&S.week?", the last day of the week":""}.\n\nAt 3:12 AM the decoy AWS key that Endpoint Protection planted on ${P.ravi}'s MacBook was used from an IP abroad. Nobody uses a decoy by accident: an infostealer is on that laptop.\n\nThe damage is already done. By 3:40 AM the attacker had used Ravi's GitHub token to clone private repositories and read secrets out of Vault with his Vault token. You can't undo that. You can only stop it going further.\n\nThere is exactly one way through: the incident playbook in your desk drawer (IR-07, Endpoint Compromise). Do every step, in order. Skip one, or do one early, and you lose.\n\nGo get the binder.${S&&S.week?"\n\nAnything still open from Thursday goes to the on-call team today. IR-07 comes first.":""}`}};
 /* incident definitions: static facts. Runtime state lives in S.incs[id]. */
 const SG={det:"SendGrid API Key",prov:"sendgrid",revGG:true,sev:"Critical",dev:"ravi",line:"Plimbo",path:"kv/plimbo/sendgrid",field:"SENDGRID_API_KEY",v1:"SG.…Hq3d",v2:"SG.…Lm7e",ident:"sendgrid:plimbo-prod · Full Access",
   cons:{api:{name:"plimbo-api (password resets)",kind:"ci",repo:"plimbo-api",wf:"deploy",desc:"workload · prod"},
@@ -443,7 +489,7 @@ function conOn(id,k){const c=INC(id).cons[k],d=DEF[id].cons[k];
   if(d.kind==="vmenv")return vmState(id);
   return c.on;}
 function keyWorks(id,which){const k=INC(id).key;return which==="v1"?k.v1:which==="v2"?k.v2:false;}
-function healthy(id,k){const on=conOn(id,k);if(on==="hard-v1")return keyWorks(id,"v1");if(on==="hard-v2")return keyWorks(id,"v2");
+function healthy(id,k){const on=conOn(id,k);if(on==="hard-v1")return keyWorks(id,"v1");if(on==="hard-v2")return keyWorks(id,"v2")&&((INC(id).cons[k].rot||0)===(INC(id).rot||0));
   if(on==="vault"){const l=vlast(DEF[id].path);return !!l&&keyWorks(id,l);}if(on==="keyless")return true;return false;}
 const consOf=id=>Object.keys(DEF[id].cons);
 const allHealthy=id=>consOf(id).every(k=>healthy(id,k));
@@ -453,11 +499,14 @@ function dayIncs(d){return Object.keys(DEF).map(Number).filter(id=>d===4?DEF[id]
 function openIncs(){return dayIncs(S.day).filter(id=>!incDone(id));}
 function dayExtras(d){if(d===1)return !!INC(1017).logs;if(d===2)return S.f.contained;if(d===4)return S.f.isolated&&S.f.htRevoked&&PB.done();return true;}
 function dayDone(){const ds=S.day===4?[4]:[1,2,3].filter(d=>d<=S.day);if(!ds.every(dayExtras))return false;return dayIncs(S.day).every(id=>INC(id)&&incDone(id));}
-function award(k,day){day=day||S.day;if(day===4&&S.day!==4)return 0;const key=day+"."+k;if(S.got[key])return 0;const base=(POINTS[day]||{})[k];if(!base)return 0;S.got[key]=1;
+function award(k,day){if(S&&S.tut)return 0;day=day||S.day;if(day===4&&S.day!==4)return 0;const key=day+"."+k;if(S.got[key])return 0;const base=(POINTS[day]||{})[k];if(!base)return 0;S.got[key]=1;
   const p=day<S.day?Math.ceil(base/2):base;S.score[day]+=p;return p;}
 const got=(k,day)=>!!S.got[(day||S.day)+"."+k];
-const total=()=>S.score[1]+S.score[2]+S.score[3];
-const maxScore=()=>S.day===4?100:300;const shownScore=()=>S.day===4?S.score[4]:total();
+/* the week is four days (Friday is ULTIMATE, out of 400); ULTIMATE on its own is out of 100 */
+const total=()=>S.score[1]+S.score[2]+S.score[3]+(S.week?S.score[4]:0);
+const maxScore=()=>S.week?400:S.day===4?100:300;const shownScore=()=>S.day===4&&!S.week?S.score[4]:total();
+/* ULTIMATE's starting state: Ravi's stolen tokens and keys are the current ones in Vault */
+function setupUltimate(){for(const id of [1401,1402,1403])S.incs[id]=freshInc(id,false);S.vault["kv/plimbo/sendgrid"]=["v1"];S.vault["kv/plimbo/github"]=["v1"];S.incs[1402].cons.api.on="vault";}
 function tl(id,text){INC(id).timeline.push([short(S.t),text]);}
 function snapshot(label){snaps.push({label:label||"",t:S.t,day:S.day,s:JSON.stringify(S)});if(snaps.length>80)snaps.shift();}
 function mail(id,from,subj,t){if(S.mail.some(m=>m.id===id))return;S.mail.push({id,from,subj,time:short(t??S.t),day:S.day,read:false});}
@@ -478,7 +527,7 @@ function beginDay(d){S.day=d;S.t=0;S.room="desk";S.dead=null;S.dayWon=null;
   for(const id in S.incs)for(const k in S.incs[id].cons){const c=S.incs[id].cons[k];if(c.downSince!=null)c.downSince=0;}}
 
 /* ============================== time & consequences ============================== */
-function advance(min){if(S.dead||S.dayWon)return;const before=S.t;S.t+=min;const cross=x=>before<x&&S.t>=x;
+function advance(min){if(S.dead||S.dayWon)return;if(S.tut){S.t+=min;return;}/* training: no clock events, no deadlines */const before=S.t;S.t+=min;const cross=x=>before<x&&S.t>=x;
   const say2=(who,txt)=>msgBox(txt,who);
   for(const id of dayIncs(S.day)){if(!INC(id)||!INC(id).created)continue;for(const k of consOf(id)){const c=INC(id).cons[k];const h=healthy(id,k);if(!h&&c.downSince==null)c.downSince=S.t;if(h)c.downSince=null;}}
   /* day 1 story */
@@ -767,7 +816,7 @@ function readBinder(p){const L=ML();const w=document.createElement("div");w.clas
 /* the computer boots to Program Manager; after that it remembers which windows you left open */
 function useComputer(){if(WM.wins.some(w=>w.app!=="progman")){renderPC();return;}openPC("progman");}
 function sshNas(){if(!S.f.sshNote)return say("You don't have SSH details for nas01.");if(!S.f.nasFound)return say("The note says nas01. You don't know yet why you'd need it.");PL().innerHTML="";openTerm("nas01",{via:"pc"});}
-function go(room){advance(3);if(after())return;S.room=room;if(room==="closet")foundNas();S.seen[room]=1;draw();
+function go(room){if(S.tut&&room!=="hall"&&room!=="desk"){msgBox("Locked. During training only your office door opens: walk to the hallway and back.");return;}advance(3);if(after())return;S.room=room;if(room==="closet")foundNas();S.seen[room]=1;draw();
   if(room==="closet"&&!S.seen["closet"+S.day]){S.seen["closet"+S.day]=1;say("The server closet hums. In the corner, an old box on a cart has a green-screen console. Something on it runs on a schedule.");}}
 
 /* ============================== dialogue ============================== */
@@ -858,7 +907,7 @@ function apps(){const a=[["mail","Mail",S.mail.filter(m=>!m.read).length],["gg",
 const pill=(t,c)=>`<span class="pill ${c}">${t}</span>`;
 const STP={TRIGGERED:["Triggered","p-trig"],ASSIGNED:["Assigned","p-asg"],RESOLVED:["Resolved","p-res"],IGNORED:["Ignored","p-ign"]};
 const vpill=ok=>pill(ok?"Valid":"Invalid",ok?"p-valid":"p-invalid");
-function keyLabel(id,v){const d=DEF[id];return v==="v1"?d.v1:d.v2;}
+function keyLabel(id,v,n){const d=DEF[id];if(v==="v1")return d.v1;const k=n==null?(INC(id).rot||0):n;return k?d.v2.split("…")[0]+"…r"+k+"Xq":d.v2;}
 function onLabel(id,on){const d=DEF[id];return {"hard-v1":"hardcoded "+d.v1,"hard-v2":"hardcoded "+d.v2,vault:"from Vault",keyless:"attached service account (no key)",off:"job removed",broken:"misconfigured"}[on]||on;}
 function stepsOf(id){const i=INC(id),d=DEF[id],cs=consOf(id);const has=!!d.path;
   return {assess:i.checked&&known(id).length===cs.length,store:!has||(S.vault[d.path]||[]).length>0,
@@ -868,9 +917,9 @@ function stepsOf(id){const i=INC(id),d=DEF[id],cs=consOf(id);const has=!!d.path;
 const APPS={
 mail(){const list=S.mail.filter(m=>m.day===S.day||!m.read).slice().reverse();const m=list.find(x=>x.id===mailSel)||list[0];if(m)m.read=true;
   return `<div class="mail"><div class="list">${list.map(x=>`<button class="item ${x.read&&x!==m?"":"unread"}" data-mail="${x.id}" aria-current="${x===m}"><b>${esc(x.from)}</b><span>${esc(x.subj)}</span><small>${DAYS[x.day].short} ${x.time}</small></button>`).join("")}</div><div class="read">${m?`<h2 style="margin:0;font:600 18px var(--f-ui)">${esc(m.subj)}</h2><div style="color:#545C6E;font-size:13px">From ${esc(m.from)} · ${m.time}</div>${(MAIL[m.id]||(()=>""))()}`:"No mail."}</div></div>`;},
-gg(){const nav=[["Secrets",[["list","Incidents"],["perimeter","Perimeter"]]],["Endpoint protection",[["endpoints","Endpoints"]]],["Honeytoken",[["honeytokens","Honeytokens"]]],["NHI Governance",[["map","Exploration"],["inventory","Inventory"]]],["Settings",[["playbooks","Playbooks"],["workflow","Remediation workflow"],["secmgr","Secrets managers"]]]];
+gg(){const nav=[["",[["perimeter","Monitored perimeter"]]],["Internal monitoring",[["list","Secret incidents"]]],["Public monitoring",[["publist","Public secret incidents"]]],["Endpoint protection",[["endpoints","Endpoints"]]],["Honeytoken",[["honeytokens","Honeytokens"]]],["NHI governance",[["inventory","Inventory"],["map","Exploration"]]],["Settings",[["playbooks","Playbooks"],["workflow","Remediation workflow"],["secmgr","Secrets managers"]]]];
   const cur={incident:"list",endpoint:"endpoints",honeytoken:"honeytokens"}[ggRoute.page]||ggRoute.page;
-  return `<div class="gg"><nav><div class="ws">${COMPANY[Math.min(S.day,3)-1]}</div>${nav.map(([g,items])=>`<div class="grp">${g}</div>${items.map(([k,l])=>`<button data-gg="${k}" aria-current="${cur===k?"page":"false"}">${l}</button>`).join("")}`).join("")}</nav><main>${GG[ggRoute.page]()}</main></div>`;},
+  return `<div class="gg"><nav><div class="ws">${COMPANY[Math.min(S.day,3)-1]}</div>${nav.map(([g,items])=>`${g?`<div class="grp">${g}</div>`:""}${items.map(([k,l])=>`<button data-gg="${k}" aria-current="${cur===k?"page":"false"}">${l}</button>`).join("")}`).join("")}</nav><main>${GG[ggRoute.page]()}</main></div>`;},
 vault(){const paths=[...new Set(dayIncs(S.day).map(id=>DEF[id].path).filter(Boolean))];if(!vtSel||!paths.includes(vtSel)){const today=dayIncs(S.day).filter(x=>DEF[x].day===S.day&&DEF[x].path).map(x=>DEF[x].path);vtSel=today[0]||paths[paths.length-1];}
   const id=dayIncs(S.day).filter(x=>DEF[x].path===vtSel).pop();const d=DEF[id],i=INC(id),vals=S.vault[vtSel]||[],cur=vals[vals.length-1];
   const nav=`<nav><b>Vault</b><span>Secrets engines</span>${paths.map(p=>`<button class="vnav ${vtTab==="secrets"&&p===vtSel?"on":""}" data-vsel="${p}" aria-current="${vtTab==="secrets"&&p===vtSel?"page":"false"}">${p}</button>`).join("")}<button class="vnav ${vtTab==="tokens"?"on":""}" data-vtab="tokens" aria-current="${vtTab==="tokens"?"page":"false"}">Access › Tokens</button><button class="vnav ${vtTab==="audit"?"on":""}" data-vtab="audit" aria-current="${vtTab==="audit"?"page":"false"}">Audit log</button><span>Policies</span></nav>`;
@@ -882,9 +931,10 @@ vault(){const paths=[...new Set(dayIncs(S.day).map(id=>DEF[id].path).filter(Bool
   if(!id)return `<div class="vt">${nav}<main><div class="card">No secret paths in use today.</div></main></div>`;
   const leaf=vtSel.split("/").pop();
   return `<div class="vt">${nav}<main><div class="crumb">${vtSel.replace(/\//g," / ")}</div><div class="hdr"><h1 style="margin:0;font:600 22px var(--f-ui)">${leaf}</h1>${vals.length?`<button class="btn" data-vnew="${id}" ${i.key.v2&&cur!=="v2"?"":"disabled"} title="${i.key.v2?"":"Create a new credential at the provider first"}">Create new version</button>`:""}</div>
-  ${vals.length?`<div class="card"><h3>Current version: ${vals.length}</h3><dl class="kv"><dt>Key</dt><dd class="mono">${d.field}</dd><dt>Value</dt><dd class="mono">${keyLabel(id,cur)}  <span style="color:#545C6E">(${cur==="v1"?"the old key"+(i.key.v1?"":", revoked"):"the new key"})</span></dd></dl></div>
-   <div class="card"><h3>Version history</h3><div class="tw"><table class="t"><tr><th>Version</th><th>Value</th><th>Created</th></tr>${vals.map((v,n)=>`<tr><td>${n+1}</td><td class="mono">${keyLabel(id,v)}</td><td>${n===0&&S.day===4?"months ago":"today"}</td></tr>`).reverse().join("")}</table></div></div>
-   <div class="card"><h3>Consumers reading this path</h3>${consOf(id).filter(k=>conOn(id,k)==="vault").map(k=>`<div>${DEF[id].cons[k].name}</div>`).join("")||'<div style="color:#545C6E">None yet. Point consumers at <span class="mono">vault:'+vtSel+'#'+d.field+'</span>.</div>'}</div>`
+  ${vals.length?`<div class="card"><h3>Current version: ${vals.length}</h3><dl class="kv"><dt>Key</dt><dd class="mono">${d.field}</dd><dt>Value</dt><dd class="mono">${keyLabel(id,cur)}  <span style="color:#545C6E">(${cur==="v1"?"the old key"+(i.key.v1?"":", revoked"):i.rot?"rotated by Vault":"the new key"})</span></dd></dl></div>
+   <div class="card"><h3>Version history</h3><div class="tw"><table class="t"><tr><th>Version</th><th>Value</th><th>Created</th></tr>${vals.map((v,n)=>`<tr><td>${n+1}</td><td class="mono">${keyLabel(id,v,vals.slice(0,n).filter(x=>x==="v2").length-(v==="v2"?0:0))}</td><td>${n===0&&S.day===4?"months ago":"today"}</td></tr>`).reverse().join("")}</table></div></div>
+   <div class="card"><h3>Consumers reading this path</h3>${consOf(id).filter(k=>conOn(id,k)==="vault").map(k=>`<div>${DEF[id].cons[k].name}</div>`).join("")||'<div style="color:#545C6E">None yet. Point consumers at <span class="mono">vault:'+vtSel+'#'+d.field+'</span>.</div>'}</div>
+   ${rotReady(id)?`<div class="card"><h3>Rotation</h3><div style="font-size:13.5px">You rotated this ${DEF[id].det} by hand once, and the new key lives here. From now on Vault can do it: it calls ${DEF[id].prov==="github"?"GitHub":"SendGrid"} with a management credential, creates a fresh key, stores it as a new version and revokes the previous one. Anything reading from Vault picks up the new key; hardcoded copies stop working.</div><dl class="kv"><dt>Last rotated</dt><dd>${i.rotAt!=null?"today at "+short(i.rotAt)+" (rotation "+i.rot+")":"by hand, today"}</dd></dl><div><button class="btn pri" data-vrotate="${id}">Rotate now</button></div></div>`:""}`
   :`<div class="card"><h3>No secret at this path yet</h3><div style="color:#545C6E">Store the credential here so consumers read it from Vault instead of hardcoding it. Future rotations then only touch Vault.</div><div><button class="btn pri" data-vcreate="${id}">Create secret</button></div></div>`}</main></div>`;},
 ci(){const repos=[];for(const id of dayIncs(S.day)){if(!INC(id)||!INC(id).created&&S.day!==4)continue;for(const k of consOf(id)){const c=DEF[id].cons[k];if(c.kind==="ci")repos.push({repo:c.repo,id,k});}}
   if(!repos.length)return `<div class="ci"><main><div class="card">No pipelines involved yet.</div></main></div>`;
@@ -1133,48 +1183,78 @@ const AGENTSAY={1102:"Related. The public repository plimbo-bot/env-dump-7f3a wa
  1219:"Related (acquired company). Published to Docker Hub by the account terravox; Terravox is now part of Lossy Inc, and the service account belongs to terravox-maps-prod in your Google Cloud organization. The key is valid."};
 const MCP={"dana-mbp":["github","postgres-ledger"],"ravi-mbp":["github","filesystem"],"ravi-loaner":["github"],"amara-mbp":["mapbox"],"sec-thinkpad":["gitguardian"],"isla-mbp":[]};
 let ggQ="";
+/* LR-26: Vault can rotate SendGrid and GitHub keys once you've rotated one by hand and stored it */
+const rotReady=id=>{const d=DEF[id],i=INC(id);return (d.prov==="github"||d.prov==="sendgrid")&&!!i.v2made&&!!i.key.v2&&vlast(d.path)==="v2";};
 function incHay(id){const d=DEF[id];return [id,d.det,srcLabel(id),d.src.file||"",(d.src.files||[]).join(" "),d.src.author||"",d.src.where||"",d.src.repo||"",d.v1||"",d.path||""].join(" ").toLowerCase();}
 const INSTALL_CMD="curl -sSfL https://raw.githubusercontent.com/GitGuardian/ggshield/main/scripts/install/install.sh | bash -s -- --plugin machine_scan";
 const GG={
-list(){const q=ggQ.trim().toLowerCase();const rows=dayIncs(S.day).filter(id=>INC(id)&&INC(id).created&&(!q||incHay(id).includes(q.replace(/…/g,"")))).slice().reverse().map(id=>{const i=INC(id);return [id,DEF[id].det,srcLabel(id),i.status,i.key.v1?"Valid":"Invalid",sevOf(id),(DEF[id].day===S.day?"Today":DAYS[DEF[id].day].name)+(DEF[id].day<S.day?" (carried over)":"")];}).concat(S.day===4?[]:HIST_ROWS.filter(r=>!q||r.join(" ").toLowerCase().includes(q)));
-  return `<div class="hdr"><h1>Incidents</h1><span style="color:#545C6E;font-size:13px">Secrets · Internal and public monitoring</span></div>${S.day===4&&![1401,1402,1403].every(id=>INC(id).created)?`<div class="warnbox">Secrets found on endpoints don't become incidents automatically. Create them from <b>Endpoint protection › Endpoints</b>.</div>`:""}<form id="ggsearchf" class="ggsearch" role="search" style="display:flex;gap:6px"><input type="search" id="ggq" value="${esc(ggQ)}" aria-label="Search incidents" placeholder="Search by secret value, commit author, file path or source" style="flex:1;min-width:0;border:1px solid #CDD2DC;border-radius:6px;padding:6px 9px"><button class="btn" type="submit">Search</button>${ggQ?'<button class="btn" type="button" data-ggclear>Clear</button>':""}</form>${q?`<div style="font-size:12.5px;color:#545C6E">Secret values are hashed in your browser before they're sent. Showing incidents matching “${esc(ggQ)}”.</div>`:""}<div class="card" style="padding:0"><div class="tw"><table class="t"><tr><th>Incident</th><th>Status</th><th>Validity</th><th>Severity</th><th>Detected</th></tr>
+list(pubOnly){const q=ggQ.trim().toLowerCase();const rows=dayIncs(S.day).filter(id=>INC(id)&&INC(id).created&&(!pubOnly||DEF[id].src.kind==="public")&&(!q||incHay(id).includes(q.replace(/…/g,"")))).slice().reverse().map(id=>{const i=INC(id);return [id,DEF[id].det,srcLabel(id),i.status,i.key.v1?"Valid":"Invalid",sevOf(id),(DEF[id].day===S.day?"Today":DAYS[DEF[id].day].name)+(DEF[id].day<S.day?" (carried over)":"")];}).concat(S.day===4||pubOnly?[]:HIST_ROWS.filter(r=>!q||r.join(" ").toLowerCase().includes(q)));
+  return `<div class="hdr"><h1>${pubOnly?"Public secret incidents":"Secret incidents"}</h1><span style="color:#545C6E;font-size:13px">${pubOnly?"Public monitoring · found outside your perimeter":"Internal and public monitoring"}</span></div>${S.day===4&&![1401,1402,1403].every(id=>INC(id).created)?`<div class="warnbox">Secrets found on endpoints don't become incidents automatically. Create them from <b>Endpoint protection › Endpoints</b>.</div>`:""}<form id="ggsearchf" class="ggsearch" role="search" style="display:flex;gap:6px"><input type="search" id="ggq" value="${esc(ggQ)}" aria-label="Search incidents" placeholder="Search by secret value, commit author, file path or source" style="flex:1;min-width:0;border:1px solid #CDD2DC;border-radius:6px;padding:6px 9px"><button class="btn" type="submit">Search</button>${ggQ?'<button class="btn" type="button" data-ggclear>Clear</button>':""}</form>${q?`<div style="font-size:12.5px;color:#545C6E">Secret values are hashed in your browser before they're sent. Showing incidents matching “${esc(ggQ)}”.</div>`:""}<div class="card" style="padding:0"><div class="tw"><table class="t"><tr><th>Incident</th><th>Status</th><th>Validity</th><th>Severity</th><th>Detected</th></tr>
   ${rows.map(r=>`<tr class="click" data-openinc="${r[0]}"><td><b>${r[1]}</b><div style="color:#545C6E;font-size:12.5px">#${r[0]} · ${esc(r[2])}</div></td><td>${pill(...STP[r[3]])}</td><td>${pill(r[4],VALCLS(r[4]))}</td><td>${r[5]==="Critical"?pill("Critical","p-crit"):r[5]}</td><td>${r[6]}</td></tr>`).join("")||'<tr><td colspan="5" style="color:#545C6E">No incidents.</td></tr>'}</table></div></div>`;},
+publist(){return GG.list(true);},
 incident(){const id=+ggRoute.id;if(!DEF[id]||!INC(id))return `<div class="crumb"><button data-gg="list">Incidents</button> / #${ggRoute.id}</div><div class="card">A historical incident from an older scan. Important, but not today's fire.</div>`;
-  const i=INC(id),d=DEF[id],sd=stepsOf(id),open=i.status==="TRIGGERED"||i.status==="ASSIGNED";
+  /* LR-25: laid out like the product's incident page: tabs on the left, an Incident details panel on the right, the exploration map first */
+  const i=INC(id),d=DEF[id],sd=stepsOf(id),open=i.status==="TRIGGERED"||i.status==="ASSIGNED",tab=ggRoute.tab||"overview";
   const steps=[["Assess before acting","Review the secret's scope and privileges, identify dependent systems, understand the impact of revocation.",sd.assess],["Secure storage","Store the secret in a secrets manager.",sd.store],["Update code","Modify applications to retrieve the secret from secure storage.",sd.code],["Test & deploy","Deploy with non-regression testing; monitor that applications work.",sd.deploy],["Rotate & revoke","Generate a new credential, update it in the secrets manager, revoke the compromised secret.",sd.rotate],["Monitor & verify","Check access logs for unauthorized usage, verify dependent systems, document the incident.",sd.verify]];
   const occ=[];if(d.src.kind==="repo")occ.push([`lossy/${d.src.repo}`,d.src.file,d.src.commit,d.src.author,i.presence?pill("Present","p-trig"):`<button class="btn" data-ggpresence="${id}">Check presence</button>`]);
   if(d.src.kind==="public")occ.push(/hub\.docker\.com/.test(d.src.where)?["Docker Hub · "+d.src.where.replace("hub.docker.com/r/",""),d.src.file,"—","publisher: terravox",pill("Public","p-pub")]:[d.src.where,d.src.file,"—","public",pill("Public","p-pub")]);
   if(d.src.kind==="endpoint")occ.push(["Endpoint "+d.src.host,d.src.files.join(", "),"—",P.ravi,pill("On endpoint","p-trig")]);
   for(const [hk,hn] of [["nas01","nas01"],["tvx","tvx-legacy-01"]])for(const f of epFindings(hn))if(f.inc===id)occ.push(["Endpoint "+hn,f.path,"—","machine scan",pill(f.valid?"Valid":"Invalid",f.valid?"p-valid":"p-invalid")]);
   const dev=d.dev?P[d.dev]:null;const prov={ai:"the AI provider",github:"GitHub",sendgrid:"SendGrid",gcp:"Google Cloud",vaulttok:"Vault"}[d.prov];
-  return `<div class="crumb"><button data-gg="list">Incidents</button> / #${id}</div>
-  <div class="hdr"><div style="display:grid;gap:6px"><h1>${d.det}</h1><div style="display:flex;gap:6px;flex-wrap:wrap">${pill(...STP[i.status])} ${pill(sevOf(id),sevOf(id)==="Critical"?"p-crit":"p-tag")} ${i.tags.map(t=>pill(t,t==="Publicly leaked"?"p-pub":"p-tag")).join(" ")}${DEF[id].day<S.day?" "+pill("Carried over from "+DAYS[DEF[id].day].name,"p-asg"):""}</div></div>
-   <div style="display:flex;gap:6px;flex-wrap:wrap">${i.status==="TRIGGERED"?`<button class="btn" data-ggassign="${id}">Assign</button>`:""}${dev?`<button class="btn" data-ggshare="${id}">${i.shared?"Shared":"Share"}</button>`:""}${open?`<button class="btn" data-ggm="resolve:${id}">Resolve</button><button class="btn" data-ggm="ignore:${id}">Ignore</button>`:`<button class="btn" data-ggreopen="${id}">Reopen</button>`}</div></div>
-  <div class="card" style="grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px"><div style="font:700 28px var(--f-ui);color:${risk(id)>80?"#B42318":risk(id)>50?"#9A4A00":"#1D7A3D"}">${risk(id)}</div><div><b style="font-size:13.5px">Risk score</b><div style="font-size:13px;color:#545C6E">Drivers: ${riskWhy(id)}.</div></div><div style="font-size:18px;color:#6A7183" title="Feedback on the risk score">👍 👎</div></div>
-  <div class="cols"><div style="display:grid;gap:14px;min-width:0">
-   <div class="card"><h3>Occurrences (${occ.length})</h3><div class="tw"><table class="t"><tr><th>Source</th><th>File / location</th><th>Commit</th><th>Developer</th><th>Presence</th></tr>${occ.map(o=>`<tr>${o.map((x,n)=>`<td class="${n<3?"mono":""}">${x}</td>`).join("")}</tr>`).join("")}</table></div></div>
-   <div class="card"><h3>Remediation</h3><ol class="steps">${steps.map(([t,dd,ok])=>`<li class="${ok?"done":""}"><div><b>${t}</b><span>${dd}</span></div></li>`).join("")}</ol><div style="font-size:12.5px;color:#545C6E">Default remediation workflow · GET /v1/remediation-workflow</div></div>
-   <div class="card"><h3>Impacted perimeter</h3><dl class="kv"><dt>Secret presence</dt><dd>${d.src.kind==="repo"?(i.presence||!i.key.v1?"1 occurrence requiring code fix":"1 occurrence requiring code fix"):d.src.kind==="public"?"public source (outside your perimeter)":"endpoint files (outside git)"}</dd><dt>Workloads using it</dt><dd>${known(id).length} known${consOf(id).some(k=>!i.cons[k].known)?" · map may be incomplete":""}</dd></dl></div>
-   <div class="card"><h3>Timeline</h3><ul class="tl">${i.timeline.slice().reverse().map(([t,x])=>`<li><time>${t}</time><span>${esc(x)}</span></li>`).join("")}</ul>
-    <div style="display:flex;gap:6px"><input type="text" id="ggnote" placeholder="Leave a note" style="flex:1;border:1px solid #CDD2DC;border-radius:6px;padding:6px 9px"><button class="btn" data-ggnote="${id}">Add note</button></div></div></div>
-  <div style="display:grid;gap:14px;min-width:0"><div class="card"><h3>Secret</h3><dl class="kv"><dt>Detector</dt><dd>${d.det}</dd><dt>Validity</dt><dd>${vpill(i.key.v1)} <button class="btn" data-ggcheck="${id}" style="padding:2px 8px">Check validity</button></dd><dt>Severity</dt><dd><select id="ggsevsel" aria-label="Severity" style="border:1px solid #CDD2DC;border-radius:6px;padding:2px 6px">${["Critical","High","Medium","Low","Info","Unknown"].map(v=>`<option ${v===sevOf(id)?"selected":""}>${v}</option>`).join("")}</select> <button class="btn" data-ggsev="${id}" style="padding:2px 8px">Set</button></dd><dt>Public exposure</dt><dd>${[d.src.kind==="public"?"Source is publicly visible":null,i.public?"Has linked public incident":null,i.public&&d.src.kind!=="repo"?"Found outside perimeter":null].filter(Boolean).join(" · ")||"None"}</dd><dt>Assignee</dt><dd>${i.assignee||"Unassigned"}</dd><dt>Environment</dt><dd>${ENVOF(id)}</dd><dt>Secrets manager</dt><dd>${vaulted(id)?pill("Vaulted","p-tag")+` <span style="font-size:12.5px;color:#545C6E">lossy-vault · ${d.path}</span>`:d.path?(i.key.v1?`Not vaulted <button class="btn" data-ggpush="${id}" style="padding:2px 8px">Push to vault</button>`:`Not vaulted <span style="font-size:12.5px;color:#545C6E">(the leaked value is revoked; store the new key from Vault)</span>`):"Not vaulted"}</dd></dl>
+  const type=d.src.kind==="public"?"Public incident":d.src.kind==="endpoint"?"Endpoint incident":"Internal incident";
+  const crumb=d.src.kind==="public"?"Public monitoring › Public secret incidents":d.src.kind==="endpoint"?"Endpoint protection › Endpoint secret incidents":"Internal monitoring › Internal secret incidents";
+  const vaultCell=vaulted(id)?pill("Vaulted","p-tag")+` <span style="font-size:12.5px;color:#545C6E">lossy-vault · ${d.path}${rotReady(id)?" · rotation available in Vault":""}</span>`:d.path?(i.key.v1?`Not vaulted <button class="btn" data-ggpush="${id}" style="padding:2px 8px">Push to vault</button>`:`Not vaulted <span style="font-size:12.5px;color:#545C6E">(the leaked value is revoked; store the new key from Vault)</span>`):"Not vaulted";
+  /* exploration map: consumers · secrets managers · accessed resources, collapsed by default */
+  const hid=consOf(id).some(k=>!i.cons[k].known);
+  const mapCard=`<div class="card xcard"><button class="xtoggle" data-ggmap="${id}"><span><b>Exploration map</b><span class="xs">${known(id).length} consumer(s) · ${vaulted(id)?"in lossy-vault":"no secrets manager"} · ${prov}</span></span><span aria-hidden="true">›</span></button></div>`;
+  const panel=(k,html)=>`<div class="ggpanel" data-panel="${k}" ${tab===k?"":"hidden"}>${html}</div>`;
+  const overview=`${mapCard}
+   <div class="card" style="grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px"><div style="font:700 28px var(--f-ui);color:${risk(id)>80?"#B42318":risk(id)>50?"#9A4A00":"#1D7A3D"}">${risk(id)}</div><div><b style="font-size:13.5px">Risk score</b><div style="font-size:13px;color:#545C6E">Drivers: ${riskWhy(id)}.</div></div><div style="font-size:18px;color:#6A7183" title="Feedback on the risk score">👍 👎</div></div>
+   <div class="card"><h3>Secret details</h3><dl class="kv"><dt>Detector</dt><dd>${d.det}</dd><dt>Secret validity</dt><dd>${vpill(i.key.v1)} <button class="btn" data-ggcheck="${id}" style="padding:2px 8px">Check validity</button></dd><dt>Identity</dt><dd class="mono" style="overflow-wrap:anywhere">${d.ident}</dd><dt>Environment</dt><dd>${ENVOF(id)}</dd><dt>Public exposure</dt><dd>${[d.src.kind==="public"?"Source is publicly visible":null,i.public?"Has linked public incident":null,i.public&&d.src.kind!=="repo"?"Found outside perimeter":null].filter(Boolean).join(" · ")||"None"}</dd><dt>Secrets manager</dt><dd>${vaultCell}</dd><dt>Owner</dt><dd>${i.owner||(id===1219?'<span style="color:#B42318">None (departed: bram@terravox.io)</span>':(dev||"Platform team"))}${id===1219&&!i.owner?` <button class="btn" data-ggowner="${id}" style="padding:2px 8px">Set owner: ${P.amara}</button>`:""}</dd></dl>
     ${i.key.v1?(d.revGG?`<button class="btn danger" data-ggm="revoke:${id}">Revoke</button><div style="font-size:12.5px;color:#545C6E">Revocable by GitGuardian (requires a Valid secret and Full access; the Secret Revocation setting must be on). Revoking may have dramatic side effects; assess the impact first. GitGuardian re-runs the validity check afterwards; most revocation APIs don't confirm success explicitly.</div>`:`<div class="warnbox">GitGuardian can't revoke this secret type. Revoke or rotate it in ${prov}.</div>`):pill(i.key.del?"Deleted":"Revoked","p-res")}</div>
-   <div class="card"><h3>Identity</h3><div class="mono" style="overflow-wrap:anywhere">${d.ident}</div><dl class="kv"><dt>Owner</dt><dd>${i.owner||(id===1219?'<span style="color:#B42318">None (departed: bram@terravox.io)</span>':(dev||"Platform team"))}${id===1219&&!i.owner?` <button class="btn" data-ggowner="${id}" style="padding:2px 8px">Set owner: ${P.amara}</button>`:""}</dd></dl>${consOf(id).length?`<div><button class="btn" data-ggmap="${id}">Open exploration map</button></div>`:""}</div>
    ${AGENTSAY[id]?`<div class="card"><h3>Analysis <span style="font-weight:400;font-size:12px;color:#545C6E">· GitGuardian agents · Beta</span></h3><dl class="kv"><dt>Company-related</dt><dd>${pill("Related","p-crit")}</dd><dt>Agents' risk score</dt><dd>${risk(id)}</dd></dl><div style="font-size:13px">${AGENTSAY[id]}</div></div>`:""}
-   ${similarOf(id).length?`<div class="card"><h3>Similar incidents</h3><div style="font-size:13px;color:#545C6E">Grouped by ML: ${DEF[id].src.kind==="endpoint"?"same endpoint and leak window":"same source and leak window"}. Remediate them together.</div><div style="display:flex;gap:6px;flex-wrap:wrap">${similarOf(id).map(x=>`<button class="btn" data-openinc="${x}">#${x} ${DEF[x].det}</button>`).join("")}</div></div>`:""}
-   ${dev?`<div class="card"><h3>Feedback</h3>${i.feedback?`<dl class="kv"><dt>From</dt><dd>${dev}</dd><dt>Is it an actual secret?</dt><dd>Yes</dd><dt>Additional remarks</dt><dd>${{1017:"Key is also used by the support ticket summarizer cron on nas01 (server closet). Not in any repo.",1103:"The SendGrid key is also pasted into the digest cron on nas01.",1102:"Only the plimbo-ios release job uses it."}[id]||"Nothing else uses it as far as I know."}</dd></dl>`:i.shared?`<div style="font-size:13.5px;color:#545C6E">Shared with ${dev}. Ask them about it.</div>`:'<div style="font-size:13.5px;color:#545C6E">Share the incident with the developer to collect feedback.</div>'}</div>`:""}</div></div>`;},
+   ${similarOf(id).length?`<div class="card"><h3>Similar incidents</h3><div style="font-size:13px;color:#545C6E">Grouped by ML: ${d.src.kind==="endpoint"?"same endpoint and leak window":"same source and leak window"}. Remediate them together.</div><div style="display:flex;gap:6px;flex-wrap:wrap">${similarOf(id).map(x=>`<button class="btn" data-openinc="${x}">#${x} ${DEF[x].det}</button>`).join("")}</div></div>`:""}`;
+  const occurrences=`<div class="card"><h3>Occurrences (${occ.length})</h3><div class="tw"><table class="t"><tr><th>Source</th><th>File / location</th><th>Commit</th><th>Developer</th><th>Presence</th></tr>${occ.map(o=>`<tr>${o.map((x,n)=>`<td class="${n<3?"mono":""}">${x}</td>`).join("")}</tr>`).join("")}</table></div></div>`;
+  const fbRemark={1017:"Key is also used by the support ticket summarizer cron on nas01 (server closet). Not in any repo.",1103:"The SendGrid key is also pasted into the digest cron on nas01.",1102:"Only the plimbo-ios release job uses it."}[id]||"Nothing else uses it as far as I know.";
+  const remediation=`<div class="card"><h3>Remediation</h3><ol class="steps">${steps.map(([t,dd,ok])=>`<li class="${ok?"done":""}"><div><b>${t}</b><span>${dd}</span></div></li>`).join("")}</ol><div style="font-size:12.5px;color:#545C6E">Default remediation workflow · GET /v1/remediation-workflow</div></div>
+   <div class="card"><h3>Impacted perimeter</h3><dl class="kv"><dt>Secret presence</dt><dd>${d.src.kind==="repo"?"1 occurrence requiring code fix":d.src.kind==="public"?"public source (outside your perimeter)":"endpoint files (outside git)"}</dd><dt>Workloads using it</dt><dd>${known(id).length} known${hid?" · map may be incomplete":""}</dd></dl></div>
+   ${dev?`<div class="card"><h3>Feedback</h3>${i.feedback?`<div style="font-size:12.5px;color:#545C6E">${dev}</div><dl class="kv fb"><dt>How would you categorize this incident?</dt><dd>It's a secret</dd><dt>Was it valid when leaked?</dt><dd>It was valid</dd><dt>Is this a personal secret?</dt><dd>It's not a personal secret</dd><dt>Does this secret give access to sensitive information or services?</dt><dd>It gives direct access to sensitive data</dd><dt>Additional comment</dt><dd>${fbRemark}</dd></dl>`:i.shared?`<div style="font-size:13.5px;color:#545C6E">Shared with ${dev}. Ask them about it.</div>`:'<div style="font-size:13.5px;color:#545C6E">Share the incident with the developer to collect feedback (Share, top right).</div>'}</div>`:""}`;
+  const activity=`<div class="card"><h3>Activity</h3><ul class="tl">${i.timeline.slice().reverse().map(([t,x])=>`<li><time>${t}</time><span>${esc(x)}</span></li>`).join("")}</ul>
+    <div style="display:flex;gap:6px"><input type="text" id="ggnote" aria-label="Leave a note" placeholder="Leave a note (type @ to mention someone)" style="flex:1;min-width:0;border:1px solid #CDD2DC;border-radius:6px;padding:6px 9px"><button class="btn" data-ggnote="${id}">Add note</button></div></div>`;
+  const aside=`<aside class="ggaside" aria-label="Incident details"><h3>Incident details</h3><dl class="kv"><dt>Type</dt><dd>${type}</dd><dt>Status</dt><dd>${pill(...STP[i.status])}</dd></dl>
+    <div class="ggact">${open?`<button class="btn pri" data-ggm="resolve:${id}">Resolve</button><button class="btn" data-ggm="ignore:${id}">Ignore</button>`:`<button class="btn" data-ggreopen="${id}">Reopen</button>`}</div>
+    <dl class="kv"><dt>Assignee</dt><dd>${i.assignee||"Unassigned"}${i.status==="TRIGGERED"?` <button class="btn" data-ggassign="${id}" style="padding:2px 8px">Assign to me</button>`:""}</dd><dt>First occurred</dt><dd>${(i.timeline[0]||["9:00"])[0]}${DEF[id].day<S.day?" · "+DAYS[DEF[id].day].name:""}</dd>
+    <dt>Severity</dt><dd><select id="ggsevsel" aria-label="Severity" style="border:1px solid #CDD2DC;border-radius:6px;padding:2px 6px">${["Critical","High","Medium","Low","Info","Unknown"].map(v=>`<option ${v===sevOf(id)?"selected":""}>${v}</option>`).join("")}</select> <button class="btn" data-ggsev="${id}" style="padding:2px 8px">Set</button></dd><dt>Set by</dt><dd>${i.severity?"Manually set":"Automatically set"}</dd>
+    <dt>Tags</dt><dd style="display:flex;gap:4px;flex-wrap:wrap">${i.tags.map(t=>pill(t,t==="Publicly leaked"?"p-pub":"p-tag")).join(" ")||"—"}</dd><dt>Developer involved</dt><dd>${esc(d.src.author||dev||"—")}</dd></dl></aside>`;
+  return `<div class="crumb" style="display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap"><span>${crumb} › <button data-gg="list">#${id}</button></span>${dev?`<button class="btn" data-ggshare="${id}">${i.shared?"Shared":"Share"}</button>`:""}</div>
+  <div class="hdr"><div style="display:grid;gap:6px"><h1>${d.det}</h1><div style="display:flex;gap:6px;flex-wrap:wrap">${pill(...STP[i.status])} ${pill(sevOf(id),sevOf(id)==="Critical"?"p-crit":"p-tag")}${DEF[id].day<S.day?" "+pill("Carried over from "+DAYS[DEF[id].day].name,"p-asg"):""}</div></div></div>
+  <div class="ggi"><div class="ggimain"><div class="tabs ggtabs" aria-label="Incident sections"><button data-ggtab="overview" aria-pressed="${tab==="overview"}">Overview</button><button data-ggtab="occ" aria-pressed="${tab==="occ"}">Occurrences (${occ.length})</button><button data-ggtab="rem" aria-pressed="${tab==="rem"}">Remediation</button><button data-ggtab="act" aria-pressed="${tab==="act"}">Activity</button></div>
+   <div class="ggpanels">${panel("overview",overview)}${panel("occ",occurrences)}${panel("rem",remediation)}${panel("act",activity)}</div></div>${aside}</div>`;},
 map(){const ids=dayIncs(S.day).filter(x=>INC(x)&&INC(x).created&&consOf(x).length);const id=+(ggRoute.id||ids[ids.length-1]);if(!id)return `<h1>Exploration</h1><div class="card">No identities to explore yet.</div>`;
   const i=INC(id),d=DEF[id];if(!i.map){i.map=true;aw(id,"map");tl(id,"Exploration map viewed");}
-  const nodes=known(id).map(k=>[k,d.cons[k].name,d.cons[k].desc]);const hid=consOf(id).some(k=>!i.cons[k].known);const n=nodes.length+(hid?1:0);
-  const W=720,H=320,cx=W/2,cy=150;const at=j=>{const a=-Math.PI/2+(j+.5)*2*Math.PI/n;return [cx+Math.cos(a)*250,cy+Math.sin(a)*110];};
-  const col=k=>!healthy(id,k)?"#B42318":conOn(id,k)==="hard-v1"?"#C27C0E":"#1D7A3D";const unk=hid?at(nodes.length):null;
-  return `<div class="crumb">NHI Governance / Exploration</div><div class="hdr"><h1 style="overflow-wrap:anywhere">${d.ident.split(" ")[0]}</h1><div style="display:flex;gap:6px;flex-wrap:wrap">${ids.map(x=>`<button class="btn ${x===id?"pri":""}" data-ggmap="${x}">#${x}</button>`).join("")}<button class="btn" data-openinc="${id}">Back to incident</button></div></div>
-  <div class="card map"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Exploration map">
-   ${nodes.map((nd,j)=>{const p=at(j);return `<line x1="${cx}" y1="${cy}" x2="${p[0]}" y2="${p[1]}" stroke="${col(nd[0])}" stroke-width="2"/>`;}).join("")}${unk?`<line x1="${cx}" y1="${cy}" x2="${unk[0]}" y2="${unk[1]}" stroke="#9AA1B2" stroke-dasharray="5 5"/>`:""}
-   <rect x="${cx-120}" y="${cy-26}" width="240" height="52" rx="10" fill="#fff" stroke="#2D3FD8" stroke-width="2"/><text x="${cx}" y="${cy-4}" text-anchor="middle" font-family="Inter" font-size="14" font-weight="600" fill="#1B1F29">${d.det}</text><text x="${cx}" y="${cy+15}" text-anchor="middle" font-family="Inter" font-size="12" fill="#545C6E">${i.key.v1?"old key active":"old key revoked"}${i.key.v2?" · new key active":""}${d.path&&(S.vault[d.path]||[]).length?" · in Vault":""}</text>
-   ${nodes.map((nd,j)=>{const p=at(j),k=nd[0];return `<rect x="${p[0]-100}" y="${p[1]-22}" width="200" height="44" rx="8" fill="#fff" stroke="${col(k)}" stroke-width="2"/><text x="${p[0]}" y="${p[1]-4}" text-anchor="middle" font-family="Inter" font-size="12.5" font-weight="600" fill="#1B1F29">${nd[1]}</text><text x="${p[0]}" y="${p[1]+13}" text-anchor="middle" font-family="Inter" font-size="11" fill="#545C6E">${healthy(id,k)?{"hard-v1":"uses leaked key","hard-v2":"uses new key (hardcoded)",vault:"reads from Vault",keyless:"keyless"}[conOn(id,k)]:"DOWN"}</text>`;}).join("")}
-   ${unk?`<rect x="${unk[0]-95}" y="${unk[1]-20}" width="190" height="40" rx="8" fill="#F7F8FB" stroke="#9AA1B2" stroke-dasharray="4 4"/><text x="${unk[0]}" y="${unk[1]+4}" text-anchor="middle" font-family="Inter" font-size="12" fill="#545C6E">Unmapped sources may exist</text>`:""}</svg>
-   <div style="font-size:13px;color:#545C6E">Workloads using this credential, from integrated sources. ${unk?"Some hosts aren't integrated with GitGuardian, so the map can be incomplete: ask the developer, check provider usage, or look around.":""} Amber: on the leaked key. Green: moved. Red: down.</div></div>`;},
+  /* columns, like the product's map: consumers · the secret (and the vault it lives in, only if it's vaulted) · what it accesses */
+  const cons=known(id);const hid=consOf(id).some(k=>!i.cons[k].known);const inVault=vaulted(id);const rows=cons.length+(hid?1:0);
+  const W=760,rowH=64,H=Math.max(240,rows*rowH+60),colX=[20,290,560],nw=190,nh=46;
+  const col=k=>!healthy(id,k)?"#B42318":conOn(id,k)==="hard-v1"?"#C27C0E":"#1D7A3D";
+  const lab=k=>healthy(id,k)?{"hard-v1":"uses the leaked key","hard-v2":"new key, hardcoded",vault:"reads from Vault",keyless:"keyless (no key)"}[conOn(id,k)]||conOn(id,k):"DOWN";
+  const cy=r=>40+r*rowH;const secY=inVault?H/2-70:H/2-nh/2,vY=H/2+24,resY=H/2-nh/2;
+  const box=(x,y,w,stroke,t1,t2,dash)=>`<rect x="${x}" y="${y}" width="${w}" height="${nh}" rx="8" fill="${dash?"#F7F8FB":"#fff"}" stroke="${stroke}" stroke-width="2"${dash?' stroke-dasharray="4 4"':""}/><text x="${x+10}" y="${y+19}" font-family="Inter" font-size="12.5" font-weight="600" fill="#1B1F29">${esc(t1)}</text><text x="${x+10}" y="${y+35}" font-family="Inter" font-size="11" fill="#545C6E">${esc(t2)}</text>`;
+  const line=(x1,y1,x2,y2,c,dash)=>`<path d="M${x1} ${y1} C${(x1+x2)/2} ${y1}, ${(x1+x2)/2} ${y2}, ${x2} ${y2}" fill="none" stroke="${c}" stroke-width="2"${dash?' stroke-dasharray="5 5"':""}/>`;
+  let svg="";const secMid=secY+nh/2,vMid=vY+nh/2;
+  cons.forEach((k,r)=>{const y=cy(r);const toV=inVault&&conOn(id,k)==="vault";svg+=line(colX[0]+nw,y+nh/2,colX[1],toV?vMid:secMid,col(k));});
+  if(hid)svg+=line(colX[0]+nw,cy(cons.length)+nh/2,colX[1],secMid,"#9AA1B2",true);
+  if(inVault)svg+=line(colX[1]+nw/2,vY,colX[1]+nw/2,secY+nh,"#1D7A3D");
+  svg+=line(colX[1]+nw,secMid,colX[2],resY+nh/2,i.key.v1?"#C27C0E":"#9AA1B2",!i.key.v1);
+  cons.forEach((k,r)=>{svg+=box(colX[0],cy(r),nw,col(k),d.cons[k].name,lab(k));});
+  if(hid)svg+=box(colX[0],cy(cons.length),nw,"#9AA1B2","Unmapped sources may exist","hosts not integrated",true);
+  svg+=box(colX[1],secY,nw,"#2D3FD8",d.det,(i.key.v1?"leaked key active":"leaked key revoked")+(i.key.v2?" · new key active":""));
+  if(inVault)svg+=box(colX[1],vY,nw,"#1D7A3D","lossy-vault · HashiCorp Vault",`${d.path} · v${(S.vault[d.path]||[]).length}`);
+  const ACC={ai:"OpenAI skoupmouz-prod",github:"GitHub org lossy",sendgrid:"SendGrid account plimbo",gcp:"GCP terravox-maps-prod",vaulttok:"Vault kv/plimbo/*"};
+  svg+=box(colX[2],resY,180,"#6A7183",ACC[d.prov]||d.prov,"accessed resource");
+  const head=`<text font-family="Inter" font-size="12" font-weight="600" fill="#545C6E"><tspan x="${colX[0]}" y="22">Consumers</tspan><tspan x="${colX[1]}" y="22">${inVault?"Secret · Secrets manager":"Secret"}</tspan><tspan x="${colX[2]}" y="22">Accessed resources</tspan></text>`;
+  return `<div class="crumb">NHI governance / Exploration</div><div class="hdr"><h1 style="overflow-wrap:anywhere">${d.ident.split(" ")[0]}</h1><div style="display:flex;gap:6px;flex-wrap:wrap">${ids.map(x=>`<button class="btn ${x===id?"pri":""}" data-ggmap="${x}">#${x}</button>`).join("")}<button class="btn" data-openinc="${id}">Back to incident</button></div></div>
+  <div class="card map"><div class="tw"><svg viewBox="0 0 ${W} ${H}" style="min-width:620px" role="img" aria-label="Exploration map: ${cons.length} consumer(s)${inVault?", stored in lossy-vault":", not in a secrets manager"}">${head}${svg}</svg></div>
+   <div style="font-size:13px;color:#545C6E">Workloads using this credential, from integrated sources.${inVault?" Consumers that read from Vault connect through lossy-vault.":" Not in a secrets manager yet, so no vault appears on the map."} ${hid?"Some hosts aren't integrated with GitGuardian, so the map can be incomplete: ask the developer, check provider usage, or look around.":""} Amber: on the leaked key. Green: moved. Red: down.</div></div>`;},
 endpoints(){const rows=FLEET();const prot=rows.filter(r=>r[4]==="Protected").length;
   return `<div class="hdr"><h1>Endpoints</h1><span style="color:#545C6E;font-size:13px">Endpoint protection</span></div>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px"><div class="card"><h3>Endpoints scan</h3><div style="font:600 22px var(--f-ui)">${Math.round(100*rows.filter(r=>r[2]!=="Never").length/rows.length)}%</div></div><div class="card"><h3>Honeytoken protection</h3><div style="font:600 22px var(--f-ui)">${Math.round(100*prot/rows.length)}%</div></div><div class="card"><h3>AI hooks coverage</h3><div style="font:600 22px var(--f-ui)">${(()=>{const w=rows.filter(r=>(AGENTS[r[0]]||[]).length);return Math.round(100*w.filter(r=>hooksOn(r[0])).length/Math.max(1,w.length));})()}%</div></div><div class="card"><h3>With critical findings</h3><div style="font:600 22px var(--f-ui)">${rows.filter(r=>/^[1-9]/.test(r[3])).length}</div></div></div>
@@ -1299,6 +1379,10 @@ document.addEventListener("click",e=>{const b=e.target.closest("button,tr[data-o
   if(d.mrevoke){const v=(document.getElementById("revtxt").value||"").trim().toLowerCase();if(v!=="revoke"){document.getElementById("reverr").innerHTML='<div class="errbox">Type revoke to confirm.</div>';return;}
     return pcAct(()=>{modal=null;const id=+d.mrevoke;if(!needPB(5,"revoke a stolen credential"))return {};return revokeKey(id,"gg");});}
   if(d.ggpush){modal={k:"pushvault",id:+d.ggpush};return R();}
+  if(d.ggtab){ggRoute=Object.assign({},ggRoute,{tab:d.ggtab});return R();}
+  if(d.vrotate)return pcAct(()=>{const id=+d.vrotate,dd=DEF[id],i=INC(id);if(!rotReady(id))return {};i.rot=(i.rot||0)+1;i.rotAt=S.t;S.vault[dd.path].push("v2");tl(id,`Rotated by Vault: new ${dd.det} (${keyLabel(id,"v2")}) stored as version ${S.vault[dd.path].length}; the previous key was revoked`);advance(1);if(S.dead)return {};
+    const down=consOf(id).filter(k=>!healthy(id,k)&&i.cons[k].known);for(const k of down)msgBox(`ALERT ${dd.cons[k].name}: credential rejected (401). It had a hardcoded copy of the key Vault just rotated away.`,"Pager");
+    return {toast:`Rotated. Version ${S.vault[dd.path].length} is live${down.length?"; "+down.length+" hardcoded consumer(s) broke.":"; everything reading from Vault kept working."}`};});
   if(d.mpush)return pcAct(()=>{const id=+d.mpush,dd=DEF[id];modal=null;if(!needPB(6,"write a secret to Vault"))return {};if(vaulted(id))return {toast:"Already vaulted."};
     tl(id,"Push to vault requested: lossy-vault "+dd.path);S.vault[dd.path]=["v1"];advance(1);if(S.dead)return {};tl(id,"ggscout sync-secrets wrote "+dd.path+"#"+dd.field+"; GitGuardian notified of successful vaulting");INC(id).tags=[...new Set(INC(id).tags.concat(["Vaulted"]))];const p=aw(id,"vault");vaultWrite(dd.path,"v1");
     return {toast:`${p?"+"+p+" · ":""}Pushed to vault. ggscout wrote it to ${dd.path} and the incident is tagged Vaulted.`};});
@@ -1331,7 +1415,7 @@ document.addEventListener("click",e=>{const b=e.target.closest("button,tr[data-o
   if("ciedit" in d){modal={k:"ciedit"};return R();}
   if("mciedit" in d)return pcAct(()=>{const v=document.querySelector('input[name=cis]:checked');if(!v)return {toast:"Pick a value."};const r=ciCur();if(!needPB(7,"update a consumer"))return {};INC(r.id).cons[r.k].pending=v.value;modal=null;advance(2);return {toast:"Secret updated. Run the workflow to roll it out."};});
   if("cirun" in d)return pcAct(()=>{const r=ciCur();if(!needPB(7,"run a workflow with updated credentials"))return {};const c=INC(r.id).cons[r.k],dc=DEF[r.id].cons[r.k];const worm=S.day===2&&!S.f.contained&&/^plimbo/.test(ciRepo);advance(6);if(S.dead)return {};
-    if(c.pending){c.on=c.pending;c.pending=null;}const ok=healthy(r.id,r.k);c.downSince=ok?null:c.downSince;
+    if(c.pending){c.on=c.pending;c.pending=null;if(c.on==="hard-v2")c.rot=INC(r.id).rot||0;}const ok=healthy(r.id,r.k);c.downSince=ok?null:c.downSince;
     const eff=c.on==="hard-v2"||(c.on==="vault"&&vlast(DEF[r.id].path)==="v2");if(worm&&eff&&S.f.restolenAt==null)S.f.restolenAt=S.t+20;
     ciRun={repo:ciRepo,lines:[["✓ checkout","ok"],["✓ npm ci","ok"]].concat(worm?[["> colorfmt@4.1.2 postinstall: node ./setup.js","bad"]]:[]).concat([[ok?"✓ test (42 passed)":"✗ test: credential rejected (401)",ok?"ok":"bad"],[ok?"✓ "+dc.wf+" "+dc.name:"⊘ "+dc.wf+" skipped",ok?"ok":"bad"]])};
     return {toast:ok?dc.name+" ran and is healthy.":dc.name+" can't authenticate."};});
@@ -1564,7 +1648,7 @@ document.addEventListener("click",e=>{const b=e.target.closest("[data-here]");if
   const s=roomSpots(S.room).find(x=>x.id===id);interact(s&&s.exit&&verb!=="look"?"walk":{walk:"walk",look:"look",hand:"use",talk:"talk"}[verb],id);after();});
 const goalEl=()=>document.getElementById("goal");
 document.addEventListener("click",e=>{if(e.target.closest("#goalTxt")){goalEl().classList.toggle("open");}});
-function updateBar(){if(!S)return;renderHere();document.getElementById("stScore").textContent=`Score: ${shownScore()} of ${maxScore()}`;document.getElementById("stTitle").textContent=`${DAYS[S.day].name} · ${ROOMNAME[S.room]}`;document.getElementById("stTime").textContent=hhmm(S.t);
+function updateBar(){if(!S)return;renderHere();document.getElementById("stScore").textContent=S.tut?"Training · no score":`Score: ${shownScore()} of ${maxScore()}`;document.getElementById("stTitle").textContent=`${DAYS[S.day].name} · ${ROOMNAME[S.room]}`;document.getElementById("stTime").textContent=hhmm(S.t);
   const n=nextStep(),g=document.getElementById("goal");g.classList.toggle("urgent",!!n.u);document.getElementById("goalTxt").textContent=(n.win?"★ ":n.u?"! ":"Next: ")+n.t;const gc=goalCount();document.getElementById("goalBtn").textContent=S.day===4?`IR-07 ${gc[0]}/${gc[1]}`:`Checklist ${gc[0]}/${gc[1]}`;}
 function draw(){if(!S)return;g.clearRect(0,0,320,170);SCENES[S.room]();updateBar();}
 function spotAt(ev){const r=cv.getBoundingClientRect();const x=(ev.clientX-r.left)*320/r.width,y=(ev.clientY-r.top)*170/r.height;
@@ -1608,7 +1692,8 @@ document.addEventListener("click",e=>{const b=e.target.closest("[data-mn]");if(!
    A game condenses to 32 bits, shown as 8 hex digits: LR-XXXX-XXXX.
      bits  0-1   level (0 Tuesday, 1 Wednesday, 2 Thursday, 3 ULTIMATE)
      bits  2-7   in-game time, in 6-minute steps (0 to 63, so 9:00 AM to 3:18 PM)
-     bits  8-9   whether Tuesday and Wednesday were won (only meaningful on later days)
+     bits  8-9   Tuesday to Thursday: whether Tuesday and Wednesday were won. Friday (level 3): 0 means ULTIMATE on its own;
+                 1 to 3 means Friday of the week, with that many of Tuesday to Thursday won (lossy: 0 won is stored as 1)
      bits 10-26  up to 17 milestones for the current level, in the order listed below
      bits 27-31  checksum: reported, not enforced (any code loads; a mismatch just gets a warning)
    It is lossy on purpose: it keeps what matters for play (where you are, what's fixed, what's broken) and drops
@@ -1701,7 +1786,7 @@ const MILESTONES={
     ["AI hooks on the loaner",()=>hooksOn("ravi-loaner"),()=>{S.f.aiHooks=S.f.aiHooks||{};S.f.aiHooks["ravi-loaner"]=true;award("aihooks",4);}]]};
 const scCheck=d=>(Math.imul(d>>>0,2654435761)>>>27)&31;
 function encodeSave(){if(!S)return null;const lvl=S.day-1;const slot=Math.min(63,Math.round(S.t/SC_SLOT));
-  const prev=(S.results[1]==="won"?1:0)|(S.results[2]==="won"?2:0);
+  const prev=S.day===4?(S.week?Math.max(1,[1,2,3].filter(d=>S.results[d]==="won").length):0):(S.results[1]==="won"?1:0)|(S.results[2]==="won"?2:0);
   let ms=0;(MILESTONES[S.day]||[]).forEach((m,n)=>{let ok=false;try{ok=!!m[1]();}catch(e){}if(ok)ms|=1<<n;});
   const data=(lvl|(slot<<2)|(prev<<8)|(ms<<10))>>>0;const v=(data|(scCheck(data)<<27))>>>0;
   const h=v.toString(16).toUpperCase().padStart(8,"0");return `LR-${h.slice(0,4)}-${h.slice(4)}`;}
@@ -1716,20 +1801,23 @@ function decodeSave(code){const raw=String(code||"").trim();const h=raw.toUpperC
 /* rebuild a game from a code */
 function finishDay(d){/* canonical "won" state for an earlier day */
   if(d===1){const i=INC(1017);SC.open(1017);SC.check(1017);S.f.agentStopped=true;S.f.drawer=true;if(!S.inv.includes("badge"))S.inv.push("badge");SC.known(1017,"cron");SC.newKey(1017);SC.vault(1017,"v2");for(const k of ["repay","ledger","cron"])SC.onVault(1017,k);SC.revoke(1017);SC.logs(1017);SC.resolve(1017);award("kofi",1);}
-  if(d===2){for(const id of [1102,1103]){SC.open(id);SC.revoke(id);SC.newKey(id);SC.vault(id,"v2");SC.logs(id);SC.resolve(id);}S.f.contained=true;award("contain",2);SC.known(1103,"digest");for(const [id,k] of [[1102,"release"],[1103,"api"],[1103,"digest"]])SC.onVault(id,k);award("kofi",2);}}
+  if(d===2){for(const id of [1102,1103]){SC.open(id);SC.revoke(id);SC.newKey(id);SC.vault(id,"v2");SC.logs(id);SC.resolve(id);}S.f.contained=true;award("contain",2);SC.known(1103,"digest");for(const [id,k] of [[1102,"release"],[1103,"api"],[1103,"digest"]])SC.onVault(id,k);award("kofi",2);}
+  if(d===3){MILESTONES[3].slice(0,14).forEach(m=>m[2]());award("kofi",3);}}
 /* Perfect-start codes: LR-PERF-TUE, LR-PERF-WED, LR-PERF-THU, LR-PERF-ULT start that level at 9:00 AM with every earlier day
    at a perfect 100 (all fixes, all bonuses). They're reserved words, not 32-bit codes, so normal codes keep their meaning. */
-const PERFECT={TUE:1,WED:2,THU:3,ULT:4};
-const perfectOf=code=>{const m=/^LR[-\s]*PERF(?:ECT)?[-\s]*(TUE|WED|THU|ULT)\w*$/i.exec(String(code||"").trim());return m?PERFECT[m[1].toUpperCase()]:0;};
+const PERFECT={TUE:1,WED:2,THU:3,FRI:5,ULT:4};
+const perfectOf=code=>{const m=/^LR[-\s]*PERF(?:ECT)?[-\s]*(TUE|WED|THU|FRI|ULT)\w*$/i.exec(String(code||"").trim());return m?PERFECT[m[1].toUpperCase()]:0;};
 function perfectDay(d){finishDay(d);const ms=MILESTONES[d]||[];
   if(d===1){S.f.drawer=true;S.f.agentStopped=true;S.f.sshNote=true;for(const x of ["badge","sticky note"])if(!S.inv.includes(x))S.inv.push(x);
     const e=S.hosts.nas01.ep;e.inst=true;e.scanned=true;e.ht=true;e.scannedAt="Tue";S.f.aiHooks=S.f.aiHooks||{};S.f.aiHooks["dana-mbp"]=true;S.f.setupInPerson=true;
     const i=INC(1017);i.assignee=S.player||"You";i.shared=true;i.feedback=true;}
+  if(d===3){S.f.aiHooks=S.f.aiHooks||{};S.f.aiHooks["amara-mbp"]=true;S.f.sshNote=true;}
   if(d===2){S.f.aiHooks=S.f.aiHooks||{};S.f.aiHooks["ravi-mbp"]=true;for(const id of [1102,1103]){const i=INC(id);i.assignee=S.player||"You";i.shared=true;i.feedback=true;i.map=true;}}
   for(const k of Object.keys(POINTS[d]))award(k,d);}
 function restoreFromCode(code){const pd=perfectOf(code);if(pd)return restorePerfect(pd);const r=decodeSave(code);S=fresh();snaps=[];
-  if(r.day===4){for(const id of [1401,1402,1403])S.incs[id]=freshInc(id,false);S.vault={"kv/plimbo/sendgrid":["v1"],"kv/plimbo/github":["v1"]};S.incs[1402].cons.api.on="vault";beginDay(4);}
-  else{for(let d=1;d<r.day;d++){beginDay(d);const won=d===1?(r.prev&1):(r.prev&2);if(won){finishDay(d);S.results[d]="won";}else S.results[d]="lost:audit";}beginDay(r.day);}
+  if(r.day===4&&!r.prev){S.vault={};setupUltimate();beginDay(4);}
+  else if(r.day===4){S.week=true;for(let d=1;d<=3;d++){beginDay(d);if(d<=r.prev){finishDay(d);S.results[d]="won";}else S.results[d]="lost:audit";}setupUltimate();beginDay(4);}
+  else{S.week=true;for(let d=1;d<r.day;d++){beginDay(d);const won=d===1?(r.prev&1):(r.prev&2);if(won){finishDay(d);S.results[d]="won";}else S.results[d]="lost:audit";}beginDay(r.day);}
   S.inv=S.inv.length?S.inv:[];if(r.day>1&&!S.inv.includes("badge"))S.inv.push("badge");
   (MILESTONES[r.day]||[]).forEach((m,n)=>{if(r.ms&(1<<n))m[2]();});
   S.t=r.t;for(const id in S.incs)for(const k in S.incs[id].cons){const c=S.incs[id].cons[k];c.downSince=healthy(+id,k)?null:Math.max(0,r.t-1);}
@@ -1739,9 +1827,10 @@ function restoreFromCode(code){const pd=perfectOf(code);if(pd)return restorePerf
     if(!S.dead&&r.t>=DAYS[S.day].audit)S.dead="audit";}
   save();return r;}
 function restorePerfect(day){const keep=S&&S.player;S=fresh();snaps=[];if(keep)S.player=keep;
-  if(day===4){for(const id of [1401,1402,1403])S.incs[id]=freshInc(id,false);S.vault={"kv/plimbo/sendgrid":["v1"],"kv/plimbo/github":["v1"]};S.incs[1402].cons.api.on="vault";beginDay(4);}
-  else{for(let d=1;d<day;d++){beginDay(d);perfectDay(d);S.results[d]="won";}beginDay(day);if(day>1&&!S.inv.includes("badge"))S.inv.push("badge");}
-  checkAwards();S.f.doneNotified={};save();return {day,t:0,prev:day===3?3:day===2?1:0,ms:0,checksumOk:true,hashed:false,perfect:true};}
+  if(day===4){S.vault={};setupUltimate();beginDay(4);}
+  else if(day===5){S.week=true;for(let d=1;d<=3;d++){beginDay(d);perfectDay(d);S.results[d]="won";}setupUltimate();beginDay(4);day=4;}
+  else{S.week=true;for(let d=1;d<day;d++){beginDay(d);perfectDay(d);S.results[d]="won";}beginDay(day);if(day>1&&!S.inv.includes("badge"))S.inv.push("badge");}
+  checkAwards();S.f.doneNotified={};save();return {day,t:0,prev:S.week&&day===4?3:day===3?3:day===2?1:0,ms:0,checksumOk:true,hashed:false,perfect:true};}
 function showSaveCode(){const L=ML();const w=document.createElement("div");w.className="msgwrap";const code=encodeSave();
   w.innerHTML=`<div class="msg" style="cursor:default"><b>Save code</b>\nWrite this down. Entering it on the title screen rebuilds this game: the day, the time (to the nearest 6 minutes) and everything you've fixed or broken so far. Points are recalculated.\n\n<span style="display:block;text-align:center;font:34px/1.2 var(--f-term);letter-spacing:.06em;user-select:all" id="sccode">${code}</span>\nIt fits in 32 bits.<div class="btns"><button data-sccopy>Copy</button><button data-scclose>Close</button></div></div>`;L.appendChild(w);}
 function askSaveCode(){const L=ML();const w=document.createElement("div");w.className="msgwrap";w.id="scask";
@@ -1753,7 +1842,7 @@ document.addEventListener("click",e=>{if(e.target.closest("[data-scclose]")){con
 document.addEventListener("submit",e=>{if(e.target.id!=="scform")return;e.preventDefault();const v=document.getElementById("scin").value;
   if(!v.trim()){document.getElementById("scerr").textContent="Type something. Anything.";return;}
   clearMsgs();const r=restoreFromCode(v);showGame();const D=DAYS[S.day];
-  if(r.perfect){msgBox(`Perfect start: ${D.name}, 9:00 AM.${S.day>1&&S.day<4?` Every earlier day is a perfect 100 (score ${total()} so far).`:""}`);return;}
+  if(r.perfect){msgBox(`Perfect start: ${D.name}, 9:00 AM.${S.week&&S.day>1?` Every earlier day is a perfect 100 (score ${total()} of 400 so far).`:""}`);return;}
   const note=r.hashed?`"${v.trim()}" isn't a save code, so it was turned into one (${encodeSave()}). Who knows what you'll get.`:r.checksumOk?"":"That code doesn't check out (a typo, or made up), so this may not be the game you meant. Loaded it anyway.";
   if(S.dead){msgBox(`${note?note+"\n\n":""}It's ${D.name}, ${hhmm(S.t)}, and you've arrived too late.`,null,()=>after());return;}
   msgBox(`${note?note+"\n\n":"Restored from "+v.trim().toUpperCase()+".\n\n"}It's ${D.name}, ${hhmm(S.t)}. ${(MILESTONES[S.day]||[]).filter((m,n)=>{try{return m[1]();}catch(e){return false;}}).length} of today's milestones are done. The blue bar shows what's next.`);});
@@ -1761,34 +1850,37 @@ document.addEventListener("submit",e=>{if(e.target.id!=="scform")return;e.preven
 /* ---- 11-days.js ---- */
 /* ============================== death, days, the week ============================== */
 const L$=v=>typeof v==="function"?v():v;
-function death(kind){const d=DEATHS[kind];updateBar();PL().innerHTML="";TM=null;clearMsgs();const L=ML();const w=document.createElement("div");w.className="msgwrap";w.style.background="rgba(0,0,0,.6)";
+function death(kind){if(S&&S.tut)return;const d=DEATHS[kind];updateBar();PL().innerHTML="";TM=null;clearMsgs();const L=ML();const w=document.createElement("div");w.className="msgwrap";w.style.background="rgba(0,0,0,.6)";
   const sk=document.createElement("canvas");sk.width=24;sk.height=24;sk.style.cssText="width:72px;height:72px;display:block;margin:0 auto 8px";const x=sk.getContext("2d");if(x&&x.fillRect){x.fillStyle="#FFF";x.fillRect(5,3,14,12);x.fillRect(7,15,10,4);x.fillStyle="#000";x.fillRect(8,7,3,4);x.fillRect(13,7,3,4);x.fillRect(11,12,2,2);}
-  const nd=S.day===4?null:S.day<3?DAYS[S.day+1].name:"the end of the week";
-  w.innerHTML=`<div class="msg death" role="alertdialog" aria-modal="true" style="max-height:calc(100dvh - 32px);overflow:auto"><div class="sk"></div><b>${d.t}</b>\n${esc(d.txt())}\n\n<span style="color:#0000AA">What GitGuardian's workflow says:</span> ${esc(L$(d.lesson))}\n\n${S.day===4?"ULTIMATE score":DAYS[S.day].name+"'s score"}: ${S.score[S.day]} of 100.${nd?`\n\nYou can restore and try again, or live with it. If you go on, ${nd} starts with this still broken, and its threats still apply until you fix it.`:""}<div class="btns"><button data-death="restore">Restore</button>${S.day===4?'<button data-death="ult">Try ULTIMATE again</button>':`<button data-death="next">Live with it: ${S.day<3?"on to "+nd:"see the week"}</button>`}<button data-death="title">Quit to title</button></div></div>`;
+  const nd=S.day===4?null:DAYS[S.day+1].name;
+  w.innerHTML=`<div class="msg death" role="alertdialog" aria-modal="true" style="max-height:calc(100dvh - 32px);overflow:auto"><div class="sk"></div><b>${d.t}</b>\n${esc(d.txt())}\n\n<span style="color:#0000AA">What GitGuardian's workflow says:</span> ${esc(L$(d.lesson))}\n\n${S.day===4&&!S.week?"ULTIMATE score":DAYS[S.day].name+"'s score"}: ${S.score[S.day]} of 100.${S.week?" Week so far: "+total()+" of 400.":""}${nd?`\n\nYou can restore and try again, or live with it. If you go on, ${nd} starts with this still broken, and its threats still apply until you fix it.`:""}${S.tut?"":dayCode()}<div class="btns"><button data-death="restore">Restore</button>${S.day===4?(S.week?'<button data-death="finale">See how the week went</button>':'<button data-death="ult">Try ULTIMATE again</button>'):`<button data-death="next">Live with it: on to ${nd}</button>`}<button data-death="title">Quit to title</button></div></div>`;
   w.querySelector(".sk").appendChild(sk);L.appendChild(w);save();}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-death]");if(!b)return;const k=b.dataset.death;clearMsgs();
   if(k==="restore")return restoreMenu();if(k==="restart")return startNew(S&&S.player);if(k==="ult")return startUltimate(S&&S.player);
-  if(k==="next"){S.results[S.day]="lost:"+S.dead;S.dead=null;return S.day<3?nextDay():finale();}
+  if(k==="next"){S.results[S.day]="lost:"+S.dead;S.dead=null;return S.day<4?nextDay():finale();}
+  if(k==="finale"&&S&&S.day===4&&S.dead&&!S.results[4]){S.results[4]="lost:"+S.dead;}
   if(k==="finale")return finale();if(k==="nextday")return nextDay();title();});
 function restoreMenu(){PL().innerHTML="";TM=null;clearMsgs();const L=ML();const pts=snaps.filter(s=>s.day===S.day).slice().reverse().filter((s,i,a)=>a.findIndex(z=>z.t===s.t)===i).slice(0,8);
   const w=document.createElement("div");w.className="msgwrap";w.innerHTML=`<div class="msg" style="cursor:default"><b>Restore a game</b>\nPick a moment to go back to (${DAYS[S.day].name}):<div class="btns" style="flex-direction:column">${pts.map(s=>`<button data-rest="${snaps.indexOf(s)}">${hhmm(s.t)}${s.label?" · "+esc(s.label):""}</button>`).join("")||'<span style="color:#555">No restore points yet today.</span>'}<button data-death="title">Quit to title</button></div></div>`;L.appendChild(w);}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-rest]");if(!b)return;clearMsgs();const i=+b.dataset.rest;S=JSON.parse(snaps[i].s);snaps=snaps.slice(0,i);verb="hand";heldItem=null;iconbar();updateBar();draw();say("Restored. It's "+DAYS[S.day].name+", "+hhmm(S.t)+".");});
-function checkEnd(){if(!S||S.dead||S.dayWon)return;if(dayDone()&&!S.f.doneNotified[S.day]){S.f.doneNotified[S.day]=true;mail("done"+S.day,P.coo,"Heard it's handled");
+function checkEnd(){if(!S||S.tut||S.dead||S.dayWon)return;if(dayDone()&&!S.f.doneNotified[S.day]){S.f.doneNotified[S.day]=true;mail("done"+S.day,P.coo,"Heard it's handled");
     msgBox(S.day===4?`IR-07 steps 1 through 9 are done, in order.\n\nLast step: walk to ${P.coo}'s office and report.`:`Everything on today's checklist is green.\n\nLast thing: walk to ${P.coo}'s office (hallway, straight ahead) and tell him it's handled. That ends ${DAYS[S.day].name}.`,"All clear");}save();}
+/* the save code at the end of every day: the only way to carry a game anywhere, because there is no back end */
+function dayCode(){const c=encodeSave();return `\n\n<span style="display:block;border-top:2px dashed #AAA;padding-top:8px"><b>Your save code</b></span><span style="display:block;text-align:center;font:30px/1.2 var(--f-term);letter-spacing:.06em;user-select:all" id="sccode">${c}</span>Enter it on the title screen (Enter a save code) to come back to this exact moment, on any device. Anyone you give it to can load it too. There's no back end: nothing about your game is stored on a server, so write it down.<span style="display:block;margin-top:6px"><button data-sccopy style="background:#C8C8C8;border:2px solid;border-color:#FFF #555 #555 #FFF;padding:4px 10px;font:15px var(--f-pix)">Copy code</button></span>`;}
 function endDay(){S.results[S.day]="won";S.dayWon=true;save();PL().innerHTML="";clearMsgs();const L=ML();const w=document.createElement("div");w.className="msgwrap";const d=S.day;
   const open=d<4?dayIncs(d).filter(id=>DEF[id].day<d&&!incDone(id)):[];
-  w.innerHTML=`<div class="msg" style="cursor:default;max-height:calc(100dvh - 32px);overflow:auto"><b>${d===4?"ULTIMATE: CONTAINED":"END OF "+DAYS[d].name.toUpperCase()}</b>\n\n${{1:"The leaked key is dead, the new one lives in Vault, and every consumer, including the one nobody had mapped, kept working. The noon run paid 4,112 borrowers on time.",2:"The worm is out of the lockfile, the stolen keys are dead, password resets never stopped and the release shipped at two.",3:"The Terravox key is disabled, Mapwende's maps synced before the teams left, and the ghost VM uses its own identity now instead of a key in a file.",4:"You did it by the book: confirmed, isolated, inventoried, cut access, revoked, restored, investigated, closed and reported. The attacker got what they got at 3 AM, and nothing after."}[d]}\n\n${d===4?"Score":DAYS[d].name+"'s score"}: ${S.score[d]} of 100${d<4?"\nWeek so far: "+total()+" of "+(d*100):""}${S.t?"\nTime: "+hhmm(S.t):""}<div class="btns">${d<3?`<button data-death="nextday">Go home. ${DAYS[d+1].name} starts at 9:00.</button>`:d===3?'<button data-death="finale">See how the week went</button>':'<button data-death="title">Back to the title screen</button>'}</div></div>`;L.appendChild(w);}
-function nextDay(){verb="hand";WM.wins=[];setTimeout(setHint,0);snaps=[];vtSel=null;vtTab="secrets";ciRepo=null;ciTab="secrets";ciRun=null;mailSel=null;const prev=S.day;beginDay(prev+1);S.dead=null;heldItem=null;iconbar();PL().innerHTML="";clearMsgs();draw();
+  w.innerHTML=`<div class="msg" style="cursor:default;max-height:calc(100dvh - 32px);overflow:auto"><b>${d===4?"ULTIMATE: CONTAINED":"END OF "+DAYS[d].name.toUpperCase()}</b>\n\n${{1:"The leaked key is dead, the new one lives in Vault, and every consumer, including the one nobody had mapped, kept working. The noon run paid 4,112 borrowers on time.",2:"The worm is out of the lockfile, the stolen keys are dead, password resets never stopped and the release shipped at two.",3:"The Terravox key is disabled, Mapwende's maps synced before the teams left, and the ghost VM uses its own identity now instead of a key in a file.",4:"You did it by the book: confirmed, isolated, inventoried, cut access, revoked, restored, investigated, closed and reported. The attacker got what they got at 3 AM, and nothing after."}[d]}\n\n${d===4&&!S.week?"Score":DAYS[d].name+"'s score"}: ${S.score[d]} of 100${S.week?"\nWeek so far: "+total()+" of 400":""}${S.t?"\nTime: "+hhmm(S.t):""}${dayCode()}<div class="btns">${d<3?`<button data-death="nextday">Go home. ${DAYS[d+1].name} starts at 9:00.</button>`:d===3?'<button data-death="nextday">Go home. Friday is ULTIMATE.</button>':S.week?'<button data-death="finale">See how the week went</button>':'<button data-death="title">Back to the title screen</button>'}</div></div>`;L.appendChild(w);}
+function nextDay(){verb="hand";WM.wins=[];setTimeout(setHint,0);snaps=[];apTab="keys";ghTab="classic";sgTab="keys";gcpTab="keys";ggRoute={page:"list"};vtSel=null;vtTab="secrets";ciRepo=null;ciTab="secrets";ciRun=null;mailSel=null;const prev=S.day;if(prev===3)setupUltimate();beginDay(prev+1);S.dead=null;heldItem=null;iconbar();PL().innerHTML="";clearMsgs();draw();
   const carry=dayIncs(S.day).filter(id=>DEF[id].day<S.day&&!incDone(id));
-  msgBox(DAYS[S.day].intro()+(carry.length?`\n\nSTILL OPEN FROM BEFORE: ${carry.map(id=>"#"+id+" "+DEF[id].det).join(", ")}. Yesterday's threats still apply until it's fixed, and late fixes score half.`:"")+`\n\nThe blue bar under the scene shows your next step; Tasks shows the whole checklist.`,null,()=>save());save();}
-function finale(){S.ended=true;save();PL().innerHTML="";clearMsgs();const L=ML();const w=document.createElement("div");w.className="msgwrap";const t=total();
-  const rank=t>=270?"Secrets Sage":t>=220?"Remediation Hero":t>=160?"Steady Responder":t>=100?"Survivor":"Lucky Intern";
-  const line=d=>{const r=S.results[d]||"";return `${DAYS[d].name.padEnd(10)} ${r==="won"?"WON ":r?"LOST":"—   "}  ${String(S.score[d]).padStart(3)} / 100${r.startsWith("lost:")?"  ("+DEATHS[r.slice(5)].t.replace(/\.$/,"")+")":""}`;};
-  const still=dayIncs(3).filter(id=>!incDone(id));
-  w.innerHTML=`<div class="msg" style="cursor:default;max-height:calc(100dvh - 32px);overflow:auto"><b>THE WEEK AT ${COMPANY[2].toUpperCase()}</b>\n${esc(S.player||"")}\n\n<span style="font-family:var(--f-term);font-size:20px;white-space:pre">${[1,2,3].map(line).join("\n")}</span>\n\nTotal: ${t} of 300\nRank: ${rank}${still.length?`\n\nStill open on Friday morning: ${still.map(id=>"#"+id).join(", ")}. Someone else inherits those.`:"\n\nNothing left open. Nobody outside the building ever hears about any of it, which is the whole point."}\n\nThere is one more level. It doesn't forgive.<div class="btns"><button data-death="ult">Play ULTIMATE: Patient Zero</button><button data-death="restart">Play the week again</button><button data-death="title">Title</button></div></div>`;L.appendChild(w);}
+  msgBox(DAYS[S.day].intro()+(S.day===4&&dayIncs(3).some(id=>!incDone(id))?`\n\nHanded to on-call: ${dayIncs(3).filter(id=>!incDone(id)).map(id=>"#"+id).join(", ")}.`:"")+(carry.length?`\n\nSTILL OPEN FROM BEFORE: ${carry.map(id=>"#"+id+" "+DEF[id].det).join(", ")}. Yesterday's threats still apply until it's fixed, and late fixes score half.`:"")+`\n\nThe blue bar under the scene shows your next step; Tasks shows the whole checklist.`,null,()=>save());save();}
+function finale(){S.ended=true;save();PL().innerHTML="";clearMsgs();const L=ML();const w=document.createElement("div");w.className="msgwrap";const t=total();const days=S.week?[1,2,3,4]:[1,2,3];const max=days.length*100;
+  const rank=t>=max*.9?"Secrets Sage":t>=max*.73?"Remediation Hero":t>=max*.53?"Steady Responder":t>=max*.33?"Survivor":"Lucky Intern";
+  const line=d=>{const r=S.results[d]||"";return `${(d===4?"Friday/ULT":DAYS[d].name).padEnd(10)} ${r==="won"?"WON ":r?"LOST":"—   "}  ${String(S.score[d]).padStart(3)} / 100${r.startsWith("lost:")&&DEATHS[r.slice(5)]?"  ("+DEATHS[r.slice(5)].t.replace(/\.$/,"")+")":r.startsWith("lost:playbook")?"  (playbook)":""}`;};
+  const still=dayIncs(3).filter(id=>!incDone(id)).concat(S.week?dayIncs(4).filter(id=>INC(id)&&!incDone(id)):[]);
+  w.innerHTML=`<div class="msg" style="cursor:default;max-height:calc(100dvh - 32px);overflow:auto"><b>THE WEEK AT ${COMPANY[2].toUpperCase()}</b>\n${esc(S.player||"")}\n\n<span style="font-family:var(--f-term);font-size:20px;white-space:pre">${days.map(line).join("\n")}</span>\n\nTotal: ${t} of ${max}\nRank: ${rank}${still.length?`\n\nStill open at the end of the week: ${still.map(id=>"#"+id).join(", ")}. Someone else inherits those.`:"\n\nNothing left open. Nobody outside the building ever hears about any of it, which is the whole point."}${dayCode()}<div class="btns"><button data-death="restart">Play the week again</button><button data-death="ult">Play ULTIMATE on its own</button><button data-death="title">Title</button></div></div>`;L.appendChild(w);}
 
 /* ============================== checklists: what winning means, per day ============================== */
-function cl(){const d=S.day,secs=[];const I=INC;const cn=(id,k)=>I(id).cons[k].known?DEF[id].cons[k].name:"??? (a consumer nobody mapped)";
+function cl(){if(S.tut)return tutChecklist();const d=S.day,secs=[];const I=INC;const cn=(id,k)=>I(id).cons[k].known?DEF[id].cons[k].name:"??? (a consumer nobody mapped)";
   const onV=(id,k)=>["vault","keyless"].includes(conOn(id,k))||I(id).cons[k].pending==="vault";const ok=(id,k)=>["vault","keyless"].includes(conOn(id,k))&&!I(id).cons[k].pending&&healthy(id,k);
   if(d>1&&d<4)for(const id of dayIncs(d))if(DEF[id].day<d&&!incDone(id))secs.push({t:`Carried over from ${DAYS[DEF[id].day].name}: #${id} ${DEF[id].det}`,it:[[!I(id).key.v1,"Old key revoked","Finish #"+id+": revoke the old key."],[allHealthy(id),`Every consumer healthy (${consOf(id).filter(k=>healthy(id,k)).length} of ${consOf(id).length})`,"Finish #"+id+": get every consumer onto the new key."],[I(id).status==="RESOLVED","Incident resolved","Finish #"+id+": resolve it in GitGuardian."]]});
   if(d===1){const id=1017,i=I(id);
@@ -1818,7 +1910,7 @@ function cl(){const d=S.day,secs=[];const I=INC;const cn=(id,k)=>I(id).cons[k].k
   if(d===4){PB_STEPS.slice(0,9).forEach((st,n)=>secs.push({t:`${n+1}. ${st.t}`,it:[[st.done(),st.d,`IR-07 step ${n+1}, ${st.t}: ${st.d}`]]}));secs.push({t:"Bonus",bonus:true,it:[[hooksOn("ravi-loaner"),"AI hooks on Ravi's loaner (after isolation, never on the compromised laptop)"]]});}
   return secs;}
 function nasWay(){return canSsh()?"SSH from your computer (nas01 in the top bar)":S.f.nasFound?"server closet, or take the SSH sticky note from your right desk drawer and SSH from your computer":"server closet"+(S.inv.includes("badge")?"":"; your badge is in your left desk drawer");}
-function nextStep(){const d=S.day;if(S.dayWon)return {win:true,t:"Done for today."};
+function nextStep(){const d=S.day;if(S.tut){const st=TSTEPS[TUT.n];return st?{t:"Training: "+st.t.replace(/^\d+ · /,"")}:{win:true,t:"Training complete."};}if(S.dayWon)return {win:true,t:"Done for today."};
   if(d===4&&!S.f.binder)return {t:"Get the IR-07 binder from your desk drawer and read it."};
   for(const id of dayIncs(d)){const i=INC(id);if(!i||!i.created)continue;if(i.public&&i.key.v1&&(d===1?i.public:true)&&d!==4)return {u:true,t:`EMERGENCY: #${id} ${DEF[id].det} is public and valid. ${DEF[id].revGG?"Revoke it now (GitGuardian → incident → Revoke)":"Disable it in "+PROVNAME[DEF[id].prov]+" now"}, then fix what breaks.`};}
   for(const id of dayIncs(d)){const i=INC(id);if(!i||!i.created)continue;const dn=consOf(id).filter(k=>i.cons[k].known&&!healthy(id,k));if(dn.length)return {u:true,t:`${dn.map(k=>DEF[id].cons[k].name).join(", ")} ${dn.length>1?"are":"is"} failing. Get ${dn.length>1?"them":"it"} onto the new credential.`};}
@@ -1826,6 +1918,7 @@ function nextStep(){const d=S.day;if(S.dayWon)return {win:true,t:"Done for today
   if(dayDone())return {win:true,t:`All done. Walk to ${P.coo}'s office and tell him it's handled.`};
   return {u:true,t:"Something still isn't healthy. Open the Checklist."};}
 function checklistHTML(){const row=(ok,t)=>`<li><span class="${ok?"x":"o"}">${ok?"[x]":"[ ]"}</span> ${esc(t)}</li>`;const d=S.day;
+  if(S.tut)return `<div class="pad" role="dialog" aria-modal="true" aria-label="Checklist"><h2>Training · checklist</h2><div class="win"><b>How you finish training:</b> do the four moves in part 1, then read through the dashboard tour in part 2. Nothing here is timed or scored, and you can't lose.</div><ol style="list-style:none;padding-left:0">${cl().map(s=>{const all=s.it.every(x=>x[0]);return `<li class="${all?"ok":""}"><span>${all?"✔":"·"}</span> <b>${esc(s.t)}</b><ul>${s.it.map(x=>row(x[0],x[1])).join("")}</ul></li>`;}).join("")}</ol><div class="btns"><button data-padclose>Back to training</button></div></div>`;
   return `<div class="pad" role="dialog" aria-modal="true" aria-label="Checklist"><h2>${d===4?"IR-07 · Endpoint Compromise":DAYS[d].name+" · checklist"}</h2>
   <div class="win"><b>How you win today:</b> ${{1:`the leaked key is revoked, all three consumers keep working on a new key read from Vault, the incident is resolved, and you tell ${P.coo} before the 12:00 disbursement run.`,2:`the worm is contained, both stolen keys are revoked, every consumer runs on new credentials from Vault before 2:00 PM, both incidents are investigated and resolved, and you tell ${P.coo}.`,3:`the public key is disabled, all three consumers run without it (field-sync before 1:00 PM), the incident is resolved, and you tell ${P.coo}.`,4:`every IR-07 step, in order. Out of order is a loss.`}[d]}${d>1&&d<4?" Anything carried over from earlier days counts too.":""}</div>
   <div style="font-size:17px;margin-bottom:6px">It's ${hhmm(S.t)}. You can work in any order that makes sense${d===4?"... except today":""}.</div>
@@ -1838,11 +1931,11 @@ document.addEventListener("keydown",e=>{const w=document.getElementById("padwrap
 function goalCount(){const s=cl().filter(x=>!x.bonus);return [s.filter(x=>x.it.every(y=>y[0])).length,s.length];}
 
 /* ============================== persistence & title ============================== */
-async function save(){if(!S)return;const doc={build:BUILD,state:JSON.stringify(S),savedAt:new Date().toISOString(),t:S.t,day:S.day,score:shownScore()};
+async function save(){if(!S||S.tut)return;const doc={build:BUILD,state:JSON.stringify(S),savedAt:new Date().toISOString(),t:S.t,day:S.day,score:shownScore()};
   if(db){try{await db.doc("adventure/save1").set(doc);return}catch(e){}}try{localStorage.setItem("lossy-adv7",JSON.stringify(doc));}catch(e){}}
 async function load(){if(db){try{const d=await db.doc("adventure/save1").get();if(d.exists){const v=d.data();if(JSON.parse(v.state).v===7)return v;}}catch(e){}}try{const v=localStorage.getItem("lossy-adv7");if(v)return JSON.parse(v);}catch(e){}return null;}
 function setHint(){const i=document.getElementById("cmd");if(i)i.placeholder=`look at monitor · use drawer · talk to ${npcFirst().toLowerCase()} · go hallway`;}
-function showGame(){WM.wins=[];setTimeout(setHint,0);vtSel=null;vtTab="secrets";ciRepo=null;ciTab="secrets";ciRun=null;mailSel=null;document.getElementById("game").hidden=false;PL().innerHTML="";TM=null;clearMsgs();verb="hand";heldItem=null;iconbar();draw();}
+function showGame(){WM.wins=[];setTimeout(setHint,0);apTab="keys";ghTab="classic";sgTab="keys";gcpTab="keys";ggRoute={page:"list"};vtSel=null;vtTab="secrets";ciRepo=null;ciTab="secrets";ciRun=null;mailSel=null;document.getElementById("game").hidden=false;PL().innerHTML="";TM=null;clearMsgs();verb="hand";heldItem=null;iconbar();draw();}
 function askName(then){const L=ML();clearMsgs();const w=document.createElement("div");w.className="msgwrap";w.id="namewrap";w.style.background="#000";const sug=randomName();
   w.innerHTML=`<div class="msg" style="cursor:default"><b>Who are you?</b>\nYour name on the badge, in Slack and on every incident you touch.<form id="nameform" style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap"><label for="namein" class="sr">Your name</label><input id="namein" value="${esc(sug)}" maxlength="32" autocomplete="off" spellcheck="false" style="flex:1;min-width:160px;font:24px var(--f-term);padding:4px 8px;border:2px solid #0000AA"><button type="button" data-namedice title="Suggest another name" style="background:#C8C8C8;border:2px solid;border-color:#FFF #555 #555 #FFF;padding:6px 10px;font:16px var(--f-pix)">🎲 Another</button></form><div class="btns"><button data-namego>Start</button><button data-nameback>Back</button></div></div>`;
   L.appendChild(w);NAME_THEN=then;const i=document.getElementById("namein");try{i.focus();i.select();}catch(e){}}
@@ -1851,21 +1944,90 @@ function nameGo(){const v=(document.getElementById("namein").value||"").trim().r
 document.addEventListener("click",e=>{if(e.target.closest("[data-namedice]")){const i=document.getElementById("namein");if(i){i.value=randomName();i.focus();i.select();}return;}
   if(e.target.closest("[data-namego]"))return nameGo();if(e.target.closest("[data-nameback]")){NAME_THEN=null;return title();}});
 document.addEventListener("submit",e=>{if(e.target.id!=="nameform")return;e.preventDefault();nameGo();});
-function startNew(name){if(typeof name!=="string")return askName(startNew);S=fresh();S.player=name;snaps=[];beginDay(1);showGame();msgBox(DAYS[1].intro()+"\n\nClick a verb below, then click the scene. Or type commands like LOOK MONITOR. The blue bar under the scene always shows your next step.",null,()=>save());}
-function startUltimate(name){if(typeof name!=="string")return askName(startUltimate);S=fresh();S.player=name;snaps=[];for(const id of [1401,1402,1403])S.incs[id]=freshInc(id,false);S.vault={"kv/plimbo/sendgrid":["v1"],"kv/plimbo/github":["v1"]};S.incs[1402].cons.api.on="vault";
+function startNew(name){if(typeof name!=="string")return askName(startNew);S=fresh();S.player=name;S.week=true;snaps=[];beginDay(1);showGame();msgBox(DAYS[1].intro()+"\n\nClick a verb below, then click the scene. Or type commands like LOOK MONITOR. The blue bar under the scene always shows your next step.",null,()=>save());}
+function startUltimate(name){if(typeof name!=="string")return askName(startUltimate);S=fresh();S.player=name;snaps=[];S.vault={};setupUltimate();
   beginDay(4);showGame();msgBox(DAYS[4].intro(),"ULTIMATE",()=>save());}
 async function title(){S=null;TM=null;document.getElementById("game").hidden=true;const sv=await load();PL().innerHTML="";clearMsgs();const L=ML();let cont="";
   if(sv){try{const st=JSON.parse(sv.state);if(!st.ended)cont=`<button data-tt="continue">Continue (${DAYS[st.day].name} ${hhmm(st.t)}${sv.build===BUILD?"":", saved by an older build"})</button>`;}catch(e){}}
-  L.innerHTML=`<div class="msgwrap" style="background:#000"><div class="msg" style="cursor:default;text-align:center;max-width:540px"><canvas id="logo" width="160" height="60" style="width:320px;max-width:100%;height:auto;image-rendering:pixelated;display:block;margin:0 auto 10px"></canvas><b style="font-size:30px">LossyInc Range</b>\n<span style="font-size:16px">Three days of secrets incidents</span>\n\nTuesday: The Agent Committed It\nWednesday: The Worm in the Lockfile\nThursday: Ghost of the Acquisition\n\nWin or lose, the next day comes, and whatever you left broken comes with it.
-  <div class="btns">${cont}<button data-tt="new">New week</button><button data-tt="code">Enter a save code</button><button data-tt="ult" title="One level, no second chances">ULTIMATE: Patient Zero</button></div>
-  <span style="display:block;margin-top:10px;font-size:13px;color:#555">ULTIMATE: a honeytoken fires on a developer's laptop. Follow the playbook exactly, or lose.\nAn original game. Simulated tools follow GitGuardian's documented workflows.
+  L.innerHTML=`<div class="msgwrap" style="background:#000"><div class="msg" style="cursor:default;text-align:center;max-width:540px"><canvas id="logo" width="160" height="60" style="width:320px;max-width:100%;height:auto;image-rendering:pixelated;display:block;margin:0 auto 10px"></canvas><b style="font-size:30px">LossyInc Range</b>\n<span style="font-size:16px">A week of secrets incidents</span>\n\nTuesday: The Agent Committed It\nWednesday: The Worm in the Lockfile\nThursday: Ghost of the Acquisition\nFriday: ULTIMATE, Patient Zero\n\nWin or lose, the next day comes, and whatever you left broken comes with it. The week is scored out of 400.
+  <div class="btns">${cont}<button data-tt="tut" title="Optional: the controls, and what GitGuardian is showing you">Training: how to play</button><button data-tt="new">New week</button><button data-tt="code">Enter a save code</button><button data-tt="ult" title="Friday on its own, scored out of 100">ULTIMATE on its own</button></div>
+  <span style="display:block;margin-top:10px;font-size:13px;color:#555">ULTIMATE is also playable on its own: a honeytoken fires on a developer's laptop. Follow the playbook exactly, or lose.\nAn original game. Simulated tools follow GitGuardian's documented workflows.
 Build ${BUILD}</span></div></div>`;
   const cv2=document.getElementById("logo"),lc=cv2.getContext&&cv2.getContext("2d");if(lc&&lc.fillRect){const P2=(x,y,w,h,c)=>{lc.fillStyle=PAL[c];lc.fillRect(x,y,w,h);};P2(0,0,160,60,1);for(let i=0;i<40;i++)P2((i*37)%160,(i*23)%40,1,1,15);P2(0,44,160,16,2);P2(64,14,32,30,7);P2(68,18,24,20,0);P2(72,22,6,4,10);P2(80,22,8,4,12);P2(74,30,12,2,10);P2(76,44,8,4,7);P2(30,30,10,14,6);P2(118,26,14,18,8);P2(121,30,2,2,10);P2(126,34,2,2,12);}}
 document.addEventListener("click",async e=>{const b=e.target.closest("[data-tt]");if(!b)return;if(b.dataset.tt==="new")return startNew();if(b.dataset.tt==="ult")return startUltimate();if(b.dataset.tt!=="continue")return;
-  const sv=await load();S=JSON.parse(sv.state);snaps=[];showGame();if(S.dead)return death(S.dead);if(S.dayWon)return endDay();say(`Welcome back. It's ${DAYS[S.day].name}, ${hhmm(S.t)}. ${lookRoom()}`);});
+  const sv=await load();S=JSON.parse(sv.state);if(S.week==null)S.week=S.day<4;snaps=[];showGame();if(S.dead)return death(S.dead);if(S.dayWon)return endDay();say(`Welcome back. It's ${DAYS[S.day].name}, ${hhmm(S.t)}. ${lookRoom()}`);});
 setInterval(()=>{if(reduce)return;frame++;if(S&&!document.getElementById("game").hidden)draw();},120);
-window.GAME={get S(){return S},set S(v){S=v},mdmUnlocked,hooksOn,slOptions,randomName,slackDelay,encodeSave,decodeSave,restoreFromCode,MILESTONES,parse,interact,startNew,startUltimate,openPC,openTerm,healthy,dayDone,nextDay,PB,conOn,cl,nextStep,checkAwards};
+window.GAME={get S(){return S},set S(v){S=v},startTutorial:(...a)=>startTutorial(...a),get TUT(){return TUT},mdmUnlocked,hooksOn,slOptions,randomName,slackDelay,encodeSave,decodeSave,restoreFromCode,MILESTONES,parse,interact,startNew,startUltimate,openPC,openTerm,healthy,dayDone,nextDay,PB,conOn,cl,nextStep,checkAwards};
 (async()=>{iconbar();title();db=await (window.claude?.use?.("db"))||null;if(db)title();})();
+
+/* ---- 12-tutorial.js ---- */
+/* ============================== LR-24: Training level ==============================
+   Optional, from the title screen. A coached Tuesday with no clock, no deadlines, no score and no saving.
+   Part 1 teaches the controls (open GitGuardian, turn away from the screen, walk to the hallway and back).
+   Part 2 explains what the GitGuardian dashboard is showing, written for someone who has never used it. */
+const TUT={on:false,n:0,timer:null,last:-1};
+const pcOpen=()=>!!document.getElementById("pcroot");
+const ggOpen=()=>pcOpen()&&WM.wins.some(w=>w.app==="gg"&&!w.min);
+const TSTEPS=[
+ {part:1,t:"Welcome to training",x:`Nothing can go wrong in here. There's no clock, no deadline and no score, and nothing is saved.\n\n<b>Part 1</b> shows you the controls in four moves. <b>Part 2</b> explains what GitGuardian, the security tool on your computer, is telling you.\n\nThe green arrow and the pulsing green outline always point at what to click next. On a phone, everything you can click in a room is also listed under the picture.`,next:"Start"},
+ {part:1,t:"1 · Open your computer",x:`The row of buttons under the picture is the <b>verb bar</b>. Click <b>Use</b> (the hand), then click the beige <b>monitor</b> on your desk.\n\nYou can also type <b>use monitor</b> in the box under the picture and press Enter.`,sel:'.ic[data-verb="hand"]',done:pcOpen},
+ {part:1,t:"2 · Open GitGuardian",x:`Your computer runs a homemade copy of Windows 3.1. In <b>Program Manager</b>, find the group called <b>Secruity Toolz</b> (yes, it's misspelled) and click <b>GitGuardian</b>.`,sel:()=>pcOpen()?'[data-pc="gg"]':'.ic[data-verb="hand"]',done:ggOpen},
+ {part:1,t:"3 · Turn away from the screen",x:`That's GitGuardian. You'll come back to it in part 2.\n\nTo get back to the office, click <b>Turn away from the screen</b> at the bottom right of the monitor.`,sel:'[data-pcclose]',done:()=>!pcOpen()},
+ {part:1,t:"4 · Walk to the hallway",x:`Click <b>Walk</b> (the legs), then click the <b>door</b> at the far right edge of the room.\n\nOr type <b>go hallway</b>.`,sel:()=>verb==="walk"?["desk","door"]:'.ic[data-verb="walk"]',done:()=>S.room==="hall"},
+ {part:1,t:"5 · Walk back to your desk",x:`This hallway connects every room: the dev pit, the server closet and the COO's office.\n\nThe other doors are locked during training. Go back: <b>Walk</b>, then click the bottom middle of the hallway, marked <b>back to your desk</b>. Or type <b>go desk</b>.`,sel:()=>verb==="walk"?["hall","back"]:'.ic[data-verb="walk"]',done:()=>S.room==="desk"},
+ {part:1,t:"That's how to play",x:`Four verbs do everything:\n• <b>Use</b> opens and operates things\n• <b>Talk</b> gets people talking (they know things the tools don't)\n• <b>Look</b> tells you what something is\n• <b>Walk</b> moves you around\n\nIn the real game, every action costs a few minutes, and the blue bar under the picture always names your next step.`,next:"Part 2: the dashboard",end:"End training"},
+ {part:2,t:"Open GitGuardian again",x:`Use the monitor, then click GitGuardian in Program Manager.`,sel:()=>pcOpen()?'[data-pc="gg"]':'.ic[data-verb="hand"]',done:ggOpen},
+ {part:2,t:"What GitGuardian watches for",x:`Programs log in to other services the way you log in to a website, except they use a <b>secret</b>: an API key, a token or a password written into their settings.\n\nWhen a secret ends up somewhere it shouldn't, like code on GitHub, anyone who finds it can act as your company. In 2024, <b>23.8 million</b> secrets leaked on public GitHub alone, and <b>70%</b> of the secrets leaked in 2022 still worked years later.\n\nGitGuardian scans code, laptops and servers for secrets and raises an <b>incident</b> for each one it finds. Each row here is one.`,sel:'[data-openinc="1017"]',next:"Next"},
+ {part:2,t:"Open the incident",x:`Click the <b>OpenAI API Key</b> row. An AI coding assistant pasted this key into a config file this morning.`,sel:'[data-openinc="1017"]',done:()=>ggOpen()&&ggRoute.page==="incident"},
+ {part:2,t:"What leaked, and who's on it",x:`The title says what kind of secret it is. An OpenAI key lets a program use OpenAI's AI models, and the company pays for every use. If a stranger has it, they spend your money.\n\nThe <b>Incident details</b> panel (on the right, or at the top on a phone) is the paperwork: <b>Status</b> (Triggered means nobody has handled it yet), <b>Severity</b> (how bad), who's assigned, and the <b>Resolve</b> and <b>Ignore</b> buttons.\n\nResolving is a label. It doesn't make the key stop working.`,sel:'.ggaside',next:"Next"},
+ {part:2,t:"Risk score and validity",x:`<b>Risk score</b> (0 to 99) is GitGuardian's guess at how urgent this is, with the reasons listed next to it.\n\n<b>Secret validity</b> is the most important word on the page. <b>Valid</b> means the key still works right now. Think of a lost house key: until the locks change, whoever finds it can walk in. <b>Check validity</b> tests it again.`,sel:'[data-ggcheck]',next:"Next"},
+ {part:2,t:"The exploration map",x:`Click <b>Exploration map</b> at the top of the incident.`,sel:'[data-ggmap="1017"].xtoggle',done:()=>ggOpen()&&ggRoute.page==="map"},
+ {part:2,t:"Who depends on this key",x:`The map has three columns:\n• <b>Consumers</b>: the programs that use this key. Cancel the key and they break. Here, one of them pays out 4,112 small loans at noon.\n• <b>Secret</b>: the leaked key itself. Once it's stored in a <b>vault</b> (a locked safe where programs fetch keys instead of keeping copies), the vault shows up here too. This key isn't in one yet, so there's no vault on the map.\n• <b>Accessed resources</b>: what the key unlocks.\n\nThe dashed box matters: some machines aren't connected to GitGuardian, so the map can miss consumers. People and server logs fill the gaps.`,sel:'.card.map svg',next:"Next"},
+ {part:2,t:"Where it leaked",x:`Click <b>Back to incident</b>, then the <b>Occurrences</b> tab.`,sel:()=>ggRoute.page==="map"?'.hdr [data-openinc="1017"]':'[data-ggtab="occ"]',done:()=>ggRoute.page==="incident"&&ggRoute.tab==="occ"},
+ {part:2,t:"Every copy, and who made it",x:`Each occurrence is one place the secret was found: the repository, the file, the commit and who wrote it.\n\nThis is real life. In 2022, Toyota found an access key that had sat in public code on GitHub for about five years, exposing data on roughly 296,000 customers.`,sel:'.ggpanel[data-panel="occ"] .card',next:"Next"},
+ {part:2,t:"How you fix it",x:`Click the <b>Remediation</b> tab.`,sel:'[data-ggtab="rem"]',done:()=>ggRoute.tab==="rem"},
+ {part:2,t:"The order matters",x:`These six steps are the fix, in order:\n1. Find everything that uses the key\n2. Put it in a vault\n3. Point the programs at the vault\n4. Test that they still work\n5. Make a new key, put it in the vault, then cancel (<b>revoke</b>) the old one\n6. Check the logs for anyone who used it\n\nRevoke too early and the company's own programs break. Revoke too late and a stranger keeps spending your money. When a key has already been stolen, you revoke first and repair after.`,sel:'.ggpanel[data-panel="rem"] .steps',next:"Next"},
+ {part:2,t:"Training complete",x:`You know the controls and what the dashboard is telling you. In the real game the clock is running, people will page you, and mistakes cost loans, money and customers' trust.\n\nWhen you're ready, start Tuesday.`,next:"Start Tuesday",end:"Back to title",final:true}];
+function startTutorial(){S=fresh();S.player="Trainee";S.tut=true;snaps=[];beginDay(1);showGame();TUT.on=true;TUT.n=0;TUT.last=-1;tutRender();clearInterval(TUT.timer);TUT.timer=setInterval(tutTick,250);requestAnimationFrame(tutOverlay);}
+function tutEnd(toTitle){TUT.on=false;clearInterval(TUT.timer);const c=document.getElementById("coach");if(c)c.remove();if(toTitle)title();}
+/* the checklist (Tasks) during training lists the training itself */
+const TUT_CL=[["Part 1 · How to play",[[2,"Open your computer (Use, then the monitor)"],[3,"Open GitGuardian from Program Manager"],[4,"Turn away from the screen"],[5,"Walk to the hallway"],[6,"Walk back to your desk"]]],
+ ["Part 2 · What the dashboard shows",[[9,"What GitGuardian watches for"],[10,"Open the OpenAI API Key incident"],[11,"The details panel: status, severity, Resolve and Ignore"],[12,"Risk score and validity"],[14,"The exploration map: consumers, vaults, what the key unlocks"],[16,"Occurrences: where it leaked"],[18,"Remediation: the order of the fix"]]]];
+function tutChecklist(){return TUT_CL.map(([t,its])=>({t,it:its.map(([n,x])=>[TUT.n>=n,x])}));}
+function tutSel(st){return typeof st.sel==="function"?st.sel():st.sel;}
+/* a step's target: a CSS selector, or [room, hotspot id] for something drawn in the scene */
+function tutRect(st){const sel=st&&tutSel(st);if(!sel)return null;
+  if(Array.isArray(sel)){const [room,id]=sel;if(pcOpen()||S.room!==room)return null;const sp=roomSpots(room).find(x=>x.id===id);const c=document.getElementById("scene");if(!sp||!c)return null;const r=c.getBoundingClientRect(),k=r.width/320,q=r.height/170;
+    return {left:r.left+sp.r[0]*k,top:r.top+sp.r[1]*q,width:sp.r[2]*k,height:sp.r[3]*q,right:r.left+(sp.r[0]+sp.r[2])*k,bottom:r.top+(sp.r[1]+sp.r[3])*q};}
+  const el=document.querySelector(sel);if(!el)return null;const r=el.getBoundingClientRect();return r.width&&r.height?r:null;}
+function tutTick(){if(!TUT.on||!S||!S.tut)return tutEnd(false);const st=TSTEPS[TUT.n];if(!st)return;
+  if(st.done&&st.done()){TUT.n++;return tutRender();}
+  if(!document.getElementById("coach"))tutRender();placeCoach();}
+/* LR-24: a pulsing bright-green box over the thing to click, and an arrow pointing at it. Measured every frame, so it follows re-renders and dragged windows. */
+function tutOverlay(){if(!TUT.on){["tutbox","tutarrow"].forEach(i=>{const e=document.getElementById(i);if(e)e.remove();});return;}
+  let box=document.getElementById("tutbox"),ar=document.getElementById("tutarrow");
+  if(!box){box=document.createElement("div");box.id="tutbox";box.setAttribute("aria-hidden","true");document.body.appendChild(box);}
+  if(!ar){ar=document.createElement("div");ar.id="tutarrow";ar.setAttribute("aria-hidden","true");ar.innerHTML='<svg viewBox="0 0 64 40" width="64" height="40"><path d="M2 14h38V2l22 18-22 18V26H2z" fill="#39FF14" stroke="#062B00" stroke-width="3" stroke-linejoin="round"/></svg>';document.body.appendChild(ar);}
+  const r=tutRect(TSTEPS[TUT.n]);if(!r||document.querySelector("#msglayer .msgwrap")){box.hidden=true;ar.hidden=true;}else{box.hidden=false;ar.hidden=false;const p=5;
+    Object.assign(box.style,{left:r.left-p+"px",top:r.top-p+"px",width:r.width+2*p+"px",height:r.height+2*p+"px"});
+    const cx=r.left+r.width/2,cy=r.top+r.height/2;let x,y,rot;
+    if(r.left>84){x=r.left-p-74;y=cy-20;rot=0;}else if(r.top>60){x=cx-32;y=r.top-p-50;rot=90;}else if(innerWidth-r.right>84){x=r.right+p+10;y=cy-20;rot=180;}else{x=cx-32;y=r.bottom+p+10;rot=-90;}
+    ar.style.left=x+"px";ar.style.top=y+"px";ar.style.setProperty("--rot",rot+"deg");}
+  requestAnimationFrame(tutOverlay);}
+/* put the coach in a corner that covers neither its target nor (on the office screen) the door or the verb bar */
+function placeCoach(){const c=document.getElementById("coach");if(!c||matchMedia("(max-width:760px)").matches){if(c){c.style.left=c.style.top="";}return;}
+  const vw=innerWidth,vh=innerHeight,w=c.offsetWidth,h=c.offsetHeight,m=12;const tr=tutRect(TSTEPS[TUT.n]);
+  const hit=(x,y,r)=>r&&!(x+w<r.left-80||x>r.right+80||y+h<r.top-56||y>r.bottom+56);
+  const avoid=[];if(tr)avoid.push(tr);if(!pcOpen()){const bar=document.getElementById("iconbar");if(bar)avoid.push(bar.getBoundingClientRect());const g=document.getElementById("game");if(g){const r=g.getBoundingClientRect();avoid.push({left:r.right-r.width*.14,right:r.right,top:r.top,bottom:r.top+r.height*.62});}}
+  const cands=pcOpen()?[[m,vh-h-m],[vw-w-m,vh-h-m],[vw-w-m,m],[m,m]]:[[vw-w-m,vh-h-m],[m,vh-h-m],[m,m],[vw-w-m,m]];
+  const pick=cands.find(([x,y])=>!avoid.some(r=>hit(x,y,r)))||cands[0];c.style.left=Math.max(m,pick[0])+"px";c.style.top=Math.max(m,pick[1])+"px";}
+function tutRender(){let c=document.getElementById("coach");if(!c){c=document.createElement("div");c.id="coach";c.setAttribute("role","dialog");c.setAttribute("aria-live","polite");c.setAttribute("aria-label","Training");document.body.appendChild(c);}
+  const st=TSTEPS[TUT.n];if(!st)return tutEnd(true);const total=TSTEPS.length;
+  c.innerHTML=`<div class="ch"><span>Training · part ${st.part} of 2</span><span>${TUT.n+1} / ${total}</span></div><b class="ct">${st.t}</b><div class="cx">${st.x}</div><div class="cb">${st.next?`<button data-tutnext>${st.next}</button>`:`<span class="cw">Do it to continue</span>`}${st.end?`<button data-tutend>${st.end}</button>`:`<button data-tutend class="sub">End training</button>`}</div>`;
+  TUT.last=TUT.n;placeCoach();try{updateBar();}catch(e){}}
+document.addEventListener("click",e=>{if(e.target.closest("[data-tt='tut']"))return startTutorial();
+  if(e.target.closest("[data-tutnext]")){const st=TSTEPS[TUT.n];if(st&&st.final){tutEnd(false);return startNew();}TUT.n++;return tutRender();}
+  if(e.target.closest("[data-tutend]")){const st=TSTEPS[TUT.n];tutEnd(true);return;}});
 
 </script>
 </body>

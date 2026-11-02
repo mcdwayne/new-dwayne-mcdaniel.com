@@ -2,7 +2,8 @@
    A game condenses to 32 bits, shown as 8 hex digits: LR-XXXX-XXXX.
      bits  0-1   level (0 Tuesday, 1 Wednesday, 2 Thursday, 3 ULTIMATE)
      bits  2-7   in-game time, in 6-minute steps (0 to 63, so 9:00 AM to 3:18 PM)
-     bits  8-9   whether Tuesday and Wednesday were won (only meaningful on later days)
+     bits  8-9   Tuesday to Thursday: whether Tuesday and Wednesday were won. Friday (level 3): 0 means ULTIMATE on its own;
+                 1 to 3 means Friday of the week, with that many of Tuesday to Thursday won (lossy: 0 won is stored as 1)
      bits 10-26  up to 17 milestones for the current level, in the order listed below
      bits 27-31  checksum: reported, not enforced (any code loads; a mismatch just gets a warning)
    It is lossy on purpose: it keeps what matters for play (where you are, what's fixed, what's broken) and drops
@@ -95,7 +96,7 @@ const MILESTONES={
     ["AI hooks on the loaner",()=>hooksOn("ravi-loaner"),()=>{S.f.aiHooks=S.f.aiHooks||{};S.f.aiHooks["ravi-loaner"]=true;award("aihooks",4);}]]};
 const scCheck=d=>(Math.imul(d>>>0,2654435761)>>>27)&31;
 function encodeSave(){if(!S)return null;const lvl=S.day-1;const slot=Math.min(63,Math.round(S.t/SC_SLOT));
-  const prev=(S.results[1]==="won"?1:0)|(S.results[2]==="won"?2:0);
+  const prev=S.day===4?(S.week?Math.max(1,[1,2,3].filter(d=>S.results[d]==="won").length):0):(S.results[1]==="won"?1:0)|(S.results[2]==="won"?2:0);
   let ms=0;(MILESTONES[S.day]||[]).forEach((m,n)=>{let ok=false;try{ok=!!m[1]();}catch(e){}if(ok)ms|=1<<n;});
   const data=(lvl|(slot<<2)|(prev<<8)|(ms<<10))>>>0;const v=(data|(scCheck(data)<<27))>>>0;
   const h=v.toString(16).toUpperCase().padStart(8,"0");return `LR-${h.slice(0,4)}-${h.slice(4)}`;}
@@ -110,20 +111,23 @@ function decodeSave(code){const raw=String(code||"").trim();const h=raw.toUpperC
 /* rebuild a game from a code */
 function finishDay(d){/* canonical "won" state for an earlier day */
   if(d===1){const i=INC(1017);SC.open(1017);SC.check(1017);S.f.agentStopped=true;S.f.drawer=true;if(!S.inv.includes("badge"))S.inv.push("badge");SC.known(1017,"cron");SC.newKey(1017);SC.vault(1017,"v2");for(const k of ["repay","ledger","cron"])SC.onVault(1017,k);SC.revoke(1017);SC.logs(1017);SC.resolve(1017);award("kofi",1);}
-  if(d===2){for(const id of [1102,1103]){SC.open(id);SC.revoke(id);SC.newKey(id);SC.vault(id,"v2");SC.logs(id);SC.resolve(id);}S.f.contained=true;award("contain",2);SC.known(1103,"digest");for(const [id,k] of [[1102,"release"],[1103,"api"],[1103,"digest"]])SC.onVault(id,k);award("kofi",2);}}
+  if(d===2){for(const id of [1102,1103]){SC.open(id);SC.revoke(id);SC.newKey(id);SC.vault(id,"v2");SC.logs(id);SC.resolve(id);}S.f.contained=true;award("contain",2);SC.known(1103,"digest");for(const [id,k] of [[1102,"release"],[1103,"api"],[1103,"digest"]])SC.onVault(id,k);award("kofi",2);}
+  if(d===3){MILESTONES[3].slice(0,14).forEach(m=>m[2]());award("kofi",3);}}
 /* Perfect-start codes: LR-PERF-TUE, LR-PERF-WED, LR-PERF-THU, LR-PERF-ULT start that level at 9:00 AM with every earlier day
    at a perfect 100 (all fixes, all bonuses). They're reserved words, not 32-bit codes, so normal codes keep their meaning. */
-const PERFECT={TUE:1,WED:2,THU:3,ULT:4};
-const perfectOf=code=>{const m=/^LR[-\s]*PERF(?:ECT)?[-\s]*(TUE|WED|THU|ULT)\w*$/i.exec(String(code||"").trim());return m?PERFECT[m[1].toUpperCase()]:0;};
+const PERFECT={TUE:1,WED:2,THU:3,FRI:5,ULT:4};
+const perfectOf=code=>{const m=/^LR[-\s]*PERF(?:ECT)?[-\s]*(TUE|WED|THU|FRI|ULT)\w*$/i.exec(String(code||"").trim());return m?PERFECT[m[1].toUpperCase()]:0;};
 function perfectDay(d){finishDay(d);const ms=MILESTONES[d]||[];
   if(d===1){S.f.drawer=true;S.f.agentStopped=true;S.f.sshNote=true;for(const x of ["badge","sticky note"])if(!S.inv.includes(x))S.inv.push(x);
     const e=S.hosts.nas01.ep;e.inst=true;e.scanned=true;e.ht=true;e.scannedAt="Tue";S.f.aiHooks=S.f.aiHooks||{};S.f.aiHooks["dana-mbp"]=true;S.f.setupInPerson=true;
     const i=INC(1017);i.assignee=S.player||"You";i.shared=true;i.feedback=true;}
+  if(d===3){S.f.aiHooks=S.f.aiHooks||{};S.f.aiHooks["amara-mbp"]=true;S.f.sshNote=true;}
   if(d===2){S.f.aiHooks=S.f.aiHooks||{};S.f.aiHooks["ravi-mbp"]=true;for(const id of [1102,1103]){const i=INC(id);i.assignee=S.player||"You";i.shared=true;i.feedback=true;i.map=true;}}
   for(const k of Object.keys(POINTS[d]))award(k,d);}
 function restoreFromCode(code){const pd=perfectOf(code);if(pd)return restorePerfect(pd);const r=decodeSave(code);S=fresh();snaps=[];
-  if(r.day===4){for(const id of [1401,1402,1403])S.incs[id]=freshInc(id,false);S.vault={"kv/plimbo/sendgrid":["v1"],"kv/plimbo/github":["v1"]};S.incs[1402].cons.api.on="vault";beginDay(4);}
-  else{for(let d=1;d<r.day;d++){beginDay(d);const won=d===1?(r.prev&1):(r.prev&2);if(won){finishDay(d);S.results[d]="won";}else S.results[d]="lost:audit";}beginDay(r.day);}
+  if(r.day===4&&!r.prev){S.vault={};setupUltimate();beginDay(4);}
+  else if(r.day===4){S.week=true;for(let d=1;d<=3;d++){beginDay(d);if(d<=r.prev){finishDay(d);S.results[d]="won";}else S.results[d]="lost:audit";}setupUltimate();beginDay(4);}
+  else{S.week=true;for(let d=1;d<r.day;d++){beginDay(d);const won=d===1?(r.prev&1):(r.prev&2);if(won){finishDay(d);S.results[d]="won";}else S.results[d]="lost:audit";}beginDay(r.day);}
   S.inv=S.inv.length?S.inv:[];if(r.day>1&&!S.inv.includes("badge"))S.inv.push("badge");
   (MILESTONES[r.day]||[]).forEach((m,n)=>{if(r.ms&(1<<n))m[2]();});
   S.t=r.t;for(const id in S.incs)for(const k in S.incs[id].cons){const c=S.incs[id].cons[k];c.downSince=healthy(+id,k)?null:Math.max(0,r.t-1);}
@@ -133,9 +137,10 @@ function restoreFromCode(code){const pd=perfectOf(code);if(pd)return restorePerf
     if(!S.dead&&r.t>=DAYS[S.day].audit)S.dead="audit";}
   save();return r;}
 function restorePerfect(day){const keep=S&&S.player;S=fresh();snaps=[];if(keep)S.player=keep;
-  if(day===4){for(const id of [1401,1402,1403])S.incs[id]=freshInc(id,false);S.vault={"kv/plimbo/sendgrid":["v1"],"kv/plimbo/github":["v1"]};S.incs[1402].cons.api.on="vault";beginDay(4);}
-  else{for(let d=1;d<day;d++){beginDay(d);perfectDay(d);S.results[d]="won";}beginDay(day);if(day>1&&!S.inv.includes("badge"))S.inv.push("badge");}
-  checkAwards();S.f.doneNotified={};save();return {day,t:0,prev:day===3?3:day===2?1:0,ms:0,checksumOk:true,hashed:false,perfect:true};}
+  if(day===4){S.vault={};setupUltimate();beginDay(4);}
+  else if(day===5){S.week=true;for(let d=1;d<=3;d++){beginDay(d);perfectDay(d);S.results[d]="won";}setupUltimate();beginDay(4);day=4;}
+  else{S.week=true;for(let d=1;d<day;d++){beginDay(d);perfectDay(d);S.results[d]="won";}beginDay(day);if(day>1&&!S.inv.includes("badge"))S.inv.push("badge");}
+  checkAwards();S.f.doneNotified={};save();return {day,t:0,prev:S.week&&day===4?3:day===3?3:day===2?1:0,ms:0,checksumOk:true,hashed:false,perfect:true};}
 function showSaveCode(){const L=ML();const w=document.createElement("div");w.className="msgwrap";const code=encodeSave();
   w.innerHTML=`<div class="msg" style="cursor:default"><b>Save code</b>\nWrite this down. Entering it on the title screen rebuilds this game: the day, the time (to the nearest 6 minutes) and everything you've fixed or broken so far. Points are recalculated.\n\n<span style="display:block;text-align:center;font:34px/1.2 var(--f-term);letter-spacing:.06em;user-select:all" id="sccode">${code}</span>\nIt fits in 32 bits.<div class="btns"><button data-sccopy>Copy</button><button data-scclose>Close</button></div></div>`;L.appendChild(w);}
 function askSaveCode(){const L=ML();const w=document.createElement("div");w.className="msgwrap";w.id="scask";
@@ -147,7 +152,7 @@ document.addEventListener("click",e=>{if(e.target.closest("[data-scclose]")){con
 document.addEventListener("submit",e=>{if(e.target.id!=="scform")return;e.preventDefault();const v=document.getElementById("scin").value;
   if(!v.trim()){document.getElementById("scerr").textContent="Type something. Anything.";return;}
   clearMsgs();const r=restoreFromCode(v);showGame();const D=DAYS[S.day];
-  if(r.perfect){msgBox(`Perfect start: ${D.name}, 9:00 AM.${S.day>1&&S.day<4?` Every earlier day is a perfect 100 (score ${total()} so far).`:""}`);return;}
+  if(r.perfect){msgBox(`Perfect start: ${D.name}, 9:00 AM.${S.week&&S.day>1?` Every earlier day is a perfect 100 (score ${total()} of 400 so far).`:""}`);return;}
   const note=r.hashed?`"${v.trim()}" isn't a save code, so it was turned into one (${encodeSave()}). Who knows what you'll get.`:r.checksumOk?"":"That code doesn't check out (a typo, or made up), so this may not be the game you meant. Loaded it anyway.";
   if(S.dead){msgBox(`${note?note+"\n\n":""}It's ${D.name}, ${hhmm(S.t)}, and you've arrived too late.`,null,()=>after());return;}
   msgBox(`${note?note+"\n\n":"Restored from "+v.trim().toUpperCase()+".\n\n"}It's ${D.name}, ${hhmm(S.t)}. ${(MILESTONES[S.day]||[]).filter((m,n)=>{try{return m[1]();}catch(e){return false;}}).length} of today's milestones are done. The blue bar shows what's next.`);});

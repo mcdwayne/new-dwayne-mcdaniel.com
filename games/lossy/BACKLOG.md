@@ -2,7 +2,7 @@
 
 Running kanban for the game. To update it, move a card's ID between columns on the board and change its Status in the card list. Keep at most 2 cards in progress.
 
-Last updated: 2026-10-31
+Last updated: 2026-11-02
 
 ## Board
 
@@ -31,6 +31,11 @@ Last updated: 2026-10-31
 | LR-21 ggshield agent skills |  |  |  | D-21 LR-16 Public incidents: agents analysis, Docker Hub, similar incidents, environment |
 | LR-22 Night Owl dark theme |  |  |  | D-22 LR-17 Coverage hub; AI agents and MCP inventory |
 | LR-23 Overprivileged NHIs (AWS, Entra, Okta) |  |  |  |  |
+|  |  |  |  | D-23 LR-24 Training level: how to play + what the dashboard shows |
+|  |  |  |  | D-24 LR-25 Incident page like the real product: map on top, vaults in use |
+|  |  |  |  | D-25 LR-26 Rotate SendGrid and GitHub from Vault after the first manual rotation |
+|  |  |  |  | D-26 LR-27 Four-day week: Friday is ULTIMATE, scored out of 400 |
+|  |  |  |  | D-27 LR-28 Save code on every end-of-day screen |
 
 Ready means the card is clear enough to start. Backlog means it needs a decision or design first (see Open questions).
 
@@ -61,6 +66,11 @@ Ready means the card is clear enough to start. Backlog means it needs a decision
 | LR-21 | ggshield agent skills | Backlog | S | LR-05 | Dana's agent, with GitGuardian's skills installed, explains remediation in its own terminal | none |
 | LR-22 | Night Owl dark theme in the GitGuardian window | Backlog | S | none | A theme toggle in the GitGuardian window | none |
 | LR-23 | Flag admin and overprivileged NHIs | Backlog | M | none | Inventory flags the Terravox tiler service account as overprivileged | Which day? |
+| LR-24 | Optional training level: (1) how to play: open GitGuardian, turn away from the screen, walk to the hallway and back; (2) what the GitGuardian dashboard is showing, written for a US 9th grader, with real stakes | Done | M | none | A Training button on the title screen runs a coached, deadline-free Tuesday: step-by-step prompts with highlights for the four controls, then a guided tour of the incident list and an incident (status, severity, risk score, validity, occurrences, exploration map, secrets manager, remediation, revoke) with real-world examples; ends with Start Tuesday | none |
+| LR-25 | GitGuardian incident page laid out like the real product (interactive demo): exploration map at the top, collapsed by default, showing consumers, secrets managers (vaults in use) and accessed resources; tabs and a right-hand details panel | Done | M | none | Incident page has Overview, Occurrences, Remediation and Activity tabs, an Incident details side panel (type, status, Resolve and Ignore, assignee, severity, tags, developer), and a collapsible Exploration map card first on Overview; the sidebar follows the product's groups | Open by default on any day? (Built closed, as asked) |
+| LR-26 | Rotate SendGrid and GitHub keys from Vault after the first manual rotation | Done | S | LR-13 | Once you've made a new SendGrid or GitHub key yourself and it's the current version in Vault, Vault shows Rotate now; it makes and stores a fresh key and revokes the previous one; consumers reading from Vault keep working, hardcoded copies break and page you | Scored? (Built unscored) |
+| LR-27 | ULTIMATE is also the last day of the week (Friday), with the week scored out of 400; it stays playable on its own | Done | M | none | New week runs Tuesday to Friday; Thursday ends with Go home, Friday is ULTIMATE; scores add up to 400 with ranks scaled; ULTIMATE on its own stays out of 100; Friday save codes tell the two apart; LR-PERF-FRI; every description updated | none |
+| LR-28 | Show the save code at the end of each day | Done | S | LR-07 | End-of-day, death and end-of-week screens show the code with a Copy button and explain that it brings anyone back to that moment, with no back end | none |
 
 ## Done
 
@@ -88,5 +98,10 @@ Ready means the card is clear enough to start. Backlog means it needs a decision
 | D-20 | LR-15: Incident search bar (value, author, file path, source); Secret Enricher on a historical generic secret; @mentions in notes | 2026-10-31 |
 | D-21 | LR-16: Agents analysis on public incidents; Docker Hub occurrence details; similar incidents; environment per secret | 2026-10-31 |
 | D-22 | LR-17: Perimeter coverage hub with blind spots; AI agents and MCP servers per endpoint | 2026-10-31 |
+| D-23 | LR-24: Training level from the title screen: coached, no clock, no score, no save; part 1 controls with a green arrow and pulsing outline, other doors locked, a training checklist, part 2 explains the dashboard (secrets, incidents, details panel, risk, validity, exploration map, occurrences, remediation order) with real numbers; ends with Start Tuesday | 2026-11-02 |
+| D-24 | LR-25: Incident page laid out like the product's interactive demo: tabs (Overview, Occurrences, Remediation, Activity), Incident details side panel, exploration map first, opening the full map (consumers, the secret and its vault when vaulted, accessed resources); dark sidebar with the product's groups; Public secret incidents view | 2026-11-02 |
+| D-25 | LR-26: Rotate now in Vault for SendGrid and GitHub, unlocked by one manual rotation stored in Vault; Vault consumers survive, hardcoded copies break and page you | 2026-11-02 |
+| D-26 | LR-27: Four-day week: Thursday leads into Friday ULTIMATE; week scored out of 400 with scaled ranks; ULTIMATE on its own still out of 100; Thursday leftovers go to on-call; console tabs reset each day; Friday save codes record week vs standalone; LR-PERF-FRI | 2026-11-02 |
+| D-27 | LR-28: Save code with Copy on every end-of-day screen (win, loss, end of week); explains anyone can load it and there's no back end | 2026-11-02 |
 
 Release-note audit (Nov 2025 to Oct 2026): see docs/RELEASE-COVERAGE.md.

@@ -11,9 +11,9 @@ How to run LossyInc Range as a demo or a training, with a clean path through eve
 
 ## Scoring
 
-Each day is out of 100; the week is out of 300. Points come from the remediation steps themselves, plus a few for curiosity (sticky notes, the whiteboard, the rubber duck). Work finished on a later day than its incident scores half. ULTIMATE is scored separately, out of 100, and only a by-the-book run wins.
+Each day is out of 100; the week, Tuesday to Friday, is out of 400. Points come from the remediation steps themselves, plus a few for curiosity (sticky notes, the whiteboard, the rubber duck). Work finished on a later day than its incident scores half. Friday is ULTIMATE, and only a by-the-book run wins it. ULTIMATE on its own (title screen) is scored out of 100.
 
-Ranks for the week: Secrets Sage (270+), Remediation Hero (220+), Steady Responder (160+), Survivor (100+), Lucky Intern.
+Ranks for the week: Secrets Sage (360+), Remediation Hero (292+), Steady Responder (212+), Survivor (132+), Lucky Intern.
 
 ## Tuesday: The Agent Committed It
 
@@ -129,3 +129,18 @@ Every GitGuardian SaaS release from November 2025 to October 2026 is mapped to t
 ## Perfect-start codes
 
 To jump a room straight to a later day with a clean record, enter one of these on the title screen (Enter a save code): `LR-PERF-TUE`, `LR-PERF-WED`, `LR-PERF-THU`, `LR-PERF-ULT`. Each starts that level at 9:00 AM with every earlier day at a perfect 100.
+
+## Training level
+
+For a room where some people have never played a point-and-click adventure, or never used GitGuardian, start with **Training: how to play** on the title screen. It takes about five minutes and can't be lost. A green arrow and a pulsing green outline point at the thing to click. Every door except the player's office is locked, and Tasks shows the training checklist.
+
+- **Part 1, controls:** use the monitor, open GitGuardian, turn away from the screen, walk to the hallway and back.
+- **Part 2, the dashboard:** what a secret and an incident are, what the details panel means, risk score, validity, the exploration map (consumers, secrets managers, accessed resources), occurrences, and the order of the remediation steps.
+
+The real-world numbers in Part 2 come from GitGuardian's State of Secrets Sprawl 2025: 23.8 million secrets leaked on public GitHub in 2024, and 70% of secrets leaked in 2022 were still valid. The Toyota example is the 2022 disclosure of an access key left in public code on GitHub for about five years, exposing roughly 296,000 customer records.
+
+## Incident page layout and rotation
+
+The incident page follows the product's layout, based on GitGuardian's interactive demo. It has Overview, Occurrences, Remediation and Activity tabs, and an Incident details panel on the right. The exploration map is the first card on Overview. Clicking it opens the full map: consumers on the left, the secret in the middle, and the resources it can reach on the right. Once the secret is in Vault, lossy-vault appears under it, with the path and version, and consumers that read from Vault connect through it. A secret that isn't vaulted shows no vault on the map.
+
+For SendGrid and GitHub keys, once a player has made a new key by hand and stored it as the current version in Vault, Vault shows **Rotate now**. Rotation stores a fresh key and revokes the previous one. Consumers reading from Vault keep working, and hardcoded copies break and page the player. It isn't scored.

@@ -1,6 +1,6 @@
 # LossyInc Range
 
-A first-person, point-and-click adventure for practicing secrets incident response with GitGuardian. You play the newest person on the security team at a fictional company, Lossy Inc, through three working days of leaked credentials, plus an ULTIMATE level that only follows the playbook.
+A first-person, point-and-click adventure for practicing secrets incident response with GitGuardian. You play the newest person on the security team at a fictional company, Lossy Inc, through a working week of leaked credentials. Tuesday to Thursday are three different leaks; Friday is ULTIMATE, a compromised laptop where only the playbook wins. ULTIMATE can also be played on its own.
 
 The pixel-art office is the game. The computer screens inside it are close imitations of the real tools, laid out the way their docs describe: GitGuardian (incidents, remediation workflow, exploration map, Endpoint protection, Honeytokens, playbooks), HashiCorp Vault, a CI/CD system, GitHub, SendGrid, Google Cloud, an AI provider console, and two Linux boxes with a working shell and nano.
 
@@ -32,18 +32,21 @@ Opening the file directly works too:
 
 Progress saves to your browser's local storage; **Continue** on the title screen picks it up.
 
-**Save codes.** Menu → **Save code** condenses the current game into 32 bits, shown as `LR-XXXX-XXXX`. **Enter a save code** on the title screen rebuilds it on any device: the level, the time (to the nearest 6 minutes), which earlier days you won, and up to 17 milestones for the day (what's fixed, what's broken, what went public). You can type anything: a real code rebuilds your game, a mistyped one still loads (a 5-bit checksum flags about 97% of typos with a warning), and any other text is hashed into a code and gives you some game, possibly one you arrive at too late to win. **Perfect starts:** four reserved codes start a level at 9:00 AM with every earlier day at a perfect 100. That means every fix and every bonus, not just a win.
+**Save codes.** Every end-of-day screen (win, loss or the end of the week) shows the code for that moment, with a Copy button. Menu → **Save code** condenses the current game into 32 bits, shown as `LR-XXXX-XXXX`. **Enter a save code** on the title screen rebuilds it on any device: the level, the time (to the nearest 6 minutes), which earlier days you won, and up to 17 milestones for the day (what's fixed, what's broken, what went public). You can type anything: a real code rebuilds your game, a mistyped one still loads (a 5-bit checksum flags about 97% of typos with a warning), and any other text is hashed into a code and gives you some game, possibly one you arrive at too late to win. **Perfect starts:** four reserved codes start a level at 9:00 AM with every earlier day at a perfect 100. That means every fix and every bonus, not just a win.
 
 | Code | Starts | Score so far |
 |---|---|---|
-| `LR-PERF-TUE` | Tuesday | 0 of 300 |
+| `LR-PERF-TUE` | Tuesday | 0 of 400 |
 | `LR-PERF-WED` | Wednesday | 100 (Tuesday perfect) |
 | `LR-PERF-THU` | Thursday | 200 (Tuesday and Wednesday perfect) |
-| `LR-PERF-ULT` | ULTIMATE | 0 of 100 |
+| `LR-PERF-FRI` | Friday (ULTIMATE in the week) | 300 (Tuesday to Thursday perfect) |
+| `LR-PERF-ULT` | ULTIMATE on its own | 0 of 100 |
 
-Normal codes keep their meaning: a won earlier day is rebuilt as a standard clear, not a perfect one. It's lossy on purpose: exact dialogue, timeline wording and partial progress on lost earlier days aren't kept, and points are recalculated. The layout is documented at the top of `src/js/10b-savecode.js`.
+Normal codes keep their meaning: a won earlier day is rebuilt as a standard clear, not a perfect one. It's lossy on purpose: exact dialogue, timeline wording and partial progress on lost earlier days aren't kept, and points are recalculated. A Friday code also records whether it's Friday of the week or ULTIMATE on its own; for the week it keeps how many of Tuesday to Thursday were won, not which ones. The layout is documented at the top of `src/js/10b-savecode.js`.
 
 ### Controls
+
+**New players:** **Training: how to play** on the title screen is an optional, coached Tuesday with no clock, no deadlines and no score. Part 1 covers the controls (open GitGuardian, turn away from the screen, walk to the hallway and back). Part 2 explains what the GitGuardian dashboard is showing, written for someone who has never used it.
 
 - Click a verb (**Walk**, **Look**, **Use**, **Talk**), then click something in the scene. Or type commands in the bar: `look monitor`, `use drawer`, `talk ravi`, `go hallway`, `tasks`, `help`.
 - **Use** your monitor for the computer: a homemade Windows 3.1 (Program Manager, program groups, windows you can drag, minimize, maximize and close; on phones each program goes full-screen). Use your phone for mail. The server closet needs the badge from your desk drawer.
@@ -57,9 +60,9 @@ Normal codes keep their meaning: a won earlier day is rebuilt as a standard clea
 | Tuesday | The Agent Committed It | An AI coding agent commits a valid OpenAI key into `.mcp.json`, and is about to publish a public repro. Noon loan payouts depend on that key. | Assess before acting. Find every consumer (one lives in a crontab GitGuardian has never seen), move them to the vault, then rotate and revoke without an outage. |
 | Wednesday | The Worm in the Lockfile | A poisoned npm package runs in CI and publishes a GitHub token and a SendGrid key to a public repo. | Stolen credentials need containment first, then immediate revocation, then restoration. Feed CI a new secret before the worm is gone and it leaks again. |
 | Thursday | Ghost of the Acquisition | A Google Cloud service account key from an acquired company turns up in a public Docker image. Nobody owns it, nobody has admin, and GitGuardian can't revoke Google Cloud keys. | Break-glass access, disable before delete, assigning an owner, and replacing a key file on a forgotten VM with the VM's own identity. |
-| ULTIMATE | Patient Zero | An Endpoint Protection honeytoken fires on a developer's laptop. The attacker already took what they could. | The IR-07 playbook in your desk drawer, in exact order. Any step out of order, resetting the honeytoken, or ignoring an incident ends the run and names the step you skipped. |
+| Friday · ULTIMATE | Patient Zero | An Endpoint Protection honeytoken fires on a developer's laptop. The attacker already took what they could. | The IR-07 playbook in your desk drawer, in exact order. Any step out of order, resetting the honeytoken, or ignoring an incident ends the run and names the step you skipped. |
 
-**The week carries over.** Win a day by fixing everything on its checklist and telling the COO, Kofi Lopez, that it's handled. Lose it by dying. Either way the next day starts at 9:00 AM, and anything you left broken is still broken: the incident stays open, its threats come back every day until you fix it, and late fixes score half. The week ends with a score out of 300 and a rank. ULTIMATE is separate, on the title screen, scored out of 100.
+**The week carries over.** Win a day by fixing everything on its checklist and telling the COO, Kofi Lopez, that it's handled. Lose it by dying. Either way the next day starts at 9:00 AM, and anything you left broken is still broken: the incident stays open, its threats come back every day until you fix it, and late fixes score half. Friday is ULTIMATE. Anything still open from Thursday goes to the on-call team, because IR-07 comes first. The week ends with a score out of 400 and a rank. **ULTIMATE on its own**, on the title screen, plays Friday alone, scored out of 100.
 
 New games ask for your name (with a random suggestion). Machine setup only happens at a developer's desk, and once one has run it in front of you and nas01's crontab is clean, IT gives you a Device Management (MDM) program to roll it out to every laptop. Things you can do along the way that matter later: install GitGuardian Endpoint Protection on the legacy box `nas01` (the console shows the install command), scan it, plant a honeytoken, and scrub keys out of its bash history.
 

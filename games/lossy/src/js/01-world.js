@@ -7,13 +7,13 @@ const COMPANY=["Lossy Inc","Lossy Incorporated","LOSSI"];
 const START=9*60;
 const DAYS={
  1:{name:"Tuesday",short:"Tue",title:"The Agent Committed It",npc:"dana",audit:210,
-   intro:()=>`Tuesday, 9:00 AM. ${COMPANY[0]}.\n\nYou're ${playerName()}, the newest member of the security team. ${P.head} is at a conference and left you the keys, figuratively. Your desk phone just buzzed: an email from GitGuardian.\n\nYOUR GOAL TODAY: kill the leaked key without breaking anything before the 12:00 disbursement run, then tell ${P.coo} it's handled.\n\nThis is day 1 of 3. Win or lose, tomorrow comes, and anything you leave broken comes with it.`},
+   intro:()=>`Tuesday, 9:00 AM. ${COMPANY[0]}.\n\nYou're ${playerName()}, the newest member of the security team. ${P.head} is at a conference and left you the keys, figuratively. Your desk phone just buzzed: an email from GitGuardian.\n\nYOUR GOAL TODAY: kill the leaked key without breaking anything before the 12:00 disbursement run, then tell ${P.coo} it's handled.\n\nThis is day 1 of 4. Win or lose, tomorrow comes, and anything you leave broken comes with it. Friday is ULTIMATE.`},
  2:{name:"Wednesday",short:"Wed",title:"The Worm in the Lockfile",npc:"ravi",audit:360,
    intro:()=>`Wednesday, 9:00 AM. ${COMPANY[1]}. Legal finished the rebrand overnight; the old letterhead is in the recycling.\n\nGitGuardian Public Monitoring caught two of your secrets in a brand-new public GitHub repository, plimbo-bot/env-dump-7f3a. A poisoned npm package, colorfmt 4.1.2, ran its install script inside Plimbo's CI last night, scooped up the environment, and published it.\n\nEvery CI run that still installs that package leaks whatever secrets it can see. Including new ones.\n\nYOUR GOAL TODAY: stop the worm, kill the stolen keys, and keep Plimbo's password resets and the 2:00 PM app-store release working. Then tell ${P.coo}.`},
  3:{name:"Thursday",short:"Thu",title:"Ghost of the Acquisition",npc:"amara",audit:360,
    intro:()=>`Thursday, 9:00 AM. ${COMPANY[2]}. The new logo is a lowercase "lossi" with no explanation.\n\nGitGuardian Public Monitoring found a Google Cloud service account key inside a public Docker image from Terravox, the mapping startup the company acquired in 2022. Nobody from Terravox works here anymore. Mapwende, the NGO line, runs on that project, and flood-response teams download offline maps at 1:00 PM.\n\nYOUR GOAL TODAY: kill the public key, keep Mapwende's maps flowing, and find whatever else still uses it. GitGuardian can't revoke Google Cloud keys for you, and nobody here has admin on that project. Yet.`},
  4:{name:"Friday",short:"ULT",title:"ULTIMATE: Patient Zero",npc:"ravi",audit:300,ultimate:true,
-   intro:()=>`Friday, 9:00 AM. ULTIMATE.\n\nAt 3:12 AM the decoy AWS key that Endpoint Protection planted on ${P.ravi}'s MacBook was used from an IP abroad. Nobody uses a decoy by accident: an infostealer is on that laptop.\n\nThe damage is already done. By 3:40 AM the attacker had used Ravi's GitHub token to clone private repositories and read secrets out of Vault with his Vault token. You can't undo that. You can only stop it going further.\n\nThere is exactly one way through: the incident playbook in your desk drawer (IR-07, Endpoint Compromise). Do every step, in order. Skip one, or do one early, and you lose.\n\nGo get the binder.`}};
+   intro:()=>`Friday, 9:00 AM. ULTIMATE${S&&S.week?", the last day of the week":""}.\n\nAt 3:12 AM the decoy AWS key that Endpoint Protection planted on ${P.ravi}'s MacBook was used from an IP abroad. Nobody uses a decoy by accident: an infostealer is on that laptop.\n\nThe damage is already done. By 3:40 AM the attacker had used Ravi's GitHub token to clone private repositories and read secrets out of Vault with his Vault token. You can't undo that. You can only stop it going further.\n\nThere is exactly one way through: the incident playbook in your desk drawer (IR-07, Endpoint Compromise). Do every step, in order. Skip one, or do one early, and you lose.\n\nGo get the binder.${S&&S.week?"\n\nAnything still open from Thursday goes to the on-call team today. IR-07 comes first.":""}`}};
 /* incident definitions: static facts. Runtime state lives in S.incs[id]. */
 const SG={det:"SendGrid API Key",prov:"sendgrid",revGG:true,sev:"Critical",dev:"ravi",line:"Plimbo",path:"kv/plimbo/sendgrid",field:"SENDGRID_API_KEY",v1:"SG.…Hq3d",v2:"SG.…Lm7e",ident:"sendgrid:plimbo-prod · Full Access",
   cons:{api:{name:"plimbo-api (password resets)",kind:"ci",repo:"plimbo-api",wf:"deploy",desc:"workload · prod"},
@@ -75,7 +75,7 @@ function conOn(id,k){const c=INC(id).cons[k],d=DEF[id].cons[k];
   if(d.kind==="vmenv")return vmState(id);
   return c.on;}
 function keyWorks(id,which){const k=INC(id).key;return which==="v1"?k.v1:which==="v2"?k.v2:false;}
-function healthy(id,k){const on=conOn(id,k);if(on==="hard-v1")return keyWorks(id,"v1");if(on==="hard-v2")return keyWorks(id,"v2");
+function healthy(id,k){const on=conOn(id,k);if(on==="hard-v1")return keyWorks(id,"v1");if(on==="hard-v2")return keyWorks(id,"v2")&&((INC(id).cons[k].rot||0)===(INC(id).rot||0));
   if(on==="vault"){const l=vlast(DEF[id].path);return !!l&&keyWorks(id,l);}if(on==="keyless")return true;return false;}
 const consOf=id=>Object.keys(DEF[id].cons);
 const allHealthy=id=>consOf(id).every(k=>healthy(id,k));
@@ -85,11 +85,14 @@ function dayIncs(d){return Object.keys(DEF).map(Number).filter(id=>d===4?DEF[id]
 function openIncs(){return dayIncs(S.day).filter(id=>!incDone(id));}
 function dayExtras(d){if(d===1)return !!INC(1017).logs;if(d===2)return S.f.contained;if(d===4)return S.f.isolated&&S.f.htRevoked&&PB.done();return true;}
 function dayDone(){const ds=S.day===4?[4]:[1,2,3].filter(d=>d<=S.day);if(!ds.every(dayExtras))return false;return dayIncs(S.day).every(id=>INC(id)&&incDone(id));}
-function award(k,day){day=day||S.day;if(day===4&&S.day!==4)return 0;const key=day+"."+k;if(S.got[key])return 0;const base=(POINTS[day]||{})[k];if(!base)return 0;S.got[key]=1;
+function award(k,day){if(S&&S.tut)return 0;day=day||S.day;if(day===4&&S.day!==4)return 0;const key=day+"."+k;if(S.got[key])return 0;const base=(POINTS[day]||{})[k];if(!base)return 0;S.got[key]=1;
   const p=day<S.day?Math.ceil(base/2):base;S.score[day]+=p;return p;}
 const got=(k,day)=>!!S.got[(day||S.day)+"."+k];
-const total=()=>S.score[1]+S.score[2]+S.score[3];
-const maxScore=()=>S.day===4?100:300;const shownScore=()=>S.day===4?S.score[4]:total();
+/* the week is four days (Friday is ULTIMATE, out of 400); ULTIMATE on its own is out of 100 */
+const total=()=>S.score[1]+S.score[2]+S.score[3]+(S.week?S.score[4]:0);
+const maxScore=()=>S.week?400:S.day===4?100:300;const shownScore=()=>S.day===4&&!S.week?S.score[4]:total();
+/* ULTIMATE's starting state: Ravi's stolen tokens and keys are the current ones in Vault */
+function setupUltimate(){for(const id of [1401,1402,1403])S.incs[id]=freshInc(id,false);S.vault["kv/plimbo/sendgrid"]=["v1"];S.vault["kv/plimbo/github"]=["v1"];S.incs[1402].cons.api.on="vault";}
 function tl(id,text){INC(id).timeline.push([short(S.t),text]);}
 function snapshot(label){snaps.push({label:label||"",t:S.t,day:S.day,s:JSON.stringify(S)});if(snaps.length>80)snaps.shift();}
 function mail(id,from,subj,t){if(S.mail.some(m=>m.id===id))return;S.mail.push({id,from,subj,time:short(t??S.t),day:S.day,read:false});}
@@ -110,7 +113,7 @@ function beginDay(d){S.day=d;S.t=0;S.room="desk";S.dead=null;S.dayWon=null;
   for(const id in S.incs)for(const k in S.incs[id].cons){const c=S.incs[id].cons[k];if(c.downSince!=null)c.downSince=0;}}
 
 /* ============================== time & consequences ============================== */
-function advance(min){if(S.dead||S.dayWon)return;const before=S.t;S.t+=min;const cross=x=>before<x&&S.t>=x;
+function advance(min){if(S.dead||S.dayWon)return;if(S.tut){S.t+=min;return;}/* training: no clock events, no deadlines */const before=S.t;S.t+=min;const cross=x=>before<x&&S.t>=x;
   const say2=(who,txt)=>msgBox(txt,who);
   for(const id of dayIncs(S.day)){if(!INC(id)||!INC(id).created)continue;for(const k of consOf(id)){const c=INC(id).cons[k];const h=healthy(id,k);if(!h&&c.downSince==null)c.downSince=S.t;if(h)c.downSince=null;}}
   /* day 1 story */

@@ -63,6 +63,10 @@ document.addEventListener("click",e=>{const b=e.target.closest("button,tr[data-o
   if(d.mrevoke){const v=(document.getElementById("revtxt").value||"").trim().toLowerCase();if(v!=="revoke"){document.getElementById("reverr").innerHTML='<div class="errbox">Type revoke to confirm.</div>';return;}
     return pcAct(()=>{modal=null;const id=+d.mrevoke;if(!needPB(5,"revoke a stolen credential"))return {};return revokeKey(id,"gg");});}
   if(d.ggpush){modal={k:"pushvault",id:+d.ggpush};return R();}
+  if(d.ggtab){ggRoute=Object.assign({},ggRoute,{tab:d.ggtab});return R();}
+  if(d.vrotate)return pcAct(()=>{const id=+d.vrotate,dd=DEF[id],i=INC(id);if(!rotReady(id))return {};i.rot=(i.rot||0)+1;i.rotAt=S.t;S.vault[dd.path].push("v2");tl(id,`Rotated by Vault: new ${dd.det} (${keyLabel(id,"v2")}) stored as version ${S.vault[dd.path].length}; the previous key was revoked`);advance(1);if(S.dead)return {};
+    const down=consOf(id).filter(k=>!healthy(id,k)&&i.cons[k].known);for(const k of down)msgBox(`ALERT ${dd.cons[k].name}: credential rejected (401). It had a hardcoded copy of the key Vault just rotated away.`,"Pager");
+    return {toast:`Rotated. Version ${S.vault[dd.path].length} is live${down.length?"; "+down.length+" hardcoded consumer(s) broke.":"; everything reading from Vault kept working."}`};});
   if(d.mpush)return pcAct(()=>{const id=+d.mpush,dd=DEF[id];modal=null;if(!needPB(6,"write a secret to Vault"))return {};if(vaulted(id))return {toast:"Already vaulted."};
     tl(id,"Push to vault requested: lossy-vault "+dd.path);S.vault[dd.path]=["v1"];advance(1);if(S.dead)return {};tl(id,"ggscout sync-secrets wrote "+dd.path+"#"+dd.field+"; GitGuardian notified of successful vaulting");INC(id).tags=[...new Set(INC(id).tags.concat(["Vaulted"]))];const p=aw(id,"vault");vaultWrite(dd.path,"v1");
     return {toast:`${p?"+"+p+" · ":""}Pushed to vault. ggscout wrote it to ${dd.path} and the incident is tagged Vaulted.`};});
@@ -95,7 +99,7 @@ document.addEventListener("click",e=>{const b=e.target.closest("button,tr[data-o
   if("ciedit" in d){modal={k:"ciedit"};return R();}
   if("mciedit" in d)return pcAct(()=>{const v=document.querySelector('input[name=cis]:checked');if(!v)return {toast:"Pick a value."};const r=ciCur();if(!needPB(7,"update a consumer"))return {};INC(r.id).cons[r.k].pending=v.value;modal=null;advance(2);return {toast:"Secret updated. Run the workflow to roll it out."};});
   if("cirun" in d)return pcAct(()=>{const r=ciCur();if(!needPB(7,"run a workflow with updated credentials"))return {};const c=INC(r.id).cons[r.k],dc=DEF[r.id].cons[r.k];const worm=S.day===2&&!S.f.contained&&/^plimbo/.test(ciRepo);advance(6);if(S.dead)return {};
-    if(c.pending){c.on=c.pending;c.pending=null;}const ok=healthy(r.id,r.k);c.downSince=ok?null:c.downSince;
+    if(c.pending){c.on=c.pending;c.pending=null;if(c.on==="hard-v2")c.rot=INC(r.id).rot||0;}const ok=healthy(r.id,r.k);c.downSince=ok?null:c.downSince;
     const eff=c.on==="hard-v2"||(c.on==="vault"&&vlast(DEF[r.id].path)==="v2");if(worm&&eff&&S.f.restolenAt==null)S.f.restolenAt=S.t+20;
     ciRun={repo:ciRepo,lines:[["✓ checkout","ok"],["✓ npm ci","ok"]].concat(worm?[["> colorfmt@4.1.2 postinstall: node ./setup.js","bad"]]:[]).concat([[ok?"✓ test (42 passed)":"✗ test: credential rejected (401)",ok?"ok":"bad"],[ok?"✓ "+dc.wf+" "+dc.name:"⊘ "+dc.wf+" skipped",ok?"ok":"bad"]])};
     return {toast:ok?dc.name+" ran and is healthy.":dc.name+" can't authenticate."};});

@@ -59,8 +59,8 @@ async function day3(h){const {$,cmd,pc,sh,pick,bye,say,G,last}=h;
   sh("sudo nano /etc/tvx/export.env");pc('[data-nano="helper"]');pc('[data-nano="write"]');pc('[data-nano="exit"]');sh("sudo rm /etc/tvx/sa-terravox-tiler.json");sh("/opt/tvx/export.sh");say("  vm after:",last(2).slice(0,160));sh("exit");
   pc('[data-gcp="keys"]');pc('[data-gdelete]');pc('[data-mgdelete]');say("  goal:",$("#goalTxt").textContent);pc('[data-pcclose]');
   cmd("go hallway");cmd("go coo");cmd("talk kofi");pick("handled");h.click([...h.d.querySelectorAll(".dlg .opts button")].find(b=>b.textContent==="Continue"));say("  END:",T($("#msglayer .msg").textContent).slice(0,160));
-  h.click($('[data-death="finale"]'));say("  FINALE:",T($("#msglayer .msg").textContent).slice(0,400));}
-async function ult(h,variant){const {$,cmd,pc,sh,pick,bye,revoke,say,G,click,d}=h;click($('[data-tt="ult"]'));click($('[data-namego]'));h.drain();
+  const fin=$('[data-death="finale"]');if(fin){h.click(fin);say("  FINALE:",T($("#msglayer .msg").textContent).slice(0,400));}}
+async function ult(h,variant){const {$,cmd,pc,sh,pick,bye,revoke,say,G,click,d}=h;if(variant!=="week"){click($('[data-tt="ult"]'));click($('[data-namego]'));}h.drain();
   cmd("use drawer");say("  goal:",$("#goalTxt").textContent);cmd("use monitor");pc('[data-pc="gg"]');
   if(variant==="reset"){pc('[data-gg="honeytokens"]');pc('[data-htreset]');return;}
   pc('[data-gg="honeytokens"]');pc('[data-pcclose]');
@@ -73,13 +73,18 @@ async function ult(h,variant){const {$,cmd,pc,sh,pick,bye,revoke,say,G,click,d}=
   pc('[data-pc="github"]');pc('[data-gh="fine"]');pc('[data-pnew="1401"]');pc('[data-mpnew="1401"]');pc('[data-mclose]');pc('[data-pc="sendgrid"]');pc('[data-pnew="1402"]');pc('[data-mpnew="1402"]');pc('[data-mclose]');
   pc('[data-pc="vault"]');pc('[data-vsel="kv/plimbo/github"]');pc('[data-vnew="1401"]');pc('[data-vsel="kv/plimbo/sendgrid"]');pc('[data-vnew="1402"]');
   pc('[data-pc="ci"]');pc('[data-cirepo="plimbo-ios"]');pc('[data-citab="secrets"]');pc('[data-ciedit]');pc('[data-mciedit]');pc('[data-citab="actions"]');pc('[data-cirun]');pc('[data-cirepo="plimbo-api"]');pc('[data-cirun]');
-  pc('[data-pcclose]');cmd("go hallway");cmd("go server closet");cmd("use nas01");sh("crontab -e");pc('[data-nano="helper"]');pc('[data-nano="exit"]');pc('[data-nano="y"]');sh("exit");
+  pc('[data-pcclose]');cmd("go hallway");cmd("go server closet");cmd("use nas01");sh("crontab -e");pc('[data-nano="helper"]');pc('[data-nano="exit"]');if($('[data-nano="y"]'))pc('[data-nano="y"]');sh("exit");
   say("  goal:",$("#goalTxt").textContent);cmd("go hallway");cmd("go desk");cmd("use monitor");pc('[data-pc="gg"]');
   pc('[data-pc="github"]');pc('[data-gh="audit"]');pc('[data-plogs="1401"]');pc('[data-pc="sendgrid"]');pc('[data-sg="activity"]');pc('[data-plogs="1402"]');pc('[data-pc="vault"]');pc('[data-vtab="audit"]');pc('[data-vaudit]');
   pc('[data-pc="gg"]');pc('[data-gg="honeytokens"]');pc('[data-htrevoke]');say("  goal:",$("#goalTxt").textContent," statuses:",[1401,1402,1403].map(i=>G().S.incs[i].status).join(","));pc('[data-pcclose]');
   cmd("go hallway");cmd("go coo");cmd("talk kofi");pick("contained");click([...d.querySelectorAll(".dlg .opts button")].find(b=>b.textContent==="Continue"));say("  END:",T($("#msglayer .msg").textContent).slice(0,200));}
 (async()=>{
  if(which==="all"||which==="week")await play("WEEK: DAY1→DAY2→DAY3",async h=>{await day1(h);toNext(h);await day2(h);toNext(h);await day3(h);});
+ if(which==="all"||which==="week4")await play("FOUR-DAY WEEK: Thursday into Friday ULTIMATE, scored out of 400",async h=>{const {$,click,say,G,d}=h;await day1(h);toNext(h);await day2(h);toNext(h);await day3(h);
+   const sc=($("#sccode")||{}).textContent||"";const scOk=/^LR-[0-9A-F]{4}-[0-9A-F]{4}$/.test(sc)&&G().decodeSave(sc).day===3&&/no back end/.test($("#msglayer").textContent);say("  end-of-Thursday save code:",sc,scOk);
+   const btn=$('[data-death="nextday"]');say("  Thursday end button:",btn&&btn.textContent);toNext(h);const S=G().S;say("  Friday:",S.day,"week:",S.week,"incidents:",Object.keys(S.incs).filter(x=>+x>1400).join(","),"bar:",$("#stScore").textContent);
+   await ult(h,"week");const S2=G().S;const fin=$('[data-death="finale"]');if(fin){click(fin);}const txt=($("#msglayer .msg")||{}).textContent||"";say("  finale:",txt.replace(/\s+/g," ").slice(0,260));
+   const finCode=/LR-[0-9A-F]{4}-[0-9A-F]{4}/.test(txt);say("  finale has a save code:",finCode);const ok=scOk&&finCode&&S2.score[4]>=90&&/of 400/.test(txt)&&/Friday\/ULT/.test(txt);if(ok)S2.dayWon=true;else S2.dead="week4-failed";});
  if(which==="all"||which==="trap")await play("DAY 2 TRAP: rotate before containing",async h=>{await day1(h);toNext(h);const {cmd,pc,revoke}=h;cmd("use monitor");pc('[data-pc="gg"]');pc('[data-openinc="1103"]');revoke(1103);
    pc('[data-pc="sendgrid"]');pc('[data-pnew="1103"]');pc('[data-mpnew="1103"]');pc('[data-mclose]');pc('[data-pc="ci"]');pc('[data-cirepo="plimbo-api"]');pc('[data-citab="secrets"]');pc('[data-ciedit]');pc('[data-mciedit]');pc('[data-citab="actions"]');pc('[data-cirun]');pc('[data-pcclose]');for(let i=0;i<12;i++){if(h.G().S.dead)break;cmd(i%2?"go desk":"go hallway");}});
  if(which==="all"||which==="lose1")await play("LOSE DAY 1 (ignore) → DAY 2 carry-over",async h=>{const {$,click,cmd,pc,say,G}=h;click($('[data-tt="new"]'));click($('[data-namego]'));cmd("use monitor");pc('[data-pc="gg"]');pc('[data-openinc="1017"]');pc('[data-ggm="ignore:1017"]');pc('[data-mignore="1017"]');pc('[data-pcclose]');
@@ -129,21 +134,38 @@ async function ult(h,variant){const {$,cmd,pc,sh,pick,bye,revoke,say,G,click,d}=
    say("  search hits:",hits,"| pushed:",ok,"in",dt,"min | mention:",men,"| inventory:",inv,"| secrets managers:",sm,"| coverage hub:",cov);
    if(hits===1&&ok&&dt<=2&&men&&inv&&sm&&cov)S.dayWon=true;else S.dead="push-failed";});
  if(which==="all"||which==="perfect")await play("PERFECT-START CODES",async h=>{const {$,click,say,G}=h;click($('[data-tt="new"]'));click($('[data-namego]'));h.drain();const g=G();const res=[];let ok=true;
-   for(const [code,day,want] of [["LR-PERF-TUE",1,[0,0,0]],["lr perf wed",2,[100,0,0]],["LR-PERF-THU",3,[100,100,0]],["LR-PERF-ULT",4,[0,0,0]]]){g.restoreFromCode(code);const S=g.S;const sc=[S.score[1],S.score[2],S.score[3]];
-     const good=S.day===day&&S.t===0&&!S.dead&&JSON.stringify(sc)===JSON.stringify(want)&&(day<2||day===4||S.results[1]==="won")&&(day<3||day===4||S.results[2]==="won");if(!good)ok=false;res.push(`${code}=>day ${S.day} ${JSON.stringify(sc)} ${good?"ok":"BAD"}`);}
+   for(const [code,day,want] of [["LR-PERF-TUE",1,[0,0,0]],["lr perf wed",2,[100,0,0]],["LR-PERF-THU",3,[100,100,0]],["LR-PERF-FRI",4,[100,100,100]],["LR-PERF-ULT",4,[0,0,0]]]){g.restoreFromCode(code);const S=g.S;const sc=[S.score[1],S.score[2],S.score[3]];
+     const good=S.day===day&&S.t===0&&!S.dead&&JSON.stringify(sc)===JSON.stringify(want)&&(code==="LR-PERF-FRI"?S.week&&S.results[3]==="won":day===4?!S.week:true)&&(day<2||day===4||S.results[1]==="won")&&(day<3||day===4||S.results[2]==="won");if(!good)ok=false;res.push(`${code}=>day ${S.day} ${JSON.stringify(sc)} ${good?"ok":"BAD"}`);}
    const plain=g.decodeSave("LR-0000-0000");say("  ",res.join("; "),"| normal code still decodes:",plain.day===1);if(ok&&plain.day===1)g.S.dayWon=true;else g.S.dead="perfect-failed";});
  if(which==="all"||which==="frame")await play("MONITOR FRAME INTACT ON EVERY GITGUARDIAN PAGE",async h=>{const {$,click,cmd,pc,say,G,d}=h;click($('[data-tt="new"]'));click($('[data-namego]'));h.drain();
    const bad=[];const chk=l=>{const off=$("[data-pcclose]");if(!off||!off.parentElement.classList.contains("bezel"))bad.push(l);};
-   const visit=()=>{for(const p of ["list","perimeter","endpoints","honeytokens","map","inventory","playbooks","workflow","secmgr"]){pc(`[data-gg="${p}"]`);chk(p);}};
+   const visit=()=>{for(const p of ["list","publist","perimeter","endpoints","honeytokens","map","inventory","playbooks","workflow","secmgr"]){pc(`[data-gg="${p}"]`);chk(p);}};
    cmd("use monitor");pc('[data-pc="gg"]');pc('[data-wmax="gg"]');visit();pc('[data-gg="list"]');pc('[data-openinc="1017"]');chk("incident 1017");pc('[data-gg="endpoints"]');pc('[data-ep="dana-mbp"]');chk("endpoint");
    for(const day of [2,3,4]){const g=G();g.restoreFromCode(["","","LR-PERF-WED","LR-PERF-THU","LR-PERF-ULT"][day]);h.drain();g.openPC("gg");
      if(day===4){g.S.f.binder=true;g.S.f.isolated=true;for(const id of [1401,1402,1403]){g.S.incs[id].created=true;}}
      for(const id of g.dayIncs?[]:[]){}const ids={2:[1102,1103],3:[1219],4:[1401,1402,1403]}[day];for(const id of ids){g.openPC("gg");d.querySelector('[data-gg="list"]').click();const r=d.querySelector(`[data-openinc="${id}"]`);if(r){r.click();chk("incident "+id);}else bad.push("no row "+id);}}
    say("  broken frame on:",bad.join(", ")||"none");if(bad.length)G().S.dead="frame-broken";else G().S.dayWon=true;});
+ if(which==="all"||which==="rotate")await play("VAULT ROTATION FOR SENDGRID AND GITHUB (LR-26)",async h=>{const {$,click,say,G,w,d,pc}=h;click($('[data-tt="new"]'));click($('[data-namego]'));h.drain();const g=G();g.restoreFromCode("LR-PERF-WED");h.drain();
+   const S=g.S;const i=S.incs[1103];i.created=true;i.opened=true;g.openPC("vault");d.querySelector('[data-vsel="kv/plimbo/sendgrid"]')&&d.querySelector('[data-vsel="kv/plimbo/sendgrid"]').click();const before=!!$('[data-vrotate="1103"]');
+   i.key.v1=false;i.key.v2=true;i.v2made=true;S.vault["kv/plimbo/sendgrid"]=["v1","v2"];i.cons.api.on="vault";i.cons.api.pending=null;S.incs[1103].cons.digest.known=true;
+   g.openPC("vault");d.querySelector('[data-vsel="kv/plimbo/sendgrid"]').click();const shown=!!$('[data-vrotate="1103"]');const digestBefore=w.eval("conOn(1103,'digest')");
+   pc('[data-vrotate="1103"]');const apiOk=w.eval("healthy(1103,'api')");const ver=S.vault["kv/plimbo/sendgrid"].length;const hardBroke=w.eval("conOn(1103,'digest')")==="hard-v1"||!w.eval("healthy(1103,'digest')");
+   say("  button before manual rotation:",before,"| after:",shown,"| rotations:",i.rot,"versions:",ver,"| api on Vault healthy:",apiOk,"| digest:",digestBefore);
+   if(!before&&shown&&i.rot===1&&ver===3&&apiOk)S.dayWon=true;else S.dead="rotate-failed";});
+ if(which==="all"||which==="tutorial")await play("TRAINING LEVEL (LR-24)",async h=>{const {$,click,cmd,pc,say,G,wait,d}=h;
+   const hasBtn=!!$('[data-tt="tut"]');click($('[data-tt="tut"]'));await wait(50);const g=G();const n=()=>g.TUT.n;const tick=()=>wait(320);const log=[];
+   click($("[data-tutnext]"));await tick();log.push(n());cmd("use monitor");await tick();log.push(n());pc('[data-pc="gg"]');await tick();log.push(n());pc("[data-pcclose]");await tick();log.push(n());
+   cmd("go hallway");await tick();log.push(n());const lockedRooms=["go dev pit","go server closet","go coo"].map(c=>{cmd(c);return G().S.room;});const locked=lockedRooms.every(r=>r==="hall");cmd("go desk");await tick();log.push(n());click($("[data-tutnext]"));await tick();cmd("use monitor");await tick();log.push(n());
+   click($("[data-tutnext]"));await tick();pc('[data-openinc="1017"]');await tick();log.push(n());click($("[data-tutnext]"));click($("[data-tutnext]"));await tick();
+   pc('[data-ggmap="1017"]');await tick();log.push(n());click($("[data-tutnext]"));pc('.hdr [data-openinc="1017"]');pc('[data-ggtab="occ"]');await tick();click($("[data-tutnext]"));pc('[data-ggtab="rem"]');await tick();click($("[data-tutnext]"));await tick();
+   const S=g.S;const atEnd=n()===g.TUT.n&&$("#coach")&&/Training complete/.test($("#coach").textContent);const noScore=S.score[1]===0;const noDeath=!S.dead;let saved=null;try{saved=h.w.localStorage.getItem("lossy-adv7");}catch(e){}
+   click($("[data-tutnext]"));await wait(50);const named=!!$("#namein");
+   say("  other doors locked:",locked,"| button:",hasBtn,"| steps seen:",log.join(","),"| reached end:",!!atEnd,"| score 0:",noScore,"| no death:",noDeath,"| saved:",!!saved,"| Start Tuesday asks for a name:",named);
+   if(locked&&hasBtn&&atEnd&&noScore&&noDeath&&!saved&&named)S.dayWon=true;else S.dead="tutorial-failed";});
  if(which==="all"||which==="ult")await play("ULTIMATE: by the book",async h=>ult(h));
  if(which==="all"||which==="ultorder")await play("ULTIMATE: revoke before Vault token",async h=>ult(h,"order"));
  if(which==="all"||which==="ultreset")await play("ULTIMATE: reset the honeytoken",async h=>ult(h,"reset"));
  if(which==="all"||which==="ultearly")await play("ULTIMATE: inventory before isolating",async h=>ult(h,"early"));
- const want={"MONITOR FRAME":["won"],"PERFECT-START":["won"],"PUSH TO VAULT":["won"],"NAME + IN-PERSON":["won"],"USE AND TALK":["won"],"SAVE CODES":["won"],"SLACK THE DEVELOPER":["won"],"NAS01 OVER SSH":["won"],"AI HOOKS STOP":["won"],"ULTIMATE: AI hooks":["playbook"],"WEEK":["won"],"DAY 2 TRAP":["restolen"],"ULTIMATE: by the book":["won"],"ULTIMATE: revoke":["playbook"],"ULTIMATE: reset":["playbook"],"ULTIMATE: inventory":["playbook"]};
+ const want={"FOUR-DAY WEEK":["won"],"TRAINING LEVEL":["won"],"VAULT ROTATION":["won"],"MONITOR FRAME":["won"],"PERFECT-START":["won"],"PUSH TO VAULT":["won"],"NAME + IN-PERSON":["won"],"USE AND TALK":["won"],"SAVE CODES":["won"],"SLACK THE DEVELOPER":["won"],"NAS01 OVER SSH":["won"],"AI HOOKS STOP":["won"],"ULTIMATE: AI hooks":["playbook"],"WEEK":["won"],"DAY 2 TRAP":["restolen"],"ULTIMATE: by the book":["won"],"ULTIMATE: revoke":["playbook"],"ULTIMATE: reset":["playbook"],"ULTIMATE: inventory":["playbook"]};
  const bad=RESULTS.filter(r=>{const k=Object.keys(want).find(k=>r.name.startsWith(k));if(!k)return !!r.errors.length;const w=want[k][0];return r.errors.length||(w==="won"?!r.won:r.dead!==w);});
  console.log(bad.length?`\nFAILED: ${bad.map(r=>r.name).join(", ")}`:`\nAll ${RESULTS.length} playthroughs behaved as expected.`);process.exit(bad.length?1:0);})();

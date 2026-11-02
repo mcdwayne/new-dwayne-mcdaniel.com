@@ -18,7 +18,7 @@ document.addEventListener("click",e=>{const b=e.target.closest("[data-here]");if
   const s=roomSpots(S.room).find(x=>x.id===id);interact(s&&s.exit&&verb!=="look"?"walk":{walk:"walk",look:"look",hand:"use",talk:"talk"}[verb],id);after();});
 const goalEl=()=>document.getElementById("goal");
 document.addEventListener("click",e=>{if(e.target.closest("#goalTxt")){goalEl().classList.toggle("open");}});
-function updateBar(){if(!S)return;renderHere();document.getElementById("stScore").textContent=`Score: ${shownScore()} of ${maxScore()}`;document.getElementById("stTitle").textContent=`${DAYS[S.day].name} · ${ROOMNAME[S.room]}`;document.getElementById("stTime").textContent=hhmm(S.t);
+function updateBar(){if(!S)return;renderHere();document.getElementById("stScore").textContent=S.tut?"Training · no score":`Score: ${shownScore()} of ${maxScore()}`;document.getElementById("stTitle").textContent=`${DAYS[S.day].name} · ${ROOMNAME[S.room]}`;document.getElementById("stTime").textContent=hhmm(S.t);
   const n=nextStep(),g=document.getElementById("goal");g.classList.toggle("urgent",!!n.u);document.getElementById("goalTxt").textContent=(n.win?"★ ":n.u?"! ":"Next: ")+n.t;const gc=goalCount();document.getElementById("goalBtn").textContent=S.day===4?`IR-07 ${gc[0]}/${gc[1]}`:`Checklist ${gc[0]}/${gc[1]}`;}
 function draw(){if(!S)return;g.clearRect(0,0,320,170);SCENES[S.room]();updateBar();}
 function spotAt(ev){const r=cv.getBoundingClientRect();const x=(ev.clientX-r.left)*320/r.width,y=(ev.clientY-r.top)*170/r.height;

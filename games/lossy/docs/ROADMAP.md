@@ -6,7 +6,7 @@
 
 Console version 7 (`web/adventure.html`, built from parts in the scratchpad and published to the same artifact). First-person Sierra-style adventure; computer screens mimic the real tools.
 
-**Structure.** Three days. Win (tell Kofi it's handled) or lose (a death), the next day starts at 9:00. Anything unfinished carries over: its incident stays open, its threats re-arm every day until it's fixed, and late fixes score half. Score is out of 300, with a week finale and rank. A blue "Next:" strip always names the next step; Tasks shows the day's checklist. Order is flexible on days 1-3 (the exploration map is optional if you ask the developer).
+**Structure.** Four days: Tuesday to Thursday, then Friday is ULTIMATE (also playable on its own). Win (tell Kofi it's handled) or lose (a death), the next day starts at 9:00. Anything unfinished carries over: its incident stays open, its threats re-arm every day until it's fixed, and late fixes score half. Score is out of 400, with a week finale and rank. A blue "Next:" strip always names the next step; Tasks shows the day's checklist. Order is flexible on days 1-3 (the exploration map is optional if you ask the developer).
 
 - **Tuesday, The Agent Committed It** (Skoupmouz, microlending): AI agent commits an OpenAI key; agent publishes a public repro at 10:00 unless stopped; noon disbursement; hidden nas01 cron.
 - **Wednesday, The Worm in the Lockfile** (Plimbo, phone app): a poisoned npm package (colorfmt 4.1.2) dumps CI env to a public repo; GitHub PAT + SendGrid key stolen. Contain first (pin and purge), revoke immediately, then restore. Trap: running CI with a new secret before containment re-leaks it. Deadlines: phishing at 10:30, repo abuse at 11:30, release at 2 PM, password resets down 90 min.
