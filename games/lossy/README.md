@@ -12,7 +12,7 @@ The pixel-art office is the game. The computer screens inside it are close imita
 
 Three ways, same game:
 
-- **Website:** open `index.html` in any browser, from disk or any static host. `python3 build.py` also writes a ready-to-host site into `site/`: a landing page at `games/lossy.html` (what the game is for, how it plays, speedrun categories, a Play button) that launches the game at `games/lossy/index.html`. Copy `site/games/` under any web root to get `<your-site>/games/lossy.html`. The `website` GitHub workflow publishes it with GitHub Pages on every push to `main` (turn Pages on once: Settings › Pages › Source: GitHub Actions); the Pages root redirects to the landing page.
+- **Website:** open `index.html` in any browser, from disk or any static host. `python3 build.py` also writes a ready-to-host site into `site/`: a landing page at `games/lossy.html` (what the game is for, how it plays, team CTF challenges, a Play button) that launches the game at `games/lossy/index.html`. Copy `site/games/` under any web root to get `<your-site>/games/lossy.html`. The `website` GitHub workflow publishes it with GitHub Pages on every push to `main` (turn Pages on once: Settings › Pages › Source: GitHub Actions); the Pages root redirects to the landing page.
 - **Desktop app:** download the Windows, macOS or Linux build from the repo's Releases, or build it yourself from `app/` (see `app/README.md`).
 - **Offline:** everything, fonts included, is inside `index.html`. No network needed.
 
