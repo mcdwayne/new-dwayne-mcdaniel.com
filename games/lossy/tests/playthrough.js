@@ -115,8 +115,10 @@ async function ult(h,variant){const {$,cmd,pc,sh,pick,bye,revoke,say,G,click,d}=
    const v0=$('.ic[aria-pressed="true"]').textContent.trim();cmd("go hallway");cmd("go dev pit");
    G().interact("use","npc");const talked=!!$(".dlg");const bb=[...d.querySelectorAll(".dlg .opts button")].find(x=>/Never mind/.test(x.textContent));if(bb)bb.click();h.drain();
    cmd("go hallway");cmd("go desk");G().interact("talk","monitor");const pc=!!$("#pcroot");if(pc)$("[data-pcclose]").click();const v1=$('.ic[aria-pressed="true"]').textContent.trim();
+   G().interact("look","sticky");h.drain();const scoreA=G().S.score[1];const lookTxt=G().S.incs?1:0;G().interact("use","sticky");const useMsg=(d.querySelector("#msglayer .msg")||{}).textContent||"";h.drain();const stickyOk=/ASSESS BEFORE ACTING/.test(useMsg);say("  use sticky notes reads them:",stickyOk);
+   const ex=d.getElementById("exitbtn");const exTxt=ex&&ex.textContent;click(ex);const r1=G().S.room;const exTxt2=d.getElementById("exitbtn").textContent;click(d.getElementById("exitbtn"));const r2=G().S.room;const exitOk=/Back to Hall/.test(exTxt)&&r1==="hall"&&/Security/.test(exTxt2)&&r2==="desk";say("  exit button:",exTxt,"->",r1,"|",exTxt2,"->",r2);
    say("  default verb:",v0,"| Use on Dana opened dialogue:",talked,"| Talk on monitor opened computer:",pc,"| verb after closing computer:",v1);
-   if(/Use/.test(v0)&&talked&&pc&&/Use/.test(v1))G().S.dayWon=true;else G().S.dead="verbs-failed";});
+   if(stickyOk&&exitOk&&/Use/.test(v0)&&talked&&pc&&/Use/.test(v1))G().S.dayWon=true;else G().S.dead="verbs-failed";});
  if(which==="all"||which==="mdm")await play("NAME + IN-PERSON SETUP UNLOCKS MDM",async h=>{const {$,click,cmd,pc,sh,pick,bye,say,G,d}=h;
    click($('[data-tt="new"]'));const sug=$("#namein").value;click($("[data-namedice]"));const sug2=$("#namein").value;$("#namein").value="Robin Testcase";click($("[data-namego]"));h.drain();
    const named=G().S.player==="Robin Testcase";const slackHasSetup=G().slOptions("dana").some(o=>/machine setup/.test(o[0]));
@@ -154,13 +156,13 @@ async function ult(h,variant){const {$,cmd,pc,sh,pick,bye,revoke,say,G,click,d}=
    say("  Integrations page: not set up before:",intBefore,"| Rotate now after:",intAfter);if(!before&&intBefore&&intAfter&&shown&&i.rot===1&&ver===3&&apiOk)S.dayWon=true;else S.dead="rotate-failed";});
  if(which==="all"||which==="tutorial")await play("TRAINING LEVEL (LR-24)",async h=>{const {$,click,cmd,pc,say,G,wait,d}=h;
    const hasBtn=!!$('[data-tt="tut"]');click($('[data-tt="tut"]'));await wait(50);const g=G();const n=()=>g.TUT.n;const tick=()=>wait(320);const log=[];
-   click($("[data-tutnext]"));await tick();log.push(n());cmd("use monitor");await tick();log.push(n());pc('[data-pc="gg"]');await tick();log.push(n());pc("[data-pcclose]");await tick();log.push(n());
+   click($("[data-tutnext]"));await tick();const labels=$("#tutlabels")?$("#tutlabels").querySelectorAll(".tl-tag").length:-1;click($("[data-tutnext]"));await tick();log.push(n());cmd("use monitor");await tick();log.push(n());pc('[data-pc="gg"]');await tick();log.push(n());pc("[data-pcclose]");await tick();log.push(n());
    cmd("go hallway");await tick();log.push(n());const lockedRooms=["go dev pit","go server closet","go coo"].map(c=>{cmd(c);return G().S.room;});const locked=lockedRooms.every(r=>r==="hall");cmd("go desk");await tick();log.push(n());click($("[data-tutnext]"));await tick();cmd("use monitor");await tick();log.push(n());
    click($("[data-tutnext]"));await tick();pc('[data-openinc="1017"]');await tick();log.push(n());click($("[data-tutnext]"));click($("[data-tutnext]"));await tick();
    pc('[data-ggmap="1017"]');await tick();log.push(n());click($("[data-tutnext]"));pc('.hdr [data-openinc="1017"]');pc('[data-ggtab="occ"]');await tick();click($("[data-tutnext]"));pc('[data-ggtab="rem"]');await tick();click($("[data-tutnext]"));await tick();
    const S=g.S;const atEnd=n()===g.TUT.n&&$("#coach")&&/Training complete/.test($("#coach").textContent);const noScore=S.score[1]===0;const noDeath=!S.dead;let saved=null;try{saved=h.w.localStorage.getItem("lossy-adv7");}catch(e){}
    click($("[data-tutnext]"));await wait(50);const named=!!$("#namein");
-   say("  other doors locked:",locked,"| button:",hasBtn,"| steps seen:",log.join(","),"| reached end:",!!atEnd,"| score 0:",noScore,"| no death:",noDeath,"| saved:",!!saved,"| Start Tuesday asks for a name:",named);
+   say("  room labels shown:",labels,"| other doors locked:",locked,"| button:",hasBtn,"| steps seen:",log.join(","),"| reached end:",!!atEnd,"| score 0:",noScore,"| no death:",noDeath,"| saved:",!!saved,"| Start Tuesday asks for a name:",named);
    if(locked&&hasBtn&&atEnd&&noScore&&noDeath&&!saved&&named)S.dayWon=true;else S.dead="tutorial-failed";});
  if(which==="all"||which==="recheck")await play("VALIDITY AND PRESENCE RE-CHECK ON OPEN (LR-29)",async h=>{const {$,click,cmd,pc,pick,bye,say,G,d}=h;click($('[data-tt="new"]'));click($('[data-namego]'));h.drain();
    cmd("use monitor");pc('[data-pc="gg"]');pc('[data-openinc="1017"]');pc('[data-ggpresence="1017"]');const p1=G().S.incs[1017].presence.p;pc('[data-pcclose]');

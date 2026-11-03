@@ -49,6 +49,10 @@ h1 small{display:block;font-size:.42em;line-height:1.2;color:var(--paper);text-s
   background:var(--paper);color:var(--ink);box-shadow:inset -3px -3px 0 var(--ega-gray),inset 3px 3px 0 #fff,4px 4px 0 #000;min-height:48px}
 .btn:hover{background:var(--ega-yellow);color:var(--ink)}
 .btn:active{transform:translate(2px,2px);box-shadow:inset 3px 3px 0 var(--ega-gray),2px 2px 0 #000}
+.btn.play{font-size:clamp(1.5rem,4.2vw,2.2rem);padding:1.1rem 2rem;min-height:72px;background:var(--ega-yellow);box-shadow:inset -4px -4px 0 #AAAA00,inset 4px 4px 0 #fff,6px 6px 0 #000;animation:playp 1.6s ease-in-out infinite}
+.btn.play:hover{background:#fff}
+@keyframes playp{50%{box-shadow:inset -4px -4px 0 #AAAA00,inset 4px 4px 0 #fff,6px 6px 0 #000,0 0 0 6px rgba(255,255,85,.35)}}
+@media (max-width:820px){.btn.play{width:100%;justify-content:center}}
 .btn.alt{background:var(--ega-blue);color:var(--paper);box-shadow:inset -3px -3px 0 #000066,inset 3px 3px 0 #3d3dff,4px 4px 0 #000}
 .btn.alt:hover{background:var(--ega-cyan);color:#000}
 .fine{font:400 1.15rem/1.2 var(--vt);color:var(--ega-gray);margin:1rem 0 0}
@@ -135,7 +139,7 @@ footer a{color:var(--ega-lcyan)}
   <div class="wrap">
     <span>Lossy Inc · Tuesday 9:00 AM</span>
     <nav aria-label="Sections">
-      <a href="#readme">Readme</a><a href="#play">How it plays</a><a href="#levels">Levels</a><a href="#speedrun">Speedrun</a><a href="lossy/index.html?v=__BUILD__">Play</a>
+      <a href="#readme">What is this?</a><a href="#play">How it plays</a><a href="#levels">Levels</a><a href="#ctf">Team CTF</a><a href="lossy/index.html?v=__BUILD__">Play</a>
     </nav>
     <span class="score">Score: 0 of 400</span>
   </div>
@@ -147,16 +151,13 @@ footer a{color:var(--ega-lcyan)}
     <div>
       <p class="kicker">A secrets-security adventure</p>
       <h1>Lossy Inc <small>Or: Somebody Committed the Key Again</small></h1>
-      <p class="lede">You're the newest person on the security team at a company that has changed its name three times this year. It's 9:00 AM on a Tuesday. An AI coding agent just pushed an OpenAI key to GitHub, and four thousand loans go out at noon.</p>
-      <div class="cta">
-        <a class="btn" href="lossy/index.html?v=__BUILD__">▶ Play in your browser</a>
-        <a class="btn alt" href="#readme">Read me first</a>
-      </div>
-      <p class="fine">Free. No account, no install, no backend. About 30 minutes a day, four days. Friday is ULTIMATE, which you can also play on its own.</p>
+      <p class="lede">You just joined the security team. It's Tuesday, 9:00 AM. An AI coding assistant leaked a company password to GitHub, and 4,000 loans go out at noon. Fix it without breaking anything.</p>
+      <a class="btn play" href="lossy/index.html?v=__BUILD__">▶ Click here to play</a>
+      <p class="fine">Free. Runs in your browser. No account, nothing to install. New to this kind of game? Pick <b>Training</b> first.</p>
     </div>
     <figure class="screen">
-      <img src="lossy/shots/desk.png" width="1000" height="714" alt="Pixel-art office: your desk with a beige CRT monitor, a desk phone, two drawers and a sticky note, under a status line that reads Tuesday 9:00 AM.">
-      <figcaption>Your desk. Both drawers matter.</figcaption>
+      <img src="lossy/shots/desk.png" width="1000" height="714" alt="Pixel-art office: your desk with a beige CRT monitor showing GitGuardian, a desk phone, two drawers and sticky notes, under a status line that reads Tuesday, Security (your office), 9:00 AM.">
+      <figcaption>Security, your office. Both drawers matter.</figcaption>
     </figure>
   </div>
 </section>
@@ -166,23 +167,23 @@ footer a{color:var(--ega-lcyan)}
 <p class="parser" aria-hidden="true">&gt; <b>look readme</b><span class="cur"></span></p>
 
 <section class="box" id="readme" aria-labelledby="readme-h">
-  <h2 id="readme-h">What's the point?</h2>
-  <p>Leaked secrets are how most breaches start now. A key gets pasted into a config file, an AI agent helpfully commits it, a worm in a dependency scrapes it from CI, or an infostealer lifts it off a laptop. Detecting the leak is the easy part. The hard part is what comes next, while the clock runs: who uses this key, what breaks if I revoke it, and has anyone already used it?</p>
-  <p>Lossy Inc is a game about that part. You play incident response from the first alert to the all-clear, using simulated versions of the real tools: GitGuardian's incident page, remediation workflow, exploration map, Endpoint protection and honeytokens, plus a vault, a CI system, provider consoles, and a couple of forgotten Linux boxes with keys in their crontabs.</p>
-  <p>It's built like a 1990s Sierra adventure on purpose. Those games punished you for skipping a step, then told you exactly which step you skipped. That is also how incidents work. Revoke too early and the noon payout fails. Revoke too late and someone else is spending your money. Each death screen explains what GitGuardian's workflow would have told you, and Restore takes you back to try again.</p>
+  <h2 id="readme-h">What is this?</h2>
+  <p>Programs use secrets, like API keys and tokens, to log in to other services. When one leaks, anyone who finds it can act as your company. Finding the leak is the easy part. Fixing it without breaking everything that uses the key is the hard part.</p>
+  <p>This game is about that part. You get simulated versions of the real tools: GitGuardian, a vault, CI, provider consoles and a couple of old servers. Then you work four incidents, one a day.</p>
+  <p>It plays like a 1990s Sierra adventure. Skip a step and you "die", and the game tells you which step you skipped. Then you restore and try again. Real incidents work the same way: revoke too early and payments fail, too late and a stranger spends your money.</p>
   <h3>Who it's for</h3>
   <ul>
     <li><b>Developers and platform engineers</b> who want to feel what happens after "you leaked a secret."</li>
     <li><b>Security teams</b> running tabletop exercises or onboarding new responders.</li>
     <li><b>Anyone evaluating GitGuardian</b> who'd rather play through an incident than watch a demo.</li>
   </ul>
-  <p><b>Everything is simulated.</b> The whole game is one HTML file. No real system is contacted, no real credential exists, and every command you type (<code>ggshield</code>, <code>vault</code>, <code>crontab</code>) is scripted inside the page. The company, its six business lines and its people are fictional.</p>
-  <p class="sig">— README.TXT, found in the left desk drawer</p>
+  <p><b>Everything is simulated.</b> The game is one web page. It doesn't contact any real system, and every command you type is scripted. The company and its people are made up.</p>
+  
 </section>
 
 <div class="gallery" aria-label="Screens from the game">
   <figure class="screen">
-    <img src="lossy/shots/workstation.png" width="1080" height="780" loading="lazy" alt="The in-game computer, a homemade Windows 3.1, with the GitGuardian incident page open: an OpenAI API key, Triggered, Critical, risk score 74, validity Valid, and the remediation steps.">
+    <img src="lossy/shots/workstation.png" width="1080" height="780" loading="lazy" alt="The in-game computer, a homemade Windows 3.1, with the GitGuardian incident page open: an OpenAI API key, Triggered, Critical, risk score 74, validity Valid, and the Incident details panel.">
     <figcaption>The computer runs a homemade Windows 3.1. GitGuardian runs inside it.</figcaption>
   </figure>
   <figure class="screen">
@@ -193,7 +194,7 @@ footer a{color:var(--ega-lcyan)}
 
 <section class="box right" id="play" aria-labelledby="play-h">
   <h2 id="play-h">How it plays</h2>
-  <p>Pick a verb, then click something in the room. Or type, the old way: <code>look monitor</code>, <code>talk ravi</code>, <code>use drawer</code>, <code>go hallway</code>.</p>
+  <p>Pick a verb, then click something in the room. Or type it: <code>look monitor</code>, <code>talk ravi</code>, <code>go hallway</code>.</p>
   <div class="verbs" role="list">
     <div class="verb" role="listitem"><b>Walk</b><span>between rooms</span></div>
     <div class="verb" role="listitem"><b>Look</b><span>at anything</span></div>
@@ -201,12 +202,12 @@ footer a{color:var(--ega-lcyan)}
     <div class="verb" role="listitem"><b>Talk</b><span>to your coworkers</span></div>
   </div>
   <ul>
-    <li><b>The computer</b> is where the real work happens: Mail, GitGuardian, Vault, CI/CD, Slack and provider consoles, in draggable windows.</li>
-    <li><b>People</b> know things the tools don't. The developer knows which cron job uses the key. The COO wants to know if payouts will run.</li>
-    <li><b>Time</b> moves when you act. Deadlines are real, and the blue hint bar under the scene always names your next step. It turns red when something is about to go wrong.</li>
-    <li><b>The week carries over.</b> Win or lose, the next day starts at 9:00 AM, and anything you left broken is still broken.</li>
-    <li><b>New to point-and-click, or to GitGuardian?</b> Pick <b>Training: how to play</b> on the title screen. It walks you through the controls, then explains what the GitGuardian dashboard is showing, with no clock and no score.</li>
-    <li><b>Save codes</b> condense a game into 32 bits (<code>LR-XXXX-XXXX</code>). Share one, type it on another device, or type anything and see what game you get.</li>
+    <li><b>The computer</b> is where most of the work happens: GitGuardian, Vault, Slack and more.</li>
+    <li><b>People</b> know things the tools don't. Go and ask them.</li>
+    <li><b>Time</b> moves when you act, and deadlines are real. The blue bar under the picture always tells you what to do next.</li>
+    <li><b>The week carries over.</b> Win or lose, the next day starts at 9:00 AM, and whatever you left broken is still broken.</li>
+    <li><b>Never played this kind of game?</b> Pick <b>Training</b> on the title screen. It shows you the controls and explains what GitGuardian is showing you. No clock, no score.</li>
+    <li><b>Save codes</b> like <code>LR-1A2B-3C4D</code> show at the end of every day. Type one in to pick up where you left off, on any device.</li>
   </ul>
 </section>
 
@@ -230,28 +231,28 @@ footer a{color:var(--ega-lcyan)}
   </div>
 </div>
 
-<section class="box" id="speedrun" aria-labelledby="speedrun-h">
-  <h2 id="speedrun-h">Speedrun it</h2>
-  <p>Sierra adventures have a dedicated speedrunning scene: people who know every room, every dead end and every death, and route around all of them. Lossy Inc borrows their rules. The game clock only moves when you act, so in-game time is a fair race on any device.</p>
-  <p>Find the community, their routes and their leaderboards at <a href="https://www.speedrun.com/series/kings_quest" target="_blank" rel="noopener">the King's Quest series on speedrun.com</a>, home to runs of the Sierra classics this game imitates.</p>
-  <h3>Suggested categories</h3>
-  <div class="scroll" tabindex="0" role="region" aria-label="Suggested speedrun categories">
+<section class="box" id="ctf" aria-labelledby="ctf-h">
+  <h2 id="ctf-h">Team CTF: who gets the best run?</h2>
+  <p>Turn it into a capture-the-flag for your team. Everyone plays the same game, and the best run wins. The game clock only moves when you act, so it's a fair race on any device.</p>
+  <p>Every end-of-day screen shows a save code. Players post their code with their score, and anyone can load it to check the run.</p>
+  <h3>Challenges</h3>
+  <div class="scroll" tabindex="0" role="region" aria-label="CTF challenges">
     <table class="runs">
-      <thead><tr><th scope="col">Category</th><th scope="col">Goal</th><th scope="col">Timed by</th></tr></thead>
+      <thead><tr><th scope="col">Challenge</th><th scope="col">Goal</th><th scope="col">Best run is</th></tr></thead>
       <tbody>
-        <tr><td>Tuesday Any%</td><td>Tell the COO it's handled, by any route that doesn't die.</td><td>In-game clock at the all-clear</td></tr>
-        <tr><td>Week 400</td><td>All four days, full score, no late fixes.</td><td>In-game clock summed over 4 days</td></tr>
-        <tr><td>ULTIMATE by the book</td><td>Patient Zero on its own, every playbook step in order.</td><td>In-game clock at containment</td></tr>
-        <tr><td>Death%</td><td>See every death screen in one week.</td><td>Real time</td></tr>
+        <tr><td>Tuesday sprint</td><td>Fix Tuesday without dying.</td><td>Earliest in-game time</td></tr>
+        <tr><td>Perfect week</td><td>All four days, as close to 400 as you can get.</td><td>Highest score, then earliest time</td></tr>
+        <tr><td>By the book</td><td>ULTIMATE on its own, every playbook step in order.</td><td>Earliest in-game time</td></tr>
+        <tr><td>Find every death</td><td>See every death screen in one week.</td><td>Fewest restores</td></tr>
       </tbody>
     </table>
   </div>
-  <p>Post your run with the final save code from Menu › Save code, so anyone can load your end state and check it.</p>
+  <p>For the long game, the Sierra speedrunning community has its routes and leaderboards on <a href="https://www.speedrun.com/series/kings_quest" target="_blank" rel="noopener">speedrun.com</a>.</p>
 </section>
 
 <section class="box right" aria-labelledby="train-h">
   <h2 id="train-h">Run it as a training</h2>
-  <p>Put it on a projector and let the room argue over each click, or hand everyone the link and compare scores at the end. The facilitator guide in the repository has a clean path through each level, the traps and what each death teaches, and where every simulated screen comes from in <a href="https://docs.gitguardian.com/" target="_blank" rel="noopener">GitGuardian's documentation</a>.</p>
+  <p>Put it on a projector and let the room argue over every click. The facilitator guide in the repository walks through each day, the traps, and what each death teaches, with links to <a href="https://docs.gitguardian.com/" target="_blank" rel="noopener">GitGuardian's documentation</a>.</p>
   <div class="cta"><a class="btn" href="lossy/index.html?v=__BUILD__">▶ Start Tuesday</a></div>
 </section>
 

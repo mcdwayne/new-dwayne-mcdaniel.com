@@ -375,5 +375,17 @@ button.xnode{cursor:pointer}
 @keyframes tutp{50%{border-color:#B6FF9E;box-shadow:0 0 0 2px #062B00,0 0 26px 10px rgba(57,255,20,.95)}}
 @keyframes tutb{50%{transform:rotate(var(--rot,0deg)) translateX(8px)}}
 @media (prefers-reduced-motion:reduce){#tutbox,#tutarrow{animation:none}}
-@media (max-width:760px){#coach{top:calc(6px + env(safe-area-inset-top,0px))!important;left:8px!important;right:8px;bottom:auto;width:auto;max-height:42vh;font-size:14px;padding:10px 12px}}
+@media (max-width:760px){#coach{top:auto!important;left:8px!important;right:8px;width:auto;max-height:38vh;font-size:14px;padding:8px 12px}}
+
+#coach .ch{align-items:center;gap:8px}
+#coach .cmin{all:unset;cursor:pointer;font:14px var(--f-term);color:#0000AA;border:1px solid #0000AA;padding:1px 6px;white-space:nowrap}
+#coach .cmin:focus-visible{outline:3px solid #39FF14}
+#coach.min .cx,#coach.min .cb{display:none}
+#coach.min{gap:2px}
+#tutlabels .tl-box{position:fixed;z-index:78;pointer-events:none;border:3px solid #39FF14;border-radius:6px;box-shadow:0 0 0 2px #062B00}
+#tutlabels .tl-tag{position:fixed;z-index:78;pointer-events:none;background:#062B00;color:#B6FF9E;font:15px/1 var(--f-term);padding:3px 6px;border:1px solid #39FF14;white-space:nowrap}
+/* item 4: the U-turn exit button */
+.ic.exit{min-width:auto;padding-inline:10px;margin-left:auto;font-weight:600;flex-direction:row!important;display:inline-flex;align-items:center;gap:6px}
+.ic.exit span{font-size:18px;line-height:1}
+@media (max-width:760px){.ic.exit{grid-column:1/-1;margin-left:0;justify-content:center;min-height:34px;padding-block:4px}}
 </style>

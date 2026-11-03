@@ -49,6 +49,7 @@ Normal codes keep their meaning: a won earlier day is rebuilt as a standard clea
 **New players:** **Training: how to play** on the title screen is an optional, coached Tuesday with no clock, no deadlines and no score. Part 1 covers the controls (open GitGuardian, turn away from the screen, walk to the hallway and back). Part 2 explains what the GitGuardian dashboard is showing, written for someone who has never used it.
 
 - Click a verb (**Walk**, **Look**, **Use**, **Talk**), then click something in the scene. Or type commands in the bar: `look monitor`, `use drawer`, `talk ravi`, `go hallway`, `tasks`, `help`.
+- **↩ Back to Hall** (bottom right) leaves any room; in the hallway it reads **Back to Security (your office)**.
 - **Use** your monitor for the computer: a homemade Windows 3.1 (Program Manager, program groups, windows you can drag, minimize, maximize and close; on phones each program goes full-screen). Use your phone for mail. The server closet needs the badge from your desk drawer.
 - The blue bar under the scene always names your **next step**. It turns red when something is urgent. **Tasks** shows the full checklist for the day.
 - Each action costs in-game minutes. Deadlines are real: miss one and you get a Sierra-style death screen that explains what GitGuardian's workflow would have told you. **Restore** goes back to any earlier moment that day.

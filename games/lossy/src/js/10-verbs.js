@@ -6,7 +6,11 @@ const ICONS={walk:'<svg viewBox="0 0 16 16"><path d="M7 1h2v2H7zM6 4h3v4l2 2-1 1
   tasks:'<svg viewBox="0 0 16 16"><rect x="3" y="2" width="10" height="13" fill="#FFFFAA" stroke="#000"/><rect x="6" y="1" width="4" height="2" fill="#AAAAAA" stroke="#000"/><path d="M5 6l1 1 2-2M5 10l1 1 2-2" fill="none" stroke="#00AA00"/><path d="M9 6h3M9 10h3" stroke="#000"/></svg>',
   inv:'<svg viewBox="0 0 16 16"><rect x="2" y="5" width="12" height="9" fill="#AA5500" stroke="#000"/><rect x="5" y="3" width="6" height="3" fill="none" stroke="#000"/></svg>'};
 function iconbar(){hereSig="";setTimeout(renderHere,0);document.getElementById("iconbar").innerHTML=[["walk","Walk"],["look","Look"],["hand","Use"],["talk","Talk"]].map(([k,l])=>`<button class="ic" data-verb="${k}" aria-pressed="${verb===k&&!heldItem}" title="${l}">${ICONS[k]}${l}</button>`).join("")+
-  `<button class="ic" data-verb="inv" aria-pressed="${!!heldItem}" title="Inventory">${ICONS.inv}${heldItem?`<span class="inv">${heldItem}</span>`:"Items"}</button><button class="ic" data-tasks title="Checklist">${ICONS.tasks}Tasks</button><button class="ic" data-menu title="Menu">☰ Menu</button>`;}
+  `<button class="ic" data-verb="inv" aria-pressed="${!!heldItem}" title="Inventory">${ICONS.inv}${heldItem?`<span class="inv">${heldItem}</span>`:"Items"}</button><button class="ic" data-tasks title="Checklist">${ICONS.tasks}Tasks</button><button class="ic" data-menu title="Menu">☰ Menu</button><button class="ic exit" data-exit id="exitbtn"></button>`;updateExit();}
+/* a U-turn button: out to the hallway from any room, and back to your office from the hallway */
+function exitTarget(){if(!S)return null;if(S.room==="hall")return {id:"back",label:"Back to Security (your office)"};const sp=roomSpots(S.room).find(x=>x.exit==="hall");return sp?{id:sp.id,label:"Back to Hall"}:null;}
+function updateExit(){const b=document.getElementById("exitbtn");if(!b)return;const t=exitTarget();b.hidden=!t||!!document.getElementById("pcroot");if(t){b.innerHTML=`<span aria-hidden="true">↩</span> ${t.label}`;b.title=t.label;}}
+document.addEventListener("click",e=>{if(!e.target.closest("[data-exit]"))return;const t=exitTarget();if(!t)return;interact("walk",t.id);after();});
 /* LR-01: a tappable list of what's in the room, so phones don't depend on hitting small pixel hotspots */
 let hereSig="";
 function renderHere(){const el=document.getElementById("here");if(!el||!S)return;const vname=heldItem?`Use the ${heldItem} on…`:{walk:"Walk to…",look:"Look at…",hand:"Use…",talk:"Talk to…"}[verb];
@@ -18,7 +22,7 @@ document.addEventListener("click",e=>{const b=e.target.closest("[data-here]");if
   const s=roomSpots(S.room).find(x=>x.id===id);interact(s&&s.exit&&verb!=="look"?"walk":{walk:"walk",look:"look",hand:"use",talk:"talk"}[verb],id);after();});
 const goalEl=()=>document.getElementById("goal");
 document.addEventListener("click",e=>{if(e.target.closest("#goalTxt")){goalEl().classList.toggle("open");}});
-function updateBar(){if(!S)return;renderHere();document.getElementById("stScore").textContent=S.tut?"Training · no score":`Score: ${shownScore()} of ${maxScore()}`;document.getElementById("stTitle").textContent=`${DAYS[S.day].name} · ${ROOMNAME[S.room]}`;document.getElementById("stTime").textContent=hhmm(S.t);
+function updateBar(){if(!S)return;renderHere();updateExit();document.getElementById("stScore").textContent=S.tut?"Training · no score":`Score: ${shownScore()} of ${maxScore()}`;document.getElementById("stTitle").textContent=`${DAYS[S.day].name} · ${ROOMNAME[S.room]}`;document.getElementById("stTime").textContent=hhmm(S.t);
   const n=nextStep(),g=document.getElementById("goal");g.classList.toggle("urgent",!!n.u);document.getElementById("goalTxt").textContent=(n.win?"★ ":n.u?"! ":"Next: ")+n.t;const gc=goalCount();document.getElementById("goalBtn").textContent=S.day===4?`IR-07 ${gc[0]}/${gc[1]}`:`Checklist ${gc[0]}/${gc[1]}`;}
 function draw(){if(!S)return;g.clearRect(0,0,320,170);SCENES[S.room]();updateBar();}
 function spotAt(ev){const r=cv.getBoundingClientRect();const x=(ev.clientX-r.left)*320/r.width,y=(ev.clientY-r.top)*170/r.height;
@@ -29,7 +33,7 @@ cv.addEventListener("mousemove",ev=>{const s=spotAt(ev);const vname={walk:"Walk 
 cv.addEventListener("mouseleave",()=>document.getElementById("hover").textContent="");
 cv.addEventListener("click",ev=>{if(!S||S.dead)return;const s=spotAt(ev);if(!s){if(verb==="look")say(lookRoom());return;}snapshot();
   if(heldItem){const it=heldItem;heldItem=null;iconbar();interact("item",s.id,it);return after();}interact({walk:"walk",look:"look",hand:"use",talk:"talk"}[verb],s.id);after();});
-function lookRoom(){return ({desk:"Your desk on the security team's floor. A CRT with GitGuardian open, a phone, a drawer, sticky notes, a coffee of uncertain age. The door leads to the hallway.",
+function lookRoom(){return ({desk:"Security, your office. A CRT with GitGuardian open, a phone, a drawer, sticky notes, a coffee of uncertain age. The door leads to the hallway.",
   hall:"The hallway. The dev pit is to the left, the server closet to the right, and the COO's office straight ahead.",dev:`The dev pit. ${npcName()} is at the desk by the window.`,
   closet:"The server closet. Racks, cables, a fan that sounds like regret, and an old box called nas01 on a cart.",coo:`${P.coo}'s office. A whiteboard tracks today's deadline.`})[S.room];}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-verb],[data-menu]");if(!b)return;if(b.dataset.menu!==undefined)return menu();

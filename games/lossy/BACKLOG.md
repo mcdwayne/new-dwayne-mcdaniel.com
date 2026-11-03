@@ -2,7 +2,7 @@
 
 Running kanban for the game. To update it, move a card's ID between columns on the board and change its Status in the card list. Keep at most 2 cards in progress.
 
-Last updated: 2026-11-02
+Last updated: 2026-11-03
 
 ## Board
 
@@ -38,6 +38,7 @@ Last updated: 2026-11-02
 |  |  |  |  | D-27 LR-28 Save code on every end-of-day screen |
 |  |  |  |  | D-28 LR-29 Validity and presence re-checked on every open and refresh |
 |  |  |  |  | D-29 LR-30 Vault › Integrations: provider options and rotation status |
+|  |  |  |  | D-30 LR-31..36 Landing clarity, phone training, labeled rooms, exit button, office name, monitor |
 
 Ready means the card is clear enough to start. Backlog means it needs a decision or design first (see Open questions).
 
@@ -75,6 +76,12 @@ Ready means the card is clear enough to start. Backlog means it needs a decision
 | LR-28 | Show the save code at the end of each day | Done | S | LR-07 | End-of-day, death and end-of-week screens show the code with a Copy button and explain that it brings anyone back to that moment, with no back end | none |
 | LR-29 | Presence and validity checks re-run every time GitGuardian is opened or refreshed, matching reality | Done | S | none | Opening GitGuardian, opening an incident or pressing Refresh re-checks validity (and presence once checked); results show a checked-at time; changes land on the timeline; Dana can take the key out of .mcp.json so presence can really change (still in git history) | none |
 | LR-30 | Make the Vault-to-provider integration options visible | Done | S | LR-26 | Vault has an Integrations › Rotation page, always available, showing for GitHub, SendGrid, OpenAI and Google Cloud what Vault can really do (scheduled rotation, the community GitHub engine, no SendGrid engine, manual-only OpenAI, the Google Cloud engine), the status of each and what's missing, with Rotate now when ready; incidents point to it | none |
+| LR-31 | Landing page: much bigger Play button, no "Read me first" button, simpler wording, speedruns repositioned as a team CTF ("who gets the best run?") | Done | S | none | One large Click here to play; the rest is a scroll away; plain-language copy; Team CTF section with challenges and how to verify runs with save codes | none |
+| LR-32 | Training on phones: coach only covers the bottom, sits beneath the play area, and minimizes during actions | Done | S | LR-24 | On phones the coach docks just above the verb buttons; Hide/Show toggle; action steps start minimized on phones | none |
+| LR-33 | Training assumes no visual literacy: point out what things are in the room | Done | S | LR-24 | A "Your office" step outlines and labels the monitor, phone, drawers, sticky notes and door; Open your computer points at the monitor itself; the hallway labels each door | none |
+| LR-34 | A U-turn exit button: Back to Hall from any room, Back to Security (your office) from the hallway | Done | S | none | Button in the verb bar, full width on phones; works in training | none |
+| LR-35 | The office is called "Security (your office)" | Done | S | none | Status line, hallway hotspot, look text and parser ("go office") | none |
+| LR-36 | Make the monitor look more like a monitor | Done | S | none | Beige CRT with lit casing edges, black glass bezel, screen glare, a chin with brand and power LED, neck and base | none |
 
 ## Done
 
@@ -109,5 +116,6 @@ Ready means the card is clear enough to start. Backlog means it needs a decision
 | D-27 | LR-28: Save code with Copy on every end-of-day screen (win, loss, end of week); explains anyone can load it and there's no back end | 2026-11-02 |
 | D-28 | LR-29: Validity and presence re-checked on opening GitGuardian, opening an incident, or Refresh; checked-at times; timeline notes changes; Dana can remove the key from .mcp.json (presence changes, history remains) | 2026-11-02 |
 | D-29 | LR-30: Vault › Integrations › Rotation page with real per-provider options and status; Rotate now from there; incident Secrets manager line points to it | 2026-11-02 |
+| D-30 | LR-31 to LR-36: landing page rewrite (big Play, Team CTF), phone-friendly minimizable training coach, labeled room objects in training, U-turn exit button, Security (your office), a proper CRT monitor | 2026-11-03 |
 
 Release-note audit (Nov 2025 to Oct 2026): see docs/RELEASE-COVERAGE.md.
