@@ -402,4 +402,18 @@ button.xnode{cursor:pointer}
 @media (prefers-reduced-motion:no-preference){.tmenu button:focus::before{animation:tcur 1s steps(1) infinite}}
 @keyframes tcur{50%{opacity:0}}
 .thint{font:15px var(--f-term);color:#555;margin-top:8px}
+
+/* the exploration map card reads as a big, obvious button */
+.xcard .xtoggle{background:#EEF1FF;border:2px solid #2D3FD8;border-radius:10px;gap:12px;padding:12px 14px}
+.xcard .xtoggle:hover{background:#E0E6FF}
+.xcard .xico{flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:8px;background:#2D3FD8}
+.xcard .xico svg{fill:#fff;stroke:#fff}
+.xcard .xtx{flex:1;display:grid;gap:2px;min-width:0}
+.xcard .xtx b{font-size:15px;color:#1B2A9E}
+.xcard .xcta{flex:none;background:#2D3FD8;color:#fff;font:600 13.5px var(--f-ui);padding:8px 12px;border-radius:6px;white-space:nowrap}
+.xcard .xbadge{display:inline-block;margin-left:6px;background:#FFE58A;color:#5C4300;font:600 11px var(--f-ui);padding:2px 6px;border-radius:999px;vertical-align:2px}
+.xcard.xnew .xtoggle{animation:xpulse 1.6s ease-in-out infinite}
+@keyframes xpulse{50%{box-shadow:0 0 0 5px rgba(45,63,216,.25)}}
+@media (prefers-reduced-motion:reduce){.xcard.xnew .xtoggle{animation:none}}
+@media (max-width:560px){.xcard .xcta{display:none}}
 </style>
