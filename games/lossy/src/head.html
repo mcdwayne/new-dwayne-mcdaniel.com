@@ -388,4 +388,18 @@ button.xnode{cursor:pointer}
 .ic.exit{min-width:auto;padding-inline:10px;margin-left:auto;font-weight:600;flex-direction:row!important;display:inline-flex;align-items:center;gap:6px}
 .ic.exit span{font-size:18px;line-height:1}
 @media (max-width:760px){.ic.exit{grid-column:1/-1;margin-left:0;justify-content:center;min-height:34px;padding-block:4px}}
+
+/* console-style title menu: one column, a cursor on the chosen line */
+.msg .btns.tmenu{flex-direction:column;align-items:stretch;flex-wrap:nowrap;gap:6px;width:min(360px,100%);margin:14px auto 0}
+.tmenu button{position:relative;text-align:left;font:18px var(--f-pix);padding:8px 14px 8px 34px}
+.tmenu button.big{font-size:24px;padding:12px 14px 12px 38px}
+.tmenu button.big small{display:block;font:14px/1.2 var(--f-term);color:#333;margin-top:2px}
+.tmenu button.go{background:#9CF29C;border-color:#E6FFE6 #1F6B1F #1F6B1F #E6FFE6}
+.tmenu button.go:hover{background:#B8FFB8}
+.tmenu button::before{content:"▶";position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:.8em;color:#0000AA;opacity:0}
+.tmenu button:hover::before,.tmenu button:focus-visible::before,.tmenu button:focus::before{opacity:1}
+.tmenu button:focus{outline:3px solid #0000AA;outline-offset:2px}
+@media (prefers-reduced-motion:no-preference){.tmenu button:focus::before{animation:tcur 1s steps(1) infinite}}
+@keyframes tcur{50%{opacity:0}}
+.thint{font:15px var(--f-term);color:#555;margin-top:8px}
 </style>

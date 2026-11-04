@@ -41,7 +41,10 @@ function tutRect(st){const sel=st&&tutSel(st);if(!sel)return null;
   const el=document.querySelector(sel);if(!el)return null;const r=el.getBoundingClientRect();return r.width&&r.height?r:null;}
 function tutTick(){if(!TUT.on||!S||!S.tut)return tutEnd(false);const st=TSTEPS[TUT.n];if(!st)return;
   if(st.done&&st.done()){TUT.n++;return tutRender();}
+  /* any change of screen (room, computer, windows, GitGuardian page or tab) brings a hidden coach back */
+  const sig=screenSig();if(sig!==TUT.sig){TUT.sig=sig;if(TUT.min){TUT.min=false;return tutRender();}}
   if(!document.getElementById("coach"))tutRender();placeCoach();}
+function screenSig(){return [S.room,pcOpen(),(WM.wins||[]).map(w=>w.app+(w.min?"-":"")+(w.max?"+":"")).join(","),typeof pcApp!=="undefined"?pcApp:"",ggRoute.page,ggRoute.id||"",ggRoute.tab||"",typeof vtTab!=="undefined"?vtTab:"",!!document.getElementById("tscr")].join("|");}
 /* LR-24: a pulsing bright-green box over the thing to click, and an arrow pointing at it. Measured every frame, so it follows re-renders and dragged windows. */
 function tutLabels(){let lay=document.getElementById("tutlabels");const st=TSTEPS[TUT.n];const ls=(st&&st.labels)||[];
   if(!ls.length||document.querySelector("#msglayer .msgwrap")){if(lay)lay.innerHTML="";return;}
@@ -72,11 +75,11 @@ function placeCoach(){const c=document.getElementById("coach");if(!c)return;
   c.style.left=Math.max(m,best[0])+"px";c.style.top=Math.max(m,best[1])+"px";}
 function tutRender(){let c=document.getElementById("coach");if(!c){c=document.createElement("div");c.id="coach";c.setAttribute("role","dialog");c.setAttribute("aria-live","polite");c.setAttribute("aria-label","Training");document.body.appendChild(c);}
   const st=TSTEPS[TUT.n];if(!st)return tutEnd(true);const total=TSTEPS.length;
-  if(TUT.last!==TUT.n)TUT.min=matchMedia("(max-width:760px)").matches&&!st.next;c.classList.toggle("min",!!TUT.min);
+  if(TUT.last!==TUT.n)TUT.min=false;/* every new step opens full size; only the player minimizes it */c.classList.toggle("min",!!TUT.min);
   c.innerHTML=`<div class="ch"><span>Training · part ${st.part} of 2 · ${TUT.n+1}/${total}</span><button class="cmin" data-tutmin aria-expanded="${!TUT.min}">${TUT.min?"▴ Show":"▾ Hide"}</button></div><b class="ct">${st.t}</b><div class="cx">${st.x}</div><div class="cb">${st.next?`<button data-tutnext>${st.next}</button>`:`<span class="cw">Do it to continue</span>`}${st.end?`<button data-tutend>${st.end}</button>`:`<button data-tutend class="sub">End training</button>`}</div>`;
   TUT.last=TUT.n;placeCoach();try{updateBar();}catch(e){}}
 document.addEventListener("click",e=>{if(e.target.closest("[data-tt='tut']"))return startTutorial();
-  if(e.target.closest("[data-tutmin]")){TUT.min=!TUT.min;return tutRender();}
+  if(e.target.closest("[data-tutmin]")){TUT.min=!TUT.min;TUT.sig=screenSig();return tutRender();}
   if(TUT.on&&e.target.closest('.ic[data-verb="hand"]'))TUT.picked=true;
   if(e.target.closest("[data-tutnext]")){const st=TSTEPS[TUT.n];if(st&&st.final){tutEnd(false);return startNew();}TUT.n++;return tutRender();}
   if(e.target.closest("[data-tutend]")){const st=TSTEPS[TUT.n];tutEnd(true);return;}});
