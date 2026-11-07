@@ -1,5 +1,5 @@
 /* ============================== pixel art (original, EGA palette) ============================== */
-const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+let reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
 const PAL=["#000000","#0000AA","#00AA00","#00AAAA","#AA0000","#AA00AA","#AA5500","#AAAAAA","#555555","#5555FF","#55FF55","#55FFFF","#FF5555","#FF55FF","#FFFF55","#FFFFFF"];
 const cv=document.getElementById("scene"),g=cv.getContext("2d");g.imageSmoothingEnabled=false;
 const R=(x,y,w,h,c)=>{g.fillStyle=PAL[c];g.fillRect(x|0,y|0,w|0,h|0);};

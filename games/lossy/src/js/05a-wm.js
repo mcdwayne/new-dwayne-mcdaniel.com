@@ -32,8 +32,8 @@ function groups(){const have=new Set(apps().map(a=>a[0]));const b=Object.fromEnt
   return G.map(([n,items])=>[n,items.filter(([k])=>have.has(k)||["clock","notepad","sol"].includes(k)).map(([k,l])=>[k,l,b[k]||0])]).filter(g=>g[1].length);}
 const isPhone=()=>matchMedia("(max-width:600px)").matches;
 function openWin(app){if(app==="ssh")return;pcApp=app;let w=WM.wins.find(x=>x.app===app);
-  if(!w){const n=WM.wins.filter(x=>x.app!=="progman").length;const small={clock:[30,12,34,34],notepad:[16,10,52,62],sol:[26,22,40,30]}[app];
-    const [x,y,ww,hh]=small||[5+n*3,4+n*3,88,86];w={app,x,y,w:ww,h:hh,max:false,min:false,z:0};WM.wins.push(w);}
+  if(!w){const n=WM.wins.filter(x=>x.app!=="progman").length;const small={clock:[58,50,34,34],notepad:[16,10,52,62],sol:[22,62,40,30]}[app];
+    const [x,y,ww,hh]=small||[5+(n*4)%24,4+(n*5)%30,88,86];w={app,x,y,w:ww,h:hh,max:false,min:false,z:0};WM.wins.push(w);}
   w.min=false;w.z=++WM.z;}
 function closeWin(app){WM.wins=WM.wins.filter(w=>w.app!==app);if(modal&&app===pcApp)modal=null;const top=WM.wins.filter(w=>!w.min).sort((a,b)=>b.z-a.z)[0];pcApp=top?top.app:"progman";}
 function ensureProgman(){if(!WM.wins.some(w=>w.app==="progman"))WM.wins.unshift({app:"progman",x:6,y:6,w:62,h:62,max:false,min:false,z:0});}

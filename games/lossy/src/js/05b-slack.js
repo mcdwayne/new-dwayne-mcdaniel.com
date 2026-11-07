@@ -1,7 +1,7 @@
 /* ============================== LR-04: Slack the developers ==============================
    Same choices as talking in person. Replies take a random 2 to 200 real seconds; the game clock doesn't move while you wait.
    Pending replies are stored with an absolute due time, so they survive closing the computer and reloading the page. */
-const SL_PEOPLE={dana:{name:P.dana,role:"Skoupmouz engineer",col:"#AA00AA"},ravi:{name:P.ravi,role:"Plimbo mobile dev",col:"#00AA00"},amara:{name:P.amara,role:"Mapwende field ops",col:"#00AAAA"}};
+const SL_PEOPLE={dana:{name:P.dana,role:"Skoupmouz engineer",col:"#AA00AA"},ravi:{name:P.ravi,role:"Plimbo mobile dev",col:"#006B00"},amara:{name:P.amara,role:"Mapwende field ops",col:"#006B6B"}};
 let slWho=null;
 function SL(){if(!S.slack)S.slack={msgs:{dana:[],ravi:[],amara:[]},pending:[],unread:{}};return S.slack;}
 function slContacts(){const c=[];if(INC(1017)&&S.day<4)c.push("dana");if(S.day===2||S.day===4||INC(1102))c.push("ravi");if(S.day===3)c.push("amara");return c;}

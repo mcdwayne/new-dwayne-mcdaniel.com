@@ -22,6 +22,10 @@ out = args[0] if args else os.path.join(here, "index.html")
 
 head = open(os.path.join(src, "head.html"), encoding="utf-8").read()
 body = open(os.path.join(src, "body.html"), encoding="utf-8").read()
+# Accessibility (WCAG 2.2 AA) rules shared by every game in this series; loaded last so they win.
+_a11y = os.path.join(src, "a11y.css")
+if os.path.exists(_a11y):
+    head += "\n<style>\n" + open(_a11y, encoding="utf-8").read() + "\n</style>\n"
 parts = sorted(glob.glob(os.path.join(src, "js", "*.js")))
 
 # Fonts are inlined so the single file works offline (file://, desktop app, any static host).

@@ -434,6 +434,50 @@ button.xnode{cursor:pointer}
 @media (max-width:560px){.xcard .xcta{display:none}}
 </style>
 
+<style>
+
+/* ============ Accessibility (WCAG 2.2 AA), shared by every game in this series ============ */
+/* 1.4.11 non-text contrast: text boxes, selects and button edges at 3:1 or better against their background */
+.btn{border-color:#6B7385}
+.wbody input:not([type=radio]):not([type=checkbox]),.wbody select,.wbody textarea:not(.w31note),.modal input[type=text],.modal select{border:1px solid #6B7385!important;background:#fff;color:#1B1F29}
+.wbody input[type=radio],.wbody input[type=checkbox]{accent-color:#2D3FD8;width:18px;height:18px}
+.msg input,.msg select{background:#fff!important;color:#000!important;border:2px solid #000!important;border-radius:0}
+.parser{outline-offset:-2px}.parser input::placeholder{color:#BDBDBD;opacity:1}
+.wbody ::placeholder{color:#5B6374;opacity:1}
+/* 1.4.3 text contrast: every pair below was under 4.5:1 */
+.hover{background:rgba(0,0,0,.88);padding:3px 6px;text-shadow:none}
+.bezel .brand{color:#3F3A2C}
+.bezel.brick .brand{color:#D4D4DC}
+.w31 .w31clock .hint,.w31clock .hint{color:#4F4F4F}
+.pad li.ok>span:first-child,.pad .x{color:#006400}
+.w31 .icon .nb{background:#B00000}
+.w31 .deskfoot{color:#FFFFFF;text-shadow:1px 1px 0 #003030,0 0 3px #003030}
+.goal .gt{color:inherit}
+/* 2.5.8 target size: window controls and menu buttons at least 24 by 24 CSS pixels */
+.w31 .tb{height:28px}.w31 .ctl,.w31 .tbb{width:26px;height:26px}
+.w31 .mbar button{min-height:24px;padding:4px 8px}
+.bezel .off{min-height:28px}
+.wbody .btn{min-height:28px;min-width:28px}
+/* 2.4.7 focus visible everywhere, including table rows and the pixel-scene list */
+tr.click:focus-visible td{background:#EEF1FF;outline:none}tr.click:focus-visible{outline:3px solid #2D3FD8;outline-offset:-3px}
+.here button:focus-visible,.ic:focus-visible,.msg button:focus-visible,.dlg button:focus-visible{outline:3px solid #FFFF55;outline-offset:2px;box-shadow:0 0 0 5px #000}
+/* 2.1.1 keyboard: the list of things in the room is shown at every width, not only on phones */
+@media (min-width:601px) and (min-height:501px){
+  .here{display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:#111827;padding:6px 8px;border-left:4px solid var(--bar);border-right:4px solid var(--bar)}
+  .here .hv{color:#FFFF55;font:18px/1 var(--f-term);margin-right:4px}
+  .here button{background:#1F2937;color:#F3F4F6;border:1px solid #6B7280;border-radius:6px;padding:5px 9px;font:14px/1.1 var(--f-pix);min-height:28px;cursor:pointer}
+  .here button.who{border-color:#FF9EFF;color:#FFD6FF}
+  .here button.exit{border-color:#FFB45E;color:#FFE2BF}}
+.here button.who{color:#FFD6FF}.here button.exit{color:#FFE2BF}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+.bezel{padding-bottom:48px}
+@media (max-width:600px){.bezel{padding-bottom:52px}}
+.hover:empty{display:none}
+.sl nav .badge,.sl .badge{background:#B42318;color:#fff}
+
+</style>
+
 </head>
 <body>
 
@@ -455,7 +499,7 @@ button.xnode{cursor:pointer}
 
 /* ============================== world constants ============================== */
 /* stamped by build.py: the same ID appears on the title screen, in the menu and on the landing page */
-const BUILD="e2e644c0";
+const BUILD="cc5cab96";
 const P={dana:"Dana Holm",ravi:"Ravi Okafor",amara:"Amara Diallo",coo:"Kofi Lopez",head:"Jae Ueda",isla:"Isla Dimitrov"};
 const COMPANY=["Lossy Inc","Lossy Incorporated","LOSSI"];
 const START=9*60;
@@ -645,7 +689,7 @@ function playbookText(){return PB_STEPS.map((s,i)=>`${i+1}. ${s.t.toUpperCase()}
 
 /* ---- 03-scenes.js ---- */
 /* ============================== pixel art (original, EGA palette) ============================== */
-const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+let reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
 const PAL=["#000000","#0000AA","#00AA00","#00AAAA","#AA0000","#AA00AA","#AA5500","#AAAAAA","#555555","#5555FF","#55FF55","#55FFFF","#FF5555","#FF55FF","#FFFF55","#FFFFFF"];
 const cv=document.getElementById("scene"),g=cv.getContext("2d");g.imageSmoothingEnabled=false;
 const R=(x,y,w,h,c)=>{g.fillStyle=PAL[c];g.fillRect(x|0,y|0,w|0,h|0);};
@@ -1083,8 +1127,8 @@ function groups(){const have=new Set(apps().map(a=>a[0]));const b=Object.fromEnt
   return G.map(([n,items])=>[n,items.filter(([k])=>have.has(k)||["clock","notepad","sol"].includes(k)).map(([k,l])=>[k,l,b[k]||0])]).filter(g=>g[1].length);}
 const isPhone=()=>matchMedia("(max-width:600px)").matches;
 function openWin(app){if(app==="ssh")return;pcApp=app;let w=WM.wins.find(x=>x.app===app);
-  if(!w){const n=WM.wins.filter(x=>x.app!=="progman").length;const small={clock:[30,12,34,34],notepad:[16,10,52,62],sol:[26,22,40,30]}[app];
-    const [x,y,ww,hh]=small||[5+n*3,4+n*3,88,86];w={app,x,y,w:ww,h:hh,max:false,min:false,z:0};WM.wins.push(w);}
+  if(!w){const n=WM.wins.filter(x=>x.app!=="progman").length;const small={clock:[58,50,34,34],notepad:[16,10,52,62],sol:[22,62,40,30]}[app];
+    const [x,y,ww,hh]=small||[5+(n*4)%24,4+(n*5)%30,88,86];w={app,x,y,w:ww,h:hh,max:false,min:false,z:0};WM.wins.push(w);}
   w.min=false;w.z=++WM.z;}
 function closeWin(app){WM.wins=WM.wins.filter(w=>w.app!==app);if(modal&&app===pcApp)modal=null;const top=WM.wins.filter(w=>!w.min).sort((a,b)=>b.z-a.z)[0];pcApp=top?top.app:"progman";}
 function ensureProgman(){if(!WM.wins.some(w=>w.app==="progman"))WM.wins.unshift({app:"progman",x:6,y:6,w:62,h:62,max:false,min:false,z:0});}
@@ -1159,7 +1203,7 @@ renderPC=function(){_renderPC();const root=document.getElementById("w31");if(roo
 /* ============================== LR-04: Slack the developers ==============================
    Same choices as talking in person. Replies take a random 2 to 200 real seconds; the game clock doesn't move while you wait.
    Pending replies are stored with an absolute due time, so they survive closing the computer and reloading the page. */
-const SL_PEOPLE={dana:{name:P.dana,role:"Skoupmouz engineer",col:"#AA00AA"},ravi:{name:P.ravi,role:"Plimbo mobile dev",col:"#00AA00"},amara:{name:P.amara,role:"Mapwende field ops",col:"#00AAAA"}};
+const SL_PEOPLE={dana:{name:P.dana,role:"Skoupmouz engineer",col:"#AA00AA"},ravi:{name:P.ravi,role:"Plimbo mobile dev",col:"#006B00"},amara:{name:P.amara,role:"Mapwende field ops",col:"#006B6B"}};
 let slWho=null;
 function SL(){if(!S.slack)S.slack={msgs:{dana:[],ravi:[],amara:[]},pending:[],unread:{}};return S.slack;}
 function slContacts(){const c=[];if(INC(1017)&&S.day<4)c.push("dana");if(S.day===2||S.day===4||INC(1102))c.push("ravi");if(S.day===3)c.push("amara");return c;}
@@ -1677,7 +1721,7 @@ function say(txt,pts,who){if(pts)txt+=`\n\n[+${pts} points]`;msgBox(txt,who);upd
 function msgBox(txt,who,then){MQ.push({txt,who,then});if(!showing)nextMsg();}
 function nextMsg(){const m=MQ.shift();if(!m){showing=false;if(S&&!S.dead)checkEnd();return;}showing=true;const w=document.createElement("div");w.className="msgwrap";
   w.innerHTML=`<div class="msg" role="dialog" aria-modal="true" tabindex="-1">${m.who?`<span class="who">${esc(m.who)}</span>`:""}${esc(m.txt)}<span class="hint">click or press Enter</span></div>`;
-  const close=()=>{w.remove();document.removeEventListener("keydown",kd);updateBar();if(m.then)m.then();nextMsg();};const kd=ev=>{if(ev.key==="Enter"||ev.key==="Escape"){ev.preventDefault();close();}};
+  const close=()=>{w.remove();document.removeEventListener("keydown",kd);updateBar();if(m.then)m.then();nextMsg();};const kd=ev=>{if(!w.isConnected){document.removeEventListener("keydown",kd);return;}if(ev.key==="Enter"||ev.key==="Escape"){ev.preventDefault();close();}};
   w.addEventListener("click",close);document.addEventListener("keydown",kd);ML().appendChild(w);w.querySelector(".msg").focus();}
 function clearMsgs(){MQ=[];showing=false;ML().innerHTML="";}
 function esc(s){return String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
@@ -2120,6 +2164,35 @@ document.addEventListener("click",e=>{if(e.target.closest("[data-tt='tut']"))ret
   if(TUT.on&&e.target.closest('.ic[data-verb="hand"]'))TUT.picked=true;
   if(e.target.closest("[data-tutnext]")){const st=TSTEPS[TUT.n];if(st&&st.final){tutEnd(false);return startNew();}TUT.n++;return tutRender();}
   if(e.target.closest("[data-tutend]")){const st=TSTEPS[TUT.n];tutEnd(true);return;}});
+
+/* ---- 99-a11y.js ---- */
+
+/* ============================== Accessibility (WCAG 2.2 AA), shared by every game ============================== */
+(()=>{document.documentElement.lang="en";
+  /* 1.1.1 / 4.1.2: the pixel scene is an image with a description that follows the room */
+  const sc=document.getElementById("scene");if(sc){sc.setAttribute("role","img");}
+  let lastLabel="";
+  function describe(){if(!sc||typeof S==="undefined"||!S)return;try{const room=S.room;const spots=(typeof roomSpots==="function"?roomSpots(room):SPOTS[room])||[];
+      const name=(typeof ROOMNAME!=="undefined"&&ROOMNAME[room])||room;const lab=`${name}. You can see: ${spots.filter(s=>!s.exit).map(s=>s.name).join(", ")}. Exits: ${spots.filter(s=>s.exit).map(s=>s.name).join(", ")||"none"}.`;
+      if(lab!==lastLabel){sc.setAttribute("aria-label",lab);lastLabel=lab;}}catch(e){}}
+  const _draw=draw;draw=function(){_draw.apply(this,arguments);describe();};
+  /* 4.1.2: the room list is a named group; empty buttons get a name */
+  const here=document.getElementById("here");if(here)here.setAttribute("role","group");
+  const ex=document.getElementById("exitbtn");if(ex&&!ex.textContent.trim())ex.setAttribute("aria-label","Exit");
+  /* 4.1.3: the next-step bar is announced politely when it changes */
+  const gt=document.getElementById("goalTxt");if(gt){gt.setAttribute("aria-live","polite");gt.setAttribute("role","status");}
+  /* 2.1.1: clickable table rows are reachable and usable from the keyboard */
+  const fixRows=root=>{try{if(typeof document==="undefined"||!document||!document.body)return;(root||document).querySelectorAll("tr.click:not([tabindex])").forEach(t=>{t.tabIndex=0;});
+    (root||document).querySelectorAll(".tw:not([tabindex]),.slmsgs:not([tabindex])").forEach(el=>{el.tabIndex=0;if(!el.getAttribute("role")){el.setAttribute("role","region");el.setAttribute("aria-label",el.classList.contains("slmsgs")?"Messages":"Table");}});}catch(e){}};
+  new MutationObserver(()=>fixRows()).observe(document.body,{childList:true,subtree:true});
+  document.addEventListener("keydown",e=>{const t=e.target;if(t&&t.matches&&t.matches("tr.click")&&(e.key==="Enter"||e.key===" ")){e.preventDefault();t.click();}});
+  /* 2.2.2: animation can be turned off from the menu, not only by the OS setting */
+  try{const v=localStorage.getItem("games.motion");if(v==="off")reduce=true;}catch(e){}
+  new MutationObserver(()=>{if(typeof document==="undefined"||!document)return;const b=document.querySelector(".msg .btns:not(.tmenu)");if(!b||b.querySelector("[data-motion]")||!b.querySelector("[data-mn]"))return;
+    const m=document.createElement("button");m.dataset.motion="1";m.textContent=reduce?"Animation: off":"Animation: on";m.setAttribute("aria-pressed",String(!reduce));b.appendChild(m);}).observe(document.getElementById("msglayer"),{childList:true,subtree:true});
+  document.addEventListener("click",e=>{const b=e.target.closest("[data-motion]");if(!b)return;e.stopPropagation();reduce=!reduce;try{localStorage.setItem("games.motion",reduce?"off":"on");}catch(err){}
+    b.textContent=reduce?"Animation: off":"Animation: on";b.setAttribute("aria-pressed",String(!reduce));},true);
+})();
 
 </script>
 </body>

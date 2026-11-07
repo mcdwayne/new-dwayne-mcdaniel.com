@@ -5,7 +5,7 @@ function say(txt,pts,who){if(pts)txt+=`\n\n[+${pts} points]`;msgBox(txt,who);upd
 function msgBox(txt,who,then){MQ.push({txt,who,then});if(!showing)nextMsg();}
 function nextMsg(){const m=MQ.shift();if(!m){showing=false;if(S&&!S.dead)checkEnd();return;}showing=true;const w=document.createElement("div");w.className="msgwrap";
   w.innerHTML=`<div class="msg" role="dialog" aria-modal="true" tabindex="-1">${m.who?`<span class="who">${esc(m.who)}</span>`:""}${esc(m.txt)}<span class="hint">click or press Enter</span></div>`;
-  const close=()=>{w.remove();document.removeEventListener("keydown",kd);updateBar();if(m.then)m.then();nextMsg();};const kd=ev=>{if(ev.key==="Enter"||ev.key==="Escape"){ev.preventDefault();close();}};
+  const close=()=>{w.remove();document.removeEventListener("keydown",kd);updateBar();if(m.then)m.then();nextMsg();};const kd=ev=>{if(!w.isConnected){document.removeEventListener("keydown",kd);return;}if(ev.key==="Enter"||ev.key==="Escape"){ev.preventDefault();close();}};
   w.addEventListener("click",close);document.addEventListener("keydown",kd);ML().appendChild(w);w.querySelector(".msg").focus();}
 function clearMsgs(){MQ=[];showing=false;ML().innerHTML="";}
 function esc(s){return String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
