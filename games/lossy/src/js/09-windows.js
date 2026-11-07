@@ -16,7 +16,7 @@ function portrait(who){const c=document.createElement("canvas");c.width=48;c.hei
 function dialog(name,who,intro,builder){snapshot();const L=ML();const w=document.createElement("div");w.className="msgwrap";
   w.innerHTML=`<div class="dlg" role="dialog" aria-modal="true"><div class="pf"></div><div><span class="who">${esc(name)}</span><div class="say">${esc(intro)}</div></div><div class="opts"></div></div>`;
   w.querySelector(".pf").appendChild(portrait(who));const box=w.querySelector(".opts"),sayEl=w.querySelector(".say");
-  const render=list=>{box.innerHTML="";list.forEach(([label,fn])=>{const b=document.createElement("button");b.textContent=label;b.onclick=ev=>{ev.stopPropagation();
+  const render=list=>{box.innerHTML="";list.forEach(([label,fn])=>{const b=document.createElement("button");b.textContent=label;if(!fn)b.className="bye";b.onclick=ev=>{ev.stopPropagation();
     if(!fn){w.remove();updateBar();draw();checkEnd();return;}snapshot();const r=fn();if(r){if(!r.end)advance(5);if(after())return;sayEl.textContent=r.t+(r.p?`\n\n[+${r.p} points]`:"");updateBar();draw();
       if(r.end){box.innerHTML="";const z=document.createElement("button");z.textContent="Continue";z.onclick=()=>{w.remove();endDay();};box.appendChild(z);return;}
       render(builder());}};box.appendChild(b);});};

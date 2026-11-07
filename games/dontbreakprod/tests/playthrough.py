@@ -3,6 +3,7 @@ import sys, pathlib
 from playwright.sync_api import sync_playwright
 HTML = pathlib.Path(__file__).resolve().parent.parent / "index.html"
 errs = []
+CODES = []
 
 def run(page, branch=None):
     E = lambda js: page.evaluate(js)
@@ -21,7 +22,10 @@ def run(page, branch=None):
     def bye(): page.locator("#msglayer .dlg .opts button", has_text="Bye").first.click() if page.locator("#msglayer .dlg").count() else None
     def cont():
         page.locator("#msglayer .dlg button", has_text="Continue").click(); dismiss()
-        page.locator("[data-go]").click(); dismiss()
+        card = page.inner_text("#msglayer .lvcard #sccode")  # every level screen shows the save code
+        page.locator("[data-go]").click()
+        assert card == E("GAME.encodeSave()"), (card, E("GAME.encodeSave()"))
+        CODES.append(card); dismiss()
     def act(a):
         page.locator(f'[data-act="{a}"]').first.click()
         dismiss()
@@ -101,5 +105,13 @@ with sync_playwright() as p:
         if branch is None:
             pass
         page.close()
+    b.close()
+# every level-screen code loads that level
+with sync_playwright() as p:
+    b = p.chromium.launch(); pg = b.new_page(); pg.goto(HTML.as_uri())
+    for n, c in enumerate(CODES[:5], start=2):
+        r = pg.evaluate(f"GAME.restoreFromCode('{c}')"); lv = pg.evaluate("GAME.S.lv")
+        print(f"level {n} screen code {c} -> level {lv}, checksum {'ok' if r['checksumOk'] else 'BAD'}")
+        if lv != n or not r["checksumOk"]: errs.append(f"code {c} loaded level {lv}, expected {n}")
     b.close()
 print("errors:", errs)

@@ -476,6 +476,21 @@ tr.click:focus-visible td{background:#EEF1FF;outline:none}tr.click:focus-visible
 .hover:empty{display:none}
 .sl nav .badge,.sl .badge{background:#B42318;color:#fff}
 
+/* Dialog choices: a two-column grid of real buttons, not a list. Leaving ("Bye") and Continue take the full row. */
+.dlg .opts{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 12px;padding:4px 2px 6px}
+.dlg .opts button{display:flex;align-items:center;justify-content:center;text-align:center;min-height:56px;padding:8px 14px;line-height:1.2;white-space:normal;overflow-wrap:anywhere;color:#000;border:2px solid #3A3A3A;border-radius:12px;background:linear-gradient(#F4F4F4,#C4C4C4);box-shadow:inset 0 2px 0 rgba(255,255,255,.9),inset 0 -3px 0 rgba(0,0,0,.12),0 4px 0 #3A3A3A,0 7px 12px rgba(0,0,0,.35);margin-bottom:4px;transition:transform .06s,box-shadow .06s}
+.dlg .opts button:hover{background:linear-gradient(#FFFFFF,#D4D4D4)}
+.dlg .opts button.pitch{background:linear-gradient(#FFFFC8,#FFE27A);border-color:#7A3E00;box-shadow:inset 0 2px 0 rgba(255,255,255,.9),inset 0 -3px 0 rgba(0,0,0,.1),0 4px 0 #7A3E00,0 7px 12px rgba(0,0,0,.35)}
+.dlg .opts button.pitch:hover{background:linear-gradient(#FFFFDC,#FFEA94)}
+.dlg .opts button.go{background:linear-gradient(#C8FFC8,#86E486);border-color:#1F6B1F;box-shadow:inset 0 2px 0 rgba(255,255,255,.9),0 4px 0 #1F6B1F,0 7px 12px rgba(0,0,0,.35)}
+.dlg .opts button:active{transform:translateY(4px);box-shadow:inset 0 2px 4px rgba(0,0,0,.25),0 0 0 #3A3A3A,0 2px 3px rgba(0,0,0,.3)}
+.dlg .opts button:focus-visible{outline:3px solid #2D3FD8;outline-offset:3px}
+.dlg .opts button.bye,.dlg .opts button.go,.dlg .opts button:only-child,
+.dlg .opts button:nth-child(odd):last-child,
+.dlg .opts button:nth-child(odd):nth-last-child(2):has(+ .bye){grid-column:1/-1}
+.dlg .opts button.bye{min-height:44px;background:linear-gradient(#FAFAFA,#DCDCDC)}
+@media (max-width:380px){.dlg .opts{grid-template-columns:minmax(0,1fr)}}
+
 </style>
 
 </head>
@@ -499,7 +514,7 @@ tr.click:focus-visible td{background:#EEF1FF;outline:none}tr.click:focus-visible
 
 /* ============================== world constants ============================== */
 /* stamped by build.py: the same ID appears on the title screen, in the menu and on the landing page */
-const BUILD="cc5cab96";
+const BUILD="bb7c3b08";
 const P={dana:"Dana Holm",ravi:"Ravi Okafor",amara:"Amara Diallo",coo:"Kofi Lopez",head:"Jae Ueda",isla:"Isla Dimitrov"};
 const COMPANY=["Lossy Inc","Lossy Incorporated","LOSSI"];
 const START=9*60;
@@ -905,7 +920,7 @@ function readBinder(p){const L=ML();const w=document.createElement("div");w.clas
 /* the computer boots to Program Manager; after that it remembers which windows you left open */
 function useComputer(){if(WM.wins.some(w=>w.app!=="progman")){renderPC();return;}openPC("progman");}
 function sshNas(){if(!S.f.sshNote)return say("You don't have SSH details for nas01.");if(!S.f.nasFound)return say("The note says nas01. You don't know yet why you'd need it.");PL().innerHTML="";openTerm("nas01",{via:"pc"});}
-function go(room){if(S.tut&&room!=="hall"&&room!=="desk"){msgBox("Locked. During training only your office door opens: walk to the hallway and back.");return;}advance(3);if(after())return;S.room=room;if(room==="closet")foundNas();S.seen[room]=1;draw();
+function go(room){if(S.tut&&room!=="hall"&&room!=="desk"){msgBox("Locked. During training only your office door opens: walk to the hallway and back.");return;}advance(3);if(after())return;S.room=room;verb="hand";heldItem=null;iconbar();if(room==="closet")foundNas();S.seen[room]=1;draw();
   if(room==="closet"&&!S.seen["closet"+S.day]){S.seen["closet"+S.day]=1;say("The server closet hums. In the corner, an old box on a cart has a green-screen console. Something on it runs on a schedule.");}}
 
 /* ============================== dialogue ============================== */
@@ -1732,7 +1747,7 @@ function portrait(who){const c=document.createElement("canvas");c.width=48;c.hei
 function dialog(name,who,intro,builder){snapshot();const L=ML();const w=document.createElement("div");w.className="msgwrap";
   w.innerHTML=`<div class="dlg" role="dialog" aria-modal="true"><div class="pf"></div><div><span class="who">${esc(name)}</span><div class="say">${esc(intro)}</div></div><div class="opts"></div></div>`;
   w.querySelector(".pf").appendChild(portrait(who));const box=w.querySelector(".opts"),sayEl=w.querySelector(".say");
-  const render=list=>{box.innerHTML="";list.forEach(([label,fn])=>{const b=document.createElement("button");b.textContent=label;b.onclick=ev=>{ev.stopPropagation();
+  const render=list=>{box.innerHTML="";list.forEach(([label,fn])=>{const b=document.createElement("button");b.textContent=label;if(!fn)b.className="bye";b.onclick=ev=>{ev.stopPropagation();
     if(!fn){w.remove();updateBar();draw();checkEnd();return;}snapshot();const r=fn();if(r){if(!r.end)advance(5);if(after())return;sayEl.textContent=r.t+(r.p?`\n\n[+${r.p} points]`:"");updateBar();draw();
       if(r.end){box.innerHTML="";const z=document.createElement("button");z.textContent="Continue";z.onclick=()=>{w.remove();endDay();};box.appendChild(z);return;}
       render(builder());}};box.appendChild(b);});};

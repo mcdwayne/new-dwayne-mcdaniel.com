@@ -18,7 +18,7 @@ function portrait(who){const c=document.createElement("canvas");c.width=48;c.hei
 function dialog(name,who,intro,builder){const Lr=ML();const w=document.createElement("div");w.className="msgwrap";
   w.innerHTML=`<div class="dlg" role="dialog" aria-modal="true" aria-label="${esc(name)}"><div class="pf"></div><div><span class="who">${esc(name)}</span><div class="kpi">Measured on: ${esc(PPL[who].kpi)}</div><div class="say">${esc(intro)}</div></div><div class="opts"></div></div>`;
   w.querySelector(".pf").appendChild(portrait(who));const box=w.querySelector(".opts"),sayEl=w.querySelector(".say");
-  const render=list=>{box.innerHTML="";list.forEach(([label,fn])=>{const b=document.createElement("button");b.textContent=label;if(/^▸/.test(label))b.className="pitch";b.onclick=ev=>{ev.stopPropagation();
+  const render=list=>{box.innerHTML="";list.forEach(([label,fn])=>{const b=document.createElement("button");b.textContent=label;if(/^▸/.test(label))b.className="pitch";else if(!fn)b.className="bye";b.onclick=ev=>{ev.stopPropagation();
     if(!fn){w.remove();updateBar();draw();return;}const r=fn();if(!r)return;advance(2);sayEl.textContent=r.t+(r.p?`\n\n[+${r.p} points]`:"");updateBar();draw();
     if(r.win){box.innerHTML="";const z=document.createElement("button");z.textContent="Continue";z.className="go";z.onclick=()=>{w.remove();save();r.win();};box.appendChild(z);z.focus();return;}
     render(builder());}; box.appendChild(b);});};
@@ -122,8 +122,8 @@ const LVMAIL={
  5:()=>{mail("m5",PPL.harriet.name,"Freeze exception","Signed for one change, tonight. Victor approves production changes during launch week. Floor 6.");},
  6:()=>{mail("m6",PPL.victor.name,"Approved","Do it tonight. Don't break prod.");mail("m6b",PPL.ingrid.name,"Bridge is open","Change window is open. Everything you need is on your laptop: PayRail, Vault, Deploys, batch-01. Follow your runbook. I'm watching #payrail-rotation.");}};
 function levelCard(n){clearMsgs();PL().innerHTML="";const Lr=ML();const w=document.createElement("div");w.className="msgwrap";w.style.background="#000";
-  w.innerHTML=`<div class="msg lvcard" style="cursor:default;text-align:center"><span class="lvn">LEVEL ${n} OF 6</span><b class="lvt">${esc(LV[n].name)}</b><span class="lvf">${esc(LV[n].floor)}</span>\n${esc(LV[n].tag)}<div class="btns tmenu"><button class="big go" data-go="${n}">Start level ${n}</button></div></div>`;
-  Lr.appendChild(w);setTimeout(()=>{const b=w.querySelector("button");if(b)b.focus();},0);}
+  w.innerHTML=`<div class="msg lvcard" style="cursor:default;text-align:center"><span class="lvn">LEVEL ${n} OF 6</span><b class="lvt">${esc(LV[n].name)}</b><span class="lvf">${esc(LV[n].floor)}</span>\n${esc(LV[n].tag)}${levelCode(n)}<div class="btns tmenu"><button class="big go" data-go="${n}">Start level ${n}</button></div></div>`;
+  Lr.appendChild(w);setTimeout(()=>{const b=w.querySelector("[data-go]");if(b)b.focus();},0);}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-go]");if(!b)return;clearMsgs();beginLevel(+b.dataset.go);});
 function beginLevel(n){S.lv=n;S.t=Math.max(S.t,START_T[n]);S.dead=null;if(n===6){S.room=has("laptop")?S.room:"closet";}
   LVMAIL[n]();const c=Object.assign({},S);delete c.ckpt;S.ckpt=JSON.stringify(c);save();showGame();
@@ -132,7 +132,7 @@ function beginLevel(n){S.lv=n;S.t=Math.max(S.t,START_T[n]);S.dead=null;if(n===6)
    3:"#2871 is yours. Production isn't. Floor 4 is SRE.",4:"Floor 5 is Finance and Compliance. The freeze is theirs.",5:"Floor 6. Paloma first. Then the CTO.",
    6:"11:00 PM. The building is quiet. Everyone is on #payrail-rotation, watching you.\n\nOpen your laptop. Your runbook is the plan. Checkout is taking about 1,200 PayRail calls a minute, and they all need to keep working."}[n];
   say(open);}
-function showGame(){document.getElementById("game").hidden=false;verb="walk";heldItem=null;iconbar();draw();}
+function showGame(){WM.wins=[];modal=null;pcApp="progman";document.getElementById("game").hidden=false;verb="hand";heldItem=null;iconbar();draw();}
 function death(k){const d=DEATHS[k];PL().innerHTML="";ED=null;clearMsgs();const Lr=ML();const w=document.createElement("div");w.className="msgwrap";
   w.innerHTML=`<div class="msg death" role="alertdialog" aria-modal="true"><span class="who" style="font-size:24px">${d[0]}</span>${esc(d[1])}\n\nNobody loses their job over this. It's a game. Try the change again.<div class="btns"><button data-dd="retry">Retry the change window</button><button data-dd="title">Title screen</button></div></div>`;Lr.appendChild(w);}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-dd]");if(!b)return;if(b.dataset.dd==="retry")return retryLevel();title();});

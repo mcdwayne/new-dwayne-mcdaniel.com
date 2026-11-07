@@ -23,7 +23,7 @@ function renderTerm(){const L=PL();if(!TM)return;updateBar();const cfg=HOSTCFG[T
     <div class="chips" aria-label="Suggested commands">${chipsFor().map(c=>{const lab=c===INSTALL_CMD?"install ggshield: curl … install.sh | bash":c.length>48?c.slice(0,46)+"…":c;return `<button type="button" data-tchip="${esc(c)}" title="${esc(c)}"${c===INSTALL_CMD?' aria-label="Install ggshield with the machine scan plugin: '+esc(c)+'"':""}>${esc(lab)}</button>`;}).join("")}</div></div>
     <button class="walkaway" data-tclose>${cfg.close}</button></div>`;
   const s=document.getElementById("tscr");s.scrollTop=s.scrollHeight;try{document.getElementById("tinp").focus({preventScroll:true});}catch(e){}}
-function closeTerm(){const h=TM&&TM.host;TM=null;PL().innerHTML="";if(h==="batch"&&has("laptop"))openPC("deploys","laptop");else{iconbar();draw();}}
+function closeTerm(){const h=TM&&TM.host;TM=null;PL().innerHTML="";if(h==="batch"&&has("laptop"))openPC(null,"laptop");else{iconbar();draw();}}
 function tsay(lines,c){(Array.isArray(lines)?lines:[lines]).forEach(t=>TM.out.push({t,c}));}
 function runCmd(raw){const cmd=raw.trim();const h=TM.host,cfg=HOSTCFG[h],t=TS(h);TM.out.push({t:`${cfg.user}@${cfg.name}:~$ ${cmd}`});if(!cmd)return renderTerm();advance(1);
   const a=cmd.replace(/\s+/g," ");

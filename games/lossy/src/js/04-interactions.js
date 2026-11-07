@@ -60,7 +60,7 @@ function readBinder(p){const L=ML();const w=document.createElement("div");w.clas
 /* the computer boots to Program Manager; after that it remembers which windows you left open */
 function useComputer(){if(WM.wins.some(w=>w.app!=="progman")){renderPC();return;}openPC("progman");}
 function sshNas(){if(!S.f.sshNote)return say("You don't have SSH details for nas01.");if(!S.f.nasFound)return say("The note says nas01. You don't know yet why you'd need it.");PL().innerHTML="";openTerm("nas01",{via:"pc"});}
-function go(room){if(S.tut&&room!=="hall"&&room!=="desk"){msgBox("Locked. During training only your office door opens: walk to the hallway and back.");return;}advance(3);if(after())return;S.room=room;if(room==="closet")foundNas();S.seen[room]=1;draw();
+function go(room){if(S.tut&&room!=="hall"&&room!=="desk"){msgBox("Locked. During training only your office door opens: walk to the hallway and back.");return;}advance(3);if(after())return;S.room=room;verb="hand";heldItem=null;iconbar();if(room==="closet")foundNas();S.seen[room]=1;draw();
   if(room==="closet"&&!S.seen["closet"+S.day]){S.seen["closet"+S.day]=1;say("The server closet hums. In the corner, an old box on a cart has a green-screen console. Something on it runs on a schedule.");}}
 
 /* ============================== dialogue ============================== */

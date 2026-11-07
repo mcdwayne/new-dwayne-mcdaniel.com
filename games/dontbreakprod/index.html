@@ -498,6 +498,21 @@ tr.click:focus-visible td{background:#EEF1FF;outline:none}tr.click:focus-visible
 .hover:empty{display:none}
 .sl nav .badge,.sl .badge{background:#B42318;color:#fff}
 
+/* Dialog choices: a two-column grid of real buttons, not a list. Leaving ("Bye") and Continue take the full row. */
+.dlg .opts{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 12px;padding:4px 2px 6px}
+.dlg .opts button{display:flex;align-items:center;justify-content:center;text-align:center;min-height:56px;padding:8px 14px;line-height:1.2;white-space:normal;overflow-wrap:anywhere;color:#000;border:2px solid #3A3A3A;border-radius:12px;background:linear-gradient(#F4F4F4,#C4C4C4);box-shadow:inset 0 2px 0 rgba(255,255,255,.9),inset 0 -3px 0 rgba(0,0,0,.12),0 4px 0 #3A3A3A,0 7px 12px rgba(0,0,0,.35);margin-bottom:4px;transition:transform .06s,box-shadow .06s}
+.dlg .opts button:hover{background:linear-gradient(#FFFFFF,#D4D4D4)}
+.dlg .opts button.pitch{background:linear-gradient(#FFFFC8,#FFE27A);border-color:#7A3E00;box-shadow:inset 0 2px 0 rgba(255,255,255,.9),inset 0 -3px 0 rgba(0,0,0,.1),0 4px 0 #7A3E00,0 7px 12px rgba(0,0,0,.35)}
+.dlg .opts button.pitch:hover{background:linear-gradient(#FFFFDC,#FFEA94)}
+.dlg .opts button.go{background:linear-gradient(#C8FFC8,#86E486);border-color:#1F6B1F;box-shadow:inset 0 2px 0 rgba(255,255,255,.9),0 4px 0 #1F6B1F,0 7px 12px rgba(0,0,0,.35)}
+.dlg .opts button:active{transform:translateY(4px);box-shadow:inset 0 2px 4px rgba(0,0,0,.25),0 0 0 #3A3A3A,0 2px 3px rgba(0,0,0,.3)}
+.dlg .opts button:focus-visible{outline:3px solid #2D3FD8;outline-offset:3px}
+.dlg .opts button.bye,.dlg .opts button.go,.dlg .opts button:only-child,
+.dlg .opts button:nth-child(odd):last-child,
+.dlg .opts button:nth-child(odd):nth-last-child(2):has(+ .bye){grid-column:1/-1}
+.dlg .opts button.bye{min-height:44px;background:linear-gradient(#FAFAFA,#DCDCDC)}
+@media (max-width:380px){.dlg .opts{grid-template-columns:minmax(0,1fr)}}
+
 </style>
 
 </head>
@@ -520,7 +535,7 @@ tr.click:focus-visible td{background:#EEF1FF;outline:none}tr.click:focus-visible
    message windows and dialogs. One long quest, six levels, an elevator between departments.
    Everything is simulated. No real systems are contacted.
    ========================================================================================== */
-const BUILD="e45a547a";
+const BUILD="f1482a9e";
 const COMPANY="Precarium Inc.";
 const START_T={1:9*60,2:11*60,3:13*60+30,4:15*60,5:16*60+30,6:23*60};
 const LV={
@@ -819,7 +834,7 @@ const ITEMUSE={
 /* ============================== moving around ============================== */
 function go(room){if(room==="back")room=FLOOR_ROOM[S.liftFrom||"2"]||"f2";
   if(room==="lift")S.liftFrom=ROOMFLOOR[S.room]||"2";
-  S.room=room;advance(1);verb="walk";heldItem=null;iconbar();draw();
+  S.room=room;advance(1);verb="hand";heldItem=null;iconbar();draw();
   if(!S.seen[room]){S.seen[room]=1;const t=ENTER[room];if(t)say(typeof t==="function"?t():t);}}
 const ENTER={
  f2:"Floor 2, IT & Security. Mostly IT. Marisol Vance's glass office is on the right. Your closet is on the left. The elevator is in the middle.",
@@ -983,13 +998,17 @@ function groups(){const have=new Set(apps().map(a=>a[0]));const b=Object.fromEnt
   return G.map(([n,items])=>[n,items.filter(([k])=>have.has(k)).map(([k,l])=>[k,l,b[k]||0])]).filter(g=>g[1].length);}
 const isPhone=()=>matchMedia("(max-width:600px)").matches;
 function openWin(app){if(app==="batch")return openTerm("batch");pcApp=app;let w=WM.wins.find(x=>x.app===app);if(app==="gg"&&!w)ggRoute={page:"list",fresh:true};
-  if(!w){const n=WM.wins.filter(x=>x.app!=="progman").length;const small={clock:[58,50,34,34],sol:[22,62,40,30]}[app];const [x,y,ww,hh]=small||[4+(n*4)%24,3+(n*5)%30,90,88];w={app,x,y,w:ww,h:hh,max:false,min:false,z:0};WM.wins.push(w);}
+  if(!w){const n=WM.wins.filter(x=>x.app!=="progman").length;const small={clock:[58,50,34,34],sol:[22,62,40,30]}[app];const [x,y,ww,hh]=small||[5+(n*4)%24,4+(n*5)%30,88,86];w={app,x,y,w:ww,h:hh,max:false,min:false,z:0};WM.wins.push(w);}
   w.min=false;w.z=++WM.z;}
 function closeWin(app){WM.wins=WM.wins.filter(w=>w.app!==app);if(modal)modal=null;closeWinFocus();}
 function closeWinFocus(){const top=WM.wins.filter(w=>!w.min).sort((a,b)=>b.z-a.z)[0];pcApp=top?top.app:"progman";}
-function ensureProgman(){if(!WM.wins.some(w=>w.app==="progman"))WM.wins.unshift({app:"progman",x:4,y:4,w:64,h:64,max:false,min:false,z:0});}
-function openPC(app,kind){if(kind)pcKind=kind;if(app==="batch")return openTerm("batch");if(pcKind==="kiosk")WM.wins=WM.wins.filter(w=>apps().some(a=>a[0]===w.app)||w.app==="progman");
-  if(app==="gg"){ggRoute={page:"list",fresh:true};}if(app)openWin(app);else if(!WM.wins.some(w=>w.app!=="progman"))openWin("gg");renderPC();}
+function ensureProgman(){if(!WM.wins.some(w=>w.app==="progman"))WM.wins.unshift({app:"progman",x:6,y:6,w:62,h:62,max:false,min:false,z:0});}
+/* Same as Lossy: the computer always starts at Program Manager. Programs open only when you click their icons
+   (or a link inside another program). Coming back to the same computer resumes the desktop as you left it. */
+function openPC(app,kind){if(kind&&kind!==pcKind){WM.wins=[];modal=null;}if(kind)pcKind=kind;if(app==="batch")return openTerm("batch");
+  if(pcKind==="kiosk")WM.wins=WM.wins.filter(w=>apps().some(a=>a[0]===w.app)||w.app==="progman");
+  if(app==="gg"){ggRoute={page:"list",fresh:true};}if(app)openWin(app);else useComputer();renderPC();}
+function useComputer(){ensureProgman();if(!WM.wins.some(w=>w.app!=="progman"&&!w.min))openWin("progman");}
 function openLaptop(app){if(!has("laptop"))return say("You don't have a laptop. Yet. The help desk on B1 has a cage full of them.");openPC(app||null,"laptop");}
 function closePC(){PL().innerHTML="";modal=null;verb="hand";heldItem=null;iconbar();draw();if(S.dead)return death(S.dead);}
 function pcAct(fn){const out=fn()||{};advance(out.min||1);if(S.dead){PL().innerHTML="";return death(S.dead);}renderPC();if(out.toast)flash(out.toast+(out.p?` (+${out.p} points)`:""));if(out.msg)say(out.msg,out.p,out.who);}
@@ -1481,7 +1500,7 @@ function renderTerm(){const L=PL();if(!TM)return;updateBar();const cfg=HOSTCFG[T
     <div class="chips" aria-label="Suggested commands">${chipsFor().map(c=>{const lab=c===INSTALL_CMD?"install ggshield: curl … install.sh | bash":c.length>48?c.slice(0,46)+"…":c;return `<button type="button" data-tchip="${esc(c)}" title="${esc(c)}"${c===INSTALL_CMD?' aria-label="Install ggshield with the machine scan plugin: '+esc(c)+'"':""}>${esc(lab)}</button>`;}).join("")}</div></div>
     <button class="walkaway" data-tclose>${cfg.close}</button></div>`;
   const s=document.getElementById("tscr");s.scrollTop=s.scrollHeight;try{document.getElementById("tinp").focus({preventScroll:true});}catch(e){}}
-function closeTerm(){const h=TM&&TM.host;TM=null;PL().innerHTML="";if(h==="batch"&&has("laptop"))openPC("deploys","laptop");else{iconbar();draw();}}
+function closeTerm(){const h=TM&&TM.host;TM=null;PL().innerHTML="";if(h==="batch"&&has("laptop"))openPC(null,"laptop");else{iconbar();draw();}}
 function tsay(lines,c){(Array.isArray(lines)?lines:[lines]).forEach(t=>TM.out.push({t,c}));}
 function runCmd(raw){const cmd=raw.trim();const h=TM.host,cfg=HOSTCFG[h],t=TS(h);TM.out.push({t:`${cfg.user}@${cfg.name}:~$ ${cmd}`});if(!cmd)return renderTerm();advance(1);
   const a=cmd.replace(/\s+/g," ");
@@ -1605,7 +1624,7 @@ function portrait(who){const c=document.createElement("canvas");c.width=48;c.hei
 function dialog(name,who,intro,builder){const Lr=ML();const w=document.createElement("div");w.className="msgwrap";
   w.innerHTML=`<div class="dlg" role="dialog" aria-modal="true" aria-label="${esc(name)}"><div class="pf"></div><div><span class="who">${esc(name)}</span><div class="kpi">Measured on: ${esc(PPL[who].kpi)}</div><div class="say">${esc(intro)}</div></div><div class="opts"></div></div>`;
   w.querySelector(".pf").appendChild(portrait(who));const box=w.querySelector(".opts"),sayEl=w.querySelector(".say");
-  const render=list=>{box.innerHTML="";list.forEach(([label,fn])=>{const b=document.createElement("button");b.textContent=label;if(/^▸/.test(label))b.className="pitch";b.onclick=ev=>{ev.stopPropagation();
+  const render=list=>{box.innerHTML="";list.forEach(([label,fn])=>{const b=document.createElement("button");b.textContent=label;if(/^▸/.test(label))b.className="pitch";else if(!fn)b.className="bye";b.onclick=ev=>{ev.stopPropagation();
     if(!fn){w.remove();updateBar();draw();return;}const r=fn();if(!r)return;advance(2);sayEl.textContent=r.t+(r.p?`\n\n[+${r.p} points]`:"");updateBar();draw();
     if(r.win){box.innerHTML="";const z=document.createElement("button");z.textContent="Continue";z.className="go";z.onclick=()=>{w.remove();save();r.win();};box.appendChild(z);z.focus();return;}
     render(builder());}; box.appendChild(b);});};
@@ -1709,8 +1728,8 @@ const LVMAIL={
  5:()=>{mail("m5",PPL.harriet.name,"Freeze exception","Signed for one change, tonight. Victor approves production changes during launch week. Floor 6.");},
  6:()=>{mail("m6",PPL.victor.name,"Approved","Do it tonight. Don't break prod.");mail("m6b",PPL.ingrid.name,"Bridge is open","Change window is open. Everything you need is on your laptop: PayRail, Vault, Deploys, batch-01. Follow your runbook. I'm watching #payrail-rotation.");}};
 function levelCard(n){clearMsgs();PL().innerHTML="";const Lr=ML();const w=document.createElement("div");w.className="msgwrap";w.style.background="#000";
-  w.innerHTML=`<div class="msg lvcard" style="cursor:default;text-align:center"><span class="lvn">LEVEL ${n} OF 6</span><b class="lvt">${esc(LV[n].name)}</b><span class="lvf">${esc(LV[n].floor)}</span>\n${esc(LV[n].tag)}<div class="btns tmenu"><button class="big go" data-go="${n}">Start level ${n}</button></div></div>`;
-  Lr.appendChild(w);setTimeout(()=>{const b=w.querySelector("button");if(b)b.focus();},0);}
+  w.innerHTML=`<div class="msg lvcard" style="cursor:default;text-align:center"><span class="lvn">LEVEL ${n} OF 6</span><b class="lvt">${esc(LV[n].name)}</b><span class="lvf">${esc(LV[n].floor)}</span>\n${esc(LV[n].tag)}${levelCode(n)}<div class="btns tmenu"><button class="big go" data-go="${n}">Start level ${n}</button></div></div>`;
+  Lr.appendChild(w);setTimeout(()=>{const b=w.querySelector("[data-go]");if(b)b.focus();},0);}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-go]");if(!b)return;clearMsgs();beginLevel(+b.dataset.go);});
 function beginLevel(n){S.lv=n;S.t=Math.max(S.t,START_T[n]);S.dead=null;if(n===6){S.room=has("laptop")?S.room:"closet";}
   LVMAIL[n]();const c=Object.assign({},S);delete c.ckpt;S.ckpt=JSON.stringify(c);save();showGame();
@@ -1719,7 +1738,7 @@ function beginLevel(n){S.lv=n;S.t=Math.max(S.t,START_T[n]);S.dead=null;if(n===6)
    3:"#2871 is yours. Production isn't. Floor 4 is SRE.",4:"Floor 5 is Finance and Compliance. The freeze is theirs.",5:"Floor 6. Paloma first. Then the CTO.",
    6:"11:00 PM. The building is quiet. Everyone is on #payrail-rotation, watching you.\n\nOpen your laptop. Your runbook is the plan. Checkout is taking about 1,200 PayRail calls a minute, and they all need to keep working."}[n];
   say(open);}
-function showGame(){document.getElementById("game").hidden=false;verb="walk";heldItem=null;iconbar();draw();}
+function showGame(){WM.wins=[];modal=null;pcApp="progman";document.getElementById("game").hidden=false;verb="hand";heldItem=null;iconbar();draw();}
 function death(k){const d=DEATHS[k];PL().innerHTML="";ED=null;clearMsgs();const Lr=ML();const w=document.createElement("div");w.className="msgwrap";
   w.innerHTML=`<div class="msg death" role="alertdialog" aria-modal="true"><span class="who" style="font-size:24px">${d[0]}</span>${esc(d[1])}\n\nNobody loses their job over this. It's a game. Try the change again.<div class="btns"><button data-dd="retry">Retry the change window</button><button data-dd="title">Title screen</button></div></div>`;Lr.appendChild(w);}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-dd]");if(!b)return;if(b.dataset.dd==="retry")return retryLevel();title();});
@@ -1860,6 +1879,9 @@ function restoreFromCode(code){const keep=S&&S.player;const pd=perfectOf(code);
   /* the change window: a code can describe a revoke that already broke prod */
   if(S.lv===6&&!S.pr.v1){if(v1InUseLive())S.dead="down";else if(effKey("recon")==="v1")S.dead="recon";}
   save();return r;}
+/* the code for the start of level n, shown on every level screen (same block as Lossy's end-of-day screens) */
+function levelCode(n){if(!S)return "";const lv=S.lv,t=S.t;S.lv=n;S.t=Math.max(t,START_T[n]);let c;try{c=encodeSave();}finally{S.lv=lv;S.t=t;}
+  return `<span class="lvcode" style="display:block;margin-top:12px;border-top:2px dashed #AAA;padding-top:8px;text-align:left"><b>Your save code</b><span style="display:block;text-align:center;font:30px/1.2 var(--f-term);letter-spacing:.06em;user-select:all" id="sccode">${c}</span>Enter it on the title screen (Enter a save code) to start level ${n} again, on any device. Anyone you give it to can load it too. There's no back end: nothing about your game is stored on a server, so write it down.<span style="display:block;margin-top:6px;text-align:center"><button data-sccopy style="background:#C8C8C8;border:2px solid;border-color:#FFF #555 #555 #FFF;padding:4px 10px;font:15px var(--f-pix);color:#000">Copy code</button></span></span>`;}
 function showSaveCode(){const Lr=ML();const w=document.createElement("div");w.className="msgwrap";const code=encodeSave();
   w.innerHTML=`<div class="msg" style="cursor:default" role="dialog" aria-modal="true" aria-label="Save code"><b>Save code</b>\nWrite this down. Entering it on the title screen rebuilds this game: the level, the time (to the nearest 6 minutes) and everything you've done on this level so far. Points are recalculated.\n\n<span style="display:block;text-align:center;font:34px/1.2 var(--f-term);letter-spacing:.06em;user-select:all" id="sccode">${code}</span>\nIt fits in 32 bits.<div class="btns"><button data-sccopy>Copy</button><button data-scclose>Close</button></div></div>`;Lr.appendChild(w);w.querySelector("[data-sccopy]").focus();}
 function askSaveCode(){const Lr=ML();const w=document.createElement("div");w.className="msgwrap";w.id="scask";

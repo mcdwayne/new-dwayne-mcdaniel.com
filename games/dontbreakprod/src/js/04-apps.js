@@ -24,13 +24,17 @@ function groups(){const have=new Set(apps().map(a=>a[0]));const b=Object.fromEnt
   return G.map(([n,items])=>[n,items.filter(([k])=>have.has(k)).map(([k,l])=>[k,l,b[k]||0])]).filter(g=>g[1].length);}
 const isPhone=()=>matchMedia("(max-width:600px)").matches;
 function openWin(app){if(app==="batch")return openTerm("batch");pcApp=app;let w=WM.wins.find(x=>x.app===app);if(app==="gg"&&!w)ggRoute={page:"list",fresh:true};
-  if(!w){const n=WM.wins.filter(x=>x.app!=="progman").length;const small={clock:[58,50,34,34],sol:[22,62,40,30]}[app];const [x,y,ww,hh]=small||[4+(n*4)%24,3+(n*5)%30,90,88];w={app,x,y,w:ww,h:hh,max:false,min:false,z:0};WM.wins.push(w);}
+  if(!w){const n=WM.wins.filter(x=>x.app!=="progman").length;const small={clock:[58,50,34,34],sol:[22,62,40,30]}[app];const [x,y,ww,hh]=small||[5+(n*4)%24,4+(n*5)%30,88,86];w={app,x,y,w:ww,h:hh,max:false,min:false,z:0};WM.wins.push(w);}
   w.min=false;w.z=++WM.z;}
 function closeWin(app){WM.wins=WM.wins.filter(w=>w.app!==app);if(modal)modal=null;closeWinFocus();}
 function closeWinFocus(){const top=WM.wins.filter(w=>!w.min).sort((a,b)=>b.z-a.z)[0];pcApp=top?top.app:"progman";}
-function ensureProgman(){if(!WM.wins.some(w=>w.app==="progman"))WM.wins.unshift({app:"progman",x:4,y:4,w:64,h:64,max:false,min:false,z:0});}
-function openPC(app,kind){if(kind)pcKind=kind;if(app==="batch")return openTerm("batch");if(pcKind==="kiosk")WM.wins=WM.wins.filter(w=>apps().some(a=>a[0]===w.app)||w.app==="progman");
-  if(app==="gg"){ggRoute={page:"list",fresh:true};}if(app)openWin(app);else if(!WM.wins.some(w=>w.app!=="progman"))openWin("gg");renderPC();}
+function ensureProgman(){if(!WM.wins.some(w=>w.app==="progman"))WM.wins.unshift({app:"progman",x:6,y:6,w:62,h:62,max:false,min:false,z:0});}
+/* Same as Lossy: the computer always starts at Program Manager. Programs open only when you click their icons
+   (or a link inside another program). Coming back to the same computer resumes the desktop as you left it. */
+function openPC(app,kind){if(kind&&kind!==pcKind){WM.wins=[];modal=null;}if(kind)pcKind=kind;if(app==="batch")return openTerm("batch");
+  if(pcKind==="kiosk")WM.wins=WM.wins.filter(w=>apps().some(a=>a[0]===w.app)||w.app==="progman");
+  if(app==="gg"){ggRoute={page:"list",fresh:true};}if(app)openWin(app);else useComputer();renderPC();}
+function useComputer(){ensureProgman();if(!WM.wins.some(w=>w.app!=="progman"&&!w.min))openWin("progman");}
 function openLaptop(app){if(!has("laptop"))return say("You don't have a laptop. Yet. The help desk on B1 has a cage full of them.");openPC(app||null,"laptop");}
 function closePC(){PL().innerHTML="";modal=null;verb="hand";heldItem=null;iconbar();draw();if(S.dead)return death(S.dead);}
 function pcAct(fn){const out=fn()||{};advance(out.min||1);if(S.dead){PL().innerHTML="";return death(S.dead);}renderPC();if(out.toast)flash(out.toast+(out.p?` (+${out.p} points)`:""));if(out.msg)say(out.msg,out.p,out.who);}

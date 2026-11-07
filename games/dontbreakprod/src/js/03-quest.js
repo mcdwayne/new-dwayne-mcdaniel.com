@@ -77,7 +77,7 @@ const ITEMUSE={
 /* ============================== moving around ============================== */
 function go(room){if(room==="back")room=FLOOR_ROOM[S.liftFrom||"2"]||"f2";
   if(room==="lift")S.liftFrom=ROOMFLOOR[S.room]||"2";
-  S.room=room;advance(1);verb="walk";heldItem=null;iconbar();draw();
+  S.room=room;advance(1);verb="hand";heldItem=null;iconbar();draw();
   if(!S.seen[room]){S.seen[room]=1;const t=ENTER[room];if(t)say(typeof t==="function"?t():t);}}
 const ENTER={
  f2:"Floor 2, IT & Security. Mostly IT. Marisol Vance's glass office is on the right. Your closet is on the left. The elevator is in the middle.",
