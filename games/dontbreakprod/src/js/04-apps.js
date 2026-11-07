@@ -1,9 +1,9 @@
-/* ============================== the computer: kiosk or BrickBook, a homemade Windows 3.1 ============================== */
-let pcApp="progman",pcKind="kiosk",ggRoute={page:"list"},modal=null;
+/* ============================== your laptop (BrickBook 9000), a homemade Windows 3.1 ============================== */
+let pcApp="progman",pcKind="laptop",ggRoute={page:"list"},modal=null;
 const WM={wins:[],z:1,drag:null};
 const TITLES={progman:"Program Manager",mail:"Mail - Inbox",gg:"GitGuardian",slack:"Slack",vault:"Vault",payrail:"PayRail Dashboard",deploys:"Deploys",batch:"batch-01 (SSH)",clock:"Clock",notepad:"Notepad - RUNBOOK.TXT",sol:"Solitaire"};
 function apps(){const L=S.lv;const a=[["mail","Mail",S.mail.filter(m=>!m.read).length],["slack","Slack",slUnread()],["gg","GitGuardian",ggBadge()],["clock","Clock"],["notepad","Notepad"],["sol","Solitaire"]];
-  if(pcKind==="laptop"&&L>=6)a.push(["vault","Vault"],["payrail","PayRail"],["deploys","Deploys"],["batch","batch-01 (SSH)"]);return a;}
+  if(L>=6)a.push(["vault","Vault"],["payrail","PayRail"],["deploys","Deploys"],["batch","batch-01 (SSH)"]);return a;}
 const ICO={
  mail:["................","................","..wwwwwwwwwwww..","..wkwwwwwwwwkw..","..wwkwwwwwwkww..","..wwwkwwwwkwww..","..wwwwkwwkwwww..","..wwwwwkkwwwww..","..wwwwwwwwwwww..","..wwwwwwwwwwww..","..kkkkkkkkkkkk..","................","....rrr.........","....rrr.........","................","................"],
  gg:["................","......bbbb......","....bbbbbbbb....","...bbBBBBBBbb...","...bBBwwwwBBb...","...bBwwkkwwBb...","...bBwkkkkwBb...","...bBwwkkwwBb...","...bBBwwwwBBb...","....bBBBBBBb....","....bbBBBBbb....",".....bbBBbb.....","......bbbb......",".......bb.......","................","................"],
@@ -31,11 +31,11 @@ function closeWinFocus(){const top=WM.wins.filter(w=>!w.min).sort((a,b)=>b.z-a.z
 function ensureProgman(){if(!WM.wins.some(w=>w.app==="progman"))WM.wins.unshift({app:"progman",x:6,y:6,w:62,h:62,max:false,min:false,z:0});}
 /* Same as Lossy: the computer always starts at Program Manager. Programs open only when you click their icons
    (or a link inside another program). Coming back to the same computer resumes the desktop as you left it. */
-function openPC(app,kind){if(kind&&kind!==pcKind){WM.wins=[];modal=null;}if(kind)pcKind=kind;if(app==="batch")return openTerm("batch");
-  if(pcKind==="kiosk")WM.wins=WM.wins.filter(w=>apps().some(a=>a[0]===w.app)||w.app==="progman");
+/* one computer: your laptop. In the closet it sits on the desk; everywhere else you carry it. (kind is ignored, kept for old callers) */
+function openPC(app,kind){if(app==="batch")return openTerm("batch");
   if(app==="gg"){ggRoute={page:"list",fresh:true};}if(app)openWin(app);else useComputer();renderPC();}
 function useComputer(){ensureProgman();if(!WM.wins.some(w=>w.app!=="progman"&&!w.min))openWin("progman");}
-function openLaptop(app){if(!has("laptop"))return say("You don't have a laptop. Yet. The help desk on B1 has a cage full of them.");openPC(app||null,"laptop");}
+function openLaptop(app){openPC(app||null);}
 function closePC(){PL().innerHTML="";modal=null;verb="hand";heldItem=null;iconbar();draw();if(S.dead)return death(S.dead);}
 function pcAct(fn){const out=fn()||{};advance(out.min||1);if(S.dead){PL().innerHTML="";return death(S.dead);}renderPC();if(out.toast)flash(out.toast+(out.p?` (+${out.p} points)`:""));if(out.msg)say(out.msg,out.p,out.who);}
 function winHTML(w){const act=w.app===pcApp,t=TITLES[w.app]||w.app;const badge=(apps().find(a=>a[0]===w.app)||[])[2];
@@ -45,13 +45,13 @@ function winHTML(w){const act=w.app===pcApp,t=TITLES[w.app]||w.app;const badge=(
    <div class="wbody app">${(APPS[w.app]||APPS.notepad)()}</div></section>`;}
 function renderPC(){const Lr=PL();updateBar();ensureProgman();WM.wins=WM.wins.filter(w=>w.app==="progman"||apps().some(a=>a[0]===w.app));
   if(!WM.wins.some(w=>w.app===pcApp&&!w.min))closeWinFocus();
-  const phone=isPhone();const vis=WM.wins.filter(w=>!w.min);const mins=WM.wins.filter(w=>w.min);const lap=pcKind==="laptop";
+  const phone=isPhone();const vis=WM.wins.filter(w=>!w.min);const mins=WM.wins.filter(w=>w.min);const lap=true;
   Lr.innerHTML=`<div class="pc" id="pcroot"><div class="bezel${lap?" brick":""}"><div class="screenpc w31" id="w31">
    <div class="desk" id="desk">${vis.filter(w=>!phone||w.app===pcApp).map(winHTML).join("")}
     <div class="minicons">${mins.map(w=>`<button class="icon mini" data-wrestore="${w.app}" aria-label="Restore ${esc(TITLES[w.app])}">${icoSVG(w.app==="progman"?"notepad":w.app)}<span>${esc(TITLES[w.app])}</span></button>`).join("")}</div>
     <div class="deskfoot">Simulation for training. No real systems are contacted. · ${esc(S.gg)} · ${hhmm(S.t)}</div>
     ${modal?MODALS[modal.k](modal):""}</div></div>
-   <span class="brand">${lap?"BRICKBOOK 9000 · REFURBISHED TWICE · PROPERTY OF B1":"PRECARIUM KIOSK 3000 · LOGS OUT EVERY 4 MIN"}</span><button class="off" data-pcclose>${lap?"Close the laptop":"Turn away from the screen"}</button></div></div>`;
+   <span class="brand">${lap?"BRICKBOOK 9000 · REFURBISHED TWICE · PROPERTY OF B1":""}</span><button class="off" data-pcclose>${lap?"Close the laptop":"Turn away from the screen"}</button></div></div>`;
   enhanceTabs(document.getElementById("w31"));
   const b=document.querySelector(`.win.act .wbody`);if(b&&WM.scroll&&WM.scroll.app===pcApp)b.scrollTop=WM.scroll.top;}
 document.addEventListener("pointerdown",e=>{const win=e.target.closest(".win");if(!win||!document.getElementById("w31"))return;const app=win.dataset.win;

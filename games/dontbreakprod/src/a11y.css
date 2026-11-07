@@ -53,3 +53,16 @@ tr.click:focus-visible td{background:#EEF1FF;outline:none}tr.click:focus-visible
 .dlg .opts button:nth-child(odd):nth-last-child(2):has(+ .bye){grid-column:1/-1}
 .dlg .opts button.bye{min-height:44px;background:linear-gradient(#FAFAFA,#DCDCDC)}
 @media (max-width:380px){.dlg .opts{grid-template-columns:minmax(0,1fr)}}
+/* GitGuardian runs in a browser: Back, Forward and the address bar stay at the top while the page scrolls */
+.ggbrowser{display:flex;flex-direction:column;min-height:100%}
+.ggbrowser>.gg{flex:1}
+.ggbar{position:sticky;top:0;z-index:3;display:flex;gap:6px;align-items:center;padding:6px 8px;background:#E4E7EE;border-bottom:1px solid #6B7385}
+.ggbar .ggb-btn{min-height:28px;min-width:32px;padding:3px 10px;border:1px solid #6B7385;border-radius:6px;background:#fff;color:#1B1F29;font:600 13px var(--f-ui);cursor:pointer}
+.ggbar .ggb-btn:hover:not([disabled]){background:#EEF1FF}
+.ggbar .ggb-btn[disabled]{color:#5B6374;background:#F1F2F5;cursor:default}
+.ggbar .ggb-btn:focus-visible,.ggbar .ggurl:focus-visible{outline:3px solid #2D3FD8;outline-offset:1px}
+.ggbar .ggurl{flex:1;min-width:0;min-height:28px;padding:3px 10px;border:1px solid #6B7385!important;border-radius:14px;background:#fff;color:#1B1F29;font:13px var(--f-mono,monospace);text-overflow:ellipsis}
+/* dialog options that use something you're carrying */
+.dlg .opts button.item{background:linear-gradient(#E6F0FF,#B9D2FF);border-color:#1F3A8A;box-shadow:inset 0 2px 0 rgba(255,255,255,.9),inset 0 -3px 0 rgba(0,0,0,.08),0 4px 0 #1F3A8A,0 7px 12px rgba(0,0,0,.35)}
+.dlg .opts button.item:hover{background:linear-gradient(#F2F7FF,#CFE0FF)}
+.dlg .opts button.pitch.item{background:linear-gradient(#E6F0FF,#B9D2FF)}

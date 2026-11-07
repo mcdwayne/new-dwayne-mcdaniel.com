@@ -18,7 +18,7 @@ function portrait(who){const c=document.createElement("canvas");c.width=48;c.hei
 function dialog(name,who,intro,builder){const Lr=ML();const w=document.createElement("div");w.className="msgwrap";
   w.innerHTML=`<div class="dlg" role="dialog" aria-modal="true" aria-label="${esc(name)}"><div class="pf"></div><div><span class="who">${esc(name)}</span><div class="kpi">Measured on: ${esc(PPL[who].kpi)}</div><div class="say">${esc(intro)}</div></div><div class="opts"></div></div>`;
   w.querySelector(".pf").appendChild(portrait(who));const box=w.querySelector(".opts"),sayEl=w.querySelector(".say");
-  const render=list=>{box.innerHTML="";list.forEach(([label,fn])=>{const b=document.createElement("button");b.textContent=label;if(/^▸/.test(label))b.className="pitch";else if(!fn)b.className="bye";b.onclick=ev=>{ev.stopPropagation();
+  const render=list=>{box.innerHTML="";list.forEach(([label,fn,cls])=>{const b=document.createElement("button");b.textContent=label;if(cls)b.className=cls;else if(/^▸/.test(label))b.className="pitch";else if(!fn)b.className="bye";b.onclick=ev=>{ev.stopPropagation();
     if(!fn){w.remove();updateBar();draw();return;}const r=fn();if(!r)return;advance(2);sayEl.textContent=r.t+(r.p?`\n\n[+${r.p} points]`:"");updateBar();draw();
     if(r.win){box.innerHTML="";const z=document.createElement("button");z.textContent="Continue";z.className="go";z.onclick=()=>{w.remove();save();r.win();};box.appendChild(z);z.focus();return;}
     render(builder());}; box.appendChild(b);});};
@@ -47,14 +47,14 @@ function updateBar(){if(!S)return;renderHere();document.getElementById("stScore"
   document.getElementById("stTitle").textContent=`Level ${S.lv} · ${ROOMNAME[S.room]}`;document.getElementById("stTime").textContent=hhmm(S.t);
   const n=nextStep(),g=document.getElementById("goal");g.classList.toggle("urgent",!!n.boss);document.getElementById("goalTxt").textContent=(n.win?"★ ":n.boss?"⚔ ":"Next: ")+n.t;
   const c=stepCount();document.getElementById("goalBtn").textContent=`Quest ${c[0]}/${c[1]}`;}
-function draw(){if(!S)return;g.clearRect(0,0,320,170);SCENES[S.room]();if(night()&&S.room!=="lift"){g.fillStyle="rgba(0,0,40,.35)";g.fillRect(0,0,320,170);}updateBar();}
+function draw(){if(!S)return;g.clearRect(0,0,320,170);SCENES[S.room]();if(night()&&S.room!=="lift"){g.fillStyle="rgba(0,0,40,.35)";g.fillRect(0,0,320,170);}drawCues();updateBar();}
 function spotAt(ev){const r=cv.getBoundingClientRect();const x=(ev.clientX-r.left)*320/r.width,y=(ev.clientY-r.top)*170/r.height;
   return SPOTS[S.room].filter(s=>x>=s.r[0]&&x<s.r[0]+s.r[2]&&y>=s.r[1]&&y<s.r[1]+s.r[3]).sort((a,b)=>(a.talk?0:1)-(b.talk?0:1)||a.r[2]*a.r[3]-b.r[2]*b.r[3])[0];}
-cv.addEventListener("mousemove",ev=>{if(!S)return;const s=spotAt(ev);const vname={walk:"Walk to",look:"Look at",hand:"Use",talk:"Talk to"}[verb];document.getElementById("hover").textContent=s?(heldItem?`Use ${heldItem} on ${s.name}`:`${vname} ${s.name}`):"";});
-cv.addEventListener("mouseleave",()=>document.getElementById("hover").textContent="");
+cv.addEventListener("mousemove",ev=>{if(!S)return;const s=spotAt(ev);hilite(s?s.id:null);const vname={walk:"Walk to",look:"Look at",hand:"Use",talk:"Talk to"}[verb];document.getElementById("hover").textContent=s?(heldItem?`Use ${heldItem} on ${s.name}`:`${vname} ${s.name}`):"";});
+cv.addEventListener("mouseleave",()=>{document.getElementById("hover").textContent="";hilite(null);});
 cv.addEventListener("click",ev=>{if(!S||S.dead)return;const s=spotAt(ev);if(!s){if(verb==="look")say(lookRoom());return;}
   if(heldItem){const it=heldItem;heldItem=null;iconbar();return interact("item",s.id,it);}interact({walk:"walk",look:"look",hand:"use",talk:"talk"}[verb],s.id);});
-function lookRoom(){return ENTER[S.room]||(S.room==="closet"?"Your office. It's a supply closet with a kiosk PC in it. The door goes out to Floor 2.":"");}
+function lookRoom(){return ENTER[S.room]||(S.room==="closet"?"Your office. It's a supply closet. Your laptop is set up on the desk. The door goes out to Floor 2.":"");}
 function interact(v,id,item){const sp=SPOTS[S.room].find(s=>s.id===id);if(!sp)return say("You don't see that here.");
   if(v==="look")return say(lookAt(sp));
   if(v==="item"){const f=ITEMUSE[item]&&ITEMUSE[item][sp.talk||sp.id];if(f)return f();if(item==="laptop")return openLaptop();
@@ -81,7 +81,7 @@ function parse(raw){const words=raw.replace(/[^a-z0-9 #]/g," ").replace(/\b(the|
   if(["tasks","task","quest","checklist","goal","hint","next","access"].includes(words))return showTasks();
   if(/^(open |use )?laptop$/.test(words))return openLaptop();
   if(words==="score")return say(`Score: ${S.score} of ${MAXSCORE}.`);
-  if(["help","h","?"].includes(words))return say("Click a verb (Walk, Look, Use, Talk), then click the picture. Or type: LOOK KIOSK, USE ELEVATOR, PRESS 3, TALK OTTO, OPEN LAPTOP, QUEST, ITEMS.\n\nThe blue bar always shows your next step. A red bar means a boss: someone you have to convince. Each boss cares about a number. GitGuardian is how you get the evidence that moves it.");
+  if(["help","h","?"].includes(words))return say("Click a verb (Walk, Look, Use, Talk), then click the picture. Or type: LOOK LAPTOP, USE ELEVATOR, PRESS 3, TALK OTTO, OPEN LAPTOP, QUEST, ITEMS.\n\nThe blue bar always shows your next step. A red bar means a boss: someone you have to convince. Each boss cares about a number. GitGuardian is how you get the evidence that moves it.");
   if(words==="save"){save();return say("Game saved.");}if(words==="restart")return title();
   if(!v0||!V[v0])return say(`I don't understand "${raw}".`);
   const vb=V[v0];if(vb==="look"&&!obj)return say(lookRoom());
@@ -100,9 +100,9 @@ function showTasks(){if(document.getElementById("padwrap"))return;const Lr=ML();
 document.addEventListener("click",e=>{if(e.target.closest("[data-padclose]")||e.target.id==="padwrap"){const p=document.getElementById("padwrap");if(p)p.remove();}});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){const p=document.getElementById("padwrap");if(p)p.remove();}});
 function menu(){const Lr=ML();const w=document.createElement("div");w.className="msgwrap";
-  w.innerHTML=`<div class="msg" style="cursor:default"><b>Don't Break Prod</b> <span style="font-size:13px;color:#555">build ${BUILD}</span>\nLevel ${S.lv}, ${hhmm(S.t)}. Score ${S.score} of ${MAXSCORE}.<div class="btns"><button data-mn="close">Resume</button><button data-mn="save">Save</button><button data-mn="code">Save code</button><button data-mn="retry">Restart this level</button><button data-mn="title">Title screen</button></div></div>`;Lr.appendChild(w);}
+  w.innerHTML=`<div class="msg" style="cursor:default"><b>Don't Break Prod</b> <span style="font-size:13px;color:#555">build ${BUILD}</span>\nLevel ${S.lv}, ${hhmm(S.t)}. Score ${S.score} of ${MAXSCORE}.<div class="btns"><button data-mn="close">Resume</button><button data-mn="save">Save</button><button data-mn="code">Save code</button><button data-mn="cues">Highlights: ${cuesOn()?"on":"off"}</button><button data-mn="retry">Restart this level</button><button data-mn="title">Title screen</button></div></div>`;Lr.appendChild(w);}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-mn]");if(!b)return;const k=b.dataset.mn;clearMsgs();
-  if(k==="save"){save();say("Game saved. Continue picks it up from the title screen.");}if(k==="retry")retryLevel();if(k==="title")title();});
+  if(k==="save"){save();say("Game saved. Continue picks it up from the title screen.");}if(k==="cues"){setCues(!cuesOn());draw();say(cuesOn()?"Highlights on: a pink bubble marks people and an orange arrow marks ways out. Point at anything to outline it.":"Highlights off. Pointing at something still outlines it.");}if(k==="retry")retryLevel();if(k==="title")title();});
 
 /* ============================== saving (this browser only) ============================== */
 const SKEY="dontbreakprod.save.v1";
@@ -125,9 +125,9 @@ function levelCard(n){clearMsgs();PL().innerHTML="";const Lr=ML();const w=docume
   w.innerHTML=`<div class="msg lvcard" style="cursor:default;text-align:center"><span class="lvn">LEVEL ${n} OF 6</span><b class="lvt">${esc(LV[n].name)}</b><span class="lvf">${esc(LV[n].floor)}</span>\n${esc(LV[n].tag)}${levelCode(n)}<div class="btns tmenu"><button class="big go" data-go="${n}">Start level ${n}</button></div></div>`;
   Lr.appendChild(w);setTimeout(()=>{const b=w.querySelector("[data-go]");if(b)b.focus();},0);}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-go]");if(!b)return;clearMsgs();beginLevel(+b.dataset.go);});
-function beginLevel(n){S.lv=n;S.t=Math.max(S.t,START_T[n]);S.dead=null;if(n===6){S.room=has("laptop")?S.room:"closet";}
+function beginLevel(n){S.lv=n;S.t=Math.max(S.t,START_T[n]);S.dead=null;
   LVMAIL[n]();const c=Object.assign({},S);delete c.ckpt;S.ckpt=JSON.stringify(c);save();showGame();
-  const open={1:"Day one at Precarium Inc. Your badge opens Floor 2 and B1. Your office is a supply closet. Your GitGuardian account is Restricted.\n\nThe kiosk PC is blinking. Start there.",
+  const open={1:"Day one at Precarium Inc. Your badge opens Floor 2 and B1. Your office is a supply closet. Your GitGuardian account is Restricted.\n\nYour laptop is on the desk, and the mail icon is blinking. Start there. It goes everywhere with you: the Laptop button under the picture.",
    2:"You can see all 2,417 incidents now. Open your laptop (the Laptop button) and find the one Hal never read.",
    3:"#2871 is yours. Production isn't. Floor 4 is SRE.",4:"Floor 5 is Finance and Compliance. The freeze is theirs.",5:"Floor 6. Paloma first. Then the CTO.",
    6:"11:00 PM. The building is quiet. Everyone is on #payrail-rotation, watching you.\n\nOpen your laptop. Your runbook is the plan. Checkout is taking about 1,200 PayRail calls a minute, and they all need to keep working."}[n];

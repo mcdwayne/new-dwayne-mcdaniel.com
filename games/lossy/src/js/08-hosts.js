@@ -142,7 +142,10 @@ function renderTerm(){const L=PL();if(!TM)return;updateBar();const cfg=HOSTCFG[T
   if(TM.mode!=="ask"){try{ta.focus({preventScroll:true});}catch(e){}}}
 function chipsFor(){const cfg=HOSTCFG[TM.host],H=S.hosts[TM.host];let c=cfg.chips.slice();if(!H.ep.inst)c.splice(c.length-1,0,INSTALL_CMD);else if(!H.ep.ht)c.splice(c.length-1,0,"ggshield machine setup");
   if(TM.host==="nas01"&&S.day>=2)c=c.map(x=>x.replace("kv/lending/openai","kv/plimbo/sendgrid").replace("summarize.log","digest.log"));if(H.ep.inst&&!c.includes("ggshield machine report"))c.splice(c.length-1,0,"ggshield machine report");
-  if(/sk-proj-|SG\.…|ghp_/.test(TM.mem.join("\n")))c.splice(c.length-1,0,"history -c");return [...new Set(c)];}
+  if(/sk-proj-|SG\.…|ghp_/.test(TM.mem.join("\n")))c.splice(c.length-1,0,"history -c");
+  /* every fix the console offers is a click away: secrets in the saved history can be edited out or redacted with ggshield */
+  if((H.hist||[]).some(x=>/sk-proj-|SG\.…|ghp_/.test(x))){c.splice(c.length-1,0,"nano ~/.bash_history");if(H.ep.inst)c.splice(c.length-1,0,"ggshield machine redact --dry-run","ggshield machine redact");}
+  return [...new Set(c)];}
 function helperFor(){if(TM.file==="crontab")return "Insert Vault lookups";if(TM.file==="/etc/tvx/export.env")return "Use attached service account";if(/bash_history$/.test(TM.file))return "Delete lines with secrets";return null;}
 function nano(k){if(!TM)return;const ta=document.getElementById("nanobuf");if(ta)TM.buf=ta.value;
   if(k==="helper"){const before=TM.buf;

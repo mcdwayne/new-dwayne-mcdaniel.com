@@ -512,6 +512,19 @@ tr.click:focus-visible td{background:#EEF1FF;outline:none}tr.click:focus-visible
 .dlg .opts button:nth-child(odd):nth-last-child(2):has(+ .bye){grid-column:1/-1}
 .dlg .opts button.bye{min-height:44px;background:linear-gradient(#FAFAFA,#DCDCDC)}
 @media (max-width:380px){.dlg .opts{grid-template-columns:minmax(0,1fr)}}
+/* GitGuardian runs in a browser: Back, Forward and the address bar stay at the top while the page scrolls */
+.ggbrowser{display:flex;flex-direction:column;min-height:100%}
+.ggbrowser>.gg{flex:1}
+.ggbar{position:sticky;top:0;z-index:3;display:flex;gap:6px;align-items:center;padding:6px 8px;background:#E4E7EE;border-bottom:1px solid #6B7385}
+.ggbar .ggb-btn{min-height:28px;min-width:32px;padding:3px 10px;border:1px solid #6B7385;border-radius:6px;background:#fff;color:#1B1F29;font:600 13px var(--f-ui);cursor:pointer}
+.ggbar .ggb-btn:hover:not([disabled]){background:#EEF1FF}
+.ggbar .ggb-btn[disabled]{color:#5B6374;background:#F1F2F5;cursor:default}
+.ggbar .ggb-btn:focus-visible,.ggbar .ggurl:focus-visible{outline:3px solid #2D3FD8;outline-offset:1px}
+.ggbar .ggurl{flex:1;min-width:0;min-height:28px;padding:3px 10px;border:1px solid #6B7385!important;border-radius:14px;background:#fff;color:#1B1F29;font:13px var(--f-mono,monospace);text-overflow:ellipsis}
+/* dialog options that use something you're carrying */
+.dlg .opts button.item{background:linear-gradient(#E6F0FF,#B9D2FF);border-color:#1F3A8A;box-shadow:inset 0 2px 0 rgba(255,255,255,.9),inset 0 -3px 0 rgba(0,0,0,.08),0 4px 0 #1F3A8A,0 7px 12px rgba(0,0,0,.35)}
+.dlg .opts button.item:hover{background:linear-gradient(#F2F7FF,#CFE0FF)}
+.dlg .opts button.pitch.item{background:linear-gradient(#E6F0FF,#B9D2FF)}
 
 </style>
 
@@ -523,7 +536,7 @@ tr.click:focus-visible td{background:#EEF1FF;outline:none}tr.click:focus-visible
   <div class="stage"><canvas id="scene" width="320" height="170" aria-label="Scene"></canvas><div class="hover" id="hover"></div></div>
   <div class="here" id="here" aria-label="Things here"></div>
   <div class="iconbar" id="iconbar" role="toolbar" aria-label="Verbs"></div>
-  <form class="parser" id="parser" autocomplete="off"><label for="cmd">&gt;</label><input id="cmd" spellcheck="false" placeholder="look kiosk · use elevator · press 3 · talk otto · open laptop"></form>
+  <form class="parser" id="parser" autocomplete="off"><label for="cmd">&gt;</label><input id="cmd" spellcheck="false" placeholder="look laptop · use elevator · press 3 · talk otto · open laptop"></form>
 </div>
 <div id="pclayer"></div><div id="msglayer"></div>
 
@@ -535,7 +548,7 @@ tr.click:focus-visible td{background:#EEF1FF;outline:none}tr.click:focus-visible
    message windows and dialogs. One long quest, six levels, an elevator between departments.
    Everything is simulated. No real systems are contacted.
    ========================================================================================== */
-const BUILD="f1482a9e";
+const BUILD="db6575f5";
 const COMPANY="Precarium Inc.";
 const START_T={1:9*60,2:11*60,3:13*60+30,4:15*60,5:16*60+30,6:23*60};
 const LV={
@@ -579,8 +592,8 @@ const NAME_LAST=["Keyes","Vaultman","Rotello","Hashworth","Tokenberg","Saltwell"
 function randomName(){const r=a=>a[Math.floor(Math.random()*a.length)];return r(NAME_FIRST)+" "+r(NAME_LAST);}
 let S=null,verb="hand",heldItem=null,frame=0;
 const first=()=>((S&&S.player)||"you").split(" ")[0];
-function fresh(name){return {v:1,player:name||randomName(),lv:1,room:"closet",t:START_T[1],inv:[],f:{},got:{},score:0,
-  badge:["2","B1"],gg:"Restricted",acc:["Badge: Floor 2 and B1","Email","GitGuardian: Restricted (sees only incidents shared with you)"],
+function fresh(name){return {v:1,player:name||randomName(),lv:1,room:"closet",t:START_T[1],inv:["laptop"],f:{},got:{},score:0,
+  badge:["2","B1"],gg:"Restricted",acc:["Badge: Floor 2 and B1","Your laptop (BrickBook 9000) and email","GitGuardian: Restricted (sees only incidents shared with you)"],
   mail:[],pitch:{},seen:{},ckpt:null,ended:false,dead:null,
   c:{checkout:"v1",payouts:"v1",recon:"hard"},vault:{production:["v1"],default:[]},pr:{v2:false,v1:true},ht:null};}
 const hhmm=t=>{t=((t%1440)+1440)%1440;const h=Math.floor(t/60),m=t%60;return `${((h+11)%12)+1}:${String(m).padStart(2,"0")} ${h<12?"AM":"PM"}`;};
@@ -623,22 +636,34 @@ function windowSky(x,y,w,h,night){R(x,y,w,h,night?1:11);if(!night)D(x,y+h*0.55,w
   R(x,y,w,1,7);R(x,y+(h/2|0),w,1,7);R(x+(w/2|0),y,1,h,7);}
 /* elevator doors, the same on every floor, with the floor number painted above */
 function liftDoor(x,y,lbl){R(x-4,y-12,52,10,8);R(x-3,y-11,50,8,0);T(x+22-lbl.length*2,y-9,lbl,14);R(x-2,y-2,48,74,8);R(x,y,44,70,7);D(x,y,22,70,7,15);D(x+22,y,22,70,15,7);R(x+21,y,2,70,8);
-  R(x+48,y+30,6,12,8);R(x+50,y+32,2,3,(frame>>3)%2?14:6);R(x+50,y+37,2,3,6);}
+  R(x+48,y+30,6,12,8);R(x+50,y+32,2,3,14);R(x+50,y+37,2,3,6);}
 function floorTiles(y,a,b){R(0,y,320,170-y,a);for(let i=0;i<9;i++){const yy=y+i*i*0.9;R(0,yy|0,320,Math.max(1,(i*1.8)|0),i%2?a:b);}}
 const night=()=>S&&S.lv===6;
 const SCENES={
 closet(){R(0,0,320,112,8);D(0,0,320,112,8,0);
   for(let s=0;s<4;s++){R(8,26+s*22,92,3,6);for(let k=0;k<6;k++){const c=[15,7,14,15,9,7][(k+s)%6];R(12+k*14,14+s*22,11,12,c);R(12+k*14,14+s*22,11,2,8);}}
   T(14,4,"PAPER TOWELS",14);
-  L(170,0,170,12,0);R(166,12,9,8,(reduce||(frame>>3)%11)?14:6);R(168,20,5,2,7);
+  L(170,0,170,12,0);R(166,12,9,8,14);R(168,20,5,2,7);
   floorTiles(112,6,8);
   R(116,86,100,6,6);D(116,86,100,2,14,6);R(120,92,4,48,6);R(208,92,4,48,6);
-  R(138,40,58,44,7);R(138,40,58,2,15);R(141,43,52,36,0);R(143,45,48,32,1);T(146,48,"PRECARIUM",15);T(146,56,"KIOSK 3000",14);
-  for(let i=0;i<3;i++)R(146,64+i*4,30+i*6,2,i===0&&S&&S.mail.some(m=>!m.read)?12:11);R(160,84,14,2,8);R(150,82,34,4,8);
+  /* your laptop (BrickBook 9000), set up on the desk whenever you're in here */
+  R(140,44,56,38,8);R(140,44,56,2,7);R(143,47,50,32,1);
+  R(147,51,30,20,15);R(147,51,30,3,1);R(149,56,5,4,14);R(156,56,5,4,9);R(163,56,5,4,11);R(149,63,5,4,12);
+  if(S&&S.mail.some(m=>!m.read))R(178,52,4,4,12);
+  R(186,72,6,5,13);R(145,74,5,4,10);
+  R(130,82,76,5,7);R(130,82,76,1,15);R(134,83,68,2,8);R(138,80,14,4,7);R(184,80,14,4,7);R(140,81,10,2,15);
   R(192,36,13,11,14);R(194,39,8,1,0);R(194,42,6,1,0);
   R(150,92,40,6,7);D(152,93,36,4,8,7);
-  R(232,124,30,24,14);D(232,124,30,24,14,6);R(230,122,34,4,8);L(248,60,254,123,6);R(242,54,14,7,7);
-  R(108,120,26,6,4);R(110,126,4,24,8);R(126,126,4,24,8);R(106,100,4,22,4);
+  /* mop bucket: yellow, wringer on top, wheels, mop standing in it */
+  for(let i=0;i<26;i++){const w=32-(i>>2);R(247-(w>>1),120+i,w,1,14);R(247+(w>>1)-5,120+i,5,1,6);}
+  T(237,128,"WET",0);R(230,117,34,3,7);R(230,117,34,1,15);R(234,111,24,6,8);R(236,109,20,2,7);R(254,105,2,6,8);
+  R(232,146,5,3,0);R(257,146,5,3,0);
+  L(244,54,247,112,6);L(245,54,248,112,6);L(246,54,249,112,14);R(242,50,6,5,4);
+  for(let k=0;k<6;k++)L(239+k*3,112,237+k*3+((k%2)?1:0),121,k%2?7:15);
+  /* broken office chair: red seat, backrest hanging off at an angle, one wheel rolled away, tape */
+  R(106,117,28,6,4);R(106,117,28,1,12);R(106,122,28,1,0);
+  for(let i=0;i<20;i++)R(102+(i>>2),96+i,6,1,i<2?12:4);R(103,104,8,2,15);
+  R(118,123,4,13,8);R(119,123,1,13,7);R(106,136,28,2,8);R(108,138,4,3,0);R(118,138,4,3,0);R(128,138,4,3,0);R(140,146,4,3,0);
   R(282,8,34,104,6);R(285,11,28,101,0);D(285,11,28,101,0,8);R(306,60,3,6,14);
   R(214,20,60,24,15);R(214,20,60,3,9);T(228,26,"SECURITY",4);T(218,34,"WAS SUPPLIES",8);
   if(!has("laptop")&&S&&S.f.ottoRotated){}},
@@ -648,15 +673,23 @@ f2(){D(0,0,320,108,7,15);R(0,104,320,4,8);
   R(204,8,112,100,11);D(204,8,112,100,11,15);R(204,8,112,2,7);R(204,8,2,100,7);R(314,8,2,100,7);R(258,8,2,100,7);
   person("marisol",250,30);R(222,86,70,6,6);R(226,92,4,16,6);R(284,92,4,16,6);R(232,72,24,14,8);R(234,74,20,10,9);
   R(208,14,46,10,15);T(210,17,"M. VANCE IT",1);
-  R(72,78,34,26,7);R(74,80,30,8,8);R(76,74,26,6,15);R(84,90,14,2,0);T(74,98,"PRINT",8);
-  R(170,96,22,12,4);D(170,96,22,12,4,6);R(166,82,30,16,2);D(168,76,26,8,2,10);
+  /* printer: paper tray on top, a sheet coming out, status lights */
+  R(72,80,34,24,7);R(72,80,34,1,15);R(72,103,34,1,8);R(105,80,1,24,8);
+  R(76,72,26,8,15);R(76,72,26,1,7);R(78,70,22,2,15);
+  R(76,88,26,2,0);R(80,90,18,7,15);R(82,92,12,1,8);R(82,94,9,1,8);
+  R(96,83,6,3,0);R(97,84,2,1,10);R(100,84,1,1,14);R(76,99,26,2,8);
+  /* plant: fern in a terracotta pot */
+  for(let i=0;i<12;i++){const w=22-(i>>1);R(181-(w>>1),96+i,w,1,i<2?12:4);}R(168,94,26,3,6);R(168,94,26,1,12);
+  [[166,80],[168,72],[176,66],[186,66],[194,72],[197,80],[172,86],[191,86]].forEach(([x,y],k)=>{L(181,94,x,y,2);L(182,94,x+1,y,k%2?10:2);R(x-1,y-1,3,3,k%3?10:2);});
   floorTiles(108,8,7);},
 lift(){R(0,0,320,170,8);D(0,0,320,170,7,8);for(let i=0;i<8;i++)R(i*40,0,1,170,8);
-  R(0,0,320,14,0);const fl=S.liftFrom||"2";T(150,4,"FLOOR "+fl,(frame>>4)%2?14:6);
+  R(0,0,320,14,0);const fl=S.liftFrom||"2";T(150,4,"FLOOR "+fl,14);
   R(40,24,170,120,7);D(40,24,170,120,7,15);R(124,24,2,120,8);R(40,24,170,2,15);
   R(228,22,76,132,8);R(230,24,72,128,0);T(240,28,"PRECARIUM",7);
+  /* badge reader: black box, card slot, status light */
+  R(212,66,14,22,0);R(213,67,12,20,8);R(215,69,8,7,0);R(216,70,6,5,9);R(215,79,8,2,0);R(218,83,2,2,10);
   FLOORS.forEach(([n,lbl],i)=>{const y=38+i*16,ok=n==="1"||S.badge.includes(n),cur=n===fl;R(236,y,16,12,cur?14:ok?7:8);R(237,y+1,14,10,cur?6:ok?15:8);T(n.length>1?239:242,y+3,n,ok?0:7);
-    T(258,y+3,lbl,ok?15:8);if(!ok)R(296,y+4,3,3,(frame>>3)%2?4:12);});
+    T(258,y+3,lbl,ok?15:8);if(!ok)R(296,y+4,3,3,12);});
     floorTiles(150,6,8);},
 b1(){R(0,0,320,110,8);D(0,0,320,110,8,1);for(let i=0;i<320;i+=32)R(i,0,2,110,0);
   liftDoor(16,36,"B1");
@@ -669,8 +702,14 @@ f3(){D(0,0,320,104,15,7);R(0,100,320,4,8);
   liftDoor(14,30,"3");
   R(78,6,96,40,15);R(80,8,92,36,9);T(84,12,"SPRINT 51",15);T(84,20,"- PAY LATER 2.0",14);T(84,28,"- SHIP MONDAY",14);T(84,36,"- NO WEEKENDS?",12);
   R(284,22,32,82,7);R(286,24,28,40,15);R(286,66,28,36,15);R(310,40,2,10,8);R(310,76,2,10,8);T(287,26,"FRIDGE",8);if(S.f.fridgeOpen){R(287,67,26,34,0);R(290,90,6,10,has("cold brew")||S.f.coffeeGiven?0:8);}
-  person("juni",112,52,true);R(96,98,90,6,6);R(102,104,4,40,6);R(176,104,4,40,6);R(120,84,40,14,8);R(122,86,36,10,0);for(let i=0;i<3;i++)R(124,88+i*3,10+i*7,1,S.f.hook?10:12);
-  R(130,78,8,6,4);R(140,79,6,5,3);
+  person("juni",112,52,true);R(96,98,90,6,6);R(102,104,4,40,6);R(176,104,4,40,6);/* Juni's laptop: open lid with a terminal on screen, keyboard deck, trackpad. Beside Juni so you can still see her. */
+  R(134,72,42,24,7);R(134,72,42,1,15);R(134,72,1,24,15);R(175,72,1,24,8);
+  R(137,75,36,18,0);R(154,73,2,1,0);
+  for(let i=0;i<4;i++)R(139,77+i*4,6+i*5,2,i===3?(S.f.hook?10:12):(S.f.hook?10:2));
+  R(139+6+3*5+2,89,3,2,15);
+  R(132,96,46,1,8);R(130,97,50,2,7);R(130,97,50,1,15);
+  for(let k=0;k<11;k++)R(133+k*4,98,3,1,8);
+  R(100,90,7,8,4);R(107,92,2,4,4);R(180,91,5,7,3);
   person("wendell",220,34);R(204,96,72,6,7);R(210,102,4,38,7);R(266,102,4,38,7);R(222,82,40,14,8);R(224,84,36,10,9);T(226,86,"OKR",15);
   floorTiles(104,7,15);},
 f4(){R(0,0,320,108,0);D(0,0,320,108,0,1);
@@ -682,9 +721,13 @@ f4(){R(0,0,320,108,0);D(0,0,320,108,0,1);
   R(16,56,60,18,4);T(20,60,"CHANGE",15);T(20,67,"FREEZE",15);
   person("ingrid",112,38);
   R(180,112,52,22,5);D(180,112,52,22,5,13);R(176,106,60,10,5);
-  if(!S.f.kenjiAwake){figure(190,76,{skin:6,hair:0,shirt:10,seated:true,collar:10});T(222,74,"Z",15);if(!reduce&&(frame>>3)%2)T(228,68,"Z",15);}
+  if(!S.f.kenjiAwake){figure(190,76,{skin:6,hair:0,shirt:10,seated:true,collar:10});T(222,74,"Z",15);T(228,68,"Z",15);}
   else{person("kenji",196,40);}
-  R(150,82,44,6,6);R(152,88,4,20,6);R(186,88,4,20,6);R(156,64,32,18,8);R(158,66,28,14,0);for(let i=0;i<4;i++)R(160,68+i*3,12+i*3,1,S.f.scout?10:2);
+  R(150,82,44,6,6);R(150,82,44,1,14);R(152,88,4,20,6);R(186,88,4,20,6);
+  /* Kenji's terminal: CRT monitor on a stand, keyboard in front */
+  R(155,56,34,22,7);R(155,56,34,1,15);R(155,56,1,22,15);R(188,56,1,22,8);R(158,59,28,15,0);
+  for(let i=0;i<4;i++)R(160,61+i*3,10+i*4,1,S.f.scout?10:2);R(160+10+3*4+1,70,2,2,10);
+  R(167,78,10,2,8);R(163,80,18,2,8);R(156,82,32,3,7);for(let k=0;k<7;k++)R(158+k*4,83,3,1,8);
   floorTiles(108,8,0);},
 f5(){D(0,0,320,106,14,15);R(0,102,320,4,8);
   liftDoor(14,32,"5");
@@ -704,7 +747,7 @@ f6(){D(0,0,320,110,15,11);
 /* hotspots: [x,y,w,h] in scene pixels */
 const SPOTS={
 closet:[
- {id:"kiosk",name:"kiosk PC",syn:["computer","pc","screen","monitor","kiosk","mail","gitguardian"],r:[136,38,62,50]},
+ {id:"desklaptop",name:"your laptop",syn:["laptop","brickbook","computer","pc","screen","monitor","kiosk","mail","gitguardian","desk"],r:[128,42,80,48]},
  {id:"sticky",name:"sticky note",syn:["note","sticky","post-it"],r:[190,34,17,15]},
  {id:"shelves",name:"shelves of supplies",syn:["shelves","shelf","supplies","towels","paper"],r:[6,4,98,96]},
  {id:"bucket",name:"mop bucket",syn:["mop","bucket"],r:[228,52,38,96]},
@@ -719,7 +762,7 @@ f2:[
  {id:"closetdoor",name:"your office (the supply closet)",syn:["closet","my office","desk","security","supply"],r:[18,22,46,86],exit:"closet"},
  {id:"lift",name:"elevator",syn:["elevator","lift"],r:[114,24,56,84],exit:"lift"}],
 lift:FLOORS.map(([n,lbl],i)=>({id:"btn"+n,name:`button ${n} (${lbl})`,syn:[n.toLowerCase(),"floor "+n.toLowerCase(),lbl.toLowerCase(),"button "+n.toLowerCase()],r:[234,36+i*16,74,16],floor:n})).concat([
- {id:"panel",name:"badge reader",syn:["badge","reader","panel"],r:[234,140,66,14]},
+ {id:"panel",name:"badge reader",syn:["badge","reader","panel"],r:[210,62,18,30]},
  {id:"doors",name:"elevator doors",syn:["doors","out","exit","leave"],r:[40,24,170,120],exit:"back"}]),
 b1:[
  {id:"otto",name:"Otto Brannigan",syn:["otto","brannigan","help desk","helpdesk","him"],r:[124,22,36,62],talk:"otto"},
@@ -729,7 +772,7 @@ b1:[
  {id:"lift",name:"elevator",syn:["elevator","lift"],r:[12,22,58,86],exit:"lift"}],
 f3:[
  {id:"juni",name:"Juni Castellano",syn:["juni","castellano","engineer","dev","developer","her"],r:[110,48,32,48],talk:"juni"},
- {id:"junilaptop",name:"Juni's laptop",syn:["juni laptop","juni's laptop","laptop on desk","pre-commit","precommit","config"],r:[118,80,44,20]},
+ {id:"junilaptop",name:"Juni's laptop",syn:["juni laptop","juni's laptop","laptop on desk","pre-commit","precommit","config"],r:[126,68,58,34]},
  {id:"wendell",name:"Wendell Park",syn:["wendell","park","manager","em","him"],r:[216,30,34,68],talk:"wendell"},
  {id:"fridge",name:"fridge",syn:["fridge","refrigerator","coffee","cold brew"],r:[282,20,34,84]},
  {id:"sprint",name:"sprint board",syn:["sprint","board","whiteboard"],r:[78,6,96,40]},
@@ -737,7 +780,7 @@ f3:[
 f4:[
  {id:"ingrid",name:"Ingrid Solberg",syn:["ingrid","solberg","sre","head of sre","her"],r:[108,34,34,70],talk:"ingrid"},
  {id:"kenji",name:"Kenji Albright",syn:["kenji","albright","oncall","on-call","sleeping","him"],r:[184,40,46,72],talk:"kenji"},
- {id:"kterm",name:"Kenji's terminal",syn:["terminal","kenji terminal","ops-tools","ggscout","console"],r:[148,62,48,26]},
+ {id:"kterm",name:"Kenji's terminal",syn:["terminal","kenji terminal","ops-tools","ggscout","console"],r:[150,54,44,34]},
  {id:"screens",name:"dashboards",syn:["screens","dashboard","dashboards","uptime","wall"],r:[8,4,246,48]},
  {id:"freeze",name:"change freeze sign",syn:["freeze","sign","change freeze"],r:[14,54,64,22]},
  {id:"lift",name:"elevator",syn:["elevator","lift"],r:[272,22,58,86],exit:"lift"}],
@@ -754,19 +797,49 @@ f6:[
  {id:"window",name:"window",syn:["window","view","city"],r:[70,8,130,80]},
  {id:"lift",name:"elevator",syn:["elevator","lift"],r:[8,22,58,86],exit:"lift"}]};
 
+/* ---- 02b-cues.js ---- */
+/* ============================== what you can use ==============================
+   Every hotspot gets a quiet cue drawn over the scene, in the same colours as the list of things under the picture:
+   a small speech bubble beside people and a small arrow over ways out. Things have no marker until you point at them:
+   pointing (mouse, or focusing it in the list) outlines whatever is there. Nothing moves or blinks. The menu can turn the cues off. */
+let hiSpot=null;
+const CUE={thing:"rgba(255,255,85,.75)",who:"rgba(255,158,255,.85)",exit:"rgba(255,180,94,.85)",edge:"rgba(0,0,0,.45)"};
+function cuesOn(){try{return localStorage.getItem("dontbreakprod.cues")!=="off";}catch(e){return true;}}
+function setCues(on){try{localStorage.setItem("dontbreakprod.cues",on?"on":"off");}catch(e){}}
+const px=(x,y,w,h,c)=>{g.fillStyle=c;g.fillRect(x|0,y|0,w|0,h|0);};
+function cueTicks([x,y,w,h],c){const a=Math.max(2,Math.min(4,(w/4)|0,(h/4)|0));
+  px(x,y,a,1,c);px(x,y,1,a,c);px(x+w-a,y,a,1,c);px(x+w-1,y,1,a,c);
+  px(x,y+h-1,a,1,c);px(x,y+h-a,1,a,c);px(x+w-a,y+h-1,a,1,c);px(x+w-1,y+h-a,1,a,c);}
+/* the bubble sits beside the person's head, tail pointing at them */
+function cueBubble(x,y,c){y=Math.max(1,y);x=Math.min(308,x);
+  px(x,y,9,5,CUE.edge);px(x+1,y+1,7,3,c);px(x,y+5,2,2,CUE.edge);px(x+1,y+4,1,2,c);}
+function cueArrow(cx,top,c){const y=Math.max(1,top-5);
+  for(let i=0;i<3;i++)px(cx-2+i,y+i,5-2*i,1,c);}
+function cueKind(s){return s.talk?"who":s.exit?"exit":"thing";}
+function drawCues(){if(!S||!SPOTS[S.room])return;
+  if(cuesOn())for(const s of SPOTS[S.room]){const [x,y,w]=s.r;if(s.floor)continue;
+    if(s.talk)cueBubble(x+w-4,y+3,CUE.who);else if(s.exit)cueArrow(x+(w>>1),y,CUE.exit);}
+  const h=hiSpot&&SPOTS[S.room].find(s=>s.id===hiSpot);
+  if(h){const [x,y,w,hh]=h.r;g.lineWidth=1;g.strokeStyle=CUE[cueKind(h)];g.strokeRect(x+0.5,y+0.5,w-1,hh-1);}}
+function hilite(id){if(hiSpot===id)return;hiSpot=id;if(typeof draw==="function"&&S&&!document.getElementById("pcroot"))draw();}
+document.addEventListener("focusin",e=>{const b=e.target.closest&&e.target.closest("[data-here]");if(b)hilite(b.dataset.here);});
+document.addEventListener("focusout",e=>{const b=e.target.closest&&e.target.closest("[data-here]");if(b)hilite(null);});
+document.addEventListener("mouseover",e=>{const b=e.target.closest&&e.target.closest("[data-here]");if(b)hilite(b.dataset.here);});
+document.addEventListener("mouseout",e=>{const b=e.target.closest&&e.target.closest("[data-here]");if(b)hilite(null);});
+
 /* ---- 03-quest.js ---- */
 /* ============================== the quest: steps per level ==============================
    Each step: [text, done?]. The blue bar always shows the first one that isn't done. */
 const STEPS={
- 1:[["Read your mail on the kiosk PC in your closet",()=>S.f.sawBounce],
-    ["Open GitGuardian on the kiosk and look at the incident Otto shared",()=>S.f.thOpened],
+ 1:[["Read your mail on your laptop",()=>S.f.sawBounce],
+    ["Open GitGuardian on your laptop and look at the incident Otto shared",()=>S.f.thOpened],
     ["Check whether that TicketHive token is still valid",()=>S.f.thValid],
     ["Take the elevator to B1 and talk to Otto at the help desk",()=>S.f.ottoRotated],
     ["Open GitGuardian on your laptop and check the token again (it should resolve once it's invalid)",()=>S.f.thResolved],
     ["BOSS: convince Marisol Vance (Floor 2) to give you real access",()=>S.f.won1]],
  2:[["Open GitGuardian on your laptop and find the critical PayRail incident",()=>S.f.pr],
     ["Open the PayRail incident's exploration map",()=>S.f.prMap],
-    ["Search the incidents for \"payments\" and export them",()=>S.f.csv],
+    ["Filter the incidents by team: Payments, then export them",()=>S.f.csv],
     ["Floor 3: talk to Juni Castellano",()=>S.f.juniAsk],
     ["Fix the pre-commit config on Juni's laptop",()=>S.f.hook],
     ["BOSS: convince Wendell Park (Floor 3)",()=>S.f.won2]],
@@ -799,7 +872,7 @@ function stepCount(){const st=STEPS[S.lv]||[];return [st.filter(s=>s[1]()).lengt
 
 /* ============================== looking and using ============================== */
 const LOOK={
- closet:{kiosk:()=>`A beige kiosk PC bolted to a desk that used to hold paper towels. ${S.mail.some(m=>!m.read)?"The mail icon is blinking.":"It hums."}`,
+ closet:{desklaptop:()=>`Your laptop, a BrickBook 9000 from the B1 loaner cage, set up on a desk that used to hold paper towels. Duct tape holds the hinge on. It goes everywhere with you. ${S.mail.some(m=>!m.read)?"The mail icon is blinking.":"It hums."}`,
    sticky:"The sticky note says: \"GitGuardian login = your email. Ask Marisol for more. - M\"",
    shelves:"Paper towels, toner, and one box labeled HAL'S STUFF. Hal ran security before you. Hal's box contains a stress ball and a printout titled 'Q2 SECRETS - TODO'. The TODO list is blank.",
    bucket:"A mop bucket. It's been here longer than the security program.",
@@ -817,11 +890,11 @@ const LOOK={
  f6:{demo:"A demo of Pay Later 2.0 loops on the screen: 'Pay in 4. Instantly.' The payment step uses PayRail.",window:"The city. Somewhere out there, a bot is reading every public commit on GitHub."}};
 function lookAt(sp){const l=(LOOK[S.room]||{})[sp.id];if(l)return typeof l==="function"?l():l;if(sp.talk){const p=PPL[sp.talk];return `${p.name}, ${p.role}. Measured on: ${p.kpi}.`;}if(sp.exit)return `The ${sp.name}.`;return `It's the ${sp.name}.`;}
 const USE={
- closet:{kiosk:()=>has("laptop")?(say("The kiosk logs you out every four minutes. Your laptop is better, which says a lot about the kiosk.\n\nOpening your laptop instead."),openPC(null,"laptop")):openPC(null,"kiosk"),
+ closet:{desklaptop:()=>openLaptop(),
    shelves:()=>say("You take nothing. Paper towels won't help you here."),bucket:()=>say("You consider mopping. You decide to fix secrets instead."),chair:()=>say("You sit. The chair objects. You stand.")},
  f2:{printer:()=>say("It prints a single page that says PC LOAD LETTER, then dies again.")},
  lift:{panel:()=>say(LOOK.lift.panel())},
- b1:{cage:()=>S.f.ottoRotated?say("The cage is locked. Otto already gave you the best one, which is to say the BrickBook."):say("Locked. Otto has the key, and Otto has opinions."),note:()=>say(LOOK.b1.note)},
+ b1:{cage:()=>say("Locked. Your BrickBook came out of this cage. It was the only one that booted. Otto has the key, and Otto has opinions."),note:()=>say(LOOK.b1.note)},
  f3:{fridge:()=>{if(S.f.coffeeGiven||has("cold brew"))return say("One per person. You read the sign.");if(S.lv<3)return say("You don't need anything from the fridge yet. Probably.");S.f.fridgeOpen=true;give("cold brew");say("You take one cold brew. The sign says one. You respect the sign.\n\n[cold brew added to your items]");},
    junilaptop:()=>{if(!S.f.juniAsk)return say("Touching a developer's laptop without asking is how wars start. Talk to Juni first.");if(S.f.hook)return say("Already fixed. Juni has stopped typing --no-verify.");openEditor("precommit");}},
  f4:{kterm:()=>{if(!S.f.kenjiAwake)return say("The terminal is locked. Kenji is the one logged in, and Kenji is asleep.");openTerm("ops");},
@@ -829,7 +902,8 @@ const USE={
  f5:{binders:()=>say(LOOK.f5.binders)},
  f6:{demo:()=>say(LOOK.f6.demo)}};
 const ITEMUSE={
- "cold brew":{kenji:()=>{if(S.f.kenjiAwake)return say("He's awake. He's had two already.");take("cold brew");S.f.kenjiAwake=true;S.f.coffeeGiven=true;markMet("kenji");const p=award("coffee");say(`Kenji opens one eye, then the can.\n\n"Third night on call. Thirty-one pages. Most of them are GitGuardian emails going to a shared inbox nobody reads." He waves at his terminal. "Ingrid says you want to know what uses the PayRail key. ggscout's on ops-tools, but whoever set it up left the Vault source switched off. Turn it on and GitGuardian will see what lives in Vault. I'm not touching it, I'm on call."`,p,PPL.kenji.name);}}};
+ "cold brew":{kenji:()=>{if(S.f.kenjiAwake)return say("He's awake. He's had two already.");const r=coffeeKenji();say(r.t,r.p,PPL.kenji.name);}}};
+function coffeeKenji(){take("cold brew");S.f.kenjiAwake=true;S.f.coffeeGiven=true;markMet("kenji");const p=award("coffee");return {p,t:`Kenji opens one eye, then the can.\n\n"Third night on call. Thirty-one pages. Most of them are GitGuardian emails going to a shared inbox nobody reads." He waves at his terminal. "Ingrid says you want to know what uses the PayRail key. ggscout's on ops-tools, but whoever set it up left the Vault source switched off. Turn it on and GitGuardian will see what lives in Vault. I'm not touching it, I'm on call."`};}
 
 /* ============================== moving around ============================== */
 function go(room){if(room==="back")room=FLOOR_ROOM[S.liftFrom||"2"]||"f2";
@@ -855,9 +929,22 @@ const meter=n=>`Convinced: ${"■".repeat(n)}${"□".repeat(Math.max(0,3-n))} ($
 const pc=who=>Object.keys(S.pitch[who]||{}).length;
 /* a pitch option: [label, needs, works?, reply, points key] */
 function pitches(who,list){const c=S.pitch[who]||(S.pitch[who]={});
-  return list.filter(x=>!c[x.k]&&(!x.need||x.need())).map(x=>["▸ "+x.label,()=>{if(x.ok){c[x.k]=1;const p=award(x.pt);const n=pc(who);
-    return {t:x.reply+"\n\n"+meter(n),p,win:n>=3?WIN[who]:null};}return {t:x.reply+"\n\n"+meter(pc(who))};}]);}
-function talk(who){const p=PPL[who];if(who!=="kenji"||S.f.kenjiAwake)markMet(who);dialog(`${p.name} · ${p.role}`,who,INTRO[who](),()=>OPTS[who]());}
+  return list.filter(x=>!c[x.k]&&(!x.need||x.need())).map(x=>[x.item?`▸ Show the ${x.item}: ${x.label}`:"▸ "+x.label,()=>{if(x.ok){c[x.k]=1;const p=award(x.pt);const n=pc(who);
+    return {t:x.reply+"\n\n"+meter(n),p,win:n>=3?WIN[who]:null};}return {t:x.reply+"\n\n"+meter(pc(who))};},x.item?"pitch item":"pitch"]);}
+function talk(who){const p=PPL[who];if(who!=="kenji"||S.f.kenjiAwake)markMet(who);dialog(`${p.name} · ${p.role}`,who,INTRO[who](),()=>withItems(who,OPTS[who]()));}
+/* who each item is for, and whether it's still useful */
+const ITEMFOR={"cold brew":{to:"kenji",live:()=>!S.f.kenjiAwake},
+ "payments-incidents.csv":{to:"wendell",live:()=>!S.f.won2&&!(S.pitch.wendell||{}).csv},
+ "runbook":{to:"ingrid",live:()=>!S.f.won3&&!(S.pitch.ingrid||{}).rb},
+ "PCI evidence":{to:"desmond",live:()=>!S.f.desDone},
+ "PayRail contract":{to:"harriet",live:()=>!S.f.won4&&!(S.pitch.harriet||{}).contract},
+ "freeze exception":{to:()=>S.f.palAsk?"victor":"paloma",live:()=>!S.f.won5&&!(S.pitch.victor||{}).plan}};
+function withItems(who,opts){if(opts.some(o=>o[0]&&/^\(Paloma/.test(o[0])))return opts;
+  const shown=new Set(opts.map(o=>o[0]).filter(Boolean).join("\n").match(/the (cold brew|payments-incidents\.csv|runbook|PCI evidence|PayRail contract|freeze exception)/g)||[]);
+  const extra=S.inv.filter(it=>it!=="laptop"&&ITEMFOR[it]&&ITEMFOR[it].live()&&![...shown].some(s=>s.endsWith(it))).map(it=>{
+    const f=ITEMFOR[it],to=typeof f.to==="function"?f.to():f.to,first=PPL[who].name.split(" ")[0];
+    return [`Show ${first} the ${it}`,()=>({t:to===who?`${first} looks at the ${it}. "Ask me properly, and bring the rest of your case." (It'll show up as something to say once you've talked a little more.)`:`${first} glances at the ${it}. "Not for me. That's for ${PPL[to].name}, ${PPL[to].role}."`}),"item"];});
+  const i=opts.findIndex(o=>o[1]===null);if(i<0)return opts.concat(extra);return opts.slice(0,i).concat(extra,opts.slice(i));}
 const INTRO={
  otto:()=>S.f.ottoRotated?`"Token's rotated. I feel like a hacker. The good kind."`:`Otto looks up. "You're the new security person? Did you look at the GitGuardian thing I shared? I don't know what a token is."`,
  marisol:()=>S.f.won1?`"You've got your access. Don't make me regret it."`:`Marisol doesn't look up. "Welcome aboard. Busy week: SOC 2 auditors on Friday, and Harriet wants to know why we pay for GitGuardian. What do you need?"`,
@@ -874,10 +961,10 @@ const OPTS={
 otto:()=>{const o=[];
   if(!S.f.ottoRotated){
     if(S.f.thValid)o.push(["GitGuardian says it's valid. That token can read every support ticket.",()=>{S.f.ottoWorried=true;return {t:`Otto goes pale. "Every ticket? People send us their passwords in tickets. Like, a lot."\n\nYou tell him about the Internet Archive: in 2024 its Zendesk support tokens were left unrotated after being exposed, and an attacker used them to email the people who'd written in.\n\n"Okay. What do I do? I'm the TicketHive admin. I can click buttons."`};}]);
-    else o.push(["I haven't checked it yet.",()=>({t:`"Can you? You're security. GitGuardian is on the kiosk in your closet. Er, office."`})]);
-    if(S.f.ottoWorried)o.push(["Make a new token, put it in the auto-close script, then revoke the old one. In that order.",()=>{S.f.ottoRotated=true;give("laptop");grant("A laptop (BrickBook 9000), usable anywhere");const p=award("otto");
-      mail("otto2",PPL.otto.name,"done!!","New TicketHive token is in the auto-close script and the old one is revoked. The script still works. I checked twice.\n\nKeep the BrickBook. It's the only loaner that boots.\n\n- Otto");
-      return {t:`Otto clicks through TicketHive. New token. Paste into the script. Run it: OK. Revoke the old one.\n\n"Done. Script still works." He unlocks the cage and hands you a laptop held together with duct tape and stickers.\n\n"BrickBook 9000. It's terrible. It's yours. Take it everywhere, it's better than that kiosk."\n\nYou can now open your laptop from anywhere: the Laptop button under the picture.`,p};}]);
+    else o.push(["I haven't checked it yet.",()=>({t:`"Can you? You're security. GitGuardian's on that BrickBook we gave you."`})]);
+    if(S.f.ottoWorried)o.push(["Make a new token, put it in the auto-close script, then revoke the old one. In that order.",()=>{S.f.ottoRotated=true;grant("Otto at the help desk owes you one");const p=award("otto");
+      mail("otto2",PPL.otto.name,"done!!","New TicketHive token is in the auto-close script and the old one is revoked. The script still works. I checked twice.\n\nThanks for not making it my fault.\n\n- Otto");
+      return {t:`Otto clicks through TicketHive. New token. Paste into the script. Run it: OK. Revoke the old one.\n\n"Done. Script still works." He looks at your BrickBook, sighs, and re-tapes the hinge.\n\n"There. Now it'll survive the elevator. I owe you one."`,p};}]);
   } else o.push(["How do you like the BrickBook?",()=>({t:`"I don't. Nobody does. The hinge is load-bearing tape."`})]);
   o.push(["What's your day like?",()=>({t:`"I close tickets. My dashboard counts them. Forty-seven open right now. Being in a breach would be very bad for my number."`})]);
   o.push(bye);return o;},
@@ -900,7 +987,7 @@ wendell:()=>{if(S.f.won2)return [["Any advice for Ingrid?",()=>({t:`"Bring her a
   const o=pitches("wendell",[
    {k:"mandate",label:"Security is mandatory. If you won't help, I'll escalate to the CTO.",ok:false,reply:`"Go ahead. Victor's in Tahoe until four."`},
    {k:"best",label:"It's best practice to scan every commit.",ok:false,reply:`"Best practice is also eight hours of sleep. Next."`},
-   {k:"csv",label:"Payments has 63 open incidents, 19 still valid, median age 212 days. That's unplanned work waiting to land on your sprint.",need:()=>has("payments-incidents.csv"),ok:true,pt:"w1",reply:`He reads the export twice. "212 days." He doesn't like that number. "Fine. Go on."`},
+   {k:"csv",item:"payments-incidents.csv",label:"Payments has 63 open incidents, 19 still valid, median age 212 days. That's unplanned work waiting to land on your sprint.",need:()=>has("payments-incidents.csv"),ok:true,pt:"w1",reply:`He reads the export twice. "212 days." He doesn't like that number. "Fine. Go on."`},
    {k:"hook",label:"Juni's team was bypassing a scanner that blocked one commit in four. I swapped it for ggshield: no more false alarms, and it still caught a real AWS key. Your devs got faster.",need:()=>S.f.hook,ok:true,pt:"w2",reply:`"Juni said that?" He checks Slack. Juni has posted a GIF of someone crying with joy. "Huh."`},
    {k:"pr",label:"The PayRail live key is public and valid. If PayRail freezes our merchant account, Monday's launch has no payments.",need:()=>S.f.prMap,ok:true,pt:"w3",reply:`Wendell stops checking his watch. "A launch without payments is a demo." He thinks about the Director title for a moment.`}]);
   o.push(["What do you care about?",()=>({t:`"Shipping. Deploys per week. Pay Later 2.0 on Monday. Anything that slows that down is my enemy."`})]);
@@ -911,17 +998,17 @@ ingrid:()=>{if(S.f.won3)return [["What's the change window?",()=>({t:`"Tonight, 
   if(S.f.ingridAsk)o.push(...pitches("ingrid",[
    {k:"yolo",label:"It's just a key. We swap it and we're done.",ok:false,reply:`"That's exactly what the last guy said. Out."`},
    {k:"map",label:"GitGuardian's exploration map shows three consumers, including recon-batch on batch-01, which isn't in any repo.",need:()=>S.f.map3,ok:true,pt:"i1",reply:`"batch-01. That box isn't even in our CMDB." She writes it down. "Okay. That's the one that would have bitten us."`},
-   {k:"rb",label:"Here's the runbook: new key first, consumers next, old key revoked only after it has zero traffic. Rollback is pointing Vault back at version 1.",need:()=>S.f.runbook,ok:true,pt:"i2",reply:`She reads it. Twice. "You don't revoke until it's quiet. Good." She nods, very slightly.`},
+   {k:"rb",item:"runbook",label:"Here's the runbook: new key first, consumers next, old key revoked only after it has zero traffic. Rollback is pointing Vault back at version 1.",need:()=>S.f.runbook,ok:true,pt:"i2",reply:`She reads it. Twice. "You don't revoke until it's quiet. Good." She nods, very slightly.`},
    {k:"budget",label:"A suspended PayRail account is unplanned downtime that burns your error budget. A planned change in a window doesn't.",need:()=>S.f.prMap,ok:true,pt:"i3",reply:`"Planned changes don't count against the budget." She almost smiles. "You read the SLO doc."`}]));
   o.push(bye);return o;},
-kenji:()=>{if(!S.f.kenjiAwake)return [["Wake him up",()=>({t:"You say his name. Nothing. You poke the beanbag. He mumbles 'it's DNS' and keeps sleeping. Something caffeinated might work. Engineering keeps cold brew in their fridge on Floor 3."})],bye];
+kenji:()=>{if(!S.f.kenjiAwake)return [...(has("cold brew")?[["Give Kenji the cold brew",()=>coffeeKenji(),"item"]]:[]),["Wake him up",()=>({t:"You say his name. Nothing. You poke the beanbag. He mumbles 'it's DNS' and keeps sleeping. Something caffeinated might work. Engineering keeps cold brew in their fridge on Floor 3."})],bye];
   const o=[["What do you need?",()=>({t:`"Fewer pages. If GitGuardian alerts went to the team that owns the repo instead of a shared inbox, I'd sleep."`})]];
   if(!S.f.scout)o.push(["Where's the ggscout config?",()=>({t:`"/etc/ggscout/config.toml on ops-tools. My terminal's logged in, you can sudoedit it. Uncomment the vault-prod source. Don't touch the k8s bit, it works."`})]);
   if(S.f.scout&&!S.f.kenjiBatch)o.push(["Ever heard of recon-batch?",()=>{S.f.kenjiBatch=true;return {t:`"The nightly reconciliation job? Runs at 2 AM on batch-01. Teo's thing. If it breaks, Finance doesn't get their numbers and Harriet calls Ingrid, who calls me."`};}]);
   o.push(bye);return o;},
 desmond:()=>{const o=[];
   if(!S.f.desAsk)o.push(["What do you need for the assessment?",()=>{S.f.desAsk=true;const p=award("des");return {t:`"The PCI assessor comes Monday. Requirement 8.6.2: passwords and secrets for system and application accounts aren't hardcoded in scripts, config files or source code. I need evidence that we look for them and fix them. I have... a binder with a cover page."\n\nHe looks at you hopefully. "GitGuardian can produce that, can't it?"`,p};}]);
-  if(S.f.desAsk&&!S.f.desDone){if(has("PCI evidence"))o.push(["Here's your 8.6.2 evidence, straight from GitGuardian.",()=>{take("PCI evidence");S.f.desDone=true;give("PayRail contract");const p=award("contract");
+  if(S.f.desAsk&&!S.f.desDone){if(has("PCI evidence"))o.push(["Give Desmond the PCI evidence: here's your 8.6.2 evidence, straight from GitGuardian.",()=>{take("PCI evidence");S.f.desDone=true;give("PayRail contract");const p=award("contract");
       return {t:`Desmond flips through it. "Detection history, who resolved what, when. This is real evidence." He hugs the printout.\n\n"Let me return the favor. Harriet doesn't care about breaches. Harriet cares about this." He hands you a page from the PayRail merchant agreement, section 14.2: if the merchant knows a credential is compromised and doesn't rotate it within 72 hours, PayRail can suspend processing, and fraud liability moves to the merchant.\n\n"We process about $410,000 an hour on a Friday night. Tell her that."\n\n[PayRail contract added to your items]`,p};}]);
     else o.push(["I'm on it.",()=>({t:`"GitGuardian, Secret incidents, the audit evidence export. Please. I'll be here. I live here now."`})]);}
   o.push(bye);return o;},
@@ -929,11 +1016,11 @@ harriet:()=>{if(S.f.won4)return [["Thanks for signing.",()=>({t:`"Don't thank me
   const o=[];if(!S.f.harrietAsk)o.push(["I need a freeze exception for one change tonight.",()=>{S.f.harrietAsk=true;const p=award("harriet");return {t:`"No. The freeze is there so nothing breaks while we close the quarter. Also, while you're here: why do we pay for GitGuardian? I've seen no report from it. Ever."\n\nShe goes back to her spreadsheet. Talk money, or talk to Desmond. He seems to know what I care about.`,p};}]);
   if(S.f.harrietAsk)o.push(...pitches("harriet",[
    {k:"scare",label:"If we get hacked it'll be in the news.",ok:false,reply:`"Everything is in the news. What will it cost?"`},
-   {k:"contract",label:"PayRail's contract: 72 hours after we know a key is compromised, fraud liability moves to us. GitGuardian first flagged this key 41 days ago.",need:()=>has("PayRail contract"),ok:true,pt:"h1",reply:`She stops typing. "Forty-one days. Against a seventy-two hour clause." She reads 14.2 herself. "Who knew?" You did, now.`},
+   {k:"contract",item:"PayRail contract",label:"PayRail's contract: 72 hours after we know a key is compromised, fraud liability moves to us. GitGuardian first flagged this key 41 days ago.",need:()=>has("PayRail contract"),ok:true,pt:"h1",reply:`She stops typing. "Forty-one days. Against a seventy-two hour clause." She reads 14.2 herself. "Who knew?" You did, now.`},
    {k:"rev",label:"If PayRail suspends us, that's about $410,000 an hour in payments, during close. A two-hour window at 11 PM risks much less.",need:()=>S.pitch.harriet&&S.pitch.harriet.contract,ok:true,pt:"h2",reply:`She does the math faster than you did. "That's a material event." She doesn't say 'material event' lightly.`},
    {k:"pci",label:"Desmond's PCI evidence for Requirement 8.6.2 came straight out of GitGuardian. That's the report you never saw.",need:()=>S.f.desDone,ok:true,pt:"h3",reply:`"So that's what we pay for." She makes a note: RENEW. "Fine. The tool earns its keep."`}]));
   o.push(bye);return o;},
-paloma:()=>{const o=[];if(!S.f.palAsk)o.push(["I have Finance's freeze exception and five minutes of good news.",()=>{S.f.palAsk=true;const p=award("paloma");return {t:`Paloma reads the signature. "Harriet signed something? On close week?" She stands. "Go. Five minutes. He's skeptical about everything except his own demos."`,p};}]);
+paloma:()=>{const o=[];if(!S.f.palAsk)o.push(["Show Paloma the freeze exception: I have Finance's signature and five minutes of good news.",()=>{S.f.palAsk=true;const p=award("paloma");return {t:`Paloma reads the signature. "Harriet signed something? On close week?" She stands. "Go. Five minutes. He's skeptical about everything except his own demos."`,p};}]);
   else o.push(["Any tips?",()=>({t:`"He likes evidence he can show the board. He hates hypotheticals."`})]);o.push(bye);return o;},
 victor:()=>{if(!S.f.palAsk)return [["(Paloma is watching you.)",()=>({t:`Paloma clears her throat. Loudly. You should talk to her first.`})],bye];
   if(S.f.won5)return [["Anything else?",()=>({t:`"Text me when it's done. Not before. Not during."`})],bye];
@@ -941,7 +1028,7 @@ victor:()=>{if(!S.f.palAsk)return [["(Paloma is watching you.)",()=>({t:`Paloma 
   if(S.f.vicAsk)o.push(...pitches("victor",[
    {k:"fear",label:"Trust me, attackers are everywhere.",ok:false,reply:`"I trust data. Bring some."`},
    {k:"ht",label:"I planted a fake AWS key in a public repo minutes ago. GitGuardian already caught someone trying it. The real PayRail key has been out there for 41 days.",need:()=>S.f.htFired,ok:true,pt:"v1p",reply:`You show him the honeytoken alert. Source IP, user agent, the API call they tried. Four minutes after the commit.\n\nVictor puts the clicker down. "Four minutes."`},
-   {k:"plan",label:"Finance signed the freeze exception. SRE has a runbook with a rollback. It's a planned change, not a gamble.",need:()=>has("freeze exception"),ok:true,pt:"v2p",reply:`"Harriet signed. Ingrid has a rollback." He looks at you differently. "You've been busy for a first day."`},
+   {k:"plan",item:"freeze exception",label:"Finance signed the freeze exception. SRE has a runbook with a rollback. It's a planned change, not a gamble.",need:()=>has("freeze exception"),ok:true,pt:"v2p",reply:`"Harriet signed. Ingrid has a rollback." He looks at you differently. "You've been busy for a first day."`},
    {k:"board",label:"Tell the board we found it, fixed it without downtime, and can prove it. Toyota found theirs after five years on GitHub.",need:()=>pc("victor")>=2,ok:true,pt:"v3p",reply:`"'Found it, fixed it, no downtime.' I can sell that slide."`}]));
   o.push(bye);return o;}};
 
@@ -972,12 +1059,12 @@ const DEATHS={
 function die(k){S.dead=k;}
 
 /* ---- 04-apps.js ---- */
-/* ============================== the computer: kiosk or BrickBook, a homemade Windows 3.1 ============================== */
-let pcApp="progman",pcKind="kiosk",ggRoute={page:"list"},modal=null;
+/* ============================== your laptop (BrickBook 9000), a homemade Windows 3.1 ============================== */
+let pcApp="progman",pcKind="laptop",ggRoute={page:"list"},modal=null;
 const WM={wins:[],z:1,drag:null};
 const TITLES={progman:"Program Manager",mail:"Mail - Inbox",gg:"GitGuardian",slack:"Slack",vault:"Vault",payrail:"PayRail Dashboard",deploys:"Deploys",batch:"batch-01 (SSH)",clock:"Clock",notepad:"Notepad - RUNBOOK.TXT",sol:"Solitaire"};
 function apps(){const L=S.lv;const a=[["mail","Mail",S.mail.filter(m=>!m.read).length],["slack","Slack",slUnread()],["gg","GitGuardian",ggBadge()],["clock","Clock"],["notepad","Notepad"],["sol","Solitaire"]];
-  if(pcKind==="laptop"&&L>=6)a.push(["vault","Vault"],["payrail","PayRail"],["deploys","Deploys"],["batch","batch-01 (SSH)"]);return a;}
+  if(L>=6)a.push(["vault","Vault"],["payrail","PayRail"],["deploys","Deploys"],["batch","batch-01 (SSH)"]);return a;}
 const ICO={
  mail:["................","................","..wwwwwwwwwwww..","..wkwwwwwwwwkw..","..wwkwwwwwwkww..","..wwwkwwwwkwww..","..wwwwkwwkwwww..","..wwwwwkkwwwww..","..wwwwwwwwwwww..","..wwwwwwwwwwww..","..kkkkkkkkkkkk..","................","....rrr.........","....rrr.........","................","................"],
  gg:["................","......bbbb......","....bbbbbbbb....","...bbBBBBBBbb...","...bBBwwwwBBb...","...bBwwkkwwBb...","...bBwkkkkwBb...","...bBwwkkwwBb...","...bBBwwwwBBb...","....bBBBBBBb....","....bbBBBBbb....",".....bbBBbb.....","......bbbb......",".......bb.......","................","................"],
@@ -1005,11 +1092,11 @@ function closeWinFocus(){const top=WM.wins.filter(w=>!w.min).sort((a,b)=>b.z-a.z
 function ensureProgman(){if(!WM.wins.some(w=>w.app==="progman"))WM.wins.unshift({app:"progman",x:6,y:6,w:62,h:62,max:false,min:false,z:0});}
 /* Same as Lossy: the computer always starts at Program Manager. Programs open only when you click their icons
    (or a link inside another program). Coming back to the same computer resumes the desktop as you left it. */
-function openPC(app,kind){if(kind&&kind!==pcKind){WM.wins=[];modal=null;}if(kind)pcKind=kind;if(app==="batch")return openTerm("batch");
-  if(pcKind==="kiosk")WM.wins=WM.wins.filter(w=>apps().some(a=>a[0]===w.app)||w.app==="progman");
+/* one computer: your laptop. In the closet it sits on the desk; everywhere else you carry it. (kind is ignored, kept for old callers) */
+function openPC(app,kind){if(app==="batch")return openTerm("batch");
   if(app==="gg"){ggRoute={page:"list",fresh:true};}if(app)openWin(app);else useComputer();renderPC();}
 function useComputer(){ensureProgman();if(!WM.wins.some(w=>w.app!=="progman"&&!w.min))openWin("progman");}
-function openLaptop(app){if(!has("laptop"))return say("You don't have a laptop. Yet. The help desk on B1 has a cage full of them.");openPC(app||null,"laptop");}
+function openLaptop(app){openPC(app||null);}
 function closePC(){PL().innerHTML="";modal=null;verb="hand";heldItem=null;iconbar();draw();if(S.dead)return death(S.dead);}
 function pcAct(fn){const out=fn()||{};advance(out.min||1);if(S.dead){PL().innerHTML="";return death(S.dead);}renderPC();if(out.toast)flash(out.toast+(out.p?` (+${out.p} points)`:""));if(out.msg)say(out.msg,out.p,out.who);}
 function winHTML(w){const act=w.app===pcApp,t=TITLES[w.app]||w.app;const badge=(apps().find(a=>a[0]===w.app)||[])[2];
@@ -1019,13 +1106,13 @@ function winHTML(w){const act=w.app===pcApp,t=TITLES[w.app]||w.app;const badge=(
    <div class="wbody app">${(APPS[w.app]||APPS.notepad)()}</div></section>`;}
 function renderPC(){const Lr=PL();updateBar();ensureProgman();WM.wins=WM.wins.filter(w=>w.app==="progman"||apps().some(a=>a[0]===w.app));
   if(!WM.wins.some(w=>w.app===pcApp&&!w.min))closeWinFocus();
-  const phone=isPhone();const vis=WM.wins.filter(w=>!w.min);const mins=WM.wins.filter(w=>w.min);const lap=pcKind==="laptop";
+  const phone=isPhone();const vis=WM.wins.filter(w=>!w.min);const mins=WM.wins.filter(w=>w.min);const lap=true;
   Lr.innerHTML=`<div class="pc" id="pcroot"><div class="bezel${lap?" brick":""}"><div class="screenpc w31" id="w31">
    <div class="desk" id="desk">${vis.filter(w=>!phone||w.app===pcApp).map(winHTML).join("")}
     <div class="minicons">${mins.map(w=>`<button class="icon mini" data-wrestore="${w.app}" aria-label="Restore ${esc(TITLES[w.app])}">${icoSVG(w.app==="progman"?"notepad":w.app)}<span>${esc(TITLES[w.app])}</span></button>`).join("")}</div>
     <div class="deskfoot">Simulation for training. No real systems are contacted. · ${esc(S.gg)} · ${hhmm(S.t)}</div>
     ${modal?MODALS[modal.k](modal):""}</div></div>
-   <span class="brand">${lap?"BRICKBOOK 9000 · REFURBISHED TWICE · PROPERTY OF B1":"PRECARIUM KIOSK 3000 · LOGS OUT EVERY 4 MIN"}</span><button class="off" data-pcclose>${lap?"Close the laptop":"Turn away from the screen"}</button></div></div>`;
+   <span class="brand">${lap?"BRICKBOOK 9000 · REFURBISHED TWICE · PROPERTY OF B1":""}</span><button class="off" data-pcclose>${lap?"Close the laptop":"Turn away from the screen"}</button></div></div>`;
   enhanceTabs(document.getElementById("w31"));
   const b=document.querySelector(`.win.act .wbody`);if(b&&WM.scroll&&WM.scroll.app===pcApp)b.scrollTop=WM.scroll.top;}
 document.addEventListener("pointerdown",e=>{const win=e.target.closest(".win");if(!win||!document.getElementById("w31"))return;const app=win.dataset.win;
@@ -1281,6 +1368,7 @@ ACT.open=id=>{const n=+id;if(!DEF[n]){ggRoute={page:"hist",id:n};return renderPC
 ACT.tab=t=>{ggRoute.tab=t;renderPC();};
 ACT.ggmap=id=>{const n=+id;if(!visibleIds().includes(n)){ggRoute={page:"denied",id:n};return renderPC();}ggRoute={page:"map",id:n};renderPC();};
 ACT.ggq=f=>{ggQ=f.querySelector("#ggq").value;renderPC();};
+ACT.ggteam=t=>{ggQ=ggQ.toLowerCase()===t?"":t;renderPC();};
 ACT.ggclear=()=>{ggQ="";renderPC();};
 ACT.ep=h=>{ggRoute={page:"endpoint",host:h};renderPC();};
 const histHay=h=>[h.id,h.det,h.src,h.team].join(" ").toLowerCase();
@@ -1295,6 +1383,7 @@ list(pubOnly){const q=ggQ.trim().toLowerCase();
   return `<div class="hdr"><h1>${pubOnly?"Public secret incidents":"Secret incidents"}</h1><span style="color:#545C6E;font-size:13px">${isRestricted()?"1 incident shared with you":pubOnly?"Public monitoring · found outside your perimeter":"Internal and public monitoring"}</span></div>
   ${isRestricted()?`<div class="warnbox"><b>You're a Restricted member.</b> You only see incidents someone shared with you. The workspace has 2,417 incidents. A Manager can change your role.</div>`:""}
   <form data-actform="ggq" class="ggsearch" role="search" style="display:flex;gap:6px"><input type="search" id="ggq" value="${esc(ggQ)}" aria-label="Search incidents" placeholder="Search by secret value, commit author, file path or source" style="flex:1;min-width:0;border-radius:6px;padding:6px 9px"><button class="btn" type="submit">Search</button>${ggQ?'<button class="btn" type="button" data-act="ggclear">Clear</button>':""}</form>
+  ${isRestricted()?"":`<div class="ggfilters" role="group" aria-label="Filter by team" style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:13px;color:#545C6E">Filter by team: ${["Payments","Platform","Support"].map(t=>`<button class="btn" data-act="ggteam:${t.toLowerCase()}" aria-pressed="${ggQ.toLowerCase()===t.toLowerCase()}">${t}</button>`).join("")}</div>`}
   ${q?`<div style="font-size:12.5px;color:#545C6E">Secret values are hashed in your browser before they're sent. Showing incidents matching “${esc(ggQ)}”.</div>`:""}
   ${payQ?`<div class="card"><h3>Team: Payments</h3><dl class="kv"><dt>Open incidents</dt><dd>63</dd><dt>Still valid</dt><dd>19</dd><dt>Median age</dt><dd>212 days</dd></dl><div><button class="btn pri" data-act="csv">${has("payments-incidents.csv")?"Exported ✓":"Export CSV"}</button></div></div>`:""}
   ${S.lv>=4&&!pubOnly&&!isRestricted()?`<div class="card"><h3>Audit evidence</h3><div style="font-size:13.5px">Detection history, remediation timeline and audit log for hardcoded secrets in the Payments perimeter, last 90 days.</div><div><button class="btn pri" data-act="pci">${S.f.pci?"Exported ✓":"Export PCI DSS evidence (Requirement 8.6.2)"}</button></div></div>`:""}
@@ -1500,7 +1589,7 @@ function renderTerm(){const L=PL();if(!TM)return;updateBar();const cfg=HOSTCFG[T
     <div class="chips" aria-label="Suggested commands">${chipsFor().map(c=>{const lab=c===INSTALL_CMD?"install ggshield: curl … install.sh | bash":c.length>48?c.slice(0,46)+"…":c;return `<button type="button" data-tchip="${esc(c)}" title="${esc(c)}"${c===INSTALL_CMD?' aria-label="Install ggshield with the machine scan plugin: '+esc(c)+'"':""}>${esc(lab)}</button>`;}).join("")}</div></div>
     <button class="walkaway" data-tclose>${cfg.close}</button></div>`;
   const s=document.getElementById("tscr");s.scrollTop=s.scrollHeight;try{document.getElementById("tinp").focus({preventScroll:true});}catch(e){}}
-function closeTerm(){const h=TM&&TM.host;TM=null;PL().innerHTML="";if(h==="batch"&&has("laptop"))openPC(null,"laptop");else{iconbar();draw();}}
+function closeTerm(){const h=TM&&TM.host;TM=null;PL().innerHTML="";if(h==="batch")openPC(null);else{iconbar();draw();}}
 function tsay(lines,c){(Array.isArray(lines)?lines:[lines]).forEach(t=>TM.out.push({t,c}));}
 function runCmd(raw){const cmd=raw.trim();const h=TM.host,cfg=HOSTCFG[h],t=TS(h);TM.out.push({t:`${cfg.user}@${cfg.name}:~$ ${cmd}`});if(!cmd)return renderTerm();advance(1);
   const a=cmd.replace(/\s+/g," ");
@@ -1537,7 +1626,7 @@ function runCmd(raw){const cmd=raw.trim();const h=TM.host,cfg=HOSTCFG[h],t=TS(h)
   renderTerm();}
 const ED_BUF=k=>k==="ggscout"&&S.f.scout?FILES.ggscout.fix(FILES.ggscout.text):FILES[k].text;
 document.addEventListener("submit",e=>{if(e.target.id!=="tform"||!TM)return;e.preventDefault();const v=document.getElementById("tinp").value;TM.hist.push(v);runCmd(v);});
-document.addEventListener("click",e=>{const c=e.target.closest("[data-tchip]");if(c&&TM){const i=document.getElementById("tinp");if(i){i.value=c.dataset.tchip;i.focus();}return;}if(e.target.closest("[data-tclose]")&&TM)closeTerm();});
+document.addEventListener("click",e=>{const c=e.target.closest("[data-tchip]");if(c&&TM){runCmd(c.dataset.tchip);return;}if(e.target.closest("[data-tclose]")&&TM)closeTerm();});
 
 /* ---- 04d-slack.js ---- */
 /* ============================== Slack (same as LossyInc Range's 05b-slack.js, plus one house rule) ==============================
@@ -1603,6 +1692,34 @@ ACT.slwho=w=>{slWho=w;renderPC();const m=document.getElementById("slmsgs");if(m)
 ACT.slsend=n=>{const o=slOptions(slWho)[+n];if(!o)return;slSend(slWho,o[0],+n);renderPC();const m=document.getElementById("slmsgs");if(m)m.scrollTop=m.scrollHeight;};
 ACT.slform=f=>{const v=(f.querySelector("#slin").value||"").trim();if(!v||!slWho||/^ch:/.test(slWho))return;const o=slOptions(slWho);const k=o.findIndex(x=>x[0].toLowerCase()===v.toLowerCase());slSend(slWho,k>=0?o[k][0]:v,k>=0?k:null);renderPC();};
 
+/* ---- 04e-ggbrowser.js ---- */
+/* ============================== GitGuardian runs in a browser ==============================
+   Shared by every game in this series. The GitGuardian window gets browser chrome: Back, Forward and an address bar.
+   History is recorded from whatever page GitGuardian shows, so every link, nav item and breadcrumb is covered.
+   Switching tabs inside a page (Overview, Occurrences...) updates the current entry instead of adding one, like a real SPA.
+   Closing the GitGuardian window, or a new day or level, starts a fresh history. */
+const GGH={stack:[],i:-1,win:null,nav:false};
+const ggKey=r=>JSON.stringify([r.page,r.id==null?null:String(r.id),r.host||null]);
+const ggClean=r=>{const o=Object.assign({},r);delete o.fresh;return o;};
+function ggTrack(){const w=WM.wins.find(x=>x.app==="gg");if(w!==GGH.win){GGH.win=w;GGH.stack=[];GGH.i=-1;}
+  const cur=ggClean(ggRoute);
+  if(GGH.nav){GGH.nav=false;GGH.stack[GGH.i]=cur;return;}
+  const top=GGH.stack[GGH.i];
+  if(top&&ggKey(top)===ggKey(cur)){GGH.stack[GGH.i]=cur;return;}
+  GGH.stack=GGH.stack.slice(0,GGH.i+1);GGH.stack.push(cur);GGH.i=GGH.stack.length-1;}
+function ggURL(r){const id=r.id!=null?r.id:"";const P={list:"incidents/secrets",incident:`incidents/secrets/${id}`,hist:`incidents/secrets/${id}`,denied:`incidents/secrets/${id}`,
+  publist:"incidents/public",map:id?`incidents/secrets/${id}/exploration`:"nhi/exploration",endpoints:"endpoints",endpoint:`endpoints/${r.host||""}`,
+  honeytokens:"honeytokens",honeytoken:"honeytokens",perimeter:"perimeter",inventory:"nhi/inventory",playbooks:"settings/workspace/playbooks",
+  workflow:"settings/workspace/remediation-workflow",secmgr:"settings/integrations/secrets-managers",restricted:"incidents/secrets"}[r.page]||r.page;
+  return `https://dashboard.gitguardian.com/workspace/7311/${P}`;}
+function ggChrome(){const b=GGH.i>0,f=GGH.i<GGH.stack.length-1;const url=ggURL(ggRoute);
+  return `<div class="ggbar" role="toolbar" aria-label="Browser"><button class="ggb-btn" data-ggnav="back" ${b?"":"disabled"} aria-label="Back" title="Back">◀ Back</button><button class="ggb-btn" data-ggnav="fwd" ${f?"":"disabled"} aria-label="Forward" title="Forward">▶</button><label class="sr" for="ggurl">Address</label><input id="ggurl" class="ggurl" type="text" readonly value="${url}" aria-label="Address"></div>`;}
+(function(){const inner=APPS.gg;APPS.gg=function(){ggTrack();const html=inner.apply(this,arguments);ggTrack();return `<div class="ggbrowser">${ggChrome()}${html}</div>`;};})();
+function ggGo(d){const j=GGH.i+d;if(j<0||j>=GGH.stack.length)return;GGH.i=j;ggRoute=Object.assign({},GGH.stack[j]);GGH.nav=true;if(typeof modal!=="undefined")modal=null;renderPC();
+  const el=document.querySelector(`[data-ggnav="${d<0?"back":"fwd"}"]:not([disabled])`)||document.querySelector("#ggurl");if(el)try{el.focus({preventScroll:true});}catch(e){}}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-ggnav]");if(!b||b.disabled)return;e.stopPropagation();ggGo(b.dataset.ggnav==="back"?-1:1);},true);
+document.addEventListener("keydown",e=>{if(!document.getElementById("w31")||pcApp!=="gg")return;if(e.altKey&&(e.key==="ArrowLeft"||e.key==="ArrowRight")){e.preventDefault();ggGo(e.key==="ArrowLeft"?-1:1);}});
+
 /* ---- 05-shell.js ---- */
 /* ============================== message windows and dialogs ============================== */
 let MQ=[],showing=false;
@@ -1624,7 +1741,7 @@ function portrait(who){const c=document.createElement("canvas");c.width=48;c.hei
 function dialog(name,who,intro,builder){const Lr=ML();const w=document.createElement("div");w.className="msgwrap";
   w.innerHTML=`<div class="dlg" role="dialog" aria-modal="true" aria-label="${esc(name)}"><div class="pf"></div><div><span class="who">${esc(name)}</span><div class="kpi">Measured on: ${esc(PPL[who].kpi)}</div><div class="say">${esc(intro)}</div></div><div class="opts"></div></div>`;
   w.querySelector(".pf").appendChild(portrait(who));const box=w.querySelector(".opts"),sayEl=w.querySelector(".say");
-  const render=list=>{box.innerHTML="";list.forEach(([label,fn])=>{const b=document.createElement("button");b.textContent=label;if(/^▸/.test(label))b.className="pitch";else if(!fn)b.className="bye";b.onclick=ev=>{ev.stopPropagation();
+  const render=list=>{box.innerHTML="";list.forEach(([label,fn,cls])=>{const b=document.createElement("button");b.textContent=label;if(cls)b.className=cls;else if(/^▸/.test(label))b.className="pitch";else if(!fn)b.className="bye";b.onclick=ev=>{ev.stopPropagation();
     if(!fn){w.remove();updateBar();draw();return;}const r=fn();if(!r)return;advance(2);sayEl.textContent=r.t+(r.p?`\n\n[+${r.p} points]`:"");updateBar();draw();
     if(r.win){box.innerHTML="";const z=document.createElement("button");z.textContent="Continue";z.className="go";z.onclick=()=>{w.remove();save();r.win();};box.appendChild(z);z.focus();return;}
     render(builder());}; box.appendChild(b);});};
@@ -1653,14 +1770,14 @@ function updateBar(){if(!S)return;renderHere();document.getElementById("stScore"
   document.getElementById("stTitle").textContent=`Level ${S.lv} · ${ROOMNAME[S.room]}`;document.getElementById("stTime").textContent=hhmm(S.t);
   const n=nextStep(),g=document.getElementById("goal");g.classList.toggle("urgent",!!n.boss);document.getElementById("goalTxt").textContent=(n.win?"★ ":n.boss?"⚔ ":"Next: ")+n.t;
   const c=stepCount();document.getElementById("goalBtn").textContent=`Quest ${c[0]}/${c[1]}`;}
-function draw(){if(!S)return;g.clearRect(0,0,320,170);SCENES[S.room]();if(night()&&S.room!=="lift"){g.fillStyle="rgba(0,0,40,.35)";g.fillRect(0,0,320,170);}updateBar();}
+function draw(){if(!S)return;g.clearRect(0,0,320,170);SCENES[S.room]();if(night()&&S.room!=="lift"){g.fillStyle="rgba(0,0,40,.35)";g.fillRect(0,0,320,170);}drawCues();updateBar();}
 function spotAt(ev){const r=cv.getBoundingClientRect();const x=(ev.clientX-r.left)*320/r.width,y=(ev.clientY-r.top)*170/r.height;
   return SPOTS[S.room].filter(s=>x>=s.r[0]&&x<s.r[0]+s.r[2]&&y>=s.r[1]&&y<s.r[1]+s.r[3]).sort((a,b)=>(a.talk?0:1)-(b.talk?0:1)||a.r[2]*a.r[3]-b.r[2]*b.r[3])[0];}
-cv.addEventListener("mousemove",ev=>{if(!S)return;const s=spotAt(ev);const vname={walk:"Walk to",look:"Look at",hand:"Use",talk:"Talk to"}[verb];document.getElementById("hover").textContent=s?(heldItem?`Use ${heldItem} on ${s.name}`:`${vname} ${s.name}`):"";});
-cv.addEventListener("mouseleave",()=>document.getElementById("hover").textContent="");
+cv.addEventListener("mousemove",ev=>{if(!S)return;const s=spotAt(ev);hilite(s?s.id:null);const vname={walk:"Walk to",look:"Look at",hand:"Use",talk:"Talk to"}[verb];document.getElementById("hover").textContent=s?(heldItem?`Use ${heldItem} on ${s.name}`:`${vname} ${s.name}`):"";});
+cv.addEventListener("mouseleave",()=>{document.getElementById("hover").textContent="";hilite(null);});
 cv.addEventListener("click",ev=>{if(!S||S.dead)return;const s=spotAt(ev);if(!s){if(verb==="look")say(lookRoom());return;}
   if(heldItem){const it=heldItem;heldItem=null;iconbar();return interact("item",s.id,it);}interact({walk:"walk",look:"look",hand:"use",talk:"talk"}[verb],s.id);});
-function lookRoom(){return ENTER[S.room]||(S.room==="closet"?"Your office. It's a supply closet with a kiosk PC in it. The door goes out to Floor 2.":"");}
+function lookRoom(){return ENTER[S.room]||(S.room==="closet"?"Your office. It's a supply closet. Your laptop is set up on the desk. The door goes out to Floor 2.":"");}
 function interact(v,id,item){const sp=SPOTS[S.room].find(s=>s.id===id);if(!sp)return say("You don't see that here.");
   if(v==="look")return say(lookAt(sp));
   if(v==="item"){const f=ITEMUSE[item]&&ITEMUSE[item][sp.talk||sp.id];if(f)return f();if(item==="laptop")return openLaptop();
@@ -1687,7 +1804,7 @@ function parse(raw){const words=raw.replace(/[^a-z0-9 #]/g," ").replace(/\b(the|
   if(["tasks","task","quest","checklist","goal","hint","next","access"].includes(words))return showTasks();
   if(/^(open |use )?laptop$/.test(words))return openLaptop();
   if(words==="score")return say(`Score: ${S.score} of ${MAXSCORE}.`);
-  if(["help","h","?"].includes(words))return say("Click a verb (Walk, Look, Use, Talk), then click the picture. Or type: LOOK KIOSK, USE ELEVATOR, PRESS 3, TALK OTTO, OPEN LAPTOP, QUEST, ITEMS.\n\nThe blue bar always shows your next step. A red bar means a boss: someone you have to convince. Each boss cares about a number. GitGuardian is how you get the evidence that moves it.");
+  if(["help","h","?"].includes(words))return say("Click a verb (Walk, Look, Use, Talk), then click the picture. Or type: LOOK LAPTOP, USE ELEVATOR, PRESS 3, TALK OTTO, OPEN LAPTOP, QUEST, ITEMS.\n\nThe blue bar always shows your next step. A red bar means a boss: someone you have to convince. Each boss cares about a number. GitGuardian is how you get the evidence that moves it.");
   if(words==="save"){save();return say("Game saved.");}if(words==="restart")return title();
   if(!v0||!V[v0])return say(`I don't understand "${raw}".`);
   const vb=V[v0];if(vb==="look"&&!obj)return say(lookRoom());
@@ -1706,9 +1823,9 @@ function showTasks(){if(document.getElementById("padwrap"))return;const Lr=ML();
 document.addEventListener("click",e=>{if(e.target.closest("[data-padclose]")||e.target.id==="padwrap"){const p=document.getElementById("padwrap");if(p)p.remove();}});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){const p=document.getElementById("padwrap");if(p)p.remove();}});
 function menu(){const Lr=ML();const w=document.createElement("div");w.className="msgwrap";
-  w.innerHTML=`<div class="msg" style="cursor:default"><b>Don't Break Prod</b> <span style="font-size:13px;color:#555">build ${BUILD}</span>\nLevel ${S.lv}, ${hhmm(S.t)}. Score ${S.score} of ${MAXSCORE}.<div class="btns"><button data-mn="close">Resume</button><button data-mn="save">Save</button><button data-mn="code">Save code</button><button data-mn="retry">Restart this level</button><button data-mn="title">Title screen</button></div></div>`;Lr.appendChild(w);}
+  w.innerHTML=`<div class="msg" style="cursor:default"><b>Don't Break Prod</b> <span style="font-size:13px;color:#555">build ${BUILD}</span>\nLevel ${S.lv}, ${hhmm(S.t)}. Score ${S.score} of ${MAXSCORE}.<div class="btns"><button data-mn="close">Resume</button><button data-mn="save">Save</button><button data-mn="code">Save code</button><button data-mn="cues">Highlights: ${cuesOn()?"on":"off"}</button><button data-mn="retry">Restart this level</button><button data-mn="title">Title screen</button></div></div>`;Lr.appendChild(w);}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-mn]");if(!b)return;const k=b.dataset.mn;clearMsgs();
-  if(k==="save"){save();say("Game saved. Continue picks it up from the title screen.");}if(k==="retry")retryLevel();if(k==="title")title();});
+  if(k==="save"){save();say("Game saved. Continue picks it up from the title screen.");}if(k==="cues"){setCues(!cuesOn());draw();say(cuesOn()?"Highlights on: a pink bubble marks people and an orange arrow marks ways out. Point at anything to outline it.":"Highlights off. Pointing at something still outlines it.");}if(k==="retry")retryLevel();if(k==="title")title();});
 
 /* ============================== saving (this browser only) ============================== */
 const SKEY="dontbreakprod.save.v1";
@@ -1731,9 +1848,9 @@ function levelCard(n){clearMsgs();PL().innerHTML="";const Lr=ML();const w=docume
   w.innerHTML=`<div class="msg lvcard" style="cursor:default;text-align:center"><span class="lvn">LEVEL ${n} OF 6</span><b class="lvt">${esc(LV[n].name)}</b><span class="lvf">${esc(LV[n].floor)}</span>\n${esc(LV[n].tag)}${levelCode(n)}<div class="btns tmenu"><button class="big go" data-go="${n}">Start level ${n}</button></div></div>`;
   Lr.appendChild(w);setTimeout(()=>{const b=w.querySelector("[data-go]");if(b)b.focus();},0);}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-go]");if(!b)return;clearMsgs();beginLevel(+b.dataset.go);});
-function beginLevel(n){S.lv=n;S.t=Math.max(S.t,START_T[n]);S.dead=null;if(n===6){S.room=has("laptop")?S.room:"closet";}
+function beginLevel(n){S.lv=n;S.t=Math.max(S.t,START_T[n]);S.dead=null;
   LVMAIL[n]();const c=Object.assign({},S);delete c.ckpt;S.ckpt=JSON.stringify(c);save();showGame();
-  const open={1:"Day one at Precarium Inc. Your badge opens Floor 2 and B1. Your office is a supply closet. Your GitGuardian account is Restricted.\n\nThe kiosk PC is blinking. Start there.",
+  const open={1:"Day one at Precarium Inc. Your badge opens Floor 2 and B1. Your office is a supply closet. Your GitGuardian account is Restricted.\n\nYour laptop is on the desk, and the mail icon is blinking. Start there. It goes everywhere with you: the Laptop button under the picture.",
    2:"You can see all 2,417 incidents now. Open your laptop (the Laptop button) and find the one Hal never read.",
    3:"#2871 is yours. Production isn't. Floor 4 is SRE.",4:"Floor 5 is Finance and Compliance. The freeze is theirs.",5:"Floor 6. Paloma first. Then the CTO.",
    6:"11:00 PM. The building is quiet. Everyone is on #payrail-rotation, watching you.\n\nOpen your laptop. Your runbook is the plan. Checkout is taking about 1,200 PayRail calls a minute, and they all need to keep working."}[n];
@@ -1795,8 +1912,8 @@ const MILESTONES={
     ["#3112 opened",()=>S.f.thOpened,()=>{S.f.thOpened=true;}],
     ["#3112 validity checked",()=>S.f.thValid,()=>{S.f.thValid=true;award("thValid");}],
     ["Otto warned",()=>S.f.ottoWorried,()=>{S.f.ottoWorried=true;}],
-    ["token rotated, laptop received",()=>S.f.ottoRotated,()=>{S.f.ottoWorried=true;S.f.ottoRotated=true;give("laptop");grant("A laptop (BrickBook 9000), usable anywhere");award("otto");
-      mail("otto2",PPL.otto.name,"done!!","New TicketHive token is in the auto-close script and the old one is revoked. The script still works. I checked twice.\n\nKeep the BrickBook. It's the only loaner that boots.\n\n- Otto");}],
+    ["TicketHive token rotated",()=>S.f.ottoRotated,()=>{S.f.ottoWorried=true;S.f.ottoRotated=true;grant("Otto at the help desk owes you one");award("otto");
+      mail("otto2",PPL.otto.name,"done!!","New TicketHive token is in the auto-close script and the old one is revoked. The script still works. I checked twice.\n\nThanks for not making it my fault.\n\n- Otto");}],
     ["#3112 resolved",()=>S.f.thResolved,()=>{S.f.thResolved=true;award("thResolved");}],
     pm("marisol","th","m1","Marisol: the TicketHive story"),
     pm("marisol","bounce","m2","Marisol: the 47 bounced alerts")],
@@ -1866,7 +1983,7 @@ function decodeSave(code){const raw=String(code||"").trim();const h=raw.toUpperC
    They're reserved words, not 32-bit codes, so normal codes keep their meaning. */
 const perfectOf=code=>{const m=/^DBP[-\s]*PERF(?:ECT)?[-\s]*L?([1-6])$/i.exec(String(code||"").trim());return m?+m[1]:0;};
 function rebuild(lv,keepName){S=fresh(keepName);startLevelQuiet(1);for(let n=1;n<lv;n++){finishLevel(n);startLevelQuiet(n+1);}
-  if(lv>=2&&!has("laptop"))give("laptop");S.room=lv===1?"closet":FLOOR_ROOM[{2:"3",3:"4",4:"5",5:"6",6:"4"}[lv]]||"f2";if(lv===6)S.room="f4";
+  give("laptop");S.room=lv===1?"closet":FLOOR_ROOM[{2:"3",3:"4",4:"5",5:"6",6:"4"}[lv]]||"f2";if(lv===6)S.room="f4";
   const c=Object.assign({},S);delete c.ckpt;S.ckpt=JSON.stringify(c);}
 function restoreFromCode(code){const keep=S&&S.player;const pd=perfectOf(code);
   if(pd){rebuild(pd,keep);save();return {lv:pd,t:0,ms:0,checksumOk:true,hashed:false,perfect:true};}
@@ -1883,7 +2000,7 @@ function restoreFromCode(code){const keep=S&&S.player;const pd=perfectOf(code);
 function levelCode(n){if(!S)return "";const lv=S.lv,t=S.t;S.lv=n;S.t=Math.max(t,START_T[n]);let c;try{c=encodeSave();}finally{S.lv=lv;S.t=t;}
   return `<span class="lvcode" style="display:block;margin-top:12px;border-top:2px dashed #AAA;padding-top:8px;text-align:left"><b>Your save code</b><span style="display:block;text-align:center;font:30px/1.2 var(--f-term);letter-spacing:.06em;user-select:all" id="sccode">${c}</span>Enter it on the title screen (Enter a save code) to start level ${n} again, on any device. Anyone you give it to can load it too. There's no back end: nothing about your game is stored on a server, so write it down.<span style="display:block;margin-top:6px;text-align:center"><button data-sccopy style="background:#C8C8C8;border:2px solid;border-color:#FFF #555 #555 #FFF;padding:4px 10px;font:15px var(--f-pix);color:#000">Copy code</button></span></span>`;}
 function showSaveCode(){const Lr=ML();const w=document.createElement("div");w.className="msgwrap";const code=encodeSave();
-  w.innerHTML=`<div class="msg" style="cursor:default" role="dialog" aria-modal="true" aria-label="Save code"><b>Save code</b>\nWrite this down. Entering it on the title screen rebuilds this game: the level, the time (to the nearest 6 minutes) and everything you've done on this level so far. Points are recalculated.\n\n<span style="display:block;text-align:center;font:34px/1.2 var(--f-term);letter-spacing:.06em;user-select:all" id="sccode">${code}</span>\nIt fits in 32 bits.<div class="btns"><button data-sccopy>Copy</button><button data-scclose>Close</button></div></div>`;Lr.appendChild(w);w.querySelector("[data-sccopy]").focus();}
+  w.innerHTML=`<div class="msg" style="cursor:default" role="dialog" aria-modal="true" aria-label="Save code"><b>Save code</b>\nWrite this down. Entering it on the title screen rebuilds this game: the level, the time (to the nearest 6 minutes) and everything you've done on this level so far. Points are recalculated.\n\n<span style="display:block;text-align:center;font:34px/1.2 var(--f-term);letter-spacing:.06em;user-select:all" id="sccode">${code}</span><div class="btns"><button data-sccopy>Copy</button><button data-scclose>Close</button></div></div>`;Lr.appendChild(w);w.querySelector("[data-sccopy]").focus();}
 function askSaveCode(){const Lr=ML();const w=document.createElement("div");w.className="msgwrap";w.id="scask";
   w.innerHTML=`<div class="msg" style="cursor:default" role="dialog" aria-modal="true" aria-label="Enter a save code"><b>Enter a save code</b>\n<form id="scform" style="display:flex;gap:8px;margin-top:8px"><label for="scin" class="sr">Save code</label><input id="scin" placeholder="DBP-XXXX-XXXX" autocomplete="off" spellcheck="false" style="flex:1;min-width:0;font:24px var(--f-term);padding:4px 8px;text-transform:uppercase"><button type="submit">Load</button></form><div id="scerr" role="alert" style="color:#AA0000;min-height:1.4em"></div><div style="font-size:14px;color:#444">Any code loads. A real one rebuilds your game; anything else gives you some game, and maybe not the one you meant.</div><div class="btns"><button data-scclose>Cancel</button></div></div>`;Lr.appendChild(w);try{document.getElementById("scin").focus();}catch(e){}}
 document.addEventListener("click",e=>{if(e.target.closest("[data-scclose]")){const w=e.target.closest(".msgwrap");if(w)w.remove();return;}

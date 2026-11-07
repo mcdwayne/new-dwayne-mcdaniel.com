@@ -35,7 +35,7 @@ def run(page, branch=None):
     def step(): return E("GAME.nextStep().t")
     page.goto(HTML.as_uri()); page.locator('[data-tt="new"]').click(); page.locator("[data-go]").click(); dismiss()
     # ---- level 1
-    do('GAME.interact("use","kiosk")'); pc("mail"); act("mail:bounce"); act("mailgg:2871"); assert "have access" in page.inner_text("#w31")
+    do('GAME.interact("use","desklaptop")'); pc("mail"); act("mail:bounce"); act("mailgg:2871"); assert "have access" in page.inner_text("#w31")
     act("gg:list"); act("open:3112"); act("valid:3112"); closepc()
     assert step().startswith("Take the elevator"), step()
     do('GAME.go("f2")'); do('GAME.go("lift")'); do('GAME.ride("5")'); assert E("GAME.S.room")=="lift"

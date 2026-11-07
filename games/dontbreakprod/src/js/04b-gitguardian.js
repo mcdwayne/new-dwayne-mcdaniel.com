@@ -86,6 +86,7 @@ ACT.open=id=>{const n=+id;if(!DEF[n]){ggRoute={page:"hist",id:n};return renderPC
 ACT.tab=t=>{ggRoute.tab=t;renderPC();};
 ACT.ggmap=id=>{const n=+id;if(!visibleIds().includes(n)){ggRoute={page:"denied",id:n};return renderPC();}ggRoute={page:"map",id:n};renderPC();};
 ACT.ggq=f=>{ggQ=f.querySelector("#ggq").value;renderPC();};
+ACT.ggteam=t=>{ggQ=ggQ.toLowerCase()===t?"":t;renderPC();};
 ACT.ggclear=()=>{ggQ="";renderPC();};
 ACT.ep=h=>{ggRoute={page:"endpoint",host:h};renderPC();};
 const histHay=h=>[h.id,h.det,h.src,h.team].join(" ").toLowerCase();
@@ -100,6 +101,7 @@ list(pubOnly){const q=ggQ.trim().toLowerCase();
   return `<div class="hdr"><h1>${pubOnly?"Public secret incidents":"Secret incidents"}</h1><span style="color:#545C6E;font-size:13px">${isRestricted()?"1 incident shared with you":pubOnly?"Public monitoring · found outside your perimeter":"Internal and public monitoring"}</span></div>
   ${isRestricted()?`<div class="warnbox"><b>You're a Restricted member.</b> You only see incidents someone shared with you. The workspace has 2,417 incidents. A Manager can change your role.</div>`:""}
   <form data-actform="ggq" class="ggsearch" role="search" style="display:flex;gap:6px"><input type="search" id="ggq" value="${esc(ggQ)}" aria-label="Search incidents" placeholder="Search by secret value, commit author, file path or source" style="flex:1;min-width:0;border-radius:6px;padding:6px 9px"><button class="btn" type="submit">Search</button>${ggQ?'<button class="btn" type="button" data-act="ggclear">Clear</button>':""}</form>
+  ${isRestricted()?"":`<div class="ggfilters" role="group" aria-label="Filter by team" style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:13px;color:#545C6E">Filter by team: ${["Payments","Platform","Support"].map(t=>`<button class="btn" data-act="ggteam:${t.toLowerCase()}" aria-pressed="${ggQ.toLowerCase()===t.toLowerCase()}">${t}</button>`).join("")}</div>`}
   ${q?`<div style="font-size:12.5px;color:#545C6E">Secret values are hashed in your browser before they're sent. Showing incidents matching “${esc(ggQ)}”.</div>`:""}
   ${payQ?`<div class="card"><h3>Team: Payments</h3><dl class="kv"><dt>Open incidents</dt><dd>63</dd><dt>Still valid</dt><dd>19</dd><dt>Median age</dt><dd>212 days</dd></dl><div><button class="btn pri" data-act="csv">${has("payments-incidents.csv")?"Exported ✓":"Export CSV"}</button></div></div>`:""}
   ${S.lv>=4&&!pubOnly&&!isRestricted()?`<div class="card"><h3>Audit evidence</h3><div style="font-size:13.5px">Detection history, remediation timeline and audit log for hardcoded secrets in the Payments perimeter, last 90 days.</div><div><button class="btn pri" data-act="pci">${S.f.pci?"Exported ✓":"Export PCI DSS evidence (Requirement 8.6.2)"}</button></div></div>`:""}

@@ -17,8 +17,8 @@ const MILESTONES={
     ["#3112 opened",()=>S.f.thOpened,()=>{S.f.thOpened=true;}],
     ["#3112 validity checked",()=>S.f.thValid,()=>{S.f.thValid=true;award("thValid");}],
     ["Otto warned",()=>S.f.ottoWorried,()=>{S.f.ottoWorried=true;}],
-    ["token rotated, laptop received",()=>S.f.ottoRotated,()=>{S.f.ottoWorried=true;S.f.ottoRotated=true;give("laptop");grant("A laptop (BrickBook 9000), usable anywhere");award("otto");
-      mail("otto2",PPL.otto.name,"done!!","New TicketHive token is in the auto-close script and the old one is revoked. The script still works. I checked twice.\n\nKeep the BrickBook. It's the only loaner that boots.\n\n- Otto");}],
+    ["TicketHive token rotated",()=>S.f.ottoRotated,()=>{S.f.ottoWorried=true;S.f.ottoRotated=true;grant("Otto at the help desk owes you one");award("otto");
+      mail("otto2",PPL.otto.name,"done!!","New TicketHive token is in the auto-close script and the old one is revoked. The script still works. I checked twice.\n\nThanks for not making it my fault.\n\n- Otto");}],
     ["#3112 resolved",()=>S.f.thResolved,()=>{S.f.thResolved=true;award("thResolved");}],
     pm("marisol","th","m1","Marisol: the TicketHive story"),
     pm("marisol","bounce","m2","Marisol: the 47 bounced alerts")],
@@ -88,7 +88,7 @@ function decodeSave(code){const raw=String(code||"").trim();const h=raw.toUpperC
    They're reserved words, not 32-bit codes, so normal codes keep their meaning. */
 const perfectOf=code=>{const m=/^DBP[-\s]*PERF(?:ECT)?[-\s]*L?([1-6])$/i.exec(String(code||"").trim());return m?+m[1]:0;};
 function rebuild(lv,keepName){S=fresh(keepName);startLevelQuiet(1);for(let n=1;n<lv;n++){finishLevel(n);startLevelQuiet(n+1);}
-  if(lv>=2&&!has("laptop"))give("laptop");S.room=lv===1?"closet":FLOOR_ROOM[{2:"3",3:"4",4:"5",5:"6",6:"4"}[lv]]||"f2";if(lv===6)S.room="f4";
+  give("laptop");S.room=lv===1?"closet":FLOOR_ROOM[{2:"3",3:"4",4:"5",5:"6",6:"4"}[lv]]||"f2";if(lv===6)S.room="f4";
   const c=Object.assign({},S);delete c.ckpt;S.ckpt=JSON.stringify(c);}
 function restoreFromCode(code){const keep=S&&S.player;const pd=perfectOf(code);
   if(pd){rebuild(pd,keep);save();return {lv:pd,t:0,ms:0,checksumOk:true,hashed:false,perfect:true};}
@@ -105,7 +105,7 @@ function restoreFromCode(code){const keep=S&&S.player;const pd=perfectOf(code);
 function levelCode(n){if(!S)return "";const lv=S.lv,t=S.t;S.lv=n;S.t=Math.max(t,START_T[n]);let c;try{c=encodeSave();}finally{S.lv=lv;S.t=t;}
   return `<span class="lvcode" style="display:block;margin-top:12px;border-top:2px dashed #AAA;padding-top:8px;text-align:left"><b>Your save code</b><span style="display:block;text-align:center;font:30px/1.2 var(--f-term);letter-spacing:.06em;user-select:all" id="sccode">${c}</span>Enter it on the title screen (Enter a save code) to start level ${n} again, on any device. Anyone you give it to can load it too. There's no back end: nothing about your game is stored on a server, so write it down.<span style="display:block;margin-top:6px;text-align:center"><button data-sccopy style="background:#C8C8C8;border:2px solid;border-color:#FFF #555 #555 #FFF;padding:4px 10px;font:15px var(--f-pix);color:#000">Copy code</button></span></span>`;}
 function showSaveCode(){const Lr=ML();const w=document.createElement("div");w.className="msgwrap";const code=encodeSave();
-  w.innerHTML=`<div class="msg" style="cursor:default" role="dialog" aria-modal="true" aria-label="Save code"><b>Save code</b>\nWrite this down. Entering it on the title screen rebuilds this game: the level, the time (to the nearest 6 minutes) and everything you've done on this level so far. Points are recalculated.\n\n<span style="display:block;text-align:center;font:34px/1.2 var(--f-term);letter-spacing:.06em;user-select:all" id="sccode">${code}</span>\nIt fits in 32 bits.<div class="btns"><button data-sccopy>Copy</button><button data-scclose>Close</button></div></div>`;Lr.appendChild(w);w.querySelector("[data-sccopy]").focus();}
+  w.innerHTML=`<div class="msg" style="cursor:default" role="dialog" aria-modal="true" aria-label="Save code"><b>Save code</b>\nWrite this down. Entering it on the title screen rebuilds this game: the level, the time (to the nearest 6 minutes) and everything you've done on this level so far. Points are recalculated.\n\n<span style="display:block;text-align:center;font:34px/1.2 var(--f-term);letter-spacing:.06em;user-select:all" id="sccode">${code}</span><div class="btns"><button data-sccopy>Copy</button><button data-scclose>Close</button></div></div>`;Lr.appendChild(w);w.querySelector("[data-sccopy]").focus();}
 function askSaveCode(){const Lr=ML();const w=document.createElement("div");w.className="msgwrap";w.id="scask";
   w.innerHTML=`<div class="msg" style="cursor:default" role="dialog" aria-modal="true" aria-label="Enter a save code"><b>Enter a save code</b>\n<form id="scform" style="display:flex;gap:8px;margin-top:8px"><label for="scin" class="sr">Save code</label><input id="scin" placeholder="DBP-XXXX-XXXX" autocomplete="off" spellcheck="false" style="flex:1;min-width:0;font:24px var(--f-term);padding:4px 8px;text-transform:uppercase"><button type="submit">Load</button></form><div id="scerr" role="alert" style="color:#AA0000;min-height:1.4em"></div><div style="font-size:14px;color:#444">Any code loads. A real one rebuilds your game; anything else gives you some game, and maybe not the one you meant.</div><div class="btns"><button data-scclose>Cancel</button></div></div>`;Lr.appendChild(w);try{document.getElementById("scin").focus();}catch(e){}}
 document.addEventListener("click",e=>{if(e.target.closest("[data-scclose]")){const w=e.target.closest(".msgwrap");if(w)w.remove();return;}

@@ -5,7 +5,7 @@
   "description": "A point-and-click adventure about leveraging GitGuardian to get a leaked secret fixed without breaking production. Single HTML file; no backend.",
   "scripts": {
     "build": "python3 build.py",
-    "test": "python3 build.py && python3 tests/playthrough.py && python3 tests/savecodes.py && python3 tests/gitguardian.py",
+    "test": "python3 build.py && python3 tests/playthrough.py && python3 tests/savecodes.py && python3 tests/gitguardian.py && python3 tests/clickthrough.py",
     "serve": "python3 -m http.server 8000",
     "deploy-to-site": "python3 build.py --web-root \"${SITE_GAMES:-$HOME/Documents/dwayne-mcdaniel-site/games}\""
   }

@@ -48,8 +48,8 @@ const NAME_LAST=["Keyes","Vaultman","Rotello","Hashworth","Tokenberg","Saltwell"
 function randomName(){const r=a=>a[Math.floor(Math.random()*a.length)];return r(NAME_FIRST)+" "+r(NAME_LAST);}
 let S=null,verb="hand",heldItem=null,frame=0;
 const first=()=>((S&&S.player)||"you").split(" ")[0];
-function fresh(name){return {v:1,player:name||randomName(),lv:1,room:"closet",t:START_T[1],inv:[],f:{},got:{},score:0,
-  badge:["2","B1"],gg:"Restricted",acc:["Badge: Floor 2 and B1","Email","GitGuardian: Restricted (sees only incidents shared with you)"],
+function fresh(name){return {v:1,player:name||randomName(),lv:1,room:"closet",t:START_T[1],inv:["laptop"],f:{},got:{},score:0,
+  badge:["2","B1"],gg:"Restricted",acc:["Badge: Floor 2 and B1","Your laptop (BrickBook 9000) and email","GitGuardian: Restricted (sees only incidents shared with you)"],
   mail:[],pitch:{},seen:{},ckpt:null,ended:false,dead:null,
   c:{checkout:"v1",payouts:"v1",recon:"hard"},vault:{production:["v1"],default:[]},pr:{v2:false,v1:true},ht:null};}
 const hhmm=t=>{t=((t%1440)+1440)%1440;const h=Math.floor(t/60),m=t%60;return `${((h+11)%12)+1}:${String(m).padStart(2,"0")} ${h<12?"AM":"PM"}`;};

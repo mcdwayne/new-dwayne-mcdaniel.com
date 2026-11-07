@@ -490,6 +490,19 @@ tr.click:focus-visible td{background:#EEF1FF;outline:none}tr.click:focus-visible
 .dlg .opts button:nth-child(odd):nth-last-child(2):has(+ .bye){grid-column:1/-1}
 .dlg .opts button.bye{min-height:44px;background:linear-gradient(#FAFAFA,#DCDCDC)}
 @media (max-width:380px){.dlg .opts{grid-template-columns:minmax(0,1fr)}}
+/* GitGuardian runs in a browser: Back, Forward and the address bar stay at the top while the page scrolls */
+.ggbrowser{display:flex;flex-direction:column;min-height:100%}
+.ggbrowser>.gg{flex:1}
+.ggbar{position:sticky;top:0;z-index:3;display:flex;gap:6px;align-items:center;padding:6px 8px;background:#E4E7EE;border-bottom:1px solid #6B7385}
+.ggbar .ggb-btn{min-height:28px;min-width:32px;padding:3px 10px;border:1px solid #6B7385;border-radius:6px;background:#fff;color:#1B1F29;font:600 13px var(--f-ui);cursor:pointer}
+.ggbar .ggb-btn:hover:not([disabled]){background:#EEF1FF}
+.ggbar .ggb-btn[disabled]{color:#5B6374;background:#F1F2F5;cursor:default}
+.ggbar .ggb-btn:focus-visible,.ggbar .ggurl:focus-visible{outline:3px solid #2D3FD8;outline-offset:1px}
+.ggbar .ggurl{flex:1;min-width:0;min-height:28px;padding:3px 10px;border:1px solid #6B7385!important;border-radius:14px;background:#fff;color:#1B1F29;font:13px var(--f-mono,monospace);text-overflow:ellipsis}
+/* dialog options that use something you're carrying */
+.dlg .opts button.item{background:linear-gradient(#E6F0FF,#B9D2FF);border-color:#1F3A8A;box-shadow:inset 0 2px 0 rgba(255,255,255,.9),inset 0 -3px 0 rgba(0,0,0,.08),0 4px 0 #1F3A8A,0 7px 12px rgba(0,0,0,.35)}
+.dlg .opts button.item:hover{background:linear-gradient(#F2F7FF,#CFE0FF)}
+.dlg .opts button.pitch.item{background:linear-gradient(#E6F0FF,#B9D2FF)}
 
 </style>
 
@@ -514,7 +527,7 @@ tr.click:focus-visible td{background:#EEF1FF;outline:none}tr.click:focus-visible
 
 /* ============================== world constants ============================== */
 /* stamped by build.py: the same ID appears on the title screen, in the menu and on the landing page */
-const BUILD="bb7c3b08";
+const BUILD="4e3db24e";
 const P={dana:"Dana Holm",ravi:"Ravi Okafor",amara:"Amara Diallo",coo:"Kofi Lopez",head:"Jae Ueda",isla:"Isla Dimitrov"};
 const COMPANY=["Lossy Inc","Lossy Incorporated","LOSSI"];
 const START=9*60;
@@ -1276,6 +1289,34 @@ document.addEventListener("click",e=>{const b=e.target.closest("[data-mdmdeploy]
 function mdmAnnounce(){if(S.f.mdmAnnounced||!mdmUnlocked())return;S.f.mdmAnnounced=true;mail("mdm","IT Help Desk","You're now an MDM admin");
   setTimeout(()=>flash("IT added you to the MDM admins. Device Management is in Program Manager."),0);}
 
+/* ---- 05c-ggbrowser.js ---- */
+/* ============================== GitGuardian runs in a browser ==============================
+   Shared by every game in this series. The GitGuardian window gets browser chrome: Back, Forward and an address bar.
+   History is recorded from whatever page GitGuardian shows, so every link, nav item and breadcrumb is covered.
+   Switching tabs inside a page (Overview, Occurrences...) updates the current entry instead of adding one, like a real SPA.
+   Closing the GitGuardian window, or a new day or level, starts a fresh history. */
+const GGH={stack:[],i:-1,win:null,nav:false};
+const ggKey=r=>JSON.stringify([r.page,r.id==null?null:String(r.id),r.host||null]);
+const ggClean=r=>{const o=Object.assign({},r);delete o.fresh;return o;};
+function ggTrack(){const w=WM.wins.find(x=>x.app==="gg");if(w!==GGH.win){GGH.win=w;GGH.stack=[];GGH.i=-1;}
+  const cur=ggClean(ggRoute);
+  if(GGH.nav){GGH.nav=false;GGH.stack[GGH.i]=cur;return;}
+  const top=GGH.stack[GGH.i];
+  if(top&&ggKey(top)===ggKey(cur)){GGH.stack[GGH.i]=cur;return;}
+  GGH.stack=GGH.stack.slice(0,GGH.i+1);GGH.stack.push(cur);GGH.i=GGH.stack.length-1;}
+function ggURL(r){const id=r.id!=null?r.id:"";const P={list:"incidents/secrets",incident:`incidents/secrets/${id}`,hist:`incidents/secrets/${id}`,denied:`incidents/secrets/${id}`,
+  publist:"incidents/public",map:id?`incidents/secrets/${id}/exploration`:"nhi/exploration",endpoints:"endpoints",endpoint:`endpoints/${r.host||""}`,
+  honeytokens:"honeytokens",honeytoken:"honeytokens",perimeter:"perimeter",inventory:"nhi/inventory",playbooks:"settings/workspace/playbooks",
+  workflow:"settings/workspace/remediation-workflow",secmgr:"settings/integrations/secrets-managers",restricted:"incidents/secrets"}[r.page]||r.page;
+  return `https://dashboard.gitguardian.com/workspace/7311/${P}`;}
+function ggChrome(){const b=GGH.i>0,f=GGH.i<GGH.stack.length-1;const url=ggURL(ggRoute);
+  return `<div class="ggbar" role="toolbar" aria-label="Browser"><button class="ggb-btn" data-ggnav="back" ${b?"":"disabled"} aria-label="Back" title="Back">◀ Back</button><button class="ggb-btn" data-ggnav="fwd" ${f?"":"disabled"} aria-label="Forward" title="Forward">▶</button><label class="sr" for="ggurl">Address</label><input id="ggurl" class="ggurl" type="text" readonly value="${url}" aria-label="Address"></div>`;}
+(function(){const inner=APPS.gg;APPS.gg=function(){ggTrack();const html=inner.apply(this,arguments);ggTrack();return `<div class="ggbrowser">${ggChrome()}${html}</div>`;};})();
+function ggGo(d){const j=GGH.i+d;if(j<0||j>=GGH.stack.length)return;GGH.i=j;ggRoute=Object.assign({},GGH.stack[j]);GGH.nav=true;if(typeof modal!=="undefined")modal=null;renderPC();
+  const el=document.querySelector(`[data-ggnav="${d<0?"back":"fwd"}"]:not([disabled])`)||document.querySelector("#ggurl");if(el)try{el.focus({preventScroll:true});}catch(e){}}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-ggnav]");if(!b||b.disabled)return;e.stopPropagation();ggGo(b.dataset.ggnav==="back"?-1:1);},true);
+document.addEventListener("keydown",e=>{if(!document.getElementById("w31")||pcApp!=="gg")return;if(e.altKey&&(e.key==="ArrowLeft"||e.key==="ArrowRight")){e.preventDefault();ggGo(e.key==="ArrowLeft"?-1:1);}});
+
 /* ---- 06-gitguardian.js ---- */
 /* ============================== GitGuardian pages ============================== */
 const HIST_ROWS=[[1001,"Twilio Keys","skoupmouz-repayments","TRIGGERED","Invalid","Low","From historical scan"],[1004,"PostgreSQL Credentials","steatzhoob-ingest-etl","TRIGGERED","Cannot check","High","From historical scan"],[1009,"Datadog API Key","biozhe-api-gateway","ASSIGNED","Failed to check","Medium","From historical scan"],[1013,'Mapbox Secret Token</b> <span style="font-weight:400;color:#545C6E;font-size:12.5px">(enriched from Generic High Entropy Secret)</span><b>',"kiponly-maps-ui","TRIGGERED","Cannot check","Unknown","From historical scan"]];
@@ -1695,7 +1736,10 @@ function renderTerm(){const L=PL();if(!TM)return;updateBar();const cfg=HOSTCFG[T
   if(TM.mode!=="ask"){try{ta.focus({preventScroll:true});}catch(e){}}}
 function chipsFor(){const cfg=HOSTCFG[TM.host],H=S.hosts[TM.host];let c=cfg.chips.slice();if(!H.ep.inst)c.splice(c.length-1,0,INSTALL_CMD);else if(!H.ep.ht)c.splice(c.length-1,0,"ggshield machine setup");
   if(TM.host==="nas01"&&S.day>=2)c=c.map(x=>x.replace("kv/lending/openai","kv/plimbo/sendgrid").replace("summarize.log","digest.log"));if(H.ep.inst&&!c.includes("ggshield machine report"))c.splice(c.length-1,0,"ggshield machine report");
-  if(/sk-proj-|SG\.…|ghp_/.test(TM.mem.join("\n")))c.splice(c.length-1,0,"history -c");return [...new Set(c)];}
+  if(/sk-proj-|SG\.…|ghp_/.test(TM.mem.join("\n")))c.splice(c.length-1,0,"history -c");
+  /* every fix the console offers is a click away: secrets in the saved history can be edited out or redacted with ggshield */
+  if((H.hist||[]).some(x=>/sk-proj-|SG\.…|ghp_/.test(x))){c.splice(c.length-1,0,"nano ~/.bash_history");if(H.ep.inst)c.splice(c.length-1,0,"ggshield machine redact --dry-run","ggshield machine redact");}
+  return [...new Set(c)];}
 function helperFor(){if(TM.file==="crontab")return "Insert Vault lookups";if(TM.file==="/etc/tvx/export.env")return "Use attached service account";if(/bash_history$/.test(TM.file))return "Delete lines with secrets";return null;}
 function nano(k){if(!TM)return;const ta=document.getElementById("nanobuf");if(ta)TM.buf=ta.value;
   if(k==="helper"){const before=TM.buf;
@@ -1962,7 +2006,7 @@ function restorePerfect(day){const keep=S&&S.player;S=fresh();snaps=[];if(keep)S
   else{S.week=true;for(let d=1;d<day;d++){beginDay(d);perfectDay(d);S.results[d]="won";}beginDay(day);if(day>1&&!S.inv.includes("badge"))S.inv.push("badge");}
   checkAwards();S.f.doneNotified={};save();return {day,t:0,prev:S.week&&day===4?3:day===3?3:day===2?1:0,ms:0,checksumOk:true,hashed:false,perfect:true};}
 function showSaveCode(){const L=ML();const w=document.createElement("div");w.className="msgwrap";const code=encodeSave();
-  w.innerHTML=`<div class="msg" style="cursor:default"><b>Save code</b>\nWrite this down. Entering it on the title screen rebuilds this game: the day, the time (to the nearest 6 minutes) and everything you've fixed or broken so far. Points are recalculated.\n\n<span style="display:block;text-align:center;font:34px/1.2 var(--f-term);letter-spacing:.06em;user-select:all" id="sccode">${code}</span>\nIt fits in 32 bits.<div class="btns"><button data-sccopy>Copy</button><button data-scclose>Close</button></div></div>`;L.appendChild(w);}
+  w.innerHTML=`<div class="msg" style="cursor:default"><b>Save code</b>\nWrite this down. Entering it on the title screen rebuilds this game: the day, the time (to the nearest 6 minutes) and everything you've fixed or broken so far. Points are recalculated.\n\n<span style="display:block;text-align:center;font:34px/1.2 var(--f-term);letter-spacing:.06em;user-select:all" id="sccode">${code}</span><div class="btns"><button data-sccopy>Copy</button><button data-scclose>Close</button></div></div>`;L.appendChild(w);}
 function askSaveCode(){const L=ML();const w=document.createElement("div");w.className="msgwrap";w.id="scask";
   w.innerHTML=`<div class="msg" style="cursor:default"><b>Enter a save code</b>\n<form id="scform" style="display:flex;gap:8px;margin-top:8px"><input id="scin" placeholder="LR-XXXX-XXXX" autocomplete="off" spellcheck="false" style="flex:1;min-width:0;font:24px var(--f-term);padding:4px 8px;border:2px solid #0000AA;text-transform:uppercase"><button type="submit" style="background:#C8C8C8;border:2px solid;border-color:#FFF #555 #555 #FFF;padding:6px 12px;font:16px var(--f-pix)">Load</button></form><div id="scerr" style="color:#AA0000;min-height:1.4em"></div><div style="font-size:14px;color:#555">Any code loads. A real one rebuilds your game; anything else gives you some game, and maybe not a winnable one.</div><div class="btns"><button data-scclose>Cancel</button></div></div>`;L.appendChild(w);try{document.getElementById("scin").focus();}catch(e){}}
 document.addEventListener("click",e=>{if(e.target.closest("[data-scclose]")){const w=e.target.closest(".msgwrap");if(w)w.remove();return;}
