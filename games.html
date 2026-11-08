@@ -320,6 +320,11 @@ html {
 .game__play:hover,.game__play:focus-visible{background:linear-gradient(135deg,#ffd166,#f59e0b)}
 .game a:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 .games__intro{color:var(--text-soft);margin:.25rem 0 0}
+.games-page{max-height:none;overflow:visible;height:auto}
+.page.games-main{height:auto;max-height:none;overflow:visible}
+/* a long page: the background covers the whole scroll, not just the first screen */
+html{background:var(--bg)}
+body{height:auto;min-height:100%;background-attachment:fixed}
   </style>
 </head>
 <body>
@@ -330,9 +335,9 @@ html {
       <li><a class="nav__link" href="./about.html">About</a></li>
     </ul>
   </nav>
-  <main class="page">
-    <section class="profile profile--scrollable" aria-label="Games">
-      <h1 class="profile__name">Games</h1>
+  <main class="page games-main">
+    <section class="profile games-page" aria-labelledby="games-title">
+      <h1 class="profile__name" id="games-title">Games</h1>
       <p class="games__intro">Free to play in your browser, on desktop or phone. No sign-up, nothing to install.</p>
       <ul class="games">
       <li class="game">

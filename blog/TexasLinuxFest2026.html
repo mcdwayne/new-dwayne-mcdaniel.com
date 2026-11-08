@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Texas Linux Fest 2026: Evidence Sets the Ceiling | Dwayne's Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Recap of Texas Linux Fest 2026 in Austin: privacy, AI contributions to open source, eBPF observability, secure backups, agentic infrastructure, and centrally managed passkeys." />
+  <meta name="author" content="Dwayne McDaniel" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="Texas Linux Fest, TXLF, Texas Linux Fest 2026, Linux, Open Source, eBPF, Kubernetes Observability, AI, FOSS, Backups, Passkeys, privacyIDEA, Dwayne McDaniel, Dwayne's Blog" />
+  <link rel="canonical" href="https://dwayne-mcdaniel.com/blog/TexasLinuxFest2026.html" />
+  <link rel="icon" type="image/x-icon" href="../img/favicon_io/favicon.ico" />
+
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="Dwayne's Blog" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Texas Linux Fest 2026: Evidence Sets the Ceiling" />
+  <meta property="og:description" content="Lessons from Texas Linux Fest 2026 on privacy, open source, observability, secure backups, agentic infrastructure, and passkeys." />
+  <meta property="og:url" content="https://dwayne-mcdaniel.com/blog/TexasLinuxFest2026.html" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="article:author" content="Dwayne McDaniel" />
+  <meta property="article:section" content="Conferences" />
+  <meta property="article:tag" content="Texas Linux Fest" />
+  <meta property="article:tag" content="Linux" />
+  <meta property="article:tag" content="Open Source" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Texas Linux Fest 2026: Evidence Sets the Ceiling" />
+  <meta name="twitter:description" content="Lessons from Texas Linux Fest 2026 on building trustworthy systems from observable evidence, clear boundaries, and accountable decisions." />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Texas Linux Fest 2026: Evidence Sets the Ceiling",
+    "description": "Recap of Texas Linux Fest 2026 in Austin: privacy, AI contributions to open source, eBPF observability, secure backups, agentic infrastructure, and centrally managed passkeys.",
+    "author": {
+      "@type": "Person",
+      "name": "Dwayne McDaniel",
+      "url": "https://dwayne-mcdaniel.com/"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Dwayne McDaniel",
+      "url": "https://dwayne-mcdaniel.com/"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://dwayne-mcdaniel.com/blog/TexasLinuxFest2026.html"
+    },
+    "url": "https://dwayne-mcdaniel.com/blog/TexasLinuxFest2026.html",
+    "isPartOf": {
+      "@type": "Blog",
+      "name": "Dwayne's Blog",
+      "url": "https://dwayne-mcdaniel.com/blog.html"
+    },
+    "about": [
+      "Texas Linux Fest",
+      "Linux",
+      "Open Source",
+      "eBPF",
+      "Artificial Intelligence",
+      "Infrastructure",
+      "Authentication"
+    ],
+    "inLanguage": "en-US"
+  }
+  </script>
+  <style>
+/* Basic reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Color & typography tokens */
+:root {
+  --bg: #020617;
+  --accent: #fbbf24;
+  --text-main: #e5e7eb;
+  --text-muted: #b0b8c4;
+  --text-soft: #cbd5e1;
+  --border-subtle: #1f2933;
+  --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.55);
+  --radius-xl: 1.75rem;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+  background: radial-gradient(circle at top, #111827 0%, var(--bg) 60%);
+  color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0;
+  font-size: clamp(14px, 2vw, 16px);
+  line-height: 1.5;
+}
+
+.nav {
+  width: 100%;
+  background: linear-gradient(135deg, rgba(15,23,42,0.9), rgba(17,24,39,0.95));
+  border-bottom: 1px solid rgba(249,191,36,0.1);
+  backdrop-filter: blur(4px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav__menu {
+  list-style: none;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  gap: clamp(0.6rem, 3vw, 1.2rem);
+  max-width: 432px;
+  padding: clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 2rem);
+}
+
+.nav__link {
+  text-decoration: none;
+  font-weight: 500;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  background: linear-gradient(135deg, rgba(251,191,36,0.95), #f59e0b);
+  border: 1px solid rgba(170, 120, 0, 0.25);
+  color: #071021;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.35);
+}
+
+.nav__link:hover,
+.nav__link:focus,
+.nav__link:focus-visible {
+  color: #071021;
+  background: linear-gradient(135deg, #ffd166, #f59e0b);
+  border-color: rgba(0,0,0,0.12);
+  font-weight: 700;
+  transform: translateY(-1px);
+}
+
+.page {
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  padding-bottom: clamp(1rem, 3vw, 2rem);
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+}
+
+.profile {
+  background: linear-gradient(
+    145deg,
+    rgba(17, 24, 39, 0.95),
+    rgba(15, 23, 42, 0.97)
+  );
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-soft);
+  padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1rem, 3vw, 2.25rem);
+  text-align: center;
+  flex-shrink: 0;
+  font-size: 1.25em;
+}
+
+.profile--scrollable {
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+.profile--scrollable .profile__content {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 0.5rem;
+}
+
+.page > .profile:first-of-type {
+  padding: 0;
+}
+
+.profile__name {
+  font-size: clamp(1.875rem, 4vw, 2.875rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  margin: 0 0 0.5rem 0;
+}
+
+h1, h2 {
+  text-align: center;
+}
+
+a {
+  color: #fef08a;
+}
+
+a:hover,
+a:focus {
+  color: #fde047;
+}
+
+.profile__about {
+  text-align: left;
+  font-size: clamp(0.9rem, 2.5vw, 0.98rem);
+  line-height: 1.8;
+  color: var(--text-main);
+  margin: 1.5rem 0 2rem 0;
+}
+
+.profile__about p {
+  margin: 0 0 1rem 0;
+}
+
+.profile__about p:last-child {
+  margin-bottom: 0;
+}
+
+.profile__about blockquote {
+  margin: 1.25rem 0;
+  padding: 0.5rem 1rem;
+  border-left: 3px solid var(--accent);
+  color: var(--text-soft);
+  font-style: italic;
+}
+
+.session-photo {
+  margin: 1.25rem 0 1.75rem 0;
+  padding: 0;
+  max-width: 100%;
+}
+
+.session-photo a {
+  display: block;
+  line-height: 0;
+}
+
+.session-photo img {
+  width: 100%;
+  height: auto;
+  max-height: min(70vh, 520px);
+  object-fit: cover;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.session-photo figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.scroll-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 3rem;
+  height: 3rem;
+  background: linear-gradient(135deg, var(--accent), #f59e0b);
+  color: #071021;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(251, 191, 36, 0.2);
+  border: 1px solid rgba(0,0,0,0.08);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+  z-index: 50;
+  cursor: pointer;
+}
+
+.scroll-to-top:hover {
+  color: #071021;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(251,191,36,0.3);
+}
+
+.scroll-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+*:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4);
+  border-radius: 0.25rem;
+}
+
+.nav__link:focus-visible {
+  box-shadow:
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.5),
+    0 0 0 9px rgba(2, 6, 23, 0.85);
+  border-radius: 0.5rem;
+}
+
+.scroll-to-top:focus-visible {
+  box-shadow:
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4),
+    0 12px 28px rgba(251, 191, 36, 0.3);
+  border-radius: 50%;
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 0.75rem;
+  }
+
+  .profile {
+    padding: clamp(1rem, 3vw, 1.5rem) clamp(0.75rem, 2vw, 1rem);
+  }
+
+  .scroll-to-top {
+    bottom: 1rem;
+    right: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.2rem;
+  }
+}
+  </style>
+</head>
+<body>
+  <nav class="nav" aria-label="Main navigation">
+    <ul class="nav__menu">
+      <li><a class="nav__link" href="../index.html">Home</a></li>
+      <li><a class="nav__link" href="../conferences.html">Conferences</a></li>
+      <li><a class="nav__link" href="../about.html">About</a></li>
+    </ul>
+  </nav>
+  <main class="page">
+    <section class="profile profile--scrollable" aria-label="Dwayne's Blog: Texas Linux Fest 2026">
+      <div class="profile__content">
+        <div class="profile__about">
+          <p class="profile__name">Dwayne's Blog</p>
+          <article itemscope itemtype="https://schema.org/BlogPosting">
+            <header>
+              <h1 itemprop="headline">Texas Linux Fest 2026: Evidence Sets the Ceiling</h1>
+            </header>
+
+            <p>
+              In 1978, the University of Texas Harry Ransom Center acquired one of only 20 complete copies of the Gutenberg Bible. Finished in Mainz in 1455, the Latin Bible was the first substantial book in Europe printed with movable type. The Austin copy stays on view, and the complete text can be read online.
+              <a href="https://www.hrc.utexas.edu/gutenberg-bible/" target="_blank" rel="noopener">The Harry Ransom Center keeps the copy open to the public</a>.
+            </p>
+
+            <p>
+              A text stays useful when people can still open it and check the source.
+            </p>
+
+            <p>
+              <a href="https://2026.texaslinuxfest.org/" target="_blank" rel="noopener">Texas Linux Fest 2026</a> brought more than 400 attendees to Austin on November 6 and 7. The volunteer-run event gathered Linux users, open source maintainers, infrastructure engineers, and security practitioners for two days of hands-on learning and technical talks.
+            </p>
+
+            <p>
+              Workshop day built skills through direct practice. The second day widened the view to the systems, communities, and policies surrounding those skills. The strongest talks kept returning to one shared idea. Reliable decisions begin with evidence people can inspect.
+            </p>
+
+            <p>
+              Evidence sets the ceiling.
+            </p>
+
+            <h2>Workshop Day Put the Tools in People's Hands</h2>
+
+            <p>
+              Friday was workshop day. <a href="https://pretalx.com/txlf2026/speaker/YGUEMD/" target="_blank" rel="noopener">Aleksey Tsalolikhin</a> opened <strong>“Power Editing with Vi: Basics”</strong> with the small commands that make the editor feel predictable. Movement through <code>hjkl</code>, forward and backward search, line jumps, insertion, and the repeat command gave attendees a practical vocabulary for working inside the terminal.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mzno4schvp2p" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreic4idzhmraq44cyvqwimjtwsmnkwxyf54oqbfnw7722khdcscgf3i" alt="Aleksey presenting Power Editing with Vi: Basics at Texas Linux Fest 2026." loading="lazy" />
+              </a>
+              <figcaption>Aleksey presenting “Power Editing with Vi: Basics.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              <a href="https://pretalx.com/txlf2026/speaker/ZLWHLY/" target="_blank" rel="noopener">Michael Schwartz</a> followed with <strong>“Build a Safer sudo with Cedar.”</strong> The workshop used Cedar policies to authorize privileged Linux operations. Attendees could test rules for viewing logs, checking service status, and restarting a service while keeping the policy readable.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mzoa3bzjpg2g" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreihxyq4rurum6pj6xjjq7joedl5zp2vf6pzo3iisxwsixfs3mmo6j4" alt="Michael presenting Build a Safer sudo with Cedar at Texas Linux Fest 2026." loading="lazy" />
+              </a>
+              <figcaption>Michael presenting “Build a Safer sudo with Cedar.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Both workshops made system behavior visible. Vi shows the effect of each command immediately. Cedar turns authorization into policy that can be read and tested. That foundation carried into Saturday's talks.
+            </p>
+
+            <h2>Privacy Keeps Legitimate Markets Working</h2>
+
+            <p>
+              <a href="https://pretalx.com/txlf2026/speaker/M8HM79/" target="_blank" rel="noopener">Don Marti</a>, founder of Aloodo and former editor of Linux Journal, opened the main conference day with <strong>“Surviving the Rugpull Economy.”</strong> Privacy helps markets work by preserving enough information symmetry for people and legitimate businesses to make informed choices.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mzq6lqrwto2e" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreidsyampxm6ea6belqqxxysjzkmcsuqrf6qr56eeqhzyijp4ugvq6i" alt="Don presenting the Texas Linux Fest 2026 keynote Surviving the Rugpull Economy." loading="lazy" />
+              </a>
+              <figcaption>Don presenting “Surviving the Rugpull Economy.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Online advertising weakened that balance. Automated auctions reward the cheapest attention, and fraud can buy the same placement as a legitimate business. Slop sites capture revenue while trustworthy publishers absorb the cost of producing useful information.
+            </p>
+
+            <p>
+              Scams now sit inside ordinary browsing. The FBI recommends ad blockers as a safety measure. Enterprise security guidance increasingly includes browser controls, network filtering, and managed-device policies that reduce exposure to malicious ads.
+            </p>
+
+            <p>
+              Don called for deliberate choices that reward legitimate companies and support trustworthy marketplaces. Reputation systems and user reviews need defenses against manipulation. Privacy tools help people preserve control over the signals used to target them.
+            </p>
+
+            <h2>Open Source Communities Are Learning to Govern AI Contributions</h2>
+
+            <p>
+              <a href="https://pretalx.com/txlf2026/speaker/9FPEHA/" target="_blank" rel="noopener">Eduardo Robles</a> examined AI's growing role in open source with <strong>“Attack of the AI Bots!!”</strong> Maintainers now receive low-quality generated patches alongside a rising volume of vulnerability reports and supply chain attacks.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mzqezl7uph2g" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreigi6qpp2rflurgypoqpa4nadt7t6yhx452dgexyakcwqd2vjlajzy" alt="Eduardo presenting Attack of the AI Bots at Texas Linux Fest 2026." loading="lazy" />
+              </a>
+              <figcaption>Eduardo presenting “Attack of the AI Bots!!” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Projects have responded in different ways. Some reject AI-assisted contributions. Others accept the tools while enforcing contribution guidelines and review standards. Strong governance gives maintainers a practical way to judge the work that arrives.
+            </p>
+
+            <p>
+              AI clean-room engineering complicates the issue. One model can describe software behavior and another can implement that description. Services such as Malus promote this workflow as a path around open source license obligations. The approach raises hard questions about originality, provenance, and the evidence needed to show independent implementation.
+            </p>
+
+            <p>
+              Eduardo's conclusion was grounded in community practice. Communication, mentorship, and consistent enforcement can help FOSS projects absorb new tools while preserving quality. Contribution history and review remain evidence of how code entered the project.
+            </p>
+
+            <h2>Observability Quality Determines AI Reliability</h2>
+
+            <p>
+              <a href="https://pretalx.com/txlf2026/speaker/CXHNLY/" target="_blank" rel="noopener">Peter Zaitsev</a>, founder of Percona and co-founder of Coroot, presented <strong>“Using eBPF for Kubernetes Observability Without the Overhead.”</strong> His model separated incident work into four stages. Systems collect evidence and analyze relationships. An LLM interprets the evidence. A human engineer decides what to do.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mzqpetboqd24" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreihivbzpsak5qqfask6dfyatwnqyjuetxs7str2yraucvjhpqkpzoe" alt="Peter presenting on eBPF observability at Texas Linux Fest 2026." loading="lazy" />
+              </a>
+              <figcaption>Peter presenting “Using eBPF for Kubernetes Observability Without the Overhead.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <blockquote>
+              <p>“Zero evidence plus a brilliant model equals confident fiction.”</p>
+            </blockquote>
+
+            <p>
+              Coroot tested 11 models against the same incident context. Five passed, four produced partial answers, and two failed. Model size did not predict success. Some cheaper models performed better than larger alternatives.
+            </p>
+
+            <p>
+              Dependency graphs help contain the search. Symptoms in upstream services often follow a failure deeper in the graph. Correlation between two rising curves provides a lead, while connection-level evidence can show whether the affected request used the failing database path.
+            </p>
+
+            <p>
+              eBPF collects that evidence at kernel hook points. One agent per Kubernetes node can observe network traffic, processes, and I/O without application code changes. In-kernel aggregation ships summaries instead of every raw event.
+            </p>
+
+            <p>
+              Metrics, traces, and container logs receive the same workload identity. That shared identity helps investigators connect a latency spike with retransmits, a slow disk write, or a specific container. The resulting AI explanation can only be as strong as the evidence underneath it.
+            </p>
+
+            <h2>Secure Travel Starts With a Data Boundary</h2>
+
+            <p>
+              <a href="https://pretalx.com/txlf2026/speaker/PBDJQ8/" target="_blank" rel="noopener">Justin Campbell</a> used a border search to frame <strong>“The Right to rm -rf: Building a Global, Self-Hosted Backup and Restore Platform.”</strong> Officials retained his devices during secondary screening. Someone later initiated an SSH login from the laptop while it was expected to remain offline.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mzqt2a2o5a27" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreielhnay6jalklfkq5jqr5roquxcgcq4zrw5fp7x62nwjr2hdfcg7i" alt="Justin presenting The Right to rm -rf at Texas Linux Fest 2026." loading="lazy" />
+              </a>
+              <figcaption>Justin presenting “The Right to rm -rf.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              His threat model begins with keeping data from crossing the border. Files are backed up and removed before travel, then restored afterward. A self-hosted server uses ZFS for storage and encryption, while Samba handles local transport.
+            </p>
+
+            <p>
+              Remote restoration requires a controlled path back home. Nebula supplies an overlay network. A registration service and time-sensitive port-knocking sequence create temporary access. PiKVM keeps decryption under human control.
+            </p>
+
+            <p>
+              The design trades restoration time for a smaller exposure window. Its central claim is direct. Data outside the device cannot be copied from the device. A clear boundary gives the owner evidence about where sensitive material exists.
+            </p>
+
+            <h2>Agentic Infrastructure Needs Executable Guardrails</h2>
+
+            <p>
+              <a href="https://pretalx.com/txlf2026/speaker/QUKA8R/" target="_blank" rel="noopener">Cody Lee Cochran</a> extended the evidence theme into automation with <strong>“Agentic Infrastructure Lifecycle Management.”</strong> Infrastructure work includes building, updating, deploying, testing, and destroying environments. Agents need each stage expressed as a repeatable operation.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mzqvuyw4fl2e" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreibc2pxkid4fnl7edelk6ogtyakxexbfzaputzgmegkirq32vqrvku" alt="Cody presenting Agentic Infrastructure Lifecycle Management at Texas Linux Fest 2026." loading="lazy" />
+              </a>
+              <figcaption>Cody presenting “Agentic Infrastructure Lifecycle Management.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              ShellCheck, shfmt, and generated documentation turn shell scripts into artifacts an agent can inspect. Wrapper scripts make discovery rules explicit. A write mode can remain separate from validation so automated gates only report problems.
+            </p>
+
+            <p>
+              Git hooks bring those checks to the commit boundary. Return codes tell an agent what succeeded and what needs repair. Test suites provide the evidence required to trust a generated change.
+            </p>
+
+            <p>
+              Cody connected this work to service-management lifecycle practices. A mature skill can guide an agent through the same repeatable process a human operator follows. Standard structure gives both groups a shared contract.
+            </p>
+
+            <h2>Authentication Needs Lifecycle Management</h2>
+
+            <p>
+              <a href="https://pretalx.com/txlf2026/speaker/9VAXGL/" target="_blank" rel="noopener">Cornelius Kölbel</a>, project lead for privacyIDEA, closed the event with <strong>“Centrally Managed Multi-Factor Authentication for All Your Users' Notebooks.”</strong> The session followed authentication from passwords and one-time codes through asymmetric cryptography and device-bound passkeys.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3mzqzamkqdz27" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreiefdjowxyg4ysdxz7pxg5u6kfaa5kwl2oo3dc7qtyad6cy3q7poxa" alt="Cornelius presenting centrally managed multi-factor authentication at Texas Linux Fest 2026." loading="lazy" />
+              </a>
+              <figcaption>Cornelius presenting centrally managed multi-factor authentication for notebooks. Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              TOTP and HOTP depend on a symmetric secret that the verifying system must access. Enrollment and device migration create opportunities for that secret to be copied. Asymmetric authentication lets the verifier keep a public key while the private key remains with the user.
+            </p>
+
+            <p>
+              Traditional PKI brings certificate issuance, expiration, and revocation infrastructure. FIDO2 reduces that burden. Device-bound passkeys provide strong possession evidence while privacyIDEA adds centralized enrollment and disablement.
+            </p>
+
+            <p>
+              Lost devices make lifecycle management essential. Administrators need a reliable way to enroll replacement authenticators and revoke old ones across managed notebooks. The authentication ceremony provides strong evidence only while the surrounding inventory stays accurate.
+            </p>
+
+            <h2>Open Systems Earn Trust Through Inspectable Evidence</h2>
+
+            <p>
+              Texas Linux Fest moved from editor commands to market economics, then through AI contributions, kernel observability, backups, infrastructure automation, and passkeys. Each topic depended on knowing what happened inside the system.
+            </p>
+
+            <p>
+              Privacy preserves information boundaries. Contribution history supports open source governance. eBPF exposes runtime behavior. Tests and hooks show whether an agentic change satisfies its contract. Authentication records which key proved possession.
+            </p>
+
+            <p>
+              Human judgment remains accountable for the final decision. Better evidence gives that judgment a higher ceiling.
+            </p>
+
+            <p>
+              The Gutenberg Bible in Austin remains on view because a complete copy can still be opened and checked. Texas Linux Fest spent two days on systems that earn trust the same way. Source, evidence, and policy stay useful when people can inspect them.
+            </p>
+          </article>
+        </div>
+      </div>
+
+      <a href="#top" class="scroll-to-top" aria-label="Scroll to top of page">&uarr;</a>
+    </section>
+  </main>
+
+  <script>
+    const scrollContainer = document.querySelector('.profile__content');
+    const scrollButton = document.querySelector('.scroll-to-top');
+
+    scrollContainer.addEventListener('scroll', function () {
+      scrollButton.classList.toggle('visible', scrollContainer.scrollTop > 300);
+    });
+
+    scrollButton.addEventListener('click', function (event) {
+      event.preventDefault();
+      scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
