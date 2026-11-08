@@ -58,6 +58,7 @@ function lookRoom(){return ENTER[S.room]||(S.room==="closet"?"Your office. It's 
 function interact(v,id,item){const sp=SPOTS[S.room].find(s=>s.id===id);if(!sp)return say("You don't see that here.");
   if(v==="look")return say(lookAt(sp));
   if(v==="item"){const f=ITEMUSE[item]&&ITEMUSE[item][sp.talk||sp.id];if(f)return f();if(item==="laptop")return openLaptop();
+    const g=ITEMFOR[item];if(sp.talk&&g&&g.give&&g.live()&&(typeof g.to==="function"?g.to():g.to)===sp.talk){const r=g.give();return say(r.t,r.p,PPL[sp.talk].name);}
     if(sp.talk&&/csv|evidence|contract|exception|runbook/.test(item))return say(`Better to make your case in conversation. Talk to ${PPL[sp.talk].name.split(" ")[0]}: once you have the ${item}, new things to say will show up.`);
     return say(`The ${item} doesn't do anything useful with the ${sp.name}.`);}
   if(sp.floor)return ride(sp.floor);
@@ -93,6 +94,7 @@ function parse(raw){const words=raw.replace(/[^a-z0-9 #]/g," ").replace(/\b(the|
 function showTasks(){if(document.getElementById("padwrap"))return;const Lr=ML();const w=document.createElement("div");w.className="msgwrap";w.id="padwrap";const st=STEPS[S.lv]||[];
   w.innerHTML=`<div class="pad" role="dialog" aria-modal="true" aria-label="Quest"><h2>Level ${S.lv}: ${esc(LV[S.lv].name)}</h2><div class="win">${esc(LV[S.lv].tag)}</div>
    <ol>${st.map(([t,d])=>`<li class="${d()?"ok":""}"><span>${d()?"[x]":"[ ]"}</span> ${esc(t)}</li>`).join("")}</ol>
+   <div class="final"><b>Favors</b> <span style="font-size:15px">(optional, ask people "Anything I can help with?")</span><ul>${FAVORS.filter(favHeard).length?FAVORS.filter(favHeard).map(f=>`<li>${f.done()?'<span class="x">✓</span>':"•"} ${esc(f.t)}${f.done()?"":` <span style="font-size:15px">· ${esc(f.where)}</span>`}</li>`).join(""):"<li>None yet. People around the building could use a hand.</li>"}</ul></div>
    <div class="final"><b>Your access</b><ul>${S.acc.map(a=>`<li><span class="x">✓</span> ${esc(a)}</li>`).join("")}</ul></div>
    <div class="final"><b>Items</b><ul>${S.inv.length?S.inv.map(a=>`<li>• ${esc(a)}</li>`).join(""):"<li>none</li>"}</ul></div>
    <div class="btns"><button data-padclose>Close</button></div></div>`;
@@ -127,7 +129,7 @@ function levelCard(n){clearMsgs();PL().innerHTML="";const Lr=ML();const w=docume
 document.addEventListener("click",e=>{const b=e.target.closest("[data-go]");if(!b)return;clearMsgs();beginLevel(+b.dataset.go);});
 function beginLevel(n){S.lv=n;S.t=Math.max(S.t,START_T[n]);S.dead=null;
   LVMAIL[n]();const c=Object.assign({},S);delete c.ckpt;S.ckpt=JSON.stringify(c);save();showGame();
-  const open={1:"Day one at Precarium Inc. Your badge opens Floor 2 and B1. Your office is a supply closet. Your GitGuardian account is Restricted.\n\nYour laptop is on the desk, and the mail icon is blinking. Start there. It goes everywhere with you: the Laptop button under the picture.",
+  const open={1:"Day one at Precarium Inc. Your badge opens Floor 2 and B1. Your office is a supply closet. Your GitGuardian account is Restricted.\n\nYour laptop is on the desk, and the mail icon is blinking. Start there. It goes everywhere with you: the Laptop button under the picture.\n\nPeople here have small problems of their own. Ask them \"Anything I can help with?\" Favors earn points, and friends.",
    2:"You can see all 2,417 incidents now. Open your laptop (the Laptop button) and find the one Hal never read.",
    3:"#2871 is yours. Production isn't. Floor 4 is SRE.",4:"Floor 5 is Finance and Compliance. The freeze is theirs.",5:"Floor 6. Paloma first. Then the CTO.",
    6:"11:00 PM. The building is quiet. Everyone is on #payrail-rotation, watching you.\n\nOpen your laptop. Your runbook is the plan. Checkout is taking about 1,200 PayRail calls a minute, and they all need to keep working."}[n];

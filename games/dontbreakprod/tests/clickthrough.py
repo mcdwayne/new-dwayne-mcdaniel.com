@@ -50,15 +50,19 @@ with sync_playwright() as p:
     page.goto(HTML.as_uri()); page.locator('[data-tt="new"]').click(); page.locator("[data-go]").click(); dismiss()
     # level 1
     here("desklaptop"); icon("mail"); act("mail:bounce"); act("mailgg:2871"); inc(3112); act("valid:3112"); close()
-    here("door"); ride("B1"); here("otto"); opt("GitGuardian says it's valid"); opt("Make a new token"); bye()
+    here("shelves"); here("bucket")                       # favors: a ticket roll and a rubber duck, picked up before you know who wants them
+    here("door"); here("printer")                          # the jammed printer hides Marisol's pen
+    ride("B1"); here("otto"); opt("Anything I can help with?"); opt("Give Otto the ticket roll"); opt("GitGuardian says it's valid"); opt("Make a new token"); bye()
+    here("cage")                                           # Otto's key: a USB-C dongle and binder clips
     laptop(); icon("gg"); inc(3112); act("valid:3112"); close()
-    ride("2"); here("marisol"); opt("I closed a real incident"); opt("47 GitGuardian alerts"); opt("Make me a Member"); cont()
+    ride("2"); here("marisol"); opt("Give Marisol the silver pen"); opt("I closed a real incident"); opt("47 GitGuardian alerts"); opt("Make me a Member"); cont()
     # level 2
     laptop(); icon("gg"); inc(2871); act("ggmap:2871"); act("gg:list"); act("ggteam:payments"); act("csv"); close()
-    ride("3"); here("juni"); opt("What's wrong"); bye()
+    ride("3"); here("juni"); opt("What's wrong"); opt("Give Juni the rubber duck"); bye()
+    here("fridge")                                         # Wendell's tomato timer
     here("junilaptop"); page.locator('[data-ed="help"]').click(); page.locator('[data-ed="save"]').click(); page.locator('[data-ed="exit"]').click(); dismiss()
     here("juni"); opt("About that PayRail"); bye()
-    here("wendell"); opt("Show the payments-incidents.csv"); opt("Juni's team"); opt("The PayRail live key"); cont()
+    here("wendell"); opt("Give Wendell the tomato timer"); opt("Show the payments-incidents.csv"); opt("Juni's team"); opt("The PayRail live key"); cont()
     # level 3
     ride("4"); here("ingrid"); opt("I need to rotate"); bye()
     here("kenji"); a = page.locator("#msglayer .dlg .opts button").all_inner_texts(); bye()
@@ -67,14 +71,17 @@ with sync_playwright() as p:
     page.locator("[data-tclose]").click(); dismiss()
     laptop(); icon("gg"); inc(2871); act("ggmap:2871"); win("notepad")
     for k in ["new", "vault", "move", "quiet", "revoke", "verify"]: act("rb:" + k)
-    close(); here("ingrid"); opt("GitGuardian's exploration map"); opt("Show the runbook"); opt("A suspended PayRail"); cont()
+    close(); ride("2"); here("printer"); ride("4")         # Ingrid only reads paper
+    here("ingrid"); opt("GitGuardian's exploration map"); opt("Show the printed runbook"); opt("A suspended PayRail"); cont()
     # level 4
-    ride("5"); here("harriet"); opt("I need a freeze"); bye(); here("desmond"); opt("What do you need"); bye()
+    ride("5"); here("harriet"); opt("I need a freeze"); opt("Anything I can help with?"); bye()
+    here("desmond"); opt("What do you need"); opt("Are those Harriet's red glasses"); opt("Give Desmond the binder clips"); bye()
+    here("harriet"); opt("Give Harriet the reading glasses"); bye()
     laptop(); icon("gg"); act("gg:list"); act("pci"); close()
     here("desmond"); opt("Give Desmond the PCI evidence"); bye()
     here("harriet"); opt("Show the PayRail contract"); opt("If PayRail suspends"); opt("Desmond's PCI"); cont()
     # level 5
-    ride("6"); here("paloma"); opt("Show Paloma the freeze exception"); bye()
+    ride("6"); here("paloma"); opt("Give Paloma the USB-C dongle"); opt("Show Paloma the freeze exception"); bye()
     here("victor"); opt("The PayRail live key is in a public"); bye()
     laptop(); icon("gg"); act("gg:honeytokens"); act("modal:htnew"); page.locator("#htform button[type=submit]").click(); dismiss(); act("htplant")
     for _ in range(12):
@@ -91,8 +98,8 @@ with sync_playwright() as p:
     page.locator("[data-tclose]").click(); dismiss()
     win("payrail"); act("prrev:v1"); act("prrevoke:v1"); win("gg"); page.wait_for_timeout(1200)
     end = page.inner_text("#msglayer")[:200].replace("\n", " ")
-    score = page.inner_text("#bar") if page.query_selector("#bar") else ""
+    score = page.evaluate("GAME.S.score")
     b.close()
 print("Kenji asleep, no coffee yet:", a)
 print("GOALS:"); [print("  -", g) for g in goals]
-print("END:", end); print("BAR:", score[:80]); print("errors:", errs)
+print("END:", end); print("SCORE:", score); print("errors:", errs)

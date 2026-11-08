@@ -548,7 +548,7 @@ tr.click:focus-visible td{background:#EEF1FF;outline:none}tr.click:focus-visible
    message windows and dialogs. One long quest, six levels, an elevator between departments.
    Everything is simulated. No real systems are contacted.
    ========================================================================================== */
-const BUILD="db6575f5";
+const BUILD="1b935592";
 const COMPANY="Precarium Inc.";
 const START_T={1:9*60,2:11*60,3:13*60+30,4:15*60,5:16*60+30,6:23*60};
 const LV={
@@ -581,7 +581,9 @@ const POINTS={
  ingrid:2,coffee:2,scout:5,map3:3,runbook:5,i1:3,i2:3,i3:3,win3:4,
  harriet:2,des:2,pci:3,contract:3,h1:3,h2:3,h3:3,win4:4,
  paloma:1,victor:2,htMade:3,htPlanted:2,htFired:3,v1p:3,v2p:3,v3p:3,win5:4,
- newkey:4,vault:4,deploy:4,recon:5,quiet:4,revoke:5,final:6};
+ newkey:4,vault:4,deploy:4,recon:5,quiet:4,revoke:5,final:6,
+ /* favors around the building, and printing the runbook for Ingrid */
+ pen:3,roll:3,cage:1,timer:2,duck:2,print:2,clips:2,glasses:2,dongle:3};
 const MAXSCORE=Object.values(POINTS).reduce((a,b)=>a+b,0);
 /* the leaked key, before and after */
 const K1="sk_live_51Hq…7Qd",K2="sk_live_51Hq…r2Xq";
@@ -677,7 +679,7 @@ f2(){D(0,0,320,108,7,15);R(0,104,320,4,8);
   R(72,80,34,24,7);R(72,80,34,1,15);R(72,103,34,1,8);R(105,80,1,24,8);
   R(76,72,26,8,15);R(76,72,26,1,7);R(78,70,22,2,15);
   R(76,88,26,2,0);R(80,90,18,7,15);R(82,92,12,1,8);R(82,94,9,1,8);
-  R(96,83,6,3,0);R(97,84,2,1,10);R(100,84,1,1,14);R(76,99,26,2,8);
+  R(96,83,6,3,0);R(97,84,2,1,S.f.jam?10:2);R(100,84,1,1,S.f.jam?10:12);R(76,99,26,2,8);
   /* plant: fern in a terracotta pot */
   for(let i=0;i<12;i++){const w=22-(i>>1);R(181-(w>>1),96+i,w,1,i<2?12:4);}R(168,94,26,3,6);R(168,94,26,1,12);
   [[166,80],[168,72],[176,66],[186,66],[194,72],[197,80],[172,86],[191,86]].forEach(([x,y],k)=>{L(181,94,x,y,2);L(182,94,x+1,y,k%2?10:2);R(x-1,y-1,3,3,k%3?10:2);});
@@ -693,7 +695,7 @@ lift(){R(0,0,320,170,8);D(0,0,320,170,7,8);for(let i=0;i<8;i++)R(i*40,0,1,170,8)
     floorTiles(150,6,8);},
 b1(){R(0,0,320,110,8);D(0,0,320,110,8,1);for(let i=0;i<320;i+=32)R(i,0,2,110,0);
   liftDoor(16,36,"B1");
-  R(96,6,140,14,15);T(102,10,"HELP DESK - TAKE A NUMBER",1);R(244,8,22,12,4);T(247,12,"47",15);
+  R(96,6,140,14,15);T(102,10,"HELP DESK - TAKE A NUMBER",1);R(244,8,22,12,4);T(247,12,S.f.rollBack?"48":"47",15);
   R(196,28,104,66,8);for(let r=0;r<4;r++){R(198,30+r*16,100,2,7);for(let k=0;k<6;k++)R(202+k*16,20+r*16+12,12,8,k%3?0:8);}for(let x=196;x<302;x+=6)R(x,28,1,66,7);T(242,24,"LOANER CAGE",14);
   person("otto",128,26);R(84,82,138,10,6);D(84,82,138,4,14,6);R(84,92,138,40,6);D(86,94,134,36,6,0);R(150,70,26,12,7);R(152,72,22,8,1);
   R(96,72,16,10,15);R(98,74,12,1,8);R(98,77,10,1,8);
@@ -740,7 +742,7 @@ f6(){D(0,0,320,110,15,11);
   windowSky(70,8,240,80,false);R(70,88,240,4,8);
   liftDoor(12,34,"6");
   person("victor",210,38);
-  R(250,70,50,34,8);R(252,72,46,22,1);T(254,76,"PAY LATER",15);T(254,84,"2.0 DEMO",14);R(272,94,6,12,8);
+  R(250,70,50,34,8);R(252,72,46,22,S.f.dongleBack?1:0);if(S.f.dongleBack){T(254,76,"PAY LATER",15);T(254,84,"2.0 DEMO",14);}else{T(258,80,"NO SIGNAL",7);}R(272,94,6,12,8);
   person("paloma",108,48,true);R(86,90,90,8,6);D(86,90,90,3,14,6);R(86,98,90,30,6);R(128,78,20,12,7);R(130,80,16,8,0);
   floorTiles(110,1,9);}};
 
@@ -848,6 +850,7 @@ const STEPS={
     ["Turn on the Vault source in ggscout's config.toml (Kenji's terminal)",()=>S.f.scout],
     ["Re-open the PayRail exploration map: who else uses the key?",()=>S.f.map3],
     ["Write the rotation runbook in Notepad on your laptop",()=>S.f.runbook],
+    ["Print the runbook on the Floor 2 printer (Ingrid only reads paper)",()=>S.f.printed],
     ["BOSS: convince Ingrid Solberg (Floor 4)",()=>S.f.won3]],
  4:[["Floor 5: talk to Harriet Quill, the CFO",()=>S.f.harrietAsk],
     ["Talk to Desmond Achebe in Compliance",()=>S.f.desAsk],
@@ -876,7 +879,7 @@ const LOOK={
    sticky:"The sticky note says: \"GitGuardian login = your email. Ask Marisol for more. - M\"",
    shelves:"Paper towels, toner, and one box labeled HAL'S STUFF. Hal ran security before you. Hal's box contains a stress ball and a printout titled 'Q2 SECRETS - TODO'. The TODO list is blank.",
    bucket:"A mop bucket. It's been here longer than the security program.",
-   chair:"A chair with three legs. You'll be standing.",sign:"Someone taped SECURITY over SUPPLIES. The tape is already peeling."},
+   chair:"An office chair. The backrest hangs off and one wheel has rolled under the desk. You'll be standing.",sign:"Someone taped SECURITY over SUPPLIES. The tape is already peeling."},
  f2:{office:"Marisol's glass office. A whiteboard behind her reads: SOC 2 AUDIT FRIDAY. Under it, smaller: renew GitGuardian??",printer:"The printer has a sign: OUT OF ORDER SINCE THE REORG.",plant:"A plant. Healthy. Somebody here waters things."},
  lift:{panel:()=>`The badge reader shows the floors your badge opens: ${S.badge.join(", ")}. Everything else blinks red.`},
  b1:{cage:"A cage of loaner laptops. Most have stickers. One has duct tape holding the hinge on. It's labeled BRICKBOOK 9000.",number:"NOW SERVING: 47. You didn't take a number. Nobody does.",note:"A note in Otto's handwriting: \"TicketHive API token for the auto-close script - DO NOT LOSE\". It's from 2022."},
@@ -930,21 +933,20 @@ const pc=who=>Object.keys(S.pitch[who]||{}).length;
 /* a pitch option: [label, needs, works?, reply, points key] */
 function pitches(who,list){const c=S.pitch[who]||(S.pitch[who]={});
   return list.filter(x=>!c[x.k]&&(!x.need||x.need())).map(x=>[x.item?`▸ Show the ${x.item}: ${x.label}`:"▸ "+x.label,()=>{if(x.ok){c[x.k]=1;const p=award(x.pt);const n=pc(who);
-    return {t:x.reply+"\n\n"+meter(n),p,win:n>=3?WIN[who]:null};}return {t:x.reply+"\n\n"+meter(pc(who))};},x.item?"pitch item":"pitch"]);}
+    return {t:x.reply+"\n\n"+meter(n),p,win:n>=3?WIN[who]:null};}return {t:x.reply+"\n\n"+meter(pc(who))};},x.item?"pitch item":"pitch",x.item]);}
 function talk(who){const p=PPL[who];if(who!=="kenji"||S.f.kenjiAwake)markMet(who);dialog(`${p.name} · ${p.role}`,who,INTRO[who](),()=>withItems(who,OPTS[who]()));}
-/* who each item is for, and whether it's still useful */
-const ITEMFOR={"cold brew":{to:"kenji",live:()=>!S.f.kenjiAwake},
- "payments-incidents.csv":{to:"wendell",live:()=>!S.f.won2&&!(S.pitch.wendell||{}).csv},
- "runbook":{to:"ingrid",live:()=>!S.f.won3&&!(S.pitch.ingrid||{}).rb},
- "PCI evidence":{to:"desmond",live:()=>!S.f.desDone},
- "PayRail contract":{to:"harriet",live:()=>!S.f.won4&&!(S.pitch.harriet||{}).contract},
- "freeze exception":{to:()=>S.f.palAsk?"victor":"paloma",live:()=>!S.f.won5&&!(S.pitch.victor||{}).plan}};
-function withItems(who,opts){if(opts.some(o=>o[0]&&/^\(Paloma/.test(o[0])))return opts;
-  const shown=new Set(opts.map(o=>o[0]).filter(Boolean).join("\n").match(/the (cold brew|payments-incidents\.csv|runbook|PCI evidence|PayRail contract|freeze exception)/g)||[]);
-  const extra=S.inv.filter(it=>it!=="laptop"&&ITEMFOR[it]&&ITEMFOR[it].live()&&![...shown].some(s=>s.endsWith(it))).map(it=>{
-    const f=ITEMFOR[it],to=typeof f.to==="function"?f.to():f.to,first=PPL[who].name.split(" ")[0];
-    return [`Show ${first} the ${it}`,()=>({t:to===who?`${first} looks at the ${it}. "Ask me properly, and bring the rest of your case." (It'll show up as something to say once you've talked a little more.)`:`${first} glances at the ${it}. "Not for me. That's for ${PPL[to].name}, ${PPL[to].role}."`}),"item"];});
-  const i=opts.findIndex(o=>o[1]===null);if(i<0)return opts.concat(extra);return opts.slice(0,i).concat(extra,opts.slice(i));}
+/* every conversation also offers what you're carrying: the right person takes it, anyone else tells you who it's for.
+   ITEMFOR lives in 03b-favors.js. Options are [label, fn, class, item name]. */
+/* once you know who an item is for, only that person is offered it (no clutter); until then anyone will tell you */
+function itemKnown(it){const f=FAVORS.find(x=>x.item===it);return !f||!!S.f["known_"+it]||!!S.f["fav_"+f.k]||!!(f.heard&&f.heard());}
+function withItems(who,opts){if(opts.some(o=>o[0]&&/^\(Paloma/.test(o[0])))return opts;if(who==="kenji"&&!S.f.kenjiAwake)return opts;
+  const shown=new Set(opts.map(o=>o[3]).filter(Boolean));const first=PPL[who].name.split(" ")[0];
+  const extra=S.inv.filter(it=>it!=="laptop"&&ITEMFOR[it]&&ITEMFOR[it].live()&&!shown.has(it)).filter(it=>{const f=ITEMFOR[it],to=typeof f.to==="function"?f.to():f.to;return to===who||!itemKnown(it);}).map(it=>{const f=ITEMFOR[it],to=typeof f.to==="function"?f.to():f.to;
+    if(to===who&&f.give)return [`Give ${first} the ${it}`,f.give,"item",it];
+    return [`Show ${first} the ${it}`,()=>(S.f["known_"+it]=true,{t:to===who?`${first} looks at the ${it}. "Ask me properly, and bring the rest of your case." (It'll show up as something to say once you've talked a little more.)`:
+      to?`${first} glances at the ${it}. "Not for me. That's for ${PPL[to].name}, ${PPL[to].role}."`:`${first} glances at the ${it}. "Not for me. ${f.hint}"`}),"item",it];});
+  const fav=typeof favorOpts==="function"?favorOpts(who):[];
+  const i=opts.findIndex(o=>o[1]===null);if(i<0)return opts.concat(extra,fav);return opts.slice(0,i).concat(extra,fav,opts.slice(i));}
 const INTRO={
  otto:()=>S.f.ottoRotated?`"Token's rotated. I feel like a hacker. The good kind."`:`Otto looks up. "You're the new security person? Did you look at the GitGuardian thing I shared? I don't know what a token is."`,
  marisol:()=>S.f.won1?`"You've got your access. Don't make me regret it."`:`Marisol doesn't look up. "Welcome aboard. Busy week: SOC 2 auditors on Friday, and Harriet wants to know why we pay for GitGuardian. What do you need?"`,
@@ -998,10 +1000,10 @@ ingrid:()=>{if(S.f.won3)return [["What's the change window?",()=>({t:`"Tonight, 
   if(S.f.ingridAsk)o.push(...pitches("ingrid",[
    {k:"yolo",label:"It's just a key. We swap it and we're done.",ok:false,reply:`"That's exactly what the last guy said. Out."`},
    {k:"map",label:"GitGuardian's exploration map shows three consumers, including recon-batch on batch-01, which isn't in any repo.",need:()=>S.f.map3,ok:true,pt:"i1",reply:`"batch-01. That box isn't even in our CMDB." She writes it down. "Okay. That's the one that would have bitten us."`},
-   {k:"rb",item:"runbook",label:"Here's the runbook: new key first, consumers next, old key revoked only after it has zero traffic. Rollback is pointing Vault back at version 1.",need:()=>S.f.runbook,ok:true,pt:"i2",reply:`She reads it. Twice. "You don't revoke until it's quiet. Good." She nods, very slightly.`},
+   {k:"rb",item:"printed runbook",label:"Here's the runbook: new key first, consumers next, old key revoked only after it has zero traffic. Rollback is pointing Vault back at version 1.",need:()=>has("printed runbook"),ok:true,pt:"i2",reply:`She reads it. Twice. "You don't revoke until it's quiet. Good." She nods, very slightly.`},
    {k:"budget",label:"A suspended PayRail account is unplanned downtime that burns your error budget. A planned change in a window doesn't.",need:()=>S.f.prMap,ok:true,pt:"i3",reply:`"Planned changes don't count against the budget." She almost smiles. "You read the SLO doc."`}]));
   o.push(bye);return o;},
-kenji:()=>{if(!S.f.kenjiAwake)return [...(has("cold brew")?[["Give Kenji the cold brew",()=>coffeeKenji(),"item"]]:[]),["Wake him up",()=>({t:"You say his name. Nothing. You poke the beanbag. He mumbles 'it's DNS' and keeps sleeping. Something caffeinated might work. Engineering keeps cold brew in their fridge on Floor 3."})],bye];
+kenji:()=>{if(!S.f.kenjiAwake)return [...(has("cold brew")?[["Give Kenji the cold brew",()=>coffeeKenji(),"item","cold brew"]]:[]),["Wake him up",()=>({t:"You say his name. Nothing. You poke the beanbag. He mumbles 'it's DNS' and keeps sleeping. Something caffeinated might work. Engineering keeps cold brew in their fridge on Floor 3."})],bye];
   const o=[["What do you need?",()=>({t:`"Fewer pages. If GitGuardian alerts went to the team that owns the repo instead of a shared inbox, I'd sleep."`})]];
   if(!S.f.scout)o.push(["Where's the ggscout config?",()=>({t:`"/etc/ggscout/config.toml on ops-tools. My terminal's logged in, you can sudoedit it. Uncomment the vault-prod source. Don't touch the k8s bit, it works."`})]);
   if(S.f.scout&&!S.f.kenjiBatch)o.push(["Ever heard of recon-batch?",()=>{S.f.kenjiBatch=true;return {t:`"The nightly reconciliation job? Runs at 2 AM on batch-01. Teo's thing. If it breaks, Finance doesn't get their numbers and Harriet calls Ingrid, who calls me."`};}]);
@@ -1009,7 +1011,7 @@ kenji:()=>{if(!S.f.kenjiAwake)return [...(has("cold brew")?[["Give Kenji the col
 desmond:()=>{const o=[];
   if(!S.f.desAsk)o.push(["What do you need for the assessment?",()=>{S.f.desAsk=true;const p=award("des");return {t:`"The PCI assessor comes Monday. Requirement 8.6.2: passwords and secrets for system and application accounts aren't hardcoded in scripts, config files or source code. I need evidence that we look for them and fix them. I have... a binder with a cover page."\n\nHe looks at you hopefully. "GitGuardian can produce that, can't it?"`,p};}]);
   if(S.f.desAsk&&!S.f.desDone){if(has("PCI evidence"))o.push(["Give Desmond the PCI evidence: here's your 8.6.2 evidence, straight from GitGuardian.",()=>{take("PCI evidence");S.f.desDone=true;give("PayRail contract");const p=award("contract");
-      return {t:`Desmond flips through it. "Detection history, who resolved what, when. This is real evidence." He hugs the printout.\n\n"Let me return the favor. Harriet doesn't care about breaches. Harriet cares about this." He hands you a page from the PayRail merchant agreement, section 14.2: if the merchant knows a credential is compromised and doesn't rotate it within 72 hours, PayRail can suspend processing, and fraud liability moves to the merchant.\n\n"We process about $410,000 an hour on a Friday night. Tell her that."\n\n[PayRail contract added to your items]`,p};}]);
+      return {t:`Desmond flips through it. "Detection history, who resolved what, when. This is real evidence." He hugs the printout.\n\n"Let me return the favor. Harriet doesn't care about breaches. Harriet cares about this." He hands you a page from the PayRail merchant agreement, section 14.2: if the merchant knows a credential is compromised and doesn't rotate it within 72 hours, PayRail can suspend processing, and fraud liability moves to the merchant.\n\n"We process about $410,000 an hour on a Friday night. Tell her that."\n\n[PayRail contract added to your items]`,p};},"item","PCI evidence"]);
     else o.push(["I'm on it.",()=>({t:`"GitGuardian, Secret incidents, the audit evidence export. Please. I'll be here. I live here now."`})]);}
   o.push(bye);return o;},
 harriet:()=>{if(S.f.won4)return [["Thanks for signing.",()=>({t:`"Don't thank me. Don't break anything."`})],bye];
@@ -1020,7 +1022,7 @@ harriet:()=>{if(S.f.won4)return [["Thanks for signing.",()=>({t:`"Don't thank me
    {k:"rev",label:"If PayRail suspends us, that's about $410,000 an hour in payments, during close. A two-hour window at 11 PM risks much less.",need:()=>S.pitch.harriet&&S.pitch.harriet.contract,ok:true,pt:"h2",reply:`She does the math faster than you did. "That's a material event." She doesn't say 'material event' lightly.`},
    {k:"pci",label:"Desmond's PCI evidence for Requirement 8.6.2 came straight out of GitGuardian. That's the report you never saw.",need:()=>S.f.desDone,ok:true,pt:"h3",reply:`"So that's what we pay for." She makes a note: RENEW. "Fine. The tool earns its keep."`}]));
   o.push(bye);return o;},
-paloma:()=>{const o=[];if(!S.f.palAsk)o.push(["Show Paloma the freeze exception: I have Finance's signature and five minutes of good news.",()=>{S.f.palAsk=true;const p=award("paloma");return {t:`Paloma reads the signature. "Harriet signed something? On close week?" She stands. "Go. Five minutes. He's skeptical about everything except his own demos."`,p};}]);
+paloma:()=>{const o=[];if(!S.f.palAsk)o.push(["Show Paloma the freeze exception: I have Finance's signature and five minutes of good news.",()=>{S.f.palAsk=true;const p=award("paloma");return {t:`Paloma reads the signature. "Harriet signed something? On close week?" She stands. "Go. Five minutes. He's skeptical about everything except his own demos."`,p};},"item","freeze exception"]);
   else o.push(["Any tips?",()=>({t:`"He likes evidence he can show the board. He hates hypotheticals."`})]);o.push(bye);return o;},
 victor:()=>{if(!S.f.palAsk)return [["(Paloma is watching you.)",()=>({t:`Paloma clears her throat. Loudly. You should talk to her first.`})],bye];
   if(S.f.won5)return [["Anything else?",()=>({t:`"Text me when it's done. Not before. Not during."`})],bye];
@@ -1058,6 +1060,94 @@ const DEATHS={
  recon:["PROD IS DOWN · 2:00 AM","At 11:40 PM everything was green, so you went home. At 2:00 AM recon-batch woke up on batch-01, sent the old key to PayRail, and got a 401. No reconciliation, no finance numbers for quarter close, and Harriet's phone rang at 6 AM.\n\nBatch jobs don't show up in live traffic. GitGuardian's exploration map listed recon-batch as a consumer. GitHub broke sign-ins and email in December 2023 the same way: rotations that missed a consumer nobody was watching."]};
 function die(k){S.dead=k;}
 
+/* ---- 03b-favors.js ---- */
+/* ============================== favors: fetch quests around the building ==============================
+   In the spirit of old Sierra office adventures: everyone has a small problem, every problem has an object,
+   and the object is somewhere silly. Ask people "Anything I can help with?" to hear about it; the Quest pad
+   keeps a list. Favors are optional (points, and people warm up to you), except printing the runbook:
+   Ingrid only reads paper. Items can be picked up before you know who they're for; showing one to the wrong
+   person tells you who it belongs to. */
+const FAVORS=[
+ {k:"pen",who:"marisol",item:"silver pen",t:"Find Marisol's silver pen",done:()=>S.f.penBack,where:"She last had it when she tried to print the SOC 2 checklist.",
+  ask:`"Actually, yes. My silver pen. I sign every audit document with it, and it's been gone since I tried to print the SOC 2 checklist. That printer eats everything."`},
+ {k:"roll",who:"otto",item:"ticket roll",t:"Get Otto a roll of take-a-number tickets",done:()=>S.f.rollBack,where:"Spare rolls live in the Floor 2 supply closet. Your office.",
+  ask:`"The take-a-number machine's been stuck on 47 for a month. It's out of paper. Spare rolls are in the supply closet on Floor 2." He pauses. "Which is... your office now. Sorry."`},
+ {k:"cage",who:"otto",item:"cage key",t:"Open the loaner cage with Otto's key",done:()=>S.f.cage,heard:()=>S.f.rollBack,where:"The cage is on B1, behind Otto."},
+ {k:"timer",who:"wendell",item:"tomato timer",t:"Find Wendell's tomato timer",done:()=>S.f.timerBack,where:"He suspects the kitchen. Engineering's fridge is on Floor 3.",
+  ask:`"Someone stole my standup timer. Tomato-shaped. Fifteen minutes, then it rings and everyone stops talking. Without it, standup lasted fifty minutes today." He glares at the kitchen. "I have suspicions."`},
+ {k:"duck",who:"juni",item:"rubber duck",t:"Find Juni's rubber duck",done:()=>S.f.duckBack,where:"She rinsed coffee out of it in a mop bucket. There's one in your closet.",
+  ask:`"I lost my rubber duck. I explain my bugs to it. Without it I've been explaining them to Wendell, and he just says 'ship it'." She thinks. "Last time I saw it I was rinsing coffee out of it in a mop bucket. Don't ask whose."`},
+ {k:"clips",who:"desmond",item:"binder clips",t:"Bring Desmond binder clips",done:()=>S.f.clipsBack,where:"IT hoards supplies in the loaner cage on B1. Otto has the key.",
+  ask:`"Binder clips. My Requirement 8 binder keeps exploding, and Purchasing says clips need a PO. During the freeze." He holds it shut with his elbow. "IT hoards everything in that cage on B1."`},
+ {k:"glasses",who:"harriet",item:"reading glasses",t:"Find Harriet's reading glasses",done:()=>S.f.glassesBack,where:"Red frames. Someone on this floor borrowed them for small print.",
+  ask:`"I can't read fine print today. Someone walked off with my reading glasses. Red frames." She looks across the floor, at nobody in particular. Desmond is reading six-point font very comfortably.`},
+ {k:"dongle",who:"paloma",item:"USB-C dongle",t:"Get Victor's demo screen working for Paloma",done:()=>S.f.dongleBack,where:"A USB-C to HDMI dongle. IT keeps spares in the loaner cage on B1.",
+  ask:`"Victor's board demo screen won't take his laptop. It wants HDMI, his laptop is USB-C only, and IT says dongles need a ticket." She sighs. "A ticket with Otto. On B1. Where tickets go to die."`}];
+const favHeard=f=>S.f["fav_"+f.k]||f.done()||(f.heard&&f.heard());
+/* who each item is for. give() returns a reply for the conversation (or the Items verb). */
+const ITEMFOR={
+ "cold brew":{to:"kenji",live:()=>!S.f.kenjiAwake,give:()=>coffeeKenji()},
+ "payments-incidents.csv":{to:"wendell",live:()=>!S.f.won2&&!(S.pitch.wendell||{}).csv},
+ "runbook":{to:null,hint:"Ingrid only reads paper. Print it on the Floor 2 printer.",live:()=>!S.f.printed},
+ "printed runbook":{to:"ingrid",live:()=>!S.f.won3&&!(S.pitch.ingrid||{}).rb},
+ "PCI evidence":{to:"desmond",live:()=>!S.f.desDone},
+ "PayRail contract":{to:"harriet",live:()=>!S.f.won4&&!(S.pitch.harriet||{}).contract},
+ "freeze exception":{to:()=>S.f.palAsk?"victor":"paloma",live:()=>!S.f.won5&&!(S.pitch.victor||{}).plan},
+ "silver pen":{to:"marisol",live:()=>!S.f.penBack,give:()=>{take("silver pen");S.f.penBack=true;const p=award("pen");
+   return {p,t:`Marisol takes the pen and clicks it twice. "Where was it?" You tell her: inside the printer. "Of course it was."\n\nShe signs something with a flourish. "You find things. That's a good quality in a security person."`};}},
+ "ticket roll":{to:"otto",live:()=>!S.f.rollBack,give:()=>{take("ticket roll");S.f.rollBack=true;give("cage key");const p=award("roll");draw();
+   return {p,t:`"Tickets! Real ones!" Otto loads the roll. The counter clicks over to 48. Nobody is waiting. He doesn't care.\n\nHe tosses you a small key on a lanyard. "Loaner cage. Take anything useful. Not the BrickBooks, they bite."\n\n[cage key added to your items]`};}},
+ "cage key":{to:null,hint:"That opens the loaner cage on B1.",live:()=>!S.f.cage},
+ "tomato timer":{to:"wendell",live:()=>!S.f.timerBack,give:()=>{take("tomato timer");S.f.timerBack=true;const p=award("timer");
+   return {p,t:`Wendell stares at the tomato. "In the fridge? That's a hate crime." He winds it to fifteen minutes and sets it on his desk. "Fine. You get fifteen minutes too."`};}},
+ "rubber duck":{to:"juni",live:()=>!S.f.duckBack,give:()=>{take("rubber duck");S.f.duckBack=true;const p=award("duck");
+   return {p,t:`Juni holds the duck up to the light. "Quackers." She sets it next to her keyboard. "Okay, duck. The scanner lies, the pager lies, Teo's config lies." She squeezes it. It wheezes. "Best debugger on the floor."`};}},
+ "binder clips":{to:"desmond",live:()=>!S.f.clipsBack,give:()=>{take("binder clips");S.f.clipsBack=true;const p=award("clips");
+   return {p,t:`Desmond clips the Requirement 8 binder shut. Then the next one. Then all five. He steps back. "Look at them. Audit-ready." He seems emotional about it.`};}},
+ "reading glasses":{to:"harriet",live:()=>!S.f.glassesBack,give:()=>{take("reading glasses");S.f.glassesBack=true;const p=award("glasses");
+   return {p,t:`Harriet puts them on and looks at you properly for the first time. "Better. Now I can see exactly how much this is costing me." She almost smiles. "Desmond?" You say nothing. She knows.`};}},
+ "USB-C dongle":{to:"paloma",live:()=>!S.f.dongleBack,give:()=>{take("USB-C dongle");S.f.dongleBack=true;const p=award("dongle");draw();
+   return {p,t:`Paloma plugs it in. The demo screen flickers: PAY LATER 2.0. She exhales for what looks like the first time today.\n\n"You're my favorite person on this floor." She writes your name into Victor's calendar. In pen.`};}}};
+/* "Anything I can help with?" and, once you know, a reminder of where to look */
+function favorOpts(who){const o=[];const first=PPL[who].name.split(" ")[0];
+  for(const f of FAVORS){if(f.who!==who||!f.ask||f.done())continue;
+    if(!S.f["fav_"+f.k])o.push(["Anything I can help with?",()=>{S.f["fav_"+f.k]=true;return {t:f.ask+"\n\n[Added to Favors in your Quest pad]"};}]);
+    else if(!has(f.item))o.push([`Where might the ${f.item.replace(/^USB-C /,"")} be?`,()=>({t:`${first}: "${f.where}"`})]);}
+  if(who==="desmond"&&S.f.fav_glasses&&!S.f.glassesGot&&!S.f.glassesBack)o.push(["Are those Harriet's red glasses on your head?",()=>{S.f.glassesGot=true;give("reading glasses");
+    return {t:`Desmond touches his head. "Oh no. I borrowed them for the binder index. Six-point font." He hands them over. "Please give them back before she notices. She's noticed, hasn't she."\n\n[reading glasses added to your items]`};}]);
+  return o;}
+/* the places the items are, as Look and Use in each room */
+Object.assign(LOOK.closet,{shelves:()=>"Paper towels, toner, and one box labeled HAL'S STUFF. Hal ran security before you."+(S.f.rollTaken?"":" Behind the towels, a box of take-a-number ticket rolls, for some reason."),
+  bucket:()=>"A mop bucket. It's been here longer than the security program."+(S.f.duckTaken?"":" Something small and yellow bobs in the grey water.")});
+Object.assign(USE.closet,{shelves:()=>{if(S.f.rollTaken)return say("Paper towels and toner. Nothing else you need.");S.f.rollTaken=true;give("ticket roll");
+    say("Behind the paper towels: a box of take-a-number ticket rolls. Who takes a number in a supply closet? You take one roll anyway. Adventure instinct.\n\n[ticket roll added to your items]");},
+  bucket:()=>{if(S.f.duckTaken)return say("You consider mopping. You decide to fix secrets instead.");S.f.duckTaken=true;give("rubber duck");
+    say("You fish around in the mop bucket, against your better judgment. Your hand finds something rubbery: a yellow rubber duck, slightly grey now.\n\n[rubber duck added to your items]");}});
+LOOK.f2.printer=()=>S.f.jam?(S.f.printed?"The printer. It printed your runbook and is very proud of itself.":"The printer. It works now. It seems suspicious of you."):"A sign on the printer: OUT OF ORDER SINCE THE REORG. Something silver glints inside, past the jammed paper.";
+USE.f2.printer=()=>{if(!S.f.jam){S.f.jam=true;let t="You open the printer and pull out a crumpled SOC 2 checklist. Wedged in the rollers behind it: a silver pen.";
+    if(!S.f.penBack){give("silver pen");t+="\n\n[silver pen added to your items]";}t+="\n\nThe printer wakes up, a little embarrassed.";draw();
+    if(has("runbook")&&!S.f.printed)t+="\n\nUse it again to print your runbook.";return say(t);}
+  if(has("runbook")&&!S.f.printed){S.f.printed=true;give("printed runbook");const p=award("print");draw();
+    return say("The printer thinks about it, then prints your runbook. Six steps, one page, still warm.\n\n[printed runbook added to your items]",p);}
+  say(S.f.printed?"It prints a test page. It's proud of itself.":"It works now. You don't have anything to print yet.");};
+LOOK.b1.cage=()=>S.f.cage?"The loaner cage, open. Six dead BrickBooks and a lot of cables nobody will ever need.":"A cage of loaner laptops, cables and supplies. Locked. Otto has the key.";
+LOOK.b1.number=()=>S.f.rollBack?"NOW SERVING: 48. Progress.":"NOW SERVING: 47. The machine is out of paper. Nobody takes a number. Nobody can.";
+USE.b1.cage=()=>{if(S.f.cage)return say("You've taken everything useful. The BrickBooks watch you go.");
+  if(!has("cage key"))return say("Locked. Your BrickBook came out of this cage. Otto has the key, and Otto has opinions.");
+  take("cage key");S.f.cage=true;give("USB-C dongle");give("binder clips");const p=award("cage");draw();
+  say("The cage creaks open. Behind six dead BrickBooks: a USB-C to HDMI dongle still in its bag, and a box of binder clips nobody has ever opened. You take both.\n\n[USB-C dongle and binder clips added to your items]",p);};
+LOOK.f3.fridge=()=>(S.f.coffeeGiven||has("cold brew")?"Oat milk, three yogurts with names on them, and a sign: TAKE ONE COLD BREW, NOT FOUR.":"Oat milk, labeled yogurts, and a row of cold brew cans. A sign: ENGINEERING ONLY. TAKE ONE.")+(S.f.timerTaken?"":" Behind the oat milk, something red and round is ticking.");
+/* one trip to the fridge takes whatever is useful in it: the timer, and (once Kenji needs it) a cold brew */
+USE.f3.fridge=()=>{const got=[],lines=[];
+  if(!S.f.timerTaken){S.f.timerTaken=true;give("tomato timer");got.push("tomato timer");lines.push("Behind the oat milk: a tomato-shaped kitchen timer, very cold, still ticking. Someone really didn't want standup to end on time. You take it.");}
+  if(S.lv>=3&&!S.f.coffeeGiven&&!has("cold brew")){S.f.fridgeOpen=true;give("cold brew");got.push("cold brew");lines.push("You take one cold brew. The sign says one. You respect the sign.");}
+  if(!got.length)return say(S.lv<3?"Oat milk and yogurts with names on them. Nothing you need right now.":"One cold brew per person. You read the sign.");
+  say(lines.join("\n\n")+`\n\n[${got.join(" and ")} added to your items]`);};
+LOOK.f6.demo=()=>S.f.dongleBack?"A demo of Pay Later 2.0 loops on the screen: 'Pay in 4. Instantly.' The payment step uses PayRail.":"The demo screen says NO SIGNAL. A USB-C cable dangles next to an HDMI port, as if they've never met.";
+USE.f6.demo=()=>say(LOOK.f6.demo());
+ITEMUSE["runbook"]={printer:()=>USE.f2.printer()};ITEMUSE["cage key"]={cage:()=>USE.b1.cage()};
+ITEMUSE["USB-C dongle"]=Object.assign(ITEMUSE["USB-C dongle"]||{},{demo:()=>say("Paloma guards this screen. Give her the dongle and let her do it.")});
+
 /* ---- 04-apps.js ---- */
 /* ============================== your laptop (BrickBook 9000), a homemade Windows 3.1 ============================== */
 let pcApp="progman",pcKind="laptop",ggRoute={page:"list"},modal=null;
@@ -1085,7 +1175,7 @@ function groups(){const have=new Set(apps().map(a=>a[0]));const b=Object.fromEnt
   return G.map(([n,items])=>[n,items.filter(([k])=>have.has(k)).map(([k,l])=>[k,l,b[k]||0])]).filter(g=>g[1].length);}
 const isPhone=()=>matchMedia("(max-width:600px)").matches;
 function openWin(app){if(app==="batch")return openTerm("batch");pcApp=app;let w=WM.wins.find(x=>x.app===app);if(app==="gg"&&!w)ggRoute={page:"list",fresh:true};
-  if(!w){const n=WM.wins.filter(x=>x.app!=="progman").length;const small={clock:[58,50,34,34],sol:[22,62,40,30]}[app];const [x,y,ww,hh]=small||[5+(n*4)%24,4+(n*5)%30,88,86];w={app,x,y,w:ww,h:hh,max:false,min:false,z:0};WM.wins.push(w);}
+  if(!w){const n=WM.wins.filter(x=>x.app!=="progman").length;const small={clock:[58,50,34,34],sol:[22,62,40,30]}[app];const [x,y,ww,hh]=small||[5+(n*4)%24,4+(n*5)%30,88,86];w={app,x,y,w:ww,h:hh,max:app==="gg",min:false,z:0};WM.wins.push(w);}/* GitGuardian opens full screen; the title bar can restore it */
   w.min=false;w.z=++WM.z;}
 function closeWin(app){WM.wins=WM.wins.filter(w=>w.app!==app);if(modal)modal=null;closeWinFocus();}
 function closeWinFocus(){const top=WM.wins.filter(w=>!w.min).sort((a,b)=>b.z-a.z)[0];pcApp=top?top.app:"progman";}
@@ -1781,6 +1871,7 @@ function lookRoom(){return ENTER[S.room]||(S.room==="closet"?"Your office. It's 
 function interact(v,id,item){const sp=SPOTS[S.room].find(s=>s.id===id);if(!sp)return say("You don't see that here.");
   if(v==="look")return say(lookAt(sp));
   if(v==="item"){const f=ITEMUSE[item]&&ITEMUSE[item][sp.talk||sp.id];if(f)return f();if(item==="laptop")return openLaptop();
+    const g=ITEMFOR[item];if(sp.talk&&g&&g.give&&g.live()&&(typeof g.to==="function"?g.to():g.to)===sp.talk){const r=g.give();return say(r.t,r.p,PPL[sp.talk].name);}
     if(sp.talk&&/csv|evidence|contract|exception|runbook/.test(item))return say(`Better to make your case in conversation. Talk to ${PPL[sp.talk].name.split(" ")[0]}: once you have the ${item}, new things to say will show up.`);
     return say(`The ${item} doesn't do anything useful with the ${sp.name}.`);}
   if(sp.floor)return ride(sp.floor);
@@ -1816,6 +1907,7 @@ function parse(raw){const words=raw.replace(/[^a-z0-9 #]/g," ").replace(/\b(the|
 function showTasks(){if(document.getElementById("padwrap"))return;const Lr=ML();const w=document.createElement("div");w.className="msgwrap";w.id="padwrap";const st=STEPS[S.lv]||[];
   w.innerHTML=`<div class="pad" role="dialog" aria-modal="true" aria-label="Quest"><h2>Level ${S.lv}: ${esc(LV[S.lv].name)}</h2><div class="win">${esc(LV[S.lv].tag)}</div>
    <ol>${st.map(([t,d])=>`<li class="${d()?"ok":""}"><span>${d()?"[x]":"[ ]"}</span> ${esc(t)}</li>`).join("")}</ol>
+   <div class="final"><b>Favors</b> <span style="font-size:15px">(optional, ask people "Anything I can help with?")</span><ul>${FAVORS.filter(favHeard).length?FAVORS.filter(favHeard).map(f=>`<li>${f.done()?'<span class="x">✓</span>':"•"} ${esc(f.t)}${f.done()?"":` <span style="font-size:15px">· ${esc(f.where)}</span>`}</li>`).join(""):"<li>None yet. People around the building could use a hand.</li>"}</ul></div>
    <div class="final"><b>Your access</b><ul>${S.acc.map(a=>`<li><span class="x">✓</span> ${esc(a)}</li>`).join("")}</ul></div>
    <div class="final"><b>Items</b><ul>${S.inv.length?S.inv.map(a=>`<li>• ${esc(a)}</li>`).join(""):"<li>none</li>"}</ul></div>
    <div class="btns"><button data-padclose>Close</button></div></div>`;
@@ -1850,7 +1942,7 @@ function levelCard(n){clearMsgs();PL().innerHTML="";const Lr=ML();const w=docume
 document.addEventListener("click",e=>{const b=e.target.closest("[data-go]");if(!b)return;clearMsgs();beginLevel(+b.dataset.go);});
 function beginLevel(n){S.lv=n;S.t=Math.max(S.t,START_T[n]);S.dead=null;
   LVMAIL[n]();const c=Object.assign({},S);delete c.ckpt;S.ckpt=JSON.stringify(c);save();showGame();
-  const open={1:"Day one at Precarium Inc. Your badge opens Floor 2 and B1. Your office is a supply closet. Your GitGuardian account is Restricted.\n\nYour laptop is on the desk, and the mail icon is blinking. Start there. It goes everywhere with you: the Laptop button under the picture.",
+  const open={1:"Day one at Precarium Inc. Your badge opens Floor 2 and B1. Your office is a supply closet. Your GitGuardian account is Restricted.\n\nYour laptop is on the desk, and the mail icon is blinking. Start there. It goes everywhere with you: the Laptop button under the picture.\n\nPeople here have small problems of their own. Ask them \"Anything I can help with?\" Favors earn points, and friends.",
    2:"You can see all 2,417 incidents now. Open your laptop (the Laptop button) and find the one Hal never read.",
    3:"#2871 is yours. Production isn't. Floor 4 is SRE.",4:"Floor 5 is Finance and Compliance. The freeze is theirs.",5:"Floor 6. Paloma first. Then the CTO.",
    6:"11:00 PM. The building is quiet. Everyone is on #payrail-rotation, watching you.\n\nOpen your laptop. Your runbook is the plan. Checkout is taking about 1,200 PayRail calls a minute, and they all need to keep working."}[n];
@@ -1915,6 +2007,10 @@ const MILESTONES={
     ["TicketHive token rotated",()=>S.f.ottoRotated,()=>{S.f.ottoWorried=true;S.f.ottoRotated=true;grant("Otto at the help desk owes you one");award("otto");
       mail("otto2",PPL.otto.name,"done!!","New TicketHive token is in the auto-close script and the old one is revoked. The script still works. I checked twice.\n\nThanks for not making it my fault.\n\n- Otto");}],
     ["#3112 resolved",()=>S.f.thResolved,()=>{S.f.thResolved=true;award("thResolved");}],
+    ["printer unjammed",()=>S.f.jam,()=>{S.f.jam=true;if(!S.f.penBack)give("silver pen");}],
+    ["Marisol has her pen",()=>S.f.penBack,()=>{S.f.jam=true;take("silver pen");S.f.penBack=true;S.f.fav_pen=true;award("pen");}],
+    ["Otto has his tickets",()=>S.f.rollBack,()=>{S.f.rollTaken=true;take("ticket roll");S.f.rollBack=true;S.f.fav_roll=true;award("roll");if(!S.f.cage)give("cage key");}],
+    ["loaner cage opened",()=>S.f.cage,()=>{take("cage key");S.f.cage=true;award("cage");if(!S.f.dongleBack)give("USB-C dongle");if(!S.f.clipsBack)give("binder clips");}],
     pm("marisol","th","m1","Marisol: the TicketHive story"),
     pm("marisol","bounce","m2","Marisol: the 47 bounced alerts")],
  2:[["#2871 found",()=>S.f.pr,()=>{S.f.pr=true;award("pr");}],
@@ -1923,6 +2019,8 @@ const MILESTONES={
     ["talked to Juni",()=>S.f.juniAsk,()=>{S.f.juniAsk=true;award("juni");}],
     ["pre-commit hook fixed",()=>S.f.hook,()=>{S.f.hook=true;award("hook");}],
     ["Juni explained the key",()=>S.f.juniTold,()=>{S.f.juniTold=true;}],
+    ["Wendell has his timer",()=>S.f.timerBack,()=>{S.f.timerTaken=true;take("tomato timer");S.f.timerBack=true;S.f.fav_timer=true;award("timer");}],
+    ["Juni has her duck",()=>S.f.duckBack,()=>{S.f.duckTaken=true;take("rubber duck");S.f.duckBack=true;S.f.fav_duck=true;award("duck");}],
     pm("wendell","csv","w1","Wendell: the Payments export"),
     pm("wendell","hook","w2","Wendell: faster commits"),
     pm("wendell","pr","w3","Wendell: the launch has no payments")],
@@ -1933,6 +2031,7 @@ const MILESTONES={
     ["recon-batch found",()=>S.f.map3,()=>{S.f.map3=true;award("map3");}],
     ["asked Kenji about recon-batch",()=>S.f.kenjiBatch,()=>{S.f.kenjiBatch=true;}],
     ["runbook written",()=>S.f.runbook,()=>{S.f.runbook=true;give("runbook");award("runbook");}],
+    ["runbook printed",()=>S.f.printed,()=>{S.f.jam=true;S.f.printed=true;give("printed runbook");award("print");}],
     pm("ingrid","map","i1","Ingrid: three consumers"),
     pm("ingrid","rb","i2","Ingrid: the runbook"),
     pm("ingrid","budget","i3","Ingrid: the error budget")],
@@ -1940,11 +2039,14 @@ const MILESTONES={
     ["talked to Desmond",()=>S.f.desAsk,()=>{S.f.desAsk=true;award("des");}],
     ["PCI evidence exported",()=>S.f.pci,()=>{S.f.pci=true;if(!S.f.desDone)give("PCI evidence");award("pci");}],
     ["Desmond has his evidence",()=>S.f.desDone,()=>{take("PCI evidence");S.f.desDone=true;give("PayRail contract");award("contract");}],
+    ["Desmond has his binder clips",()=>S.f.clipsBack,()=>{take("binder clips");S.f.clipsBack=true;S.f.fav_clips=true;award("clips");}],
+    ["Harriet has her glasses",()=>S.f.glassesBack,()=>{take("reading glasses");S.f.glassesGot=true;S.f.glassesBack=true;S.f.fav_glasses=true;award("glasses");}],
     pm("harriet","contract","h1","Harriet: the 72-hour clause"),
     pm("harriet","rev","h2","Harriet: $410,000 an hour"),
     pm("harriet","pci","h3","Harriet: the report she never saw")],
  5:[["talked to Paloma",()=>S.f.palAsk,()=>{S.f.palAsk=true;award("paloma");}],
     ["talked to Victor",()=>S.f.vicAsk,()=>{S.f.vicAsk=true;award("victor");}],
+    ["Victor's demo screen works",()=>S.f.dongleBack,()=>{take("USB-C dongle");S.f.dongleBack=true;S.f.fav_dongle=true;award("dongle");}],
     ["honeytoken created",()=>S.f.htMade,()=>{S.ht=S.ht||{name:"aws-docs-example",planted:false};S.f.htMade=true;award("htMade");}],
     ["honeytoken planted",()=>S.f.htPlanted,()=>{S.ht=S.ht||{name:"aws-docs-example"};if(!S.ht.planted){S.ht.planted=true;S.ht.plantedAt=S.t;S.ht.at=S.t+4;}S.f.htPlanted=true;award("htPlanted");}],
     ["honeytoken fired",()=>S.f.htFired,()=>{if(!S.ht.fired)S.ht.fired=S.ht.plantedAt+4;S.f.htFired=true;award("htFired");mail("ht","GitGuardian","[Honeytoken triggered] aws-docs-example in precarium-sdk-examples","Your honeytoken was used.\n\nSource IP: 185.220.101.47\nUser agent: aws-cli/2.15 Python/3.11 botocore\nAction: sts:GetCallerIdentity\nFirst use: 4 minutes after the commit was pushed\n\nNo real resources are behind a honeytoken. Whoever tried it was scanning public GitHub for credentials.");readMail("ht");}],

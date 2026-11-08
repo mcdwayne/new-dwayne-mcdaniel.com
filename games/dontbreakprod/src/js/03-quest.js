@@ -18,6 +18,7 @@ const STEPS={
     ["Turn on the Vault source in ggscout's config.toml (Kenji's terminal)",()=>S.f.scout],
     ["Re-open the PayRail exploration map: who else uses the key?",()=>S.f.map3],
     ["Write the rotation runbook in Notepad on your laptop",()=>S.f.runbook],
+    ["Print the runbook on the Floor 2 printer (Ingrid only reads paper)",()=>S.f.printed],
     ["BOSS: convince Ingrid Solberg (Floor 4)",()=>S.f.won3]],
  4:[["Floor 5: talk to Harriet Quill, the CFO",()=>S.f.harrietAsk],
     ["Talk to Desmond Achebe in Compliance",()=>S.f.desAsk],
@@ -46,7 +47,7 @@ const LOOK={
    sticky:"The sticky note says: \"GitGuardian login = your email. Ask Marisol for more. - M\"",
    shelves:"Paper towels, toner, and one box labeled HAL'S STUFF. Hal ran security before you. Hal's box contains a stress ball and a printout titled 'Q2 SECRETS - TODO'. The TODO list is blank.",
    bucket:"A mop bucket. It's been here longer than the security program.",
-   chair:"A chair with three legs. You'll be standing.",sign:"Someone taped SECURITY over SUPPLIES. The tape is already peeling."},
+   chair:"An office chair. The backrest hangs off and one wheel has rolled under the desk. You'll be standing.",sign:"Someone taped SECURITY over SUPPLIES. The tape is already peeling."},
  f2:{office:"Marisol's glass office. A whiteboard behind her reads: SOC 2 AUDIT FRIDAY. Under it, smaller: renew GitGuardian??",printer:"The printer has a sign: OUT OF ORDER SINCE THE REORG.",plant:"A plant. Healthy. Somebody here waters things."},
  lift:{panel:()=>`The badge reader shows the floors your badge opens: ${S.badge.join(", ")}. Everything else blinks red.`},
  b1:{cage:"A cage of loaner laptops. Most have stickers. One has duct tape holding the hinge on. It's labeled BRICKBOOK 9000.",number:"NOW SERVING: 47. You didn't take a number. Nobody does.",note:"A note in Otto's handwriting: \"TicketHive API token for the auto-close script - DO NOT LOSE\". It's from 2022."},
@@ -100,21 +101,20 @@ const pc=who=>Object.keys(S.pitch[who]||{}).length;
 /* a pitch option: [label, needs, works?, reply, points key] */
 function pitches(who,list){const c=S.pitch[who]||(S.pitch[who]={});
   return list.filter(x=>!c[x.k]&&(!x.need||x.need())).map(x=>[x.item?`▸ Show the ${x.item}: ${x.label}`:"▸ "+x.label,()=>{if(x.ok){c[x.k]=1;const p=award(x.pt);const n=pc(who);
-    return {t:x.reply+"\n\n"+meter(n),p,win:n>=3?WIN[who]:null};}return {t:x.reply+"\n\n"+meter(pc(who))};},x.item?"pitch item":"pitch"]);}
+    return {t:x.reply+"\n\n"+meter(n),p,win:n>=3?WIN[who]:null};}return {t:x.reply+"\n\n"+meter(pc(who))};},x.item?"pitch item":"pitch",x.item]);}
 function talk(who){const p=PPL[who];if(who!=="kenji"||S.f.kenjiAwake)markMet(who);dialog(`${p.name} · ${p.role}`,who,INTRO[who](),()=>withItems(who,OPTS[who]()));}
-/* who each item is for, and whether it's still useful */
-const ITEMFOR={"cold brew":{to:"kenji",live:()=>!S.f.kenjiAwake},
- "payments-incidents.csv":{to:"wendell",live:()=>!S.f.won2&&!(S.pitch.wendell||{}).csv},
- "runbook":{to:"ingrid",live:()=>!S.f.won3&&!(S.pitch.ingrid||{}).rb},
- "PCI evidence":{to:"desmond",live:()=>!S.f.desDone},
- "PayRail contract":{to:"harriet",live:()=>!S.f.won4&&!(S.pitch.harriet||{}).contract},
- "freeze exception":{to:()=>S.f.palAsk?"victor":"paloma",live:()=>!S.f.won5&&!(S.pitch.victor||{}).plan}};
-function withItems(who,opts){if(opts.some(o=>o[0]&&/^\(Paloma/.test(o[0])))return opts;
-  const shown=new Set(opts.map(o=>o[0]).filter(Boolean).join("\n").match(/the (cold brew|payments-incidents\.csv|runbook|PCI evidence|PayRail contract|freeze exception)/g)||[]);
-  const extra=S.inv.filter(it=>it!=="laptop"&&ITEMFOR[it]&&ITEMFOR[it].live()&&![...shown].some(s=>s.endsWith(it))).map(it=>{
-    const f=ITEMFOR[it],to=typeof f.to==="function"?f.to():f.to,first=PPL[who].name.split(" ")[0];
-    return [`Show ${first} the ${it}`,()=>({t:to===who?`${first} looks at the ${it}. "Ask me properly, and bring the rest of your case." (It'll show up as something to say once you've talked a little more.)`:`${first} glances at the ${it}. "Not for me. That's for ${PPL[to].name}, ${PPL[to].role}."`}),"item"];});
-  const i=opts.findIndex(o=>o[1]===null);if(i<0)return opts.concat(extra);return opts.slice(0,i).concat(extra,opts.slice(i));}
+/* every conversation also offers what you're carrying: the right person takes it, anyone else tells you who it's for.
+   ITEMFOR lives in 03b-favors.js. Options are [label, fn, class, item name]. */
+/* once you know who an item is for, only that person is offered it (no clutter); until then anyone will tell you */
+function itemKnown(it){const f=FAVORS.find(x=>x.item===it);return !f||!!S.f["known_"+it]||!!S.f["fav_"+f.k]||!!(f.heard&&f.heard());}
+function withItems(who,opts){if(opts.some(o=>o[0]&&/^\(Paloma/.test(o[0])))return opts;if(who==="kenji"&&!S.f.kenjiAwake)return opts;
+  const shown=new Set(opts.map(o=>o[3]).filter(Boolean));const first=PPL[who].name.split(" ")[0];
+  const extra=S.inv.filter(it=>it!=="laptop"&&ITEMFOR[it]&&ITEMFOR[it].live()&&!shown.has(it)).filter(it=>{const f=ITEMFOR[it],to=typeof f.to==="function"?f.to():f.to;return to===who||!itemKnown(it);}).map(it=>{const f=ITEMFOR[it],to=typeof f.to==="function"?f.to():f.to;
+    if(to===who&&f.give)return [`Give ${first} the ${it}`,f.give,"item",it];
+    return [`Show ${first} the ${it}`,()=>(S.f["known_"+it]=true,{t:to===who?`${first} looks at the ${it}. "Ask me properly, and bring the rest of your case." (It'll show up as something to say once you've talked a little more.)`:
+      to?`${first} glances at the ${it}. "Not for me. That's for ${PPL[to].name}, ${PPL[to].role}."`:`${first} glances at the ${it}. "Not for me. ${f.hint}"`}),"item",it];});
+  const fav=typeof favorOpts==="function"?favorOpts(who):[];
+  const i=opts.findIndex(o=>o[1]===null);if(i<0)return opts.concat(extra,fav);return opts.slice(0,i).concat(extra,fav,opts.slice(i));}
 const INTRO={
  otto:()=>S.f.ottoRotated?`"Token's rotated. I feel like a hacker. The good kind."`:`Otto looks up. "You're the new security person? Did you look at the GitGuardian thing I shared? I don't know what a token is."`,
  marisol:()=>S.f.won1?`"You've got your access. Don't make me regret it."`:`Marisol doesn't look up. "Welcome aboard. Busy week: SOC 2 auditors on Friday, and Harriet wants to know why we pay for GitGuardian. What do you need?"`,
@@ -168,10 +168,10 @@ ingrid:()=>{if(S.f.won3)return [["What's the change window?",()=>({t:`"Tonight, 
   if(S.f.ingridAsk)o.push(...pitches("ingrid",[
    {k:"yolo",label:"It's just a key. We swap it and we're done.",ok:false,reply:`"That's exactly what the last guy said. Out."`},
    {k:"map",label:"GitGuardian's exploration map shows three consumers, including recon-batch on batch-01, which isn't in any repo.",need:()=>S.f.map3,ok:true,pt:"i1",reply:`"batch-01. That box isn't even in our CMDB." She writes it down. "Okay. That's the one that would have bitten us."`},
-   {k:"rb",item:"runbook",label:"Here's the runbook: new key first, consumers next, old key revoked only after it has zero traffic. Rollback is pointing Vault back at version 1.",need:()=>S.f.runbook,ok:true,pt:"i2",reply:`She reads it. Twice. "You don't revoke until it's quiet. Good." She nods, very slightly.`},
+   {k:"rb",item:"printed runbook",label:"Here's the runbook: new key first, consumers next, old key revoked only after it has zero traffic. Rollback is pointing Vault back at version 1.",need:()=>has("printed runbook"),ok:true,pt:"i2",reply:`She reads it. Twice. "You don't revoke until it's quiet. Good." She nods, very slightly.`},
    {k:"budget",label:"A suspended PayRail account is unplanned downtime that burns your error budget. A planned change in a window doesn't.",need:()=>S.f.prMap,ok:true,pt:"i3",reply:`"Planned changes don't count against the budget." She almost smiles. "You read the SLO doc."`}]));
   o.push(bye);return o;},
-kenji:()=>{if(!S.f.kenjiAwake)return [...(has("cold brew")?[["Give Kenji the cold brew",()=>coffeeKenji(),"item"]]:[]),["Wake him up",()=>({t:"You say his name. Nothing. You poke the beanbag. He mumbles 'it's DNS' and keeps sleeping. Something caffeinated might work. Engineering keeps cold brew in their fridge on Floor 3."})],bye];
+kenji:()=>{if(!S.f.kenjiAwake)return [...(has("cold brew")?[["Give Kenji the cold brew",()=>coffeeKenji(),"item","cold brew"]]:[]),["Wake him up",()=>({t:"You say his name. Nothing. You poke the beanbag. He mumbles 'it's DNS' and keeps sleeping. Something caffeinated might work. Engineering keeps cold brew in their fridge on Floor 3."})],bye];
   const o=[["What do you need?",()=>({t:`"Fewer pages. If GitGuardian alerts went to the team that owns the repo instead of a shared inbox, I'd sleep."`})]];
   if(!S.f.scout)o.push(["Where's the ggscout config?",()=>({t:`"/etc/ggscout/config.toml on ops-tools. My terminal's logged in, you can sudoedit it. Uncomment the vault-prod source. Don't touch the k8s bit, it works."`})]);
   if(S.f.scout&&!S.f.kenjiBatch)o.push(["Ever heard of recon-batch?",()=>{S.f.kenjiBatch=true;return {t:`"The nightly reconciliation job? Runs at 2 AM on batch-01. Teo's thing. If it breaks, Finance doesn't get their numbers and Harriet calls Ingrid, who calls me."`};}]);
@@ -179,7 +179,7 @@ kenji:()=>{if(!S.f.kenjiAwake)return [...(has("cold brew")?[["Give Kenji the col
 desmond:()=>{const o=[];
   if(!S.f.desAsk)o.push(["What do you need for the assessment?",()=>{S.f.desAsk=true;const p=award("des");return {t:`"The PCI assessor comes Monday. Requirement 8.6.2: passwords and secrets for system and application accounts aren't hardcoded in scripts, config files or source code. I need evidence that we look for them and fix them. I have... a binder with a cover page."\n\nHe looks at you hopefully. "GitGuardian can produce that, can't it?"`,p};}]);
   if(S.f.desAsk&&!S.f.desDone){if(has("PCI evidence"))o.push(["Give Desmond the PCI evidence: here's your 8.6.2 evidence, straight from GitGuardian.",()=>{take("PCI evidence");S.f.desDone=true;give("PayRail contract");const p=award("contract");
-      return {t:`Desmond flips through it. "Detection history, who resolved what, when. This is real evidence." He hugs the printout.\n\n"Let me return the favor. Harriet doesn't care about breaches. Harriet cares about this." He hands you a page from the PayRail merchant agreement, section 14.2: if the merchant knows a credential is compromised and doesn't rotate it within 72 hours, PayRail can suspend processing, and fraud liability moves to the merchant.\n\n"We process about $410,000 an hour on a Friday night. Tell her that."\n\n[PayRail contract added to your items]`,p};}]);
+      return {t:`Desmond flips through it. "Detection history, who resolved what, when. This is real evidence." He hugs the printout.\n\n"Let me return the favor. Harriet doesn't care about breaches. Harriet cares about this." He hands you a page from the PayRail merchant agreement, section 14.2: if the merchant knows a credential is compromised and doesn't rotate it within 72 hours, PayRail can suspend processing, and fraud liability moves to the merchant.\n\n"We process about $410,000 an hour on a Friday night. Tell her that."\n\n[PayRail contract added to your items]`,p};},"item","PCI evidence"]);
     else o.push(["I'm on it.",()=>({t:`"GitGuardian, Secret incidents, the audit evidence export. Please. I'll be here. I live here now."`})]);}
   o.push(bye);return o;},
 harriet:()=>{if(S.f.won4)return [["Thanks for signing.",()=>({t:`"Don't thank me. Don't break anything."`})],bye];
@@ -190,7 +190,7 @@ harriet:()=>{if(S.f.won4)return [["Thanks for signing.",()=>({t:`"Don't thank me
    {k:"rev",label:"If PayRail suspends us, that's about $410,000 an hour in payments, during close. A two-hour window at 11 PM risks much less.",need:()=>S.pitch.harriet&&S.pitch.harriet.contract,ok:true,pt:"h2",reply:`She does the math faster than you did. "That's a material event." She doesn't say 'material event' lightly.`},
    {k:"pci",label:"Desmond's PCI evidence for Requirement 8.6.2 came straight out of GitGuardian. That's the report you never saw.",need:()=>S.f.desDone,ok:true,pt:"h3",reply:`"So that's what we pay for." She makes a note: RENEW. "Fine. The tool earns its keep."`}]));
   o.push(bye);return o;},
-paloma:()=>{const o=[];if(!S.f.palAsk)o.push(["Show Paloma the freeze exception: I have Finance's signature and five minutes of good news.",()=>{S.f.palAsk=true;const p=award("paloma");return {t:`Paloma reads the signature. "Harriet signed something? On close week?" She stands. "Go. Five minutes. He's skeptical about everything except his own demos."`,p};}]);
+paloma:()=>{const o=[];if(!S.f.palAsk)o.push(["Show Paloma the freeze exception: I have Finance's signature and five minutes of good news.",()=>{S.f.palAsk=true;const p=award("paloma");return {t:`Paloma reads the signature. "Harriet signed something? On close week?" She stands. "Go. Five minutes. He's skeptical about everything except his own demos."`,p};},"item","freeze exception"]);
   else o.push(["Any tips?",()=>({t:`"He likes evidence he can show the board. He hates hypotheticals."`})]);o.push(bye);return o;},
 victor:()=>{if(!S.f.palAsk)return [["(Paloma is watching you.)",()=>({t:`Paloma clears her throat. Loudly. You should talk to her first.`})],bye];
   if(S.f.won5)return [["Anything else?",()=>({t:`"Text me when it's done. Not before. Not during."`})],bye];

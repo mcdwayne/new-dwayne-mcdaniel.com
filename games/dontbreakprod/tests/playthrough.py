@@ -58,7 +58,8 @@ def run(page, branch=None):
     do("GAME.openLaptop('gg')"); act("open:2871"); act("ggmap:2871"); assert "recon-batch" in page.inner_text("#w31")
     pc("notepad"); act("rb:revoke"); dismiss()
     for k in ["new","vault","move","quiet","revoke","verify"]: act("rb:"+k)
-    closepc(); do('GAME.talk("ingrid")'); opt("GitGuardian's exploration map"); opt("Here's the runbook"); opt("A suspended PayRail"); cont()
+    closepc(); do('GAME.go("lift")'); do('GAME.ride("2")'); do('GAME.interact("use","printer")'); do('GAME.interact("use","printer")'); do('GAME.go("lift")'); do('GAME.ride("4")')
+    do('GAME.talk("ingrid")'); opt("GitGuardian's exploration map"); opt("Here's the runbook"); opt("A suspended PayRail"); cont()
     # ---- level 4
     do('GAME.go("lift")'); do('GAME.ride("5")'); do('GAME.talk("harriet")'); opt("I need a freeze"); bye()
     do('GAME.talk("desmond")'); opt("What do you need"); bye()

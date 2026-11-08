@@ -37,7 +37,9 @@ const POINTS={
  ingrid:2,coffee:2,scout:5,map3:3,runbook:5,i1:3,i2:3,i3:3,win3:4,
  harriet:2,des:2,pci:3,contract:3,h1:3,h2:3,h3:3,win4:4,
  paloma:1,victor:2,htMade:3,htPlanted:2,htFired:3,v1p:3,v2p:3,v3p:3,win5:4,
- newkey:4,vault:4,deploy:4,recon:5,quiet:4,revoke:5,final:6};
+ newkey:4,vault:4,deploy:4,recon:5,quiet:4,revoke:5,final:6,
+ /* favors around the building, and printing the runbook for Ingrid */
+ pen:3,roll:3,cage:1,timer:2,duck:2,print:2,clips:2,glasses:2,dongle:3};
 const MAXSCORE=Object.values(POINTS).reduce((a,b)=>a+b,0);
 /* the leaked key, before and after */
 const K1="sk_live_51Hq…7Qd",K2="sk_live_51Hq…r2Xq";
