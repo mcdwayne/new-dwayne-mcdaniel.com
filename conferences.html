@@ -169,7 +169,7 @@ body {
 .profile .conferences__table tr {
   display: table;
   width: 100%;
-  min-width: 900px;
+  min-width: 1050px;
   table-layout: fixed;
 }
 
@@ -190,14 +190,21 @@ body {
   white-space: nowrap;
 }
 
+/* Column 2: Conference */
 .profile .conferences__table th:nth-child(2),
 .profile .conferences__table td:nth-child(2) {
   width: 180px;
   white-space: normal;
 }
 
+/* Column 3: Location */
 .profile .conferences__table th:nth-child(3),
-.profile .conferences__table td:nth-child(3),
+.profile .conferences__table td:nth-child(3) {
+  width: 150px;
+  white-space: normal;
+}
+
+/* Upcoming: 4 Role, 5 Talk, 6 Recording. Past: 4 Blog Post, 5 Role, 6 Talk, 7 Recording */
 .profile .conferences__table th:nth-child(4),
 .profile .conferences__table td:nth-child(4),
 .profile .conferences__table th:nth-child(5),
@@ -207,12 +214,16 @@ body {
 }
 
 .profile .conferences__table th:nth-child(6),
-.profile .conferences__table td:nth-child(6) {
-  width: 240px;
-  white-space: normal;
-  word-break: break-word;
+.profile .conferences__table td:nth-child(6),
+.profile .conferences__table th:nth-child(7),
+.profile .conferences__table td:nth-child(7) {
+  width: 120px;
+  white-space: nowrap;
 }
 
+/* Talk column: 6th in past events, 5th in upcoming events */
+.profile section[aria-labelledby="past-heading"] .conferences__table th:nth-child(6),
+.profile section[aria-labelledby="past-heading"] .conferences__table td:nth-child(6),
 .profile section[aria-labelledby="upcoming-heading"] .conferences__table th:nth-child(5),
 .profile section[aria-labelledby="upcoming-heading"] .conferences__table td:nth-child(5) {
   width: 240px;
@@ -350,15 +361,15 @@ html {
 
       <!-- Conferences table: columns = Date | Conference (link) | Recording | GitGuardian Blog | Role | Talk -->
       <section aria-labelledby="upcoming-heading">
-        <h2 id="upcoming-heading" style="font-size: clamp(1.2rem, 3vw, 1.5rem); color: var(--text-main); margin: 2rem 0 1rem 0; font-weight: 600;">Upcoming Events</h2>
+        <h2 id="upcoming-heading" style="font-size: clamp(1.2rem, 3vw, 1.5rem); color: var(--text-main); margin: 2rem 0 1rem 0; font-weight: 600;">Upcoming Events (4)</h2>
         <hr style="height: 3px; background-color: #d3d330; border: none; margin-bottom: 1rem;">
 
-        <table class="conferences__table" summary="List of upcoming conferences with links to event and recording, plus role and talk">
+        <table class="conferences__table" summary="List of upcoming conferences with links to event, plus role and talk">
           <thead>
             <tr>
               <th scope="col">Date</th>
               <th scope="col">Conference</th>
-              <th scope="col">Recording</th>
+              <th scope="col">Location</th>
               <th scope="col">Role</th>
               <th scope="col">Talk</th>
             </tr>
@@ -367,28 +378,28 @@ html {
             <tr>
               <td>2026-11-13</td>
               <td><a href="https://queencitycon.org/" target="_blank" rel="noopener">Queen City Conference</a></td>
-              <td>—</td>
+              <td>Cincinnati, OH</td>
               <td>Speaker</td>
               <td>Stop Agents From Leaking Your Secrets - AI Hooks To The Rescue</td>
             </tr>
             <tr>
               <td>2026-11-19</td>
               <td><a href="https://www.bsidesottawa.ca/" target="_blank" rel="noopener">BSides Ottawa 2026</a></td>
-              <td>—</td>
+              <td>Ottawa, ON</td>
               <td>Speaker</td>
               <td>From Pets to Cattle to Agents</td>
             </tr>
             <tr>
               <td>2026-11-27</td>
               <td><a href="https://www.dev-mtl.ca/" target="_blank" rel="noopener">/dev/mtl 2026</a></td>
-              <td>—</td>
+              <td>Montreal, QC</td>
               <td>Speaker</td>
               <td>The Laptop Is the Perimeter: How Attackers Target Developers to Breach the Software Supply Chain</td>
             </tr>
             <tr>
               <td>2026-12-08</td>
               <td><a href="https://www.gitguardian.com/events/gitguardian-secdays-nyc-2026" target="_blank" rel="noopener">GitGuardian SecDays NYC 2026</a></td>
-              <td>—</td>
+              <td>New York, NY</td>
               <td>Hosting</td>
               <td>—</td>
             </tr>
@@ -397,7 +408,7 @@ html {
       </section>
 
       <section aria-labelledby="past-heading">
-        <h2 id="past-heading" style="font-size: clamp(1.2rem, 3vw, 1.5rem); color: var(--text-main); margin: 2rem 0 1rem 0; font-weight: 600;">Past Events</h2>
+        <h2 id="past-heading" style="font-size: clamp(1.2rem, 3vw, 1.5rem); color: var(--text-main); margin: 2rem 0 1rem 0; font-weight: 600;">Past Events (209)</h2>
         <hr style="height: 3px; background-color: #d3d330; border: none; margin-bottom: 1rem;">
 
         <table class="conferences__table" summary="List of past conferences with links to event, recording and blog, plus role and talk">
@@ -405,76 +416,85 @@ html {
             <tr>
               <th scope="col">Date</th>
               <th scope="col">Conference</th>
-              <th scope="col">Recording</th>
+              <th scope="col">Location</th>
               <th scope="col">Blog Post</th>
               <th scope="col">Role</th>
               <th scope="col">Talk</th>
+              <th scope="col">Recording</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>2026-11-06</td>
               <td><a href="https://2026.texaslinuxfest.org/" target="_blank" rel="noopener">Texas Linux Fest 2026</a></td>
-              <td>—</td>
+              <td>Austin, TX</td>
               <td><a href="./blog/TexasLinuxFest2026.html">Blog</a></td>
               <td>Speaker</td>
               <td>Protect The Humans At All Costs: Why Technology Alone Can't Solve Security</td>
+              <td><a href="https://www.youtube.com/watch?v=pLPMishhZWs&t=54s" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2026-10-29</td>
               <td><a href="https://www.mitechcon.org/" target="_blank" rel="noopener">Michigan Technology Conference 2026</a></td>
-              <td>—</td>
+              <td>Rochester, MI</td>
               <td><a href="./blog/MITechCon2026.html">Blog</a></td>
               <td>Speaker</td>
               <td>Probably Secure: What We Misunderstand About AI And Determinism Is Making Us Less Secure</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2026-10-22</td>
               <td><a href="https://events.linuxfoundation.org/agntcon-mcpcon-north-america/" target="_blank" rel="noopener">AGNTCon + MCPCon North America 2026</a></td>
-              <td>—</td>
+              <td>San Jose, CA</td>
               <td><a href="./blog/AGNTConMCPConNorthAmerica2026.html">Blog</a></td>
               <td>Speaker</td>
               <td>Stop Agents From Leaking Your Secrets - AI Hooks To The Rescue</td>
+              <td><a href="https://www.youtube.com/watch?v=HIVVDNNb_24" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2026-10-17</td>
               <td><a href="https://bsidesnyc.org" target="_blank" rel="noopener">BSidesNYC 0x06</a></td>
-              <td>—</td>
+              <td>New York, NY</td>
               <td><a href="./blog/BSidesNYC2026.html">Blog</a></td>
               <td>Speaker</td>
               <td>Identity Has A Plan: A Call To Action For Security And DevOps</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2026-10-12</td>
               <td><a href="https://www.dev2next.com/" target="_blank" rel="noopener">dev2next 2026</a></td>
-              <td>—</td>
+              <td>Lone Tree, CO</td>
               <td><a href="./blog/Dev2Next2026.html">Blog</a></td>
               <td>Speaker (2 talks)</td>
               <td>From Pets To Cattle To Agents: Evolving Identity And Security For Workloads; The Laptop Is the Perimeter: How Attackers Target Developers to Breach the Software Supply Chain</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2026-10-01</td>
               <td><a href="https://corncon.net/" target="_blank" rel="noopener">CornCon 2026</a></td>
-              <td>—</td>
+              <td>Davenport, IA</td>
               <td><a href="./blog/CornCon2026.html">Blog</a></td>
               <td>Speaker</td>
               <td>From Pets To Cattle To Agents: Evolving Identity And Security For Workloads</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2026-09-26</td>
               <td><a href="https://bsidescle.com/" target="_blank" rel="noopener">BSides Cleveland 2026</a></td>
-              <td>—</td>
+              <td>Cleveland, OH</td>
               <td><a href="./blog/BSidesCleveland2026.html">Blog</a></td>
               <td>Speaker (2 talks)</td>
               <td>Stop Agents From Leaking Your Secrets - AI Hooks To The Rescue; The Laptop Is the Perimeter: How Attackers Target Developers to Breach the Software Supply Chain</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2026-09-23</td>
               <td><a href="https://www.wearedevelopers.com/world-congress-north-america" target="_blank" rel="noopener">WeAreDevelopers World Congress NA 2026</a></td>
-              <td>—</td>
+              <td>San Jose, CA</td>
               <td><a href="./blog/WeAreDevelopersWordCongressNorthAmerica2026.html">Blog</a></td>
               <td>Speaker (Docker stage)</td>
               <td>Keep Secrets Out of the Image: Guardrails for AI Coding Agents</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2026-09-13</td>
@@ -483,1606 +503,1807 @@ html {
               <td>—</td>
               <td>Attending</td>
               <td>—</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2026-09-11</td>
               <td><a href="https://blueteamcon.com/" target="_blank" rel="noopener">Blue Team Con 2026</a></td>
-              <td>—</td>
+              <td>Chicago, IL</td>
               <td><a href="./blog/BlueTeamCon2026.html">Blog</a></td>
               <td>Accepted/Alternate</td>
               <td>From Dev Environment to Production Breach: Developer Access into Supply Chain Breaches</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2026-08-24</td>
               <td><a href="https://2026.djangocon.us/" target="_blank" rel="noopener">DjangoCon US 2026</a></td>
-              <td>—</td>
+              <td>Chicago, IL</td>
               <td><a href="./blog/DjangoCon2026.html">Blog</a></td>
               <td>Speaker</td>
               <td>Who Goes There? Actively Detecting Intruders With Cyber Deception Tools</td>
+              <td><a href="https://www.youtube.com/watch?v=5AVtym3jUUw" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2026-08-07</td>
               <td><a href="https://defcon.org/" target="_blank" rel="noopener">DEFCON AppSec Village</a></td>
-              <td>—</td>
+              <td>Las Vegas, NV</td>
               <td>—</td>
               <td>Organizing</td>
+              <td>—</td>
               <td>—</td>
             </tr>
             <tr>
               <td>2026-08-03</td>
               <td><a href="https://www.bsideslv.org/" target="_blank" rel="noopener">BSides Las Vegas 2026</a></td>
-              <td>—</td>
+              <td>Las Vegas, NV</td>
               <td><a href="https://blog.gitguardian.com/bsideslv-2026/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker (3 talks)</td>
               <td>The Laptop Is the Perimeter: How Attackers Target Developers to Breach the Software Supply Chain; Who Goes There? Actively Detecting Intruders With Cyber Deception Tools; From Pets To Cattle To Agents (alternate, given)</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2026-06-25</td>
               <td><a href="https://www.ieeecloudsummit.org/" target="_blank" rel="noopener">IEEE Cloud Summit 2026</a></td>
-              <td>—</td>
+              <td>Washington, DC</td>
               <td><a href="https://blog.gitguardian.com/ieee-cloud-summit-2026/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>From Pets To Cattle To Agents: Evolving Identity And Security For Workloads</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2026-06-15</td>
               <td><a href="https://identiverse.com/" target="_blank" rel="noopener">Identiverse 2026</a></td>
-              <td>—</td>
+              <td>Las Vegas, NV</td>
               <td><a href="https://blog.gitguardian.com/identiverse-2026-the-challenges-of-solving-identity-for-ai-agents-at-scale/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Attending</td>
+              <td>—</td>
               <td>—</td>
             </tr>
             <tr>
               <td>2026-06-13</td>
               <td><a href="https://www.bsidessatx.com/" target="_blank" rel="noopener">BSides SATX 2026</a></td>
-              <td>—</td>
+              <td>San Antonio, TX</td>
               <td><a href="https://blog.gitguardian.com/bsides-satx-2026/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>From Pets To Cattle To Agents: Evolving Identity And Security For Workloads</td>
+              <td><a href="https://www.youtube.com/watch?v=smRJb7ypXoM" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2026-06-10</td>
               <td><a href="https://kcdnewyork.com/" target="_blank" rel="noopener">KCD New York 2026</a></td>
-              <td>—</td>
+              <td>New York, NY</td>
               <td><a href="https://blog.gitguardian.com/kcd-new-york-2026/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>From Dev Environment to Production Breach: Developer Access into Supply Chain Breaches</td>
+              <td><a href="https://www.youtube.com/watch?v=X0KCBJbrvqY" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2026-06-06</td>
               <td><a href="https://sreday.com/2026-nyc-q2/" target="_blank" rel="noopener">SREday NYC 2026</a></td>
-              <td>—</td>
+              <td>New York, NY</td>
               <td><a href="https://blog.gitguardian.com/sreday-nyc-2026-q2/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>From Pets To Cattle To Agents: Evolving Identity And Security For Workloads</td>
+              <td><a href="https://www.youtube.com/watch?v=39dGL6HOLE8" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2026-06-03</td>
               <td><a href="https://hi.okta.com/ai-idsummit-sanjose/org-ln" target="_blank" rel="noopener">Okta AI Identity Summit</a></td>
-              <td>—</td>
+              <td>San Jose, CA</td>
               <td><a href="https://blog.gitguardian.com/okta-ai-identity-summit-2026/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Panel: Governing the Autonomous Workforce</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2026-05-16</td>
               <td><a href="https://bsides312.org/" target="_blank" rel="noopener">BSides 312</a></td>
-              <td>—</td>
+              <td>Chicago, IL</td>
               <td><a href="https://blog.gitguardian.com/bsides312-2026/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>From Pets To Cattle To Agents</td>
+              <td><a href="https://www.youtube.com/watch?v=yO28RNwPshI" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2026-05-14</td>
               <td><a href="https://isc2-eastbay-chapter.org/events/may-14-2026-san-francisco-secure-software-and-appsec-summit-2026/" target="_blank" rel="noopener">San Francisco Secure Software and AppSec Summit 2026</a></td>
-              <td>—</td>
+              <td>San Francisco, CA</td>
               <td><a href="https://blog.gitguardian.com/san-francisco-secure-software-and-appsec-summit-2026/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>How I Solved... Secrets Leaking Into Production Without Slowing Developers Down</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2026-04-30</td>
               <td><a href="https://gcsichicago.org/gcsi-annual-conference-2026/" target="_blank" rel="noopener">GCSI Annual Conference 2026</a></td>
-              <td>—</td>
+              <td>Chicago, IL</td>
               <td><a href="https://blog.gitguardian.com/gcsi-2026/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Attendee</td>
+              <td>—</td>
               <td>—</td>
             </tr>
             <tr>
               <td>2026-04-24</td>
               <td><a href="https://linuxfestnorthwest.org/" target="_blank" rel="noopener">LinuxFest Northwest 2026</a></td>
-              <td>—</td>
+              <td>Bellingham, WA</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Protect The Humans At All Costs: Why Technology Alone Can&#x27;t Solve Security</td>
+              <td><a href="https://www.youtube.com/watch?v=WfVrl8ue3E0" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2026-04-23</td>
               <td>Blue Team Con Online 2026</td>
-              <td>—</td>
+              <td>Virtual</td>
               <td>—</td>
               <td>Speaker (recorded)</td>
               <td>Hidden Dangers Of AI In Developer Workflows: Navigating Security Risks with Human Insight</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2026-04-16</td>
               <td><a href="https://snowfroc.com/" target="_blank" rel="noopener">OWASP SnowFROC 2026</a></td>
-              <td>—</td>
+              <td>Denver, CO</td>
               <td><a href="https://blog.gitguardian.com/snowfroc-2026/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>From Pets To Cattle To Agents: Evolving Identity And Security For Workloads</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2026-04-09</td>
               <td><a href="https://www.atlseccon.com/" target="_blank" rel="noopener">AtlSecCon 2026</a></td>
-              <td>—</td>
+              <td>Halifax, NS</td>
               <td><a href="https://blog.gitguardian.com/atlseccon-2026/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>From Pets To Cattle To Agents: Evolving Identity And Security For Workloads</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2026-04-03</td>
               <td><a href="https://www.bsidesmke.org/" target="_blank" rel="noopener">BSidesMKE 2026</a></td>
-              <td>—</td>
+              <td>Milwaukee, WI</td>
               <td><a href="https://blog.gitguardian.com/bsides-mke-2026/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Probably Secure: What We Misunderstand About AI And Determinism Is Making Us Less Secure</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2026-03-23</td>
               <td><a href="https://www.rsaconference.com" target="_blank" rel="noopener">RSA Conference 2026 </a></td>
-              <td>—</td>
+              <td>San Francisco, CA</td>
               <td><a href="https://blog.gitguardian.com/rsac-2026/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Attendee</td>
+              <td>—</td>
               <td>—</td>
             </tr>
             <tr>
               <td>2026-03-21</td>
               <td><a href="https://bsidessf.org/" target="_blank" rel="noopener">BSidesSF 2026</a></td>
-              <td>—</td>
+              <td>San Francisco, CA</td>
               <td><a href="https://blog.gitguardian.com/bsides-sf-2026/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Attendee</td>
+              <td>—</td>
               <td>—</td>
             </tr>
             <tr>
               <td>2026-03-16</td>
               <td><a href="https://assemble.chainguard.dev/event/2991fca2-5be2-48cb-a8b9-132ab575cd51/summary" target="_blank" rel="noopener">Chainguard Assemble 2026</a></td>
-              <td><a href="https://www.youtube.com/watch?v=Mj8t_yhkPpI" target="_blank" rel="noopener">YouTube</a></td>
+              <td>New York, NY</td>
               <td><a href="https://blog.gitguardian.com/chainguard-assemble-2026/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Panel Discussion</td>
+              <td><a href="https://www.youtube.com/watch?v=Mj8t_yhkPpI" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2026-02-26</td>
               <td><a href="https://confoo.ca/en/2026" target="_blank" rel="noopener">ConFoo 2026</a></td>
-              <td>—</td>
+              <td>Montreal, QC</td>
               <td><a href="https://blog.gitguardian.com/confoo-2026/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker (2 talks)</td>
               <td>Probably Secure: How We Misunderstand AI And Determinism; Secrets Security End-To-End</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2026-02-05</td>
               <td><a href="https://chibrrcon.com/" target="_blank" rel="noopener">ChiBrrCon 2026</a></td>
-              <td>—</td>
+              <td>Chicago, IL</td>
               <td><a href="https://blog.gitguardian.com/chibrrcon-2026/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Probably Secure: What We Misunderstand About AI And Determinism Is Making Us Less Secure</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2026-01-27</td>
               <td><a href="https://aembit.io/nhicon/" target="_blank" rel="noopener">NHIcon 2026</a></td>
-              <td>—</td>
+              <td>Virtual</td>
               <td><a href="https://blog.gitguardian.com/nhicon-2026/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker (sponsored)</td>
               <td>How Agentic AI Helps You Leak Secrets And What To Do About It</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2025-11-28</td>
               <td><a href="https://www.dev-mtl.ca/?ref=blog.gitguardian.com" target="_blank" rel="noopener">/dev/mtl 2025</a></td>
-              <td><a href="https://www.youtube.com/watch?v=9NSq4LYUj8o">YouTube</a></td>
+              <td>Montreal, QC</td>
               <td><a href="https://blog.gitguardian.com/dev-mtl-2025/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Secrets Security End-To-End</td>
+              <td><a href="https://www.youtube.com/watch?v=9NSq4LYUj8o">YouTube</a></td>
             </tr>
             <tr>
               <td>2025-11-10</td>
               <td><a href="https://lp.cyberark.com/20251110-cyberark-workload-identity-day-zero-atlanta-registration.html?ref=blog.gitguardian.com" target="_blank" rel="noopener">CyberArk Workload Identity Day Zero Atlanta</a></td>
-              <td>—</td>
+              <td>Atlanta, GA</td>
               <td><a href="https://blog.gitguardian.com/workload-identity-day-zero-atlanta/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker (10 min)</td>
               <td>The State of Secrets Sprawl</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2025-11-07</td>
               <td><a href="http://queencitycon.org/?ref=blog.gitguardian.com" target="_blank" rel="noopener">Queen City Con 0x3 2025</a></td>
-              <td>—</td>
+              <td>Cincinnati, OH</td>
               <td><a href="https://blog.gitguardian.com/queen-city-con-0x3/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>What to Tell Your Developers About NHI Security and Governance</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2025-10-31</td>
               <td><a href="https://bsideschicago.org/?ref=blog.gitguardian.com" target="_blank" rel="noopener">BSides Chicago 2025</a></td>
-              <td>—</td>
+              <td>Chicago, IL</td>
               <td><a href="https://blog.gitguardian.com/bsides-chicago-2025/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>I&#x27;m A Machine, And You Should Trust Me: The Future Of Non-Human Identity</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2025-10-27</td>
               <td><a href="https://www.technosecurity.us/west?ref=blog.gitguardian.com" target="_blank" rel="noopener">Techno Security West 2025</a></td>
-              <td>—</td>
+              <td>San Diego, CA</td>
               <td><a href="https://blog.gitguardian.com/techno-security-and-digital-forensics-conference-west-2025/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Hidden Dangers Of AI In Developer Workflows: Navigating Security Risks with Human Insight</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2025-10-23</td>
               <td><a href="https://lascon.org/?ref=blog.gitguardian.com" target="_blank" rel="noopener">OWASP LASCON 2025</a></td>
-              <td><a href="https://www.youtube.com/watch?v=cHB-EmtH44Q" target="_blank" rel="noopener">YouTube</a></td>
+              <td>Austin, TX</td>
               <td><a href="https://blog.gitguardian.com/lascon-xv/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Solving Secrets Sprawl Takes More Than Security: Why Machine Identity Is Everyone&#x27;s Problem</td>
+              <td><a href="https://www.youtube.com/watch?v=cHB-EmtH44Q" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2025-10-14</td>
               <td><a href="https://northamerica.forum-incyber.com/en/home-en/?ref=blog.gitguardian.com" target="_blank" rel="noopener">INCYBER Forum Canada 2025</a></td>
-              <td>—</td>
+              <td>Montreal, QC</td>
               <td><a href="https://blog.gitguardian.com/incyber-forum-canada-2025/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker (2 talks)</td>
               <td>The State Of Secrets Sprawl; An Introduction To Non-Human Identity Governance</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2025-10-11</td>
               <td><a href="https://events.linuxfoundation.org/kubecon-cloudnativecon-north-america/?ref=blog.gitguardian.com" target="_blank" rel="noopener">KubeCon + CloudNativeCon North America 2025</a></td>
-              <td>—</td>
+              <td>Atlanta, GA</td>
               <td><a href="https://blog.gitguardian.com/kubecon-2025/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Attendee</td>
+              <td>—</td>
               <td>—</td>
             </tr>
             <tr>
               <td>2025-10-10</td>
               <td><a href="https://corncon.net/?ref=blog.gitguardian.com" target="_blank" rel="noopener">CornCon 2025</a></td>
-              <td>—</td>
+              <td>Davenport, IA</td>
               <td><a href="https://blog.gitguardian.com/corncon-11/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Secrets Security End-To-End</td>
+              <td><a href="https://www.youtube.com/watch?v=jeTJpd61GMo" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2025-10-08</td>
               <td>SecurityWeek Zero Trust &amp; Identity Strategies Summit</td>
-              <td>—</td>
+              <td>Virtual</td>
               <td>—</td>
               <td>Speaker (invited)</td>
               <td>Solving Secrets Sprawl Takes More Than Security: Why Machine Identity Is Everyone&#x27;s Problem</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2025-10-03</td>
               <td><a href="https://sreday.com/2025-san-francisco-q4/?ref=blog.gitguardian.com" target="_blank" rel="noopener">SREday SF 2025</a></td>
-              <td>—</td>
+              <td>San Francisco, CA</td>
               <td><a href="https://blog.gitguardian.com/sreday-sf-2025/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Secrets Security End-To-End</td>
+              <td><a href="https://www.youtube.com/watch?v=h_xoJvSl6as" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2025-09-30</td>
               <td><a href="https://devopsdays.org/events/2025-philadelphia/welcome/?ref=blog.gitguardian.com" target="_blank" rel="noopener">DevOpsDays Philadelphia 2025</a></td>
-              <td>—</td>
+              <td>Philadelphia, PA</td>
               <td><a href="https://blog.gitguardian.com/devops-days-philly-2025/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>I&#x27;m A Machine, And You Should Trust Me: The Future Of Non-Human Identity</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2025-09-23</td>
               <td><a href="https://www.owaspappsecdays.fr/2025?ref=blog.gitguardian.com" target="_blank" rel="noopener">OWASP AppSec Days France 2025</a></td>
-              <td>—</td>
+              <td>Paris, France</td>
               <td><a href="https://blog.gitguardian.com/owasp-appsecdays-france-2025/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>What to Tell Your Developers About NHI Security and Governance</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2025-09-08</td>
               <td><a href="https://2025.djangocon.us/" target="_blank" rel="noopener">DjangoCon US 2025</a></td>
-              <td>—</td>
+              <td>Chicago, IL</td>
               <td><a href="https://blog.gitguardian.com/djangocon-us-2025/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Hidden Dangers Of AI In Developer Workflows: Navigating Security Risks with Human Insight</td>
+              <td><a href="https://www.youtube.com/watch?v=rDWLAPeQ4vc" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2025-09-06</td>
               <td><a href="https://blueteamcon.com/?ref=blog.gitguardian.com" target="_blank" rel="noopener">Blue Team Con 2025</a></td>
-              <td>—</td>
+              <td>Chicago, IL</td>
               <td><a href="https://blog.gitguardian.com/blueteamcon-2025/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker (2 talks)</td>
               <td>Hidden Dangers Of AI In Developer Workflows: Navigating Security Risks with Human Insight; Solving Secrets Sprawl Takes More Than Security: Why Machine Identity Is Everyone&#x27;s Problem</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2025-08-14</td>
               <td><a href="https://dc407.com/category/online/" target="_blank" rel="noopener">DEF CON 407 Group</a></td>
-              <td>—</td>
+              <td>Virtual</td>
               <td>—</td>
               <td>Speaker</td>
+              <td>—</td>
               <td>—</td>
             </tr>
             <tr>
               <td>2025-08-12</td>
               <td><a href="https://www.codeseccon.com/" target="_blank" rel="noopener">CodeSecCon 2025</a></td>
-              <td>—</td>
+              <td>Virtual</td>
               <td>—</td>
               <td>Speaker</td>
               <td>I&#x27;m A Machine… and/or What to Tell Your Developers About NHI… (unconfirmed which)</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2025-08-07</td>
               <td><a href="https://defcon.org/html/defcon-33/dc-33-index.html" target="_blank" rel="noopener">DEF CON 33</a></td>
-              <td>—</td>
+              <td>Las Vegas, NV</td>
               <td>—</td>
               <td>Attendee</td>
+              <td>—</td>
               <td>—</td>
             </tr>
             <tr>
               <td>2025-08-04</td>
               <td><a href="https://www.bsideslv.org/?ref=blog.gitguardian.com" target="_blank" rel="noopener">BSides Las Vegas 2025 (PasswordsCon)</a></td>
-              <td>—</td>
+              <td>Las Vegas, NV</td>
               <td><a href="https://blog.gitguardian.com/bsides-las-vegas-2025/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker (2 talks)</td>
               <td>I&#x27;m A Machine, And You Should Trust Me: The Future Of Non-Human Identity; What to Tell Your Developers About NHI Secrets Security and Governance</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2025-07-31</td>
               <td><a href="https://engage.isaca.org/sanfranciscochapter/home" target="_blank" rel="noopener">ISACA SF Chapter Happy Hour</a></td>
-              <td>—</td>
+              <td>San Francisco, CA</td>
               <td>—</td>
               <td>Speaker</td>
               <td>(no formal title – State of Secrets Sprawl 2025 + Docker Hub research)</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2025-06-26</td>
               <td><a href="https://www.gitguardian.com/events/secdays-virtual-2025" target="_blank" rel="noopener">SecDays Virtual 2025</a></td>
-              <td>—</td>
+              <td>Virtual</td>
               <td>—</td>
               <td>Roundtable</td>
               <td>Roundtables: The Expanding Identity Attack Surface: Beyond Human Users; Agents, LLMs, and the Future of Identity for AI</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2025-06-21</td>
               <td><a href="https://www.bsidessatx.com/?ref=blog.gitguardian.com" target="_blank" rel="noopener">BSides San Antonio 2025</a></td>
-              <td>—</td>
+              <td>San Antonio, TX</td>
               <td><a href="https://blog.gitguardian.com/bsides-satx-2025/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
-              <td>Speaker</td>
-              <td>I&#x27;m A Machine, And You Should Trust Me: The Future Of Non-Human Identity</td>
+              <td>Speaker (2 talks)</td>
+              <td>I&#x27;m A Machine, And You Should Trust Me: The Future Of Non-Human Identity; Getting On The Same Level: What I Learned Building A Security Table Top Exercise</td>
+              <td><a href="https://www.youtube.com/watch?v=Vq0v1D-49Hk" target="_blank" rel="noopener">YouTube 1</a><br><a href="https://www.youtube.com/watch?v=nSZnc6mKI5Q" target="_blank" rel="noopener">YouTube 2</a></td>
             </tr>
             <tr>
               <td>2025-06-09</td>
               <td><a href="https://showmecon.com/?ref=blog.gitguardian.com" target="_blank" rel="noopener">ShowMeCon 2025</a></td>
-              <td>—</td>
+              <td>St. Louis, MO</td>
               <td><a href="https://blog.gitguardian.com/showmecon-2025/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Secrets Security End-To-End</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2025-06-03</td>
               <td><a href="https://identiverse.com/?ref=blog.gitguardian.com" target="_blank" rel="noopener">Identiverse 2025</a></td>
-              <td>—</td>
+              <td>Las Vegas, NV</td>
               <td><a href="https://blog.gitguardian.com/identiverse-2025/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Workshop</td>
               <td>Non-Human Identity Workshop (co-led with Lalit Choda)</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2025-06-01</td>
               <td><a href="https://bsides312.org/?ref=blog.gitguardian.com" target="_blank" rel="noopener">BSides312 2025</a></td>
-              <td>—</td>
+              <td>Chicago, IL</td>
               <td><a href="https://blog.gitguardian.com/bsides312-2025/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>What to Tell Your Developers About NHI Security and Governance</td>
+              <td><a href="https://www.youtube.com/watch?v=nC1pyzNldgY" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2025-05-20</td>
               <td><a href="https://2025.phptek.io/" target="_blank" rel="noopener">php[tek] 2025</a></td>
-              <td>—</td>
+              <td>Chicago, IL</td>
               <td><a href="https://blog.gitguardian.com/security-starts-with-developer-enablement-lessons-from-php-tek-2025/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Secrets Security End-To-End</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2025-04-28</td>
               <td><a href="https://www.rsaconference.com/?ref=blog.gitguardian.com" target="_blank" rel="noopener">RSA Conference 2025</a></td>
-              <td>—</td>
+              <td>San Francisco, CA</td>
               <td><a href="https://blog.gitguardian.com/rsa-conference-2025/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Attendee</td>
+              <td>—</td>
               <td>—</td>
             </tr>
             <tr>
               <td>2025-04-26</td>
               <td><a href="https://bsidessf.org/" target="_blank" rel="noopener">BSidesSF 2025</a></td>
-              <td>—</td>
+              <td>San Francisco, CA</td>
               <td><a href="https://blog.gitguardian.com/bsidessf-2025/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Workshop (co-presented w/ Andy Denis)</td>
               <td>Shifting Left: A Hands-on Introductory Guide to DevSecOps</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2025-04-18</td>
               <td><a href="https://www.bsidesseattle.com/2025-schedule.html?ref=blog.gitguardian.com" target="_blank" rel="noopener">BSides Seattle 2025</a></td>
-              <td>—</td>
+              <td>Seattle, WA</td>
               <td><a href="https://blog.gitguardian.com/bsides-seattle-2025/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Secrets Security End-To-End</td>
+              <td><a href="https://www.youtube.com/watch?v=_R05cCQBXbc" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2025-04-10</td>
               <td><a href="https://www.atlseccon.com/?ref=blog.gitguardian.com" target="_blank" rel="noopener">AtlSecCon 2025</a></td>
-              <td>—</td>
+              <td>Halifax, NS</td>
               <td><a href="https://blog.gitguardian.com/atlseccon-2025-security-readiness-means-human-readiness/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Solving Secrets Sprawl Takes More Than Security: Why Machine Identity Is Everyone&#x27;s Problem</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2025-04-03</td>
               <td><a href="https://techstl.com/techweek/?ref=blog.gitguardian.com" target="_blank" rel="noopener">STL TechWeek 2025</a></td>
-              <td>—</td>
+              <td>St. Louis, MO</td>
               <td><a href="https://blog.gitguardian.com/stl-techweek-2025/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker (2 talks)</td>
               <td>Hidden Dangers Of AI In Developer Workflows: Navigating Security Risks with Human Insight; Who Goes There? Actively Detecting Intruders With Cyber Deception Tools</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2025-03-29</td>
               <td><a href="https://www.bsidessd.org/2025-event-details/schedule?ref=blog.gitguardian.com" target="_blank" rel="noopener">BSides San Diego 2025</a></td>
-              <td>—</td>
+              <td>San Diego, CA</td>
               <td><a href="https://blog.gitguardian.com/bsides-sd-2025/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>I&#x27;m A Machine, And You Should Trust Me: The Future Of Non-Human Identity</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2025-03-14</td>
               <td><a href="https://snowfroc.com/?ref=blog.gitguardian.com" target="_blank" rel="noopener">SnowFROC 2025</a></td>
-              <td>—</td>
+              <td>Denver, CO</td>
               <td><a href="https://blog.gitguardian.com/snowfroc-2025/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Secrets Security End-To-End</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2025-03-05</td>
               <td><a href="https://devnexus.com/?ref=blog.gitguardian.com" target="_blank" rel="noopener">Devnexus 2025</a></td>
-              <td>—</td>
+              <td>Atlanta, GA</td>
               <td><a href="https://blog.gitguardian.com/devnexus-2025/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Long Live Short Lived Credentials - Auto-rotating Secrets At Scale</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2025-02-19</td>
               <td><a href="https://www.intelliguards.com/intellic0n?ref=blog.gitguardian.com" target="_blank" rel="noopener">IntelliC0N 2025</a></td>
-              <td>—</td>
+              <td>Austin, TX</td>
               <td><a href="https://blog.gitguardian.com/intellic0n-2025/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Businesses Run On Risk And Debt: Why Communicating Security Risk Is Hard</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2025-02-05</td>
               <td><a href="https://www.intelliguards.com/intellic0n" target="_blank" rel="noopener">Wild West Hackin&#x27; Fest @ Mile High 2025</a></td>
-              <td>—</td>
+              <td>Denver, CO</td>
               <td><a href="https://blog.gitguardian.com/wild-west-hackin-fest-mile-high/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>What I Learned From Building A Tabletop Security Exercise</td>
+              <td><a href="https://www.youtube.com/watch?v=ALzMmn8s6aw" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2025-01-14</td>
               <td><a href="https://codemash.org/" target="_blank" rel="noopener">CodeMash 2025</a></td>
-              <td>—</td>
+              <td>Sandusky, OH</td>
               <td><a href="https://blog.gitguardian.com/codemash-2025/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Secrets Security End-To-End</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2024-12-05</td>
               <td><a href="https://www.gitguardian.com/events/bsides-austin" target="_blank" rel="noopener">BSides Austin 2024</a></td>
-              <td>—</td>
+              <td>Austin, TX</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Hidden Dangers Of AI In Developer Workflows: Navigating Security Risks with Human Insight</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2024-11-15</td>
               <td><a href="https://www.gitguardian.com/events/chattanooga-devopsdays" target="_blank" rel="noopener">DevOpsDays Chattanooga 2024</a></td>
-              <td>—</td>
+              <td>Chattanooga, TN</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Who Goes There? Actively Detecting Intruders With Cyber Deception Tools</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2024-11-01</td>
               <td>AI Summit Vancouver 2024</td>
-              <td>—</td>
+              <td>Vancouver, BC</td>
               <td><a href="https://blog.gitguardian.com/ai-summit-vancouver-2024/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Hidden Dangers Of AI In Developer Workflows: Navigating Security Risks with Human Insight (probable)</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2024-10-25</td>
               <td>SecureWV 2024</td>
-              <td>—</td>
+              <td>Charleston, WV</td>
               <td><a href="https://blog.gitguardian.com/securewv-2024/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker (2 talks)</td>
               <td>Championing Security: Scaling Security At Every Level (probable); Who Goes There? Actively Detecting Intruders With Cyber Deception Tools (probable)</td>
+              <td><a href="https://www.youtube.com/watch?v=CT5ASZPWLAw" target="_blank" rel="noopener">YouTube 1</a><br><a href="https://www.youtube.com/watch?v=g_QnOirNG2c" target="_blank" rel="noopener">YouTube 2</a></td>
             </tr>
             <tr>
               <td>2024-10-22</td>
               <td><a href="https://sossfusion2024.sched.com/event/1noT9/what-is-going-on-in-your-source-code-understanding-sca-in-plain-language-dwayne-mcdaniel-gitguardian" target="_blank" rel="noopener">SOSS Fusion 2024</a></td>
-              <td>—</td>
+              <td>Atlanta, GA</td>
               <td>—</td>
               <td>Speaker</td>
               <td>What Is Going On In Your Source Code? Understanding SCA In Plain Language</td>
+              <td><a href="https://www.youtube.com/watch?v=JwQkorjL4W4" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2024-10-18</td>
               <td>BSides Orlando 2024</td>
-              <td>—</td>
+              <td>Orlando, FL</td>
               <td><a href="https://blog.gitguardian.com/bsides-orlando-2024/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>What Is Going On In Your Source Code? Understanding SCA In Plain Language (probable)</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2024-10-10</td>
               <td>Agile + DevOpsDays Des Moines 2024</td>
-              <td>—</td>
+              <td>Des Moines, IA</td>
               <td><a href="https://blog.gitguardian.com/agile-devopsdays-des-moines-2024/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Long Live Short Lived Credentials - Auto-rotating Secrets At Scale (probable)</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2024-10-08</td>
               <td><a href="https://sessionize.com/mcdwayne" target="_blank" rel="noopener">DevSecCon 2024</a></td>
-              <td>—</td>
+              <td>Virtual</td>
               <td>—</td>
               <td>Speaker</td>
               <td>(title not found – possibly Hidden Dangers Of AI)</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2024-10-04</td>
               <td>CornCon X</td>
-              <td>—</td>
+              <td>Davenport, IA</td>
               <td><a href="https://blog.gitguardian.com/corncon-x-powering-cybersecurity-innovation-through-human-connection/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Hidden Dangers Of AI In Developer Workflows: Navigating Security Risks with Human Insight</td>
+              <td><a href="https://www.youtube.com/watch?v=YIRV4Y1uAYE" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2024-09-26</td>
               <td>OWASP Global AppSec SF 2024</td>
-              <td>—</td>
+              <td>San Francisco, CA</td>
               <td><a href="https://blog.gitguardian.com/owasp-global-appsec-sf-2024/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Businesses Run on Risk and Debt: Why Communicating Security Risk is Hard</td>
+              <td><a href="https://www.youtube.com/watch?v=zeKco8PDTjM" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2024-09-06</td>
               <td>Blue Team Con 2024</td>
-              <td>—</td>
+              <td>Chicago, IL</td>
               <td><a href="https://blog.gitguardian.com/blue-team-con-2024/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Security In An IaC Defined World (probable)</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2024-08-20</td>
               <td><a href="https://devopsdays.org/events/2024-birmingham-al/program/" target="_blank" rel="noopener">DevOpsDays Birmingham AL 2024</a></td>
-              <td>—</td>
+              <td>Birmingham, AL</td>
               <td>—</td>
               <td>Speaker + Ignite</td>
               <td>Stand Up Straight - Security Posture And You; Ignite: Do you know where your secrets are? Exploring the problem of secret sprawl and secret management maturity</td>
+              <td><a href="https://www.youtube.com/watch?v=DIVmbNJY3oA" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2024-08-13</td>
               <td>Drupal GovCon 2024</td>
-              <td>—</td>
+              <td>Bethesda, MD</td>
               <td><a href="https://blog.gitguardian.com/drupal-govcon-2024/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Security In An IaC Defined World (probable)</td>
+              <td><a href="https://www.youtube.com/watch?v=x5Ai6bBwK5w" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2024-08-08</td>
               <td>DEF CON 32 – AppSec Village</td>
-              <td>—</td>
+              <td>Las Vegas, NV</td>
               <td><a href="https://blog.gitguardian.com/def-con-32/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Organizer / POD host</td>
               <td>Spot the Secrets POD (card game)</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2024-08-07</td>
               <td><a href="https://pretalx.com/bsideslv24/speaker/MM3B73/" target="_blank" rel="noopener">BSides Las Vegas 2024 (PasswordsCon)</a></td>
-              <td>—</td>
+              <td>Las Vegas, NV</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Long Live Short Lived Credentials - Auto-rotating Secrets At Scale</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2024-07-22</td>
               <td><a href="https://events.agilealliance.org/Agile2024/speaker/1160650/dwayne-mcdaniel" target="_blank" rel="noopener">Agile2024</a></td>
-              <td>—</td>
+              <td>Dallas, TX</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Championing Security: Scaling Security At Every Level</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2024-06-26</td>
               <td><a href="https://www.gitguardian.com/events/cloudnativesecuritycon-2024" target="_blank" rel="noopener">CloudNativeSecurityCon NA 2024</a></td>
-              <td>—</td>
+              <td>Seattle, WA</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Championing Security: Scaling Security at Every Level</td>
+              <td><a href="https://www.youtube.com/watch?v=jetVyHyM060" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2024-06-14</td>
               <td><a href="https://www.gitguardian.com/events/bsides-boulder-2024" target="_blank" rel="noopener">BSides Boulder 2024</a></td>
-              <td>—</td>
+              <td>Boulder, CO</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Who Goes There? Actively Detecting Intruders With Cyber Deception Tools</td>
+              <td><a href="https://www.youtube.com/watch?v=y4OKzwWiv2k" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2024-05-24</td>
               <td>BSides Knoxville 2024</td>
-              <td>—</td>
+              <td>Knoxville, TN</td>
               <td><a href="https://blog.gitguardian.com/bsides-knoxville-2024/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Championing Security: Scaling Security At Every Level</td>
+              <td><a href="https://www.youtube.com/watch?v=6AN1HXLWibc" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2024-05-13</td>
               <td>ShowMeCon 2024</td>
-              <td>—</td>
+              <td>St. Louis, MO</td>
               <td><a href="https://blog.gitguardian.com/showmecon-2024/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Who Goes There? Actively Detecting Intruders With Cyber Deception Tools (probable)</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2024-05-11</td>
               <td>BSides312 2024</td>
-              <td>—</td>
+              <td>Chicago, IL</td>
               <td><a href="https://blog.gitguardian.com/bsides312-2024/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Championing Security: Scaling Security At Every Level (probable)</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2024-05-04</td>
               <td>BSidesSF 2024</td>
-              <td>—</td>
+              <td>San Francisco, CA</td>
               <td><a href="https://blog.gitguardian.com/bsidessf-2024/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Long Live Short Lived Credentials - Auto-rotating Secrets At Scale</td>
+              <td><a href="https://www.youtube.com/watch?v=BF3mF9lF4o0" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2024-04-23</td>
               <td>php[tek] 2024</td>
-              <td>—</td>
+              <td>Chicago, IL</td>
               <td><a href="https://blog.gitguardian.com/phptek-2024/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>(title not found – hardcoded credentials &amp; honeytokens)</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2024-04-10</td>
               <td>HackSpaceCon 2024</td>
-              <td>—</td>
+              <td>Kennedy Space Center, FL</td>
               <td><a href="https://blog.gitguardian.com/hackspacecon-2024/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Stop Committing Your Secrets - Git Hooks To The Rescue (probable)</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2024-04-04</td>
               <td>AtlSecCon 2024</td>
-              <td>—</td>
+              <td>Halifax, NS</td>
               <td><a href="https://blog.gitguardian.com/atlseccon-2024/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Championing Security: Scaling Security At Every Level (probable)</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2024-03-23</td>
               <td>Atlanta Cloud Conference 2024</td>
-              <td>—</td>
+              <td>Atlanta, GA</td>
               <td><a href="https://blog.gitguardian.com/atlanta-cloud-conference-2024/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Who Goes There? Actively Detecting Intruders With Cyber Deception Tools (probable)</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2024-03-16</td>
               <td><a href="https://www.socallinuxexpo.org/scale/21x/speakers/dwayne-mcdaniel/index.html" target="_blank" rel="noopener">SCaLE 21x</a></td>
-              <td>—</td>
+              <td>Pasadena, CA</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Security In An IaC Defined World</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2024-03-07</td>
               <td><a href="https://www.gitguardian.com/events/snow-froc-2024" target="_blank" rel="noopener">SnowFROC 2024</a></td>
-              <td>—</td>
+              <td>Denver, CO</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Who Goes There? Actively Detecting Intruders With Cyber Deception Tools</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2024-02-20</td>
               <td><a href="https://www.civo.com/navigate/austin/2024/talks" target="_blank" rel="noopener">Civo Navigate NA 2024</a></td>
-              <td>—</td>
+              <td>Austin, TX</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Mastering Cybersecurity: Essential OWASP Guidelines for Effective Protection</td>
+              <td><a href="https://www.youtube.com/watch?v=dJ7arjQ3KZE" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2024-02-01</td>
               <td>ChiBrrCon IV</td>
-              <td>—</td>
+              <td>Chicago, IL</td>
               <td><a href="https://blog.gitguardian.com/chibrrcon-iv-2024/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Stand Up Straight - Security Posture And You</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2023-12</td>
               <td><a href="https://sessionize.com/mcdwayne" target="_blank" rel="noopener">HashiTalks: Deploy 2023</a></td>
-              <td>—</td>
+              <td>Virtual</td>
               <td>—</td>
               <td>Speaker</td>
+              <td>—</td>
               <td>—</td>
             </tr>
             <tr>
               <td>2023-12</td>
               <td><a href="https://sessionize.com/mcdwayne" target="_blank" rel="noopener">Cloud With Chris</a></td>
-              <td>—</td>
+              <td>Virtual</td>
               <td>—</td>
               <td>Guest</td>
+              <td>—</td>
               <td>—</td>
             </tr>
             <tr>
               <td>2023-11-30</td>
               <td>Conf42 DevSecOps 2023</td>
-              <td><a href="https://www.conf42.com/DevSecOps_2023_Dwayne_McDaniel_detecting_honeytokens" target="_blank" rel="noopener">Recording/source</a></td>
+              <td>Virtual</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Who Goes There? Actively Detecting Intruders With Honeytokens</td>
+              <td><a href="https://www.conf42.com/DevSecOps_2023_Dwayne_McDaniel_detecting_honeytokens" target="_blank" rel="noopener">Recording/source</a></td>
             </tr>
             <tr>
               <td>2023-11</td>
               <td>TechBash 2023</td>
-              <td>—</td>
+              <td>Pocono Manor, PA</td>
               <td><a href="https://blog.gitguardian.com/techbash-2023/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker (3 talks)</td>
               <td>3 talks on code security (titles not stated)</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2023-11</td>
               <td><a href="https://sessionize.com/mcdwayne" target="_blank" rel="noopener">Live! 360 Orlando 2023</a></td>
-              <td>—</td>
+              <td>Orlando, FL</td>
               <td>—</td>
               <td>Speaker</td>
+              <td>—</td>
               <td>—</td>
             </tr>
             <tr>
               <td>2023-10</td>
               <td><a href="https://sessionize.com/mcdwayne" target="_blank" rel="noopener">Momentum 2023</a></td>
-              <td>—</td>
+              <td>Cincinnati, OH</td>
               <td>—</td>
               <td>Speaker</td>
+              <td>—</td>
               <td>—</td>
             </tr>
             <tr>
               <td>2023-10</td>
               <td><a href="https://sessionize.com/mcdwayne" target="_blank" rel="noopener">All Day DevOps 2023</a></td>
-              <td>—</td>
+              <td>Virtual</td>
               <td>—</td>
               <td>Speaker</td>
+              <td>—</td>
               <td>—</td>
             </tr>
             <tr>
               <td>2023-10</td>
               <td>API World 2023</td>
-              <td>—</td>
+              <td>Santa Clara, CA</td>
               <td><a href="https://blog.gitguardian.com/api-world-2023/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Do you know where your secrets are? Exploring the problem of secret sprawl and secret management maturity</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2023-10-14</td>
               <td><a href="https://pretalx.com/bsidesatl-2023/speaker/MM3B73" target="_blank" rel="noopener">BSides Atlanta 2023</a></td>
-              <td>—</td>
+              <td>Atlanta, GA</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Who Goes There? Actively Detecting Intruders With Cyber Deception Tools</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2023-09</td>
               <td><a href="https://sessionize.com/mcdwayne" target="_blank" rel="noopener">DevOpsDays DC 2023</a></td>
-              <td>—</td>
+              <td>Washington, DC</td>
               <td>—</td>
               <td>Speaker</td>
+              <td>—</td>
               <td>—</td>
             </tr>
             <tr>
               <td>2023-09</td>
               <td>Texas Cyber Summit 2023</td>
-              <td>—</td>
+              <td>Austin, TX</td>
               <td><a href="https://blog.gitguardian.com/texas-cyber-summit-2023/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker (2 talks)</td>
               <td>Don&#x27;t commit your secrets: git hooks to the rescue; App Security Does Not Need To Be Fun: Ignoring OWASP To Have A Terrible Time</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2023-08</td>
               <td><a href="https://sessionize.com/mcdwayne" target="_blank" rel="noopener">DevOpsDays Seattle 2023</a></td>
-              <td>—</td>
+              <td>Seattle, WA</td>
               <td>—</td>
               <td>Speaker</td>
+              <td>—</td>
               <td>—</td>
             </tr>
             <tr>
               <td>2023-08</td>
               <td><a href="https://sessionize.com/mcdwayne" target="_blank" rel="noopener">DeveloperWeek CloudX 2023</a></td>
-              <td>—</td>
+              <td>Virtual</td>
               <td>—</td>
               <td>Speaker?</td>
+              <td>—</td>
               <td>—</td>
             </tr>
             <tr>
               <td>2023-08</td>
               <td>dev up 2023</td>
-              <td>—</td>
+              <td>St. Louis, MO</td>
               <td><a href="https://blog.gitguardian.com/dev-up-2023/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker (3 talks)</td>
               <td>3 sessions (titles not stated): git hooks w/ ggshield; handling a code leak; Secrets Management Maturity Model</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2023-08-08</td>
               <td>BSides Las Vegas 2023 (PasswordsCon)</td>
-              <td>—</td>
+              <td>Las Vegas, NV</td>
               <td><a href="https://blog.gitguardian.com/bsides-las-vegas-2023/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Do you know where your secrets are? Exploring the problem of secret sprawl and secret management maturity</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2023-07</td>
               <td>Nebraska.Code() 2023</td>
-              <td>—</td>
+              <td>Lincoln, NE</td>
               <td><a href="https://blog.gitguardian.com/nebraska-code-developing-in-the-great-plains/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker (2 talks)</td>
               <td>Who Goes There? Actively Detecting Intruders With Honeytokens; Do you know where your secrets are? Exploring the problem of secret sprawl and secret management maturity</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2023-06-26</td>
               <td><a href="https://www.thedroptimes.com/podcast/talking-drupal/talking-drupal-405-secrets-management" target="_blank" rel="noopener">Talking Drupal #405</a></td>
-              <td>—</td>
+              <td>Virtual</td>
               <td>—</td>
               <td>Podcast guest</td>
               <td>Talking Drupal #405 - Secrets Management</td>
+              <td><a href="https://www.youtube.com/watch?v=3yqtY3U94KI" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2023-06</td>
               <td>Techno Security &amp; Digital Forensics East 2023</td>
-              <td>—</td>
+              <td>Myrtle Beach, SC</td>
               <td><a href="https://blog.gitguardian.com/techno-security-digital-forensics-conference-east-2023/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>(title not stated – what to do when credentials leak)</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2023-06</td>
               <td><a href="https://infocondb.org/presenter/dwayne-mcdaniel" target="_blank" rel="noopener">CircleCityCon 10.0</a></td>
-              <td>—</td>
+              <td>Indianapolis, IN</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Stop Committing Your Secrets - Git Hooks To The Rescue</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2023-06</td>
               <td><a href="https://sessionize.com/mcdwayne" target="_blank" rel="noopener">SEI Secure Software by Design</a></td>
-              <td>—</td>
+              <td>Arlington, VA</td>
               <td>—</td>
               <td>Speaker</td>
+              <td>—</td>
               <td>—</td>
             </tr>
             <tr>
               <td>2023-06-13</td>
               <td><a href="https://rvasec.com/rvasec-2023-videos-dwayne-mcdaniel-andrea-matwyshyn/" target="_blank" rel="noopener">RVAsec 2023</a></td>
-              <td>—</td>
+              <td>Richmond, VA</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Who Goes There? Actively Detecting Intruders With Cyber Deception Tools</td>
+              <td><a href="https://www.youtube.com/watch?v=KBC1xgqwuJk" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2023-05</td>
               <td><a href="https://sessionize.com/mcdwayne" target="_blank" rel="noopener">HashiTalks: Secure 2023</a></td>
-              <td>—</td>
+              <td>Virtual</td>
               <td>—</td>
               <td>Speaker</td>
+              <td>—</td>
               <td>—</td>
             </tr>
             <tr>
               <td>2023-05</td>
               <td><a href="https://sessionize.com/mcdwayne" target="_blank" rel="noopener">php[tek] 2023</a></td>
-              <td>—</td>
+              <td>Chicago, IL</td>
               <td>—</td>
               <td>Speaker?</td>
+              <td>—</td>
               <td>—</td>
             </tr>
             <tr>
               <td>2023-05-09</td>
               <td><a href="https://cdcongitopscon2023.sched.com/event/1JpA9/security-does-not-need-to-be-fun-ignoring-owasp-to-have-a-terrible-time-dwayne-mcdaniel-gitguardian" target="_blank" rel="noopener">cdCon + GitOpsCon 2023</a></td>
-              <td>—</td>
+              <td>Vancouver, BC</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Security Does Not Need to Be Fun: Ignoring OWASP to Have a Terrible Time</td>
+              <td><a href="https://www.youtube.com/watch?v=qQcbvk81oBQ" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2023-05-05</td>
               <td>BSides Austin 2023</td>
-              <td>—</td>
+              <td>Austin, TX</td>
               <td><a href="https://blog.gitguardian.com/bsidesaustin-2023-cybersecurity-in-the-texas-tech-capital/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>(honeytoken talk – title not stated)</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2023-04-27</td>
               <td><a href="https://www.wearedevelopers.com/videos/573-stop-committing-your-secrets-git-hooks-to-the-rescue" target="_blank" rel="noopener">WeAreDevelopers LIVE (Season 5)</a></td>
-              <td>—</td>
+              <td>Virtual</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Stop Committing Your Secrets - Git Hooks To The Rescue!</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2023-04-22</td>
               <td>BSidesSF 2023</td>
-              <td><a href="https://securityboulevard.com/2023/05/bsidessf-2023-dwayne-mcdaniel-stop-committing-your-secrets-git-hooks-to-the-rescue/" target="_blank" rel="noopener">Recording/source</a></td>
+              <td>San Francisco, CA</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Stop Committing Your Secrets - Git Hooks To The Rescue!</td>
+              <td><a href="https://securityboulevard.com/2023/05/bsidessf-2023-dwayne-mcdaniel-stop-committing-your-secrets-git-hooks-to-the-rescue/" target="_blank" rel="noopener">Recording/source</a></td>
             </tr>
             <tr>
               <td>2023-04-13</td>
               <td>DevOps Midwest 2023</td>
-              <td>—</td>
+              <td>Omaha, NE</td>
               <td><a href="https://blog.gitguardian.com/devops-midwest-a-community-event-full-of-devsecops-best-practices/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Stop Committing Your Secrets - Git Hooks To The Rescue!</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2023-04-06</td>
               <td><a href="https://sessionize.com/mcdwayne" target="_blank" rel="noopener">DevOpsDays Nashville 2023</a></td>
-              <td>—</td>
+              <td>Nashville, TN</td>
               <td>—</td>
               <td>Speaker</td>
+              <td>—</td>
               <td>—</td>
             </tr>
             <tr>
               <td>2023-03-09</td>
               <td>ICCWS 2023</td>
-              <td>—</td>
+              <td>Towson, MD</td>
               <td><a href="https://blog.gitguardian.com/cybersecurity-learning-across-sectors-how-iccws-brings-academics-government-and-private-companies-together/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker (2 talks)</td>
               <td>Scaling Security: What Shifting Left Was Supposed To Mean; + second talk on OWASP (title not stated)</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2023-02</td>
               <td><a href="https://developerweek2023.sched.com/event/1GG5k/open-talk-cloudconnect-developing-for-the-web-without-leaving-the-browser" target="_blank" rel="noopener">DeveloperWeek 2023 / CloudConnect</a></td>
-              <td>—</td>
+              <td>Oakland, CA</td>
               <td>—</td>
               <td>Speaker (Open Talk)</td>
               <td>Developing for the Web Without Leaving the Browser</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2023-02-01</td>
               <td>CloudNativeSecurityCon 2023</td>
-              <td>—</td>
+              <td>Seattle, WA</td>
               <td><a href="https://blog.gitguardian.com/cloudnativesecuritycon-2023-a-unique-community-event-focused-on-the-future-of-open-source-and-cloud-native-security/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>Security Does Not Need to Be Fun: Ignoring OWASP to Have a Terrible Time</td>
+              <td><a href="https://www.youtube.com/watch?v=lUc28UWmS04" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2023</td>
               <td><a href="https://devopsdays.org/events/2023-boise/speakers/dwayne-mcdaniel/" target="_blank" rel="noopener">DevOpsDays Boise 2023</a></td>
-              <td>—</td>
+              <td>Boise, ID</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Scaling Security: What Shifting Left Was Supposed To Mean</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2022-12-16</td>
               <td>BSides SLC 2022</td>
-              <td>—</td>
+              <td>Salt Lake City, UT</td>
               <td><a href="https://blog.gitguardian.com/bsides-slc-community-fun-and-learning-in-salt-lake-city/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>(title not stated in recap)</td>
+              <td><a href="https://www.youtube.com/watch?v=RjnldJV7XXo" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2022-12</td>
               <td><a href="https://sessionize.com/mcdwayne" target="_blank" rel="noopener">Festive Tech Calendar 2022</a></td>
-              <td>—</td>
+              <td>Virtual</td>
               <td>—</td>
               <td>Speaker</td>
               <td>—</td>
+              <td><a href="https://www.youtube.com/watch?v=XtPeVBLYsYo" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2022-12</td>
               <td><a href="https://sessionize.com/mcdwayne" target="_blank" rel="noopener">Automation + DevOps Summit 2022</a></td>
-              <td>—</td>
+              <td>Virtual</td>
               <td>—</td>
               <td>Speaker</td>
+              <td>—</td>
               <td>—</td>
             </tr>
             <tr>
               <td>2022-12</td>
               <td><a href="https://sessionize.com/mcdwayne" target="_blank" rel="noopener">HashiTalks: Deploy 2022</a></td>
-              <td>—</td>
+              <td>Virtual</td>
               <td>—</td>
               <td>Speaker</td>
+              <td>—</td>
               <td>—</td>
             </tr>
             <tr>
               <td>2022-12</td>
               <td><a href="https://sessionize.com/mcdwayne" target="_blank" rel="noopener">DevFest Florida 2022</a></td>
-              <td>—</td>
+              <td>Miami, FL</td>
               <td>—</td>
               <td>Speaker</td>
+              <td>—</td>
               <td>—</td>
             </tr>
             <tr>
               <td>2022-11</td>
               <td><a href="https://www.gitguardian.com/events/developerweek-enterprise" target="_blank" rel="noopener">DeveloperWeek Enterprise 2022</a></td>
-              <td>—</td>
+              <td>Virtual</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Developing for the Web Without Leaving the Browser</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2022-10-21</td>
               <td>SecureWV 2022</td>
-              <td>—</td>
+              <td>Charleston, WV</td>
               <td><a href="https://blog.gitguardian.com/securewv-2022/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Speaker</td>
               <td>App Security Does Not Need To Be Fun: Ignoring OWASP To Have A Terrible Time</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2022-10</td>
               <td><a href="https://sessionize.com/mcdwayne" target="_blank" rel="noopener">GitKon 2022</a></td>
-              <td>—</td>
+              <td>Virtual</td>
               <td>—</td>
               <td>Speaker</td>
+              <td>—</td>
               <td>—</td>
             </tr>
             <tr>
               <td>2022-09-21</td>
               <td>DevOpsDays Chicago 2022</td>
-              <td>—</td>
+              <td>Chicago, IL</td>
               <td><a href="https://blog.gitguardian.com/devopsdays-chicago-2022/" target="_blank" rel="noopener">Blog on GitGuardian</a></td>
               <td>Workshop</td>
               <td>Git - Beyond Just Committing</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2022-09</td>
               <td><a href="https://sessionize.com/mcdwayne" target="_blank" rel="noopener">JCON Online 2022</a></td>
+              <td>Virtual</td>
               <td>—</td>
-              <td>—</td>
-              <td>Speaker</td>
-              <td>—</td>
+              <td>Speaker (2 talks)</td>
+              <td>Demystifying Git - Version Control From First Principles; Developing For The Web Without Leaving The Browser</td>
+              <td><a href="https://www.youtube.com/watch?v=Dfh4loBx3rM" target="_blank" rel="noopener">YouTube 1</a><br><a href="https://www.youtube.com/watch?v=k0N3bZr5NvU" target="_blank" rel="noopener">YouTube 2</a></td>
             </tr>
             <tr>
               <td>2022-09</td>
               <td><a href="https://sessionize.com/mcdwayne" target="_blank" rel="noopener">RMISC 2022</a></td>
-              <td>—</td>
+              <td>Denver, CO</td>
               <td>—</td>
               <td>Speaker</td>
+              <td>—</td>
               <td>—</td>
             </tr>
             <tr>
               <td>2022-09</td>
               <td><a href="https://sessionize.com/mcdwayne" target="_blank" rel="noopener">JConf.dev 2022</a></td>
-              <td>—</td>
+              <td>Chicago, IL</td>
               <td>—</td>
               <td>Speaker</td>
               <td>—</td>
+              <td><a href="https://www.youtube.com/watch?v=n6ybHRKb66Q" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2022-08</td>
               <td><a href="https://sessionize.com/mcdwayne" target="_blank" rel="noopener">WorldFestival 2022</a></td>
-              <td>—</td>
+              <td>Virtual</td>
               <td>—</td>
               <td>Speaker</td>
+              <td>—</td>
               <td>—</td>
             </tr>
             <tr>
               <td>2022-06</td>
               <td><a href="https://sessionize.com/mcdwayne" target="_blank" rel="noopener">Mautic Conference Global 2022</a></td>
+              <td>Virtual</td>
               <td>—</td>
-              <td>—</td>
-              <td>Speaker</td>
-              <td>—</td>
+              <td>Speaker (2 talks)</td>
+              <td>Stop Committing Your Secrets - Git Hooks To The Rescue!; Git - The Other DB You Need To Know</td>
+              <td><a href="https://www.youtube.com/watch?v=_Ql8UqvVDfY" target="_blank" rel="noopener">YouTube 1</a><br><a href="https://www.youtube.com/watch?v=7AS0Q4b7BF0" target="_blank" rel="noopener">YouTube 2</a></td>
             </tr>
             <tr>
               <td>2022-06</td>
               <td><a href="https://sessionize.com/mcdwayne" target="_blank" rel="noopener">SQL Start! 2022</a></td>
-              <td>—</td>
+              <td>Virtual</td>
               <td>—</td>
               <td>Speaker</td>
+              <td>—</td>
               <td>—</td>
             </tr>
             <tr>
               <td>2022-03</td>
               <td><a href="https://sessionize.com/mcdwayne" target="_blank" rel="noopener">Azure Spring Clean 2022</a></td>
-              <td>—</td>
+              <td>Virtual</td>
               <td>—</td>
               <td>Speaker</td>
               <td>—</td>
+              <td><a href="https://www.youtube.com/watch?v=UAAT6Bb6Ank" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2022 (early)</td>
               <td><a href="https://infocondb.org/presenter/dwayne-mcdaniel" target="_blank" rel="noopener">PancakesCon 3</a></td>
-              <td>—</td>
+              <td>Virtual</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Stop Committing Your Secrets and Improv Skills Everywhere!</td>
+              <td><a href="https://www.youtube.com/watch?v=XD9223UCoxg" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2019-09-21</td>
               <td><a href="https://sacramento.wordcamp.org/2019/speaker/dwayne-mcdaniel/" target="_blank" rel="noopener">WordCamp Sacramento 2019</a></td>
-              <td>—</td>
+              <td>Sacramento, CA</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Bash is magic # No it&#x27;s not</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2019-09-07</td>
               <td><a href="https://vegas.wordcamp.org/2019/speaker/dwayne-mcdaniel/" target="_blank" rel="noopener">WordCamp Vegas 2019</a></td>
-              <td>—</td>
+              <td>Las Vegas, NV</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Bash is magic # No it&#x27;s not</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2019-08-22</td>
               <td><a href="https://minneapolis.wordcamp.org/2019/speaker/dwayne-mcdaniel/" target="_blank" rel="noopener">WordCamp Minneapolis/St. Paul 2019</a></td>
-              <td>—</td>
+              <td>Minneapolis, MN</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Bash is magic # No it&#x27;s not</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2019-08-07</td>
               <td><a href="https://publishers.wordcamp.org/2019-columbus/speaker/dwayne-mcdaniel" target="_blank" rel="noopener">WordCamp for Publishers: Columbus 2019</a></td>
-              <td>—</td>
+              <td>Columbus, OH</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Making WP-CLI Your Own: Extending a command line tool for your own needs</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2019-07-20</td>
               <td><a href="https://boston.wordcamp.org/2019/speaker/dwayne-mcdaniel/" target="_blank" rel="noopener">WordCamp Boston 2019</a></td>
-              <td>—</td>
+              <td>Boston, MA</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Bash is magic # No it&#x27;s not</td>
+              <td><a href="https://wordpress.tv/2020/10/22/dwayne-mcdaniel-bash-is-magic-no-its-not-2/" target="_blank" rel="noopener">WordPress.tv</a></td>
             </tr>
             <tr>
               <td>2019-06-23</td>
               <td><a href="https://europe.wordcamp.org/2019/" target="_blank" rel="noopener">WordCamp Europe 2019</a></td>
-              <td>—</td>
+              <td>Berlin, Germany</td>
               <td><a href="https://www.mcdwayne.com/" target="_blank" rel="noopener">Old-site recap</a></td>
               <td>Attendee</td>
+              <td>—</td>
               <td>—</td>
             </tr>
             <tr>
               <td>2019 (mid)</td>
               <td>WordCamp Asheville 2019</td>
-              <td><a href="https://wordpress.tv/speakers/dwayne-mcdaniel/" target="_blank" rel="noopener">Recording/source</a></td>
+              <td>Asheville, NC</td>
               <td>—</td>
               <td>Speaker (2 talks)</td>
               <td>Let&#x27;s learn Git. No more excuses.; Learning Markdown: 20 minutes that will change your life</td>
+              <td><a href="https://wordpress.tv/2019/08/07/dwayne-mcdaniel-lets-learn-git-no-more-excuses-2/" target="_blank" rel="noopener">WordPress.tv 1</a><br><a href="https://wordpress.tv/2019/08/07/dwayne-mcdaniel-learning-markdown-20-minutes-that-will-change-your-life/" target="_blank" rel="noopener">WordPress.tv 2</a></td>
             </tr>
             <tr>
               <td>2019-04-27</td>
               <td><a href="https://oc.wordcamp.org/2019/speaker/dwayne-mcdaniel/" target="_blank" rel="noopener">WordCamp Orange County 2019</a></td>
-              <td>—</td>
+              <td>Irvine, CA</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Bash is magic # No it&#x27;s not</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2019-04-08</td>
               <td><a href="https://events.drupal.org/seattle2019/" target="_blank" rel="noopener">DrupalCon Seattle 2019</a></td>
-              <td>—</td>
+              <td>Seattle, WA</td>
               <td><a href="https://www.mcdwayne.com/" target="_blank" rel="noopener">Old-site recap</a></td>
               <td>Speaker</td>
               <td>(session title not recovered)</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2019 (spring)</td>
               <td><a href="https://atlanta.wordcamp.org/2019/speaker/dwayne-mcdaniel/" target="_blank" rel="noopener">WordCamp Atlanta 2019</a></td>
-              <td>—</td>
+              <td>Atlanta, GA</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Learning Markdown: 20 Minutes That Will Change Your Life</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2019 (spring)</td>
               <td>WordCamp Raleigh 2019</td>
-              <td><a href="https://wordpress.tv/speakers/dwayne-mcdaniel/" target="_blank" rel="noopener">Recording/source</a></td>
+              <td>Raleigh, NC</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Let&#x27;s learn Git. No more excuses.</td>
+              <td><a href="https://wordpress.tv/2019/05/21/dwayne-mcdaniel-lets-learn-git-no-more-excuses/" target="_blank" rel="noopener">WordPress.tv</a></td>
             </tr>
             <tr>
               <td>2019 (early)</td>
               <td>WordCamp Phoenix 2019</td>
-              <td><a href="https://wordpress.tv/speakers/dwayne-mcdaniel/" target="_blank" rel="noopener">Recording/source</a></td>
+              <td>Phoenix, AZ</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Nobody Wants a Website. They Want Results!</td>
+              <td><a href="https://wordpress.tv/2019/03/08/dwayne-mcdaniel-nobody-wants-a-website-they-want-results-2/" target="_blank" rel="noopener">WordPress.tv</a></td>
             </tr>
             <tr>
               <td>2019</td>
               <td><a href="https://design4drupal.org/node/37" target="_blank" rel="noopener">Design4Drupal 2019</a></td>
-              <td>—</td>
+              <td>Cambridge, MA</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Making A Tour: Leveraging The Tour Module For A Better User Experience</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2019</td>
               <td><a href="https://profiles.wordpress.org/mcdwayne" target="_blank" rel="noopener">WordCamp Montréal 2019</a></td>
-              <td>—</td>
+              <td>Montreal, QC</td>
               <td>—</td>
               <td>Speaker</td>
+              <td>—</td>
               <td>—</td>
             </tr>
             <tr>
               <td>2019</td>
               <td><a href="https://profiles.wordpress.org/mcdwayne" target="_blank" rel="noopener">WordCamp Vancouver 2019</a></td>
-              <td>—</td>
+              <td>Vancouver, BC</td>
               <td>—</td>
               <td>Speaker</td>
+              <td>—</td>
               <td>—</td>
             </tr>
             <tr>
               <td>2018-12</td>
               <td>WordCamp US 2018</td>
-              <td><a href="https://wordpress.tv/speakers/dwayne-mcdaniel/" target="_blank" rel="noopener">Recording/source</a></td>
+              <td>Nashville, TN</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Nobody wants a website. They want results!</td>
+              <td><a href="https://wordpress.tv/2018/12/31/dwayne-mcdaniel-nobody-wants-a-website-they-want-results/" target="_blank" rel="noopener">WordPress.tv</a></td>
             </tr>
             <tr>
               <td>2018-11-25</td>
               <td><a href="https://www.thedroptimes.com/podcast/talking-drupal/talking-drupal-187-dwayne-mcdaniel" target="_blank" rel="noopener">Talking Drupal #187</a></td>
-              <td>—</td>
+              <td>Virtual</td>
               <td>—</td>
               <td>Podcast guest</td>
               <td>Talking Drupal #187 - Dwayne McDaniel</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2018 (late)</td>
               <td><a href="https://portland.wordcamp.org/2018/speaker/dwayne-mcdaniel/" target="_blank" rel="noopener">WordCamp Portland 2018</a></td>
-              <td>—</td>
+              <td>Portland, OR</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Let&#x27;s Learn Git. No More Excuses.</td>
+              <td><a href="https://wordpress.tv/2020/01/14/dwayne-mcdaniel-lets-learn-git-no-more-excuses-3/" target="_blank" rel="noopener">WordPress.tv</a></td>
             </tr>
             <tr>
               <td>2018 (late)</td>
               <td>WordCamp Seattle 2018</td>
-              <td><a href="https://wordpress.tv/speakers/dwayne-mcdaniel/" target="_blank" rel="noopener">Recording/source</a></td>
+              <td>Seattle, WA</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Shipping Content With WP-CLI and Automated Testing And Why That Is Awesome</td>
+              <td><a href="https://wordpress.tv/2019/12/19/dwayne-mcdaniel-shipping-content-with-wp-cli-and-automated-testing-and-why-that-is-awesome/" target="_blank" rel="noopener">WordPress.tv</a></td>
             </tr>
             <tr>
               <td>2018-10-27</td>
               <td><a href="https://2018.badcamp.org/u/dwayne-mcdaniel" target="_blank" rel="noopener">BADCamp 2018</a></td>
-              <td>—</td>
+              <td>Berkeley, CA</td>
               <td><a href="https://www.mcdwayne.com/" target="_blank" rel="noopener">Old-site recap</a></td>
               <td>Speaker (2 talks)</td>
               <td>Let&#x27;s Learn Git. No More Excuses.; So You Want to Speak at a Camp? Yes Please!</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2018-10-06</td>
               <td><a href="https://baltimore.wordcamp.org/2018/speaker/dwayne-mcdaniel/" target="_blank" rel="noopener">WordCamp Baltimore 2018</a></td>
-              <td>—</td>
+              <td>Baltimore, MD</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Learning Markdown: 20 minutes that will change your life</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2018-10-01</td>
               <td><a href="https://www.ostraining.com/blog/podcasting/dwayne/" target="_blank" rel="noopener">OSTraining Podcast #28</a></td>
-              <td>—</td>
+              <td>Virtual</td>
               <td>—</td>
               <td>Podcast guest</td>
               <td>Dwayne McDaniel on Improv and Open Source</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2018-09-15</td>
               <td><a href="https://sacramento.wordcamp.org/2018/speaker/dwayne-mcdaniel/" target="_blank" rel="noopener">WordCamp Sacramento 2018</a></td>
-              <td>—</td>
+              <td>Sacramento, CA</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Shipping Content With WP-CLI</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2018-07-28</td>
               <td><a href="https://denver.wordcamp.org/2018/speaker/dwayne-mcdaniel/" target="_blank" rel="noopener">WordCamp Denver 2018</a></td>
-              <td>—</td>
+              <td>Denver, CO</td>
               <td><a href="https://www.mcdwayne.com/" target="_blank" rel="noopener">Old-site recap</a></td>
               <td>Speaker (2 talks)</td>
               <td>Nobody Wants a Website. They Want Results!; Workshop: WP-CLI – Don&#x27;t Fear The Command Line</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2018-05-31</td>
               <td>Texas Camp 2018</td>
-              <td>—</td>
+              <td>Austin, TX</td>
               <td><a href="https://www.mcdwayne.com/" target="_blank" rel="noopener">Old-site recap</a></td>
               <td>Attendee</td>
+              <td>—</td>
               <td>—</td>
             </tr>
             <tr>
               <td>2018-05-12</td>
               <td><a href="https://stlouis.wordcamp.org/2018/speaker/dwayne-mcdaniel/" target="_blank" rel="noopener">WordCamp St. Louis 2018</a></td>
-              <td>—</td>
+              <td>St. Louis, MO</td>
               <td>—</td>
               <td>Speaker</td>
               <td>WP-CLI: Don&#x27;t Fear The Command Line</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2018-04-09</td>
               <td><a href="https://events.drupal.org/nashville2018/" target="_blank" rel="noopener">DrupalCon Nashville 2018</a></td>
-              <td>—</td>
+              <td>Nashville, TN</td>
               <td><a href="https://www.mcdwayne.com/" target="_blank" rel="noopener">Old-site recap</a></td>
               <td>Speaker</td>
               <td>(session title not recovered)</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2018-03-16</td>
               <td><a href="https://miami.wordcamp.org/2018/speaker/dwayne-mcdaniel/" target="_blank" rel="noopener">WordCamp Miami 2018</a></td>
-              <td>—</td>
+              <td>Miami, FL</td>
               <td>—</td>
               <td>Speaker</td>
               <td>WP-CLI: Don&#x27;t Fear The Command Line</td>
+              <td><a href="https://wordpress.tv/2019/01/24/dwayne-mcdaniel-wp-cli-dont-fear-the-command-line-4/" target="_blank" rel="noopener">WordPress.tv</a></td>
             </tr>
             <tr>
               <td>2018-02-16</td>
               <td><a href="https://phoenix.wordcamp.org/2018/speaker/dwayne-mcdaniel" target="_blank" rel="noopener">WordCamp Phoenix 2018</a></td>
-              <td>—</td>
+              <td>Phoenix, AZ</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Discovery, discovery, discovery, discovery! The most important part of the project</td>
+              <td><a href="https://wordpress.tv/2018/02/26/dwayne-mcdaniel-discovery-discovery-discovery-discovery-the-most-import-part-of-the-project/" target="_blank" rel="noopener">WordPress.tv</a></td>
             </tr>
             <tr>
               <td>2018 (early)</td>
               <td>WordCamp Albuquerque 2018</td>
-              <td><a href="https://wordpress.tv/speakers/dwayne-mcdaniel/page/2/" target="_blank" rel="noopener">Recording/source</a></td>
+              <td>Albuquerque, NM</td>
               <td>—</td>
               <td>Speaker</td>
               <td>WP-CLI: Don&#x27;t Fear the Command Line</td>
+              <td><a href="https://wordpress.tv/2018/02/27/dwayne-mcdaniel-wp-cli-dont-fear-the-command-line-3/" target="_blank" rel="noopener">WordPress.tv</a></td>
             </tr>
             <tr>
               <td>2018</td>
               <td><a href="https://design4drupal.org/node/37" target="_blank" rel="noopener">Design4Drupal 2018</a></td>
-              <td>—</td>
+              <td>Cambridge, MA</td>
               <td>—</td>
               <td>Speaker (2 talks)</td>
               <td>Discovery, discovery, discovery, discovery!; Nobody Wants a Website. They Want Results!</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2018</td>
               <td>WordCamp Montréal 2018</td>
-              <td><a href="https://wordpress.tv/speakers/dwayne-mcdaniel/" target="_blank" rel="noopener">Recording/source</a></td>
+              <td>Montreal, QC</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Shipping Content With WP-CLI And Why That Is Awesome</td>
+              <td><a href="https://wordpress.tv/2019/03/18/dwayne-mcdaniel-shipping-content-with-wp-cli-and-why-that-is-awesome/" target="_blank" rel="noopener">WordPress.tv</a></td>
             </tr>
             <tr>
               <td>2018</td>
               <td><a href="https://www.drupalgovcon.org/author/mcdwayne" target="_blank" rel="noopener">Drupal GovCon 2018</a></td>
-              <td>—</td>
+              <td>Bethesda, MD</td>
               <td>—</td>
               <td>Speaker (2 talks)</td>
               <td>Discovery, discovery, discovery, discovery! The most important part of the project; Let&#x27;s learn Git. No more excuses.</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2017-12-01</td>
               <td><a href="https://us.wordcamp.org/2017/" target="_blank" rel="noopener">WordCamp US 2017</a></td>
-              <td>—</td>
+              <td>Nashville, TN</td>
               <td><a href="https://www.mcdwayne.com/" target="_blank" rel="noopener">Old-site recap</a></td>
               <td>Attendee</td>
+              <td>—</td>
               <td>—</td>
             </tr>
             <tr>
               <td>2017-10-21</td>
               <td><a href="https://birmingham.wordcamp.org/2017/speaker/dwayne-mcdaniel/" target="_blank" rel="noopener">WordCamp Birmingham 2017</a></td>
-              <td>—</td>
+              <td>Birmingham, AL</td>
               <td>—</td>
               <td>Speaker (2 talks)</td>
               <td>Applying Improv to All Aspects of Web Development; WP-CLI: Don&#x27;t Fear The Command Line</td>
+              <td><a href="https://wordpress.tv/2018/01/11/dwayne-mcdaniel-wp-cli-dont-fear-the-command-line-2/" target="_blank" rel="noopener">WordPress.tv</a></td>
             </tr>
             <tr>
               <td>2017-10</td>
               <td>WordCamp Baltimore 2017</td>
-              <td><a href="https://wordpress.tv/speakers/dwayne-mcdaniel/page/2/" target="_blank" rel="noopener">Recording/source</a></td>
+              <td>Baltimore, MD</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Everything Louder Than Everything Else! Navigating Stakeholder Needs Through Better Discovery</td>
+              <td><a href="https://wordpress.tv/2017/10/20/dwayne-mcdaniel-everything-louder-than-everything-else-navigating-stakeholder-needs-through-better-discovery/" target="_blank" rel="noopener">WordPress.tv</a></td>
             </tr>
             <tr>
               <td>2017 (late)</td>
               <td><a href="https://orlando.wordcamp.org/2017/speaker/dwayne-mcdaniel/" target="_blank" rel="noopener">WordCamp Orlando 2017</a></td>
-              <td>—</td>
+              <td>Orlando, FL</td>
               <td>—</td>
               <td>Speaker</td>
+              <td>—</td>
               <td>—</td>
             </tr>
             <tr>
               <td>2017 (late)</td>
               <td>WordCamp Seattle 2017</td>
-              <td><a href="https://wordpress.tv/speakers/dwayne-mcdaniel/page/2/" target="_blank" rel="noopener">Recording/source</a></td>
+              <td>Seattle, WA</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Discovery, Discovery, Discovery, Discovery! The Most Important Part Of The Project</td>
+              <td><a href="https://wordpress.tv/2018/01/09/dwayne-mcdaniel-discovery-discovery-discovery-discovery-the-most-important-part-of-the-project/" target="_blank" rel="noopener">WordPress.tv</a></td>
             </tr>
             <tr>
               <td>2017-09-29</td>
               <td><a href="https://la.wordcamp.org/2017/speaker/dwayne-mcdaniel/" target="_blank" rel="noopener">WordCamp Los Angeles 2017</a></td>
-              <td>—</td>
+              <td>Los Angeles, CA</td>
               <td>—</td>
               <td>Speaker</td>
               <td>WP-CLI: Don&#x27;t Fear The Command Line</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2017-08-26</td>
               <td><a href="https://denver.wordcamp.org/2017/" target="_blank" rel="noopener">WordCamp Denver 2017</a></td>
-              <td>—</td>
+              <td>Denver, CO</td>
               <td><a href="https://www.mcdwayne.com/" target="_blank" rel="noopener">Old-site recap</a></td>
               <td>Workshop</td>
               <td>Let&#x27;s Learn Git</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2017-08-17</td>
               <td><a href="https://journalist.wordcamp.org/2017-denver/speaker/dwayne-mcdaniel/" target="_blank" rel="noopener">WordCamp for Publishers 2017</a></td>
-              <td>—</td>
+              <td>Denver, CO</td>
               <td><a href="https://www.mcdwayne.com/" target="_blank" rel="noopener">Old-site recap</a></td>
               <td>Workshop (co-presented w/ Daniel Bachhuber)</td>
               <td>The Complete Introduction to WP-CLI</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2017-08-12</td>
               <td><a href="https://montreal.wordcamp.org/2017-fr/speaker/dwayne-mcdaniel/" target="_blank" rel="noopener">WordCamp Montréal 2017</a></td>
-              <td>—</td>
+              <td>Montreal, QC</td>
               <td>—</td>
               <td>Workshop</td>
               <td>Workshop – Let&#x27;s learn Git. No more excuses.</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2017-07</td>
               <td>WordCamp Boston 2017</td>
-              <td><a href="https://wordpress.tv/speakers/dwayne-mcdaniel/page/2/" target="_blank" rel="noopener">Recording/source</a></td>
+              <td>Boston, MA</td>
               <td>—</td>
               <td>Panelist</td>
               <td>Discussion Panel: Working in the Open (Source)</td>
+              <td><a href="https://wordpress.tv/2017/08/08/discussion-panel-working-in-the-open-source/" target="_blank" rel="noopener">WordPress.tv</a></td>
             </tr>
             <tr>
               <td>2017-07-14</td>
               <td><a href="https://2017.wpcampus.org/announcements/speaker-dwayne-mcdaniel/" target="_blank" rel="noopener">WPCampus 2017</a></td>
-              <td>—</td>
+              <td>Buffalo, NY</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Every Project Is a Story: Applying Storytelling to Your Client Interactions</td>
+              <td><a href="https://www.youtube.com/watch?v=_YXF1RGvQDw" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2017-07</td>
               <td><a href="https://minneapolis.wordcamp.org/2017/wp-json/wp/v2/posts/665" target="_blank" rel="noopener">WordCamp Minneapolis 2017</a></td>
-              <td>—</td>
+              <td>Minneapolis, MN</td>
               <td>—</td>
               <td>Speaker</td>
               <td>(title not found – version control crash course)</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2017 (summer)</td>
               <td>WordCamp Chicago 2017</td>
-              <td><a href="https://wordpress.tv/speakers/dwayne-mcdaniel/page/2/" target="_blank" rel="noopener">Recording/source</a></td>
+              <td>Chicago, IL</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Every Project Is A Story, Applying Storytelling To Your Client Interactions</td>
+              <td><a href="https://wordpress.tv/2017/08/31/dwayne-mcdaniel-every-project-is-a-story-applying-storytelling-to-your-client-interactions/" target="_blank" rel="noopener">WordPress.tv</a></td>
             </tr>
             <tr>
               <td>2017-06</td>
               <td>WordCamp Europe 2017</td>
-              <td><a href="https://wordpress.tv/speakers/dwayne-mcdaniel/page/2/" target="_blank" rel="noopener">Recording/source</a></td>
+              <td>Paris, France</td>
               <td>—</td>
               <td>Speaker</td>
               <td>We Are All Making This Up: Improv Lessons for Developers</td>
+              <td><a href="https://wordpress.tv/2017/06/21/dwayne-mcdaniel-we-are-all-making-this-up-improv-lessons-for-developers-2/" target="_blank" rel="noopener">WordPress.tv</a></td>
             </tr>
             <tr>
               <td>2017-05-20</td>
               <td><a href="https://jacksonville.wordcamp.org/2017/speaker/dwayne-mcdaniel/" target="_blank" rel="noopener">WordCamp Jacksonville 2017</a></td>
-              <td>—</td>
+              <td>Jacksonville, FL</td>
               <td>—</td>
               <td>Speaker</td>
               <td>WP-CLI: wp yes you –can</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2017-04-24</td>
               <td><a href="https://events.drupal.org/baltimore2017/" target="_blank" rel="noopener">DrupalCon Baltimore 2017</a></td>
-              <td>—</td>
+              <td>Baltimore, MD</td>
               <td><a href="https://www.mcdwayne.com/" target="_blank" rel="noopener">Old-site recap</a></td>
               <td>Speaker</td>
               <td>(session title not recovered)</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2017-04</td>
               <td>WordCamp San Diego 2017</td>
-              <td><a href="https://wordpress.tv/speakers/dwayne-mcdaniel/page/2/" target="_blank" rel="noopener">Recording/source</a></td>
+              <td>San Diego, CA</td>
               <td>—</td>
               <td>Speaker</td>
               <td>WP-CLI – Don&#x27;t Fear the Command Line</td>
+              <td><a href="https://wordpress.tv/2017/04/20/dwayne-mcdaniel-wp-cli-dont-fear-the-command-line/" target="_blank" rel="noopener">WordPress.tv</a></td>
             </tr>
             <tr>
               <td>2017 (spring)</td>
               <td>WordCamp Raleigh 2017</td>
-              <td><a href="https://wordpress.tv/speakers/dwayne-mcdaniel/page/2/" target="_blank" rel="noopener">Recording/source</a></td>
+              <td>Raleigh, NC</td>
               <td>—</td>
               <td>Speaker</td>
               <td>WP-CLI – WP Yes You – Can</td>
+              <td><a href="https://wordpress.tv/2017/06/22/dwayne-mcdaniel-wp-cli-wp-yes-you-can/" target="_blank" rel="noopener">WordPress.tv</a></td>
             </tr>
             <tr>
               <td>2017-03</td>
               <td>WordCamp Atlanta 2017</td>
-              <td><a href="https://wordpress.tv/speakers/dwayne-mcdaniel/page/3/" target="_blank" rel="noopener">Recording/source</a></td>
+              <td>Atlanta, GA</td>
               <td>—</td>
               <td>Speaker</td>
               <td>We Are All Making This Up – Improv Lessons For Developers</td>
+              <td><a href="https://wordpress.tv/2017/03/29/dwayne-mcdaniel-we-are-all-making-this-up-improv-lessons-for-developers/" target="_blank" rel="noopener">WordPress.tv</a></td>
             </tr>
             <tr>
               <td>2017-03-10</td>
               <td><a href="https://webcamp.stanford.edu/sessions/2017" target="_blank" rel="noopener">Stanford DrupalCamp 2017</a></td>
-              <td>—</td>
+              <td>Stanford, CA</td>
               <td><a href="https://www.mcdwayne.com/" target="_blank" rel="noopener">Old-site recap</a></td>
               <td>Speaker (2 talks)</td>
               <td>Discovery, Discovery, Discovery, Discovery! The Most Important Part of Successful Projects; We Are All Making This Up: Improv Lessons for Developers</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2017 (early)</td>
               <td><a href="https://phoenix.wordcamp.org/2017/speaker/dwayne-mcdaniel/" target="_blank" rel="noopener">WordCamp Phoenix 2017</a></td>
-              <td>—</td>
+              <td>Phoenix, AZ</td>
               <td>—</td>
               <td>Workshop</td>
               <td>Developer Workshop: WP-CLI</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2017</td>
               <td><a href="https://2017.design4drupal.org/speakers/dwayne-mcdaniel" target="_blank" rel="noopener">Design4Drupal 2017</a></td>
-              <td>—</td>
+              <td>Cambridge, MA</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Every project is a story: Applying storytelling to your client interactions</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2017</td>
               <td><a href="https://www.drupalgovcon.org/author/mcdwayne" target="_blank" rel="noopener">Drupal GovCon 2017</a></td>
-              <td>—</td>
+              <td>Bethesda, MD</td>
               <td>—</td>
               <td>Speaker</td>
               <td>So you want to speak at a camp? Yes please!</td>
+              <td><a href="https://www.youtube.com/watch?v=Ak0Bz0AUugg" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
             <tr>
               <td>2016-11-19</td>
               <td><a href="https://baltimore.wordcamp.org/2016/speaker/dwayne-mcdaniel/" target="_blank" rel="noopener">WordCamp Baltimore 2016</a></td>
-              <td>—</td>
+              <td>Baltimore, MD</td>
               <td>—</td>
               <td>Speaker</td>
               <td>We Are All Making This Up: Lessons For The WP Dev From Improv</td>
+              <td><a href="https://wordpress.tv/2016/11/22/dwayne-mcdaniel-we-are-all-making-this-up-lessons-for-the-wp-dev-from-improv/" target="_blank" rel="noopener">WordPress.tv</a></td>
             </tr>
             <tr>
               <td>2016-09-16</td>
               <td><a href="https://milwaukee.wordcamp.org/2016/speaker/mcdwayne/" target="_blank" rel="noopener">WordCamp Milwaukee 2016</a></td>
-              <td>—</td>
+              <td>Milwaukee, WI</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Pricing Strategy and Planning For Agencies</td>
+              <td>—</td>
             </tr>
             <tr>
               <td>2016-03-19</td>
               <td><a href="https://joind.in/event/midcamp-2016---midwest-drupal-camp-/sales-and-pricing-strategies-" target="_blank" rel="noopener">MidCamp 2016</a></td>
-              <td>—</td>
+              <td>Chicago, IL</td>
               <td>—</td>
               <td>Speaker</td>
               <td>Sales and Pricing Strategies</td>
+              <td><a href="https://www.youtube.com/watch?v=tmpd09hzUag" target="_blank" rel="noopener">YouTube</a></td>
             </tr>
           </tbody>
         </table>
@@ -2093,6 +2314,17 @@ html {
       </footer>
     </section>
   </main>
+
+  <script>
+    // Keep the section counters in sync with the table rows.
+    document.querySelectorAll('section[aria-labelledby]').forEach(function (section) {
+      var heading = document.getElementById(section.getAttribute('aria-labelledby'));
+      var rows = section.querySelectorAll('tbody tr');
+      if (!heading || !rows.length) return;
+      var label = heading.textContent.replace(/\s*\(\d+\)\s*$/, '');
+      heading.textContent = label + ' (' + rows.length + ')';
+    });
+  </script>
 
 </body>
 </html>

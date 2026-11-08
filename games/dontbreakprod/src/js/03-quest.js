@@ -47,7 +47,7 @@ const LOOK={
    sticky:"The sticky note says: \"GitGuardian login = your email. Ask Marisol for more. - M\"",
    shelves:"Paper towels, toner, and one box labeled HAL'S STUFF. Hal ran security before you. Hal's box contains a stress ball and a printout titled 'Q2 SECRETS - TODO'. The TODO list is blank.",
    bucket:"A mop bucket. It's been here longer than the security program.",
-   chair:"An office chair. The backrest hangs off and one wheel has rolled under the desk. You'll be standing.",sign:"Someone taped SECURITY over SUPPLIES. The tape is already peeling."},
+   chair:"An office chair. The backrest hangs off and one wheel has rolled under the desk. You'll be standing.",sign:"The sign says SUPPLY CHAIN SECURITY. It's a supply closet. You're security. Someone in IT thinks this is hilarious, and you're ashamed of how much you agree."},
  f2:{office:"Marisol's glass office. A whiteboard behind her reads: SOC 2 AUDIT FRIDAY. Under it, smaller: renew GitGuardian??",printer:"The printer has a sign: OUT OF ORDER SINCE THE REORG.",plant:"A plant. Healthy. Somebody here waters things."},
  lift:{panel:()=>`The badge reader shows the floors your badge opens: ${S.badge.join(", ")}. Everything else blinks red.`},
  b1:{cage:"A cage of loaner laptops. Most have stickers. One has duct tape holding the hinge on. It's labeled BRICKBOOK 9000.",number:"NOW SERVING: 47. You didn't take a number. Nobody does.",note:"A note in Otto's handwriting: \"TicketHive API token for the auto-close script - DO NOT LOSE\". It's from 2022."},

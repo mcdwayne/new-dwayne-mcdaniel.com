@@ -548,7 +548,7 @@ tr.click:focus-visible td{background:#EEF1FF;outline:none}tr.click:focus-visible
    message windows and dialogs. One long quest, six levels, an elevator between departments.
    Everything is simulated. No real systems are contacted.
    ========================================================================================== */
-const BUILD="1b935592";
+const BUILD="4ce2e5b3";
 const COMPANY="Precarium Inc.";
 const START_T={1:9*60,2:11*60,3:13*60+30,4:15*60,5:16*60+30,6:23*60};
 const LV={
@@ -667,7 +667,7 @@ closet(){R(0,0,320,112,8);D(0,0,320,112,8,0);
   for(let i=0;i<20;i++)R(102+(i>>2),96+i,6,1,i<2?12:4);R(103,104,8,2,15);
   R(118,123,4,13,8);R(119,123,1,13,7);R(106,136,28,2,8);R(108,138,4,3,0);R(118,138,4,3,0);R(128,138,4,3,0);R(140,146,4,3,0);
   R(282,8,34,104,6);R(285,11,28,101,0);D(285,11,28,101,0,8);R(306,60,3,6,14);
-  R(214,20,60,24,15);R(214,20,60,3,9);T(228,26,"SECURITY",4);T(218,34,"WAS SUPPLIES",8);
+  R(214,20,60,24,15);R(214,20,60,3,9);T(220,26,"SUPPLY CHAIN",1);T(228,34,"SECURITY",4);L(226,41,262,41,4);
   if(!has("laptop")&&S&&S.f.ottoRotated){}},
 f2(){D(0,0,320,108,7,15);R(0,104,320,4,8);
   R(18,22,46,86,6);R(21,25,40,83,0);D(21,25,40,83,0,8);R(24,34,34,12,15);T(26,36,"SECURITY",4);T(26,41,"SUPPLIES",8);L(25,43,57,38,4);R(52,68,3,5,14);
@@ -879,7 +879,7 @@ const LOOK={
    sticky:"The sticky note says: \"GitGuardian login = your email. Ask Marisol for more. - M\"",
    shelves:"Paper towels, toner, and one box labeled HAL'S STUFF. Hal ran security before you. Hal's box contains a stress ball and a printout titled 'Q2 SECRETS - TODO'. The TODO list is blank.",
    bucket:"A mop bucket. It's been here longer than the security program.",
-   chair:"An office chair. The backrest hangs off and one wheel has rolled under the desk. You'll be standing.",sign:"Someone taped SECURITY over SUPPLIES. The tape is already peeling."},
+   chair:"An office chair. The backrest hangs off and one wheel has rolled under the desk. You'll be standing.",sign:"The sign says SUPPLY CHAIN SECURITY. It's a supply closet. You're security. Someone in IT thinks this is hilarious, and you're ashamed of how much you agree."},
  f2:{office:"Marisol's glass office. A whiteboard behind her reads: SOC 2 AUDIT FRIDAY. Under it, smaller: renew GitGuardian??",printer:"The printer has a sign: OUT OF ORDER SINCE THE REORG.",plant:"A plant. Healthy. Somebody here waters things."},
  lift:{panel:()=>`The badge reader shows the floors your badge opens: ${S.badge.join(", ")}. Everything else blinks red.`},
  b1:{cage:"A cage of loaner laptops. Most have stickers. One has duct tape holding the hinge on. It's labeled BRICKBOOK 9000.",number:"NOW SERVING: 47. You didn't take a number. Nobody does.",note:"A note in Otto's handwriting: \"TicketHive API token for the auto-close script - DO NOT LOSE\". It's from 2022."},
