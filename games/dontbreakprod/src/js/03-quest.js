@@ -214,7 +214,7 @@ const WIN={
    levelUp(5,`Harriet signs a freeze exception with a pen that costs more than your laptop.\n\n"One change, tonight, one key. Victor still has to approve production changes during a launch week. Floor 6. He's back from Tahoe."`);},
  victor:()=>{S.f.won5=true;S.gg="Member · Full access on #2871";grant("GitGuardian: Full access on #2871");grant("PayRail dashboard: admin");grant("Change window: 11 PM to 1 AM, approved");award("win5");
    levelUp(6,`Victor signs the change. "Do it tonight. Ingrid runs the bridge. Marisol gives you Full access on the incident. PayRail access comes from Wendell's team."\n\nHe pauses at the door. "And {name}? Don't break prod."`.replace("{name}",first()));}};
-function levelUp(n,txt){msgBox(txt,null,()=>levelCard(n));}
+function levelUp(n,txt){if(S&&S.tut)return;msgBox(txt,null,()=>levelCard(n));}
 
 /* ============================== honeytoken timer ============================== */
 function htTick(){if(S&&S.ht&&S.ht.planted&&!S.ht.fired&&S.t>=S.ht.at){S.ht.fired=S.t;S.f.htFired=true;award("htFired");

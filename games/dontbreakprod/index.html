@@ -525,6 +525,24 @@ tr.click:focus-visible td{background:#EEF1FF;outline:none}tr.click:focus-visible
 .dlg .opts button.item{background:linear-gradient(#E6F0FF,#B9D2FF);border-color:#1F3A8A;box-shadow:inset 0 2px 0 rgba(255,255,255,.9),inset 0 -3px 0 rgba(0,0,0,.08),0 4px 0 #1F3A8A,0 7px 12px rgba(0,0,0,.35)}
 .dlg .opts button.item:hover{background:linear-gradient(#F2F7FF,#CFE0FF)}
 .dlg .opts button.pitch.item{background:linear-gradient(#E6F0FF,#B9D2FF)}
+/* How to play: the coach box, and a still green outline and arrow (no pulsing, no bouncing) */
+#coach{position:fixed;z-index:80;left:12px;top:12px;width:min(380px,calc(100vw - 24px));max-height:calc(100vh - 24px);overflow:auto;background:#fff;color:#111;border:4px double #0000AA;box-shadow:0 0 0 4px #fff,6px 6px 0 4px rgba(0,0,0,.5);padding:12px 14px;font:15px/1.45 var(--f-ui);display:flex;flex-direction:column;gap:8px}
+#coach .ch{display:flex;justify-content:space-between;align-items:center;gap:8px;font:15px var(--f-term);color:#0000AA}
+#coach .ct{font:600 17px var(--f-pix)}
+#coach .cx{white-space:pre-line}
+#coach .cb{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+#coach button{background:#C8C8C8;border:2px solid;border-color:#FFF #555 #555 #FFF;padding:6px 12px;font:15px var(--f-pix);cursor:pointer;color:#111;min-height:32px}
+#coach button.sub{background:none;border-color:transparent;text-decoration:underline;padding:6px 4px}
+#coach .cw{font:15px var(--f-term);color:#555}
+#coach .cmin{all:unset;cursor:pointer;font:14px var(--f-term);color:#0000AA;border:1px solid #0000AA;padding:2px 8px;white-space:nowrap;min-height:24px;display:inline-flex;align-items:center}
+#coach .cmin:focus-visible,#coach button:focus-visible{outline:3px solid #2D3FD8;outline-offset:2px}
+#coach.min .cx,#coach.min .cb{display:none}
+#tutbox{position:fixed;z-index:79;pointer-events:none;border:4px solid #39FF14;border-radius:8px;box-shadow:0 0 0 2px #062B00,0 0 12px 3px rgba(57,255,20,.6)}
+#tutarrow{position:fixed;z-index:79;pointer-events:none;width:64px;height:40px;transform:rotate(var(--rot,0deg));filter:drop-shadow(0 0 4px rgba(57,255,20,.7))}
+#tutarrow svg{display:block}
+.tl-box{position:fixed;z-index:78;pointer-events:none;border:3px solid #39FF14;border-radius:6px;box-shadow:0 0 0 2px #062B00}
+.tl-tag{position:fixed;z-index:78;pointer-events:none;background:#062B00;color:#B6FF9E;font:15px/1 var(--f-term);padding:3px 6px;border:1px solid #39FF14;white-space:nowrap}
+@media (max-width:760px){#coach{top:auto!important;left:8px!important;right:8px;width:auto;max-height:38vh;font-size:14px;padding:8px 12px}.tl-tag{display:none}}
 
 </style>
 
@@ -548,7 +566,7 @@ tr.click:focus-visible td{background:#EEF1FF;outline:none}tr.click:focus-visible
    message windows and dialogs. One long quest, six levels, an elevator between departments.
    Everything is simulated. No real systems are contacted.
    ========================================================================================== */
-const BUILD="4ce2e5b3";
+const BUILD="2b71d74e";
 const COMPANY="Precarium Inc.";
 const START_T={1:9*60,2:11*60,3:13*60+30,4:15*60,5:16*60+30,6:23*60};
 const LV={
@@ -600,7 +618,7 @@ function fresh(name){return {v:1,player:name||randomName(),lv:1,room:"closet",t:
   c:{checkout:"v1",payouts:"v1",recon:"hard"},vault:{production:["v1"],default:[]},pr:{v2:false,v1:true},ht:null};}
 const hhmm=t=>{t=((t%1440)+1440)%1440;const h=Math.floor(t/60),m=t%60;return `${((h+11)%12)+1}:${String(m).padStart(2,"0")} ${h<12?"AM":"PM"}`;};
 function advance(m){if(!S||S.dead)return;S.t+=m||1;htTick();}
-function award(k){if(!S||S.got[k]||!POINTS[k])return 0;S.got[k]=1;S.score+=POINTS[k];return POINTS[k];}
+function award(k){if(!S||S.tut||S.got[k]||!POINTS[k])return 0;S.got[k]=1;S.score+=POINTS[k];return POINTS[k];}
 const has=it=>S.inv.includes(it);
 function give(it){if(!has(it)){S.inv.push(it);}}
 function take(it){S.inv=S.inv.filter(x=>x!==it);if(heldItem===it)heldItem=null;}
@@ -1046,7 +1064,7 @@ const WIN={
    levelUp(5,`Harriet signs a freeze exception with a pen that costs more than your laptop.\n\n"One change, tonight, one key. Victor still has to approve production changes during a launch week. Floor 6. He's back from Tahoe."`);},
  victor:()=>{S.f.won5=true;S.gg="Member · Full access on #2871";grant("GitGuardian: Full access on #2871");grant("PayRail dashboard: admin");grant("Change window: 11 PM to 1 AM, approved");award("win5");
    levelUp(6,`Victor signs the change. "Do it tonight. Ingrid runs the bridge. Marisol gives you Full access on the incident. PayRail access comes from Wendell's team."\n\nHe pauses at the door. "And {name}? Don't break prod."`.replace("{name}",first()));}};
-function levelUp(n,txt){msgBox(txt,null,()=>levelCard(n));}
+function levelUp(n,txt){if(S&&S.tut)return;msgBox(txt,null,()=>levelCard(n));}
 
 /* ============================== honeytoken timer ============================== */
 function htTick(){if(S&&S.ht&&S.ht.planted&&!S.ht.fired&&S.t>=S.ht.at){S.ht.fired=S.t;S.f.htFired=true;award("htFired");
@@ -1856,10 +1874,11 @@ function renderHere(){const el=document.getElementById("here");if(!el||!S)return
 document.addEventListener("click",e=>{const b=e.target.closest("[data-here]");if(!b||!S||S.dead)return;const id=b.dataset.here;
   if(heldItem){const it=heldItem;heldItem=null;iconbar();return interact("item",id,it);}
   const s=SPOTS[S.room].find(x=>x.id===id);interact((s&&(s.exit||s.floor))&&verb!=="look"?"use":{walk:"walk",look:"look",hand:"use",talk:"talk"}[verb],id);});
-function updateBar(){if(!S)return;renderHere();document.getElementById("stScore").textContent=`Score: ${S.score} of ${MAXSCORE}`;
+function updateBar(){if(!S)return;renderHere();document.getElementById("stScore").textContent=S.tut?"How to play · no score":`Score: ${S.score} of ${MAXSCORE}`;
   document.getElementById("stTitle").textContent=`Level ${S.lv} · ${ROOMNAME[S.room]}`;document.getElementById("stTime").textContent=hhmm(S.t);
   const n=nextStep(),g=document.getElementById("goal");g.classList.toggle("urgent",!!n.boss);document.getElementById("goalTxt").textContent=(n.win?"★ ":n.boss?"⚔ ":"Next: ")+n.t;
-  const c=stepCount();document.getElementById("goalBtn").textContent=`Quest ${c[0]}/${c[1]}`;}
+  const c=stepCount();document.getElementById("goalBtn").textContent=`Quest ${c[0]}/${c[1]}`;
+  if(S.tut&&typeof TUT!=="undefined"){const st=TSTEPS[TUT.n];g.classList.remove("urgent");document.getElementById("goalTxt").textContent="Training: "+(st?st.t.replace(/^\d+ · /,""):"complete");document.getElementById("goalBtn").textContent=`Quest ${Math.min(TUT.n,TSTEPS.length)}/${TSTEPS.length}`;}}
 function draw(){if(!S)return;g.clearRect(0,0,320,170);SCENES[S.room]();if(night()&&S.room!=="lift"){g.fillStyle="rgba(0,0,40,.35)";g.fillRect(0,0,320,170);}drawCues();updateBar();}
 function spotAt(ev){const r=cv.getBoundingClientRect();const x=(ev.clientX-r.left)*320/r.width,y=(ev.clientY-r.top)*170/r.height;
   return SPOTS[S.room].filter(s=>x>=s.r[0]&&x<s.r[0]+s.r[2]&&y>=s.r[1]&&y<s.r[1]+s.r[3]).sort((a,b)=>(a.talk?0:1)-(b.talk?0:1)||a.r[2]*a.r[3]-b.r[2]*b.r[3])[0];}
@@ -1905,6 +1924,8 @@ function parse(raw){const words=raw.replace(/[^a-z0-9 #]/g," ").replace(/\b(the|
 
 /* ============================== quest pad ============================== */
 function showTasks(){if(document.getElementById("padwrap"))return;const Lr=ML();const w=document.createElement("div");w.className="msgwrap";w.id="padwrap";const st=STEPS[S.lv]||[];
+  if(S.tut&&typeof TUT_CL!=="undefined"){w.innerHTML=`<div class="pad" role="dialog" aria-modal="true" aria-label="Quest"><h2>How to play · checklist</h2><div class="win">In the real game this pad lists the level's steps, the favors you've heard about, and your access. Training has no score and saves nothing.</div>${TUT_CL.map(([t,its])=>`<div class="final"><b>${t}</b><ol>${its.map(([n,x])=>`<li class="${TUT.n>=n?"ok":""}"><span>${TUT.n>=n?"[x]":"[ ]"}</span> ${esc(x)}</li>`).join("")}</ol></div>`).join("")}<div class="btns"><button data-padclose>Close</button></div></div>`;
+   Lr.appendChild(w);w.querySelector("[data-padclose]").onclick=()=>w.remove();return;}
   w.innerHTML=`<div class="pad" role="dialog" aria-modal="true" aria-label="Quest"><h2>Level ${S.lv}: ${esc(LV[S.lv].name)}</h2><div class="win">${esc(LV[S.lv].tag)}</div>
    <ol>${st.map(([t,d])=>`<li class="${d()?"ok":""}"><span>${d()?"[x]":"[ ]"}</span> ${esc(t)}</li>`).join("")}</ol>
    <div class="final"><b>Favors</b> <span style="font-size:15px">(optional, ask people "Anything I can help with?")</span><ul>${FAVORS.filter(favHeard).length?FAVORS.filter(favHeard).map(f=>`<li>${f.done()?'<span class="x">✓</span>':"•"} ${esc(f.t)}${f.done()?"":` <span style="font-size:15px">· ${esc(f.where)}</span>`}</li>`).join(""):"<li>None yet. People around the building could use a hand.</li>"}</ul></div>
@@ -1921,7 +1942,7 @@ document.addEventListener("click",e=>{const b=e.target.closest("[data-mn]");if(!
 
 /* ============================== saving (this browser only) ============================== */
 const SKEY="dontbreakprod.save.v1";
-function save(){if(!S)return;try{localStorage.setItem(SKEY,JSON.stringify(S));}catch(e){}}
+function save(){if(!S||S.tut)return;try{localStorage.setItem(SKEY,JSON.stringify(S));}catch(e){}}
 function load(){try{const s=localStorage.getItem(SKEY);return s?JSON.parse(s):null;}catch(e){return null;}}
 function retryLevel(){if(!S||!S.ckpt)return;const ck=JSON.parse(S.ckpt);ck.ckpt=S.ckpt;S=ck;S.dead=null;PL().innerHTML="";ED=null;WM.wins=[];modal=null;clearMsgs();showGame();save();say(`Back to the start of level ${S.lv}: ${LV[S.lv].name}. ${nextStep().t}.`);}
 
@@ -1948,7 +1969,7 @@ function beginLevel(n){S.lv=n;S.t=Math.max(S.t,START_T[n]);S.dead=null;
    6:"11:00 PM. The building is quiet. Everyone is on #payrail-rotation, watching you.\n\nOpen your laptop. Your runbook is the plan. Checkout is taking about 1,200 PayRail calls a minute, and they all need to keep working."}[n];
   say(open);}
 function showGame(){WM.wins=[];modal=null;pcApp="progman";document.getElementById("game").hidden=false;verb="hand";heldItem=null;iconbar();draw();}
-function death(k){const d=DEATHS[k];PL().innerHTML="";ED=null;clearMsgs();const Lr=ML();const w=document.createElement("div");w.className="msgwrap";
+function death(k){if(S&&S.tut)return;const d=DEATHS[k];PL().innerHTML="";ED=null;clearMsgs();const Lr=ML();const w=document.createElement("div");w.className="msgwrap";
   w.innerHTML=`<div class="msg death" role="alertdialog" aria-modal="true"><span class="who" style="font-size:24px">${d[0]}</span>${esc(d[1])}\n\nNobody loses their job over this. It's a game. Try the change again.<div class="btns"><button data-dd="retry">Retry the change window</button><button data-dd="title">Title screen</button></div></div>`;Lr.appendChild(w);}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-dd]");if(!b)return;if(b.dataset.dd==="retry")return retryLevel();title();});
 function finish(){if(S.ended)return;S.ended=true;save();PL().innerHTML="";clearMsgs();const pct=Math.round(S.score*100/MAXSCORE);
@@ -1971,13 +1992,13 @@ It's your first day as the only security person. GitGuardian has been screaming 
 
 Six levels, six floors. Convince people, one at a time.
 <label for="pname" style="display:block;margin-top:12px;font-size:16px">Your name <input id="pname" value="${esc(randomName())}" style="font:18px var(--f-pix);padding:4px 8px;border:2px solid #555;width:200px;max-width:100%"></label>
-<div class="btns tmenu"><button data-tt="new" class="big go">New game <small>Level 1: Restricted</small></button>${cont}<button data-tt="code">Enter a save code</button></div><div class="thint">About 30 to 45 minutes · Saves in this browser</div>
+<div class="btns tmenu"><button data-tt="new" class="big go">New game <small>Level 1: Restricted</small></button>${cont}<button data-tt="tut" class="big">How to play <small>The controls and GitGuardian, step by step · 5 minutes · no score</small></button><button data-tt="code">Enter a save code</button></div><div class="thint">About 30 to 45 minutes · Saves in this browser</div>
 <span style="display:block;margin-top:10px;font-size:13px;color:#555">An original game. Simulated tools follow GitGuardian's documented workflows. Build ${BUILD}</span></div></div>`;
   setTimeout(()=>{const f=document.querySelector(".tmenu button");if(f)try{f.focus({preventScroll:true});}catch(e){}},0);
   const lc=document.getElementById("logo").getContext("2d");if(lc&&lc.fillRect){const P2=(x,y,w,h,c)=>{lc.fillStyle=PAL[c];lc.fillRect(x,y,w,h);};P2(0,0,160,60,1);for(let i=0;i<30;i++)P2((i*37)%160,(i*23)%30,1,1,15);
     for(let k=0;k<6;k++){const x=20+k*20,h=14+k*5;P2(x,52-h,16,h,k===5?7:8);for(let j=0;j<h-4;j+=4)P2(x+3,52-h+2+j,2,2,k===5?14:11);}P2(0,52,160,8,2);P2(132,10,22,30,7);P2(134,12,18,20,0);P2(136,15,10,2,10);P2(136,19,14,2,10);P2(136,23,8,2,12);P2(130,40,26,4,8);}}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-tt]");if(!b)return;
-  if(b.dataset.tt==="code")return;
+  if(b.dataset.tt==="code"||b.dataset.tt==="tut")return;
   if(b.dataset.tt==="new"){const n=(document.getElementById("pname").value||"").trim().slice(0,40)||randomName();S=fresh(n);clearMsgs();return levelCard(1);}
   const sv=load();if(!sv)return;S=sv;clearMsgs();showGame();if(S.dead)return death(S.dead);say(`Welcome back, ${first()}. Level ${S.lv}: ${LV[S.lv].name}.\n\n${lookRoom()}`);});
 setInterval(()=>{if(reduce)return;frame++;if(S&&!document.getElementById("game").hidden&&!document.getElementById("pcroot"))draw();},120);
@@ -2120,6 +2141,99 @@ document.addEventListener("submit",e=>{if(e.target.id!=="scform")return;e.preven
   const done=(MILESTONES[S.lv]||[]).filter(m=>{try{return m[1]();}catch(err){return false;}}).length;
   msgBox(`${note?note+"\n\n":"Restored from "+v.trim().toUpperCase()+".\n\n"}${r.advanced?"That boss was already convinced, so you're on the next level.\n\n":""}Level ${S.lv}: ${L.name}, ${hhmm(S.t)}. ${done} of this level's milestones are done. The blue bar shows what's next.`);});
 Object.assign(window.GAME,{encodeSave,decodeSave,restoreFromCode,MILESTONES});
+
+/* ---- 07-tutorial.js ---- */
+/* ============================== How to play: the training level ==============================
+   Cloned from LossyInc Range's training (12-tutorial.js), rewritten for Don't Break Prod.
+   Optional, from the title screen. No clock pressure, no score, nothing saved.
+   Part 1 teaches the controls: the laptop, Program Manager, walking, talking, the elevator, the Quest pad.
+   Part 2 explains what GitGuardian is showing, for someone who has never used it.
+   A coach box gives one instruction at a time. A green outline and arrow mark what to click next.
+   They never move or blink (house rule for this game). */
+const TUT={on:false,n:0,timer:null,last:-1,min:false,sig:""};
+const pcOpen=()=>!!document.getElementById("pcroot");
+const ggOpen=()=>pcOpen()&&WM.wins.some(w=>w.app==="gg"&&!w.min);
+const dlgOpen=()=>!!document.querySelector("#msglayer .dlg");
+const ggList=()=>document.querySelector('#w31 [data-act="open:2871"]')?'#w31 [data-act="open:2871"]':'#w31 [data-act="gg:list"]';
+const TSTEPS=[
+ {part:1,t:"Welcome to training",x:`Nothing can go wrong in here. There's no score, no deadline, and nothing is saved.\n\n<b>Part 1</b> shows you the controls in nine short moves. <b>Part 2</b> explains what GitGuardian, the security tool on your laptop, is telling you.\n\nThe <b>green outline and arrow</b> always mark what to click next. Everything you can click in a room is also listed under the picture.`,next:"Start"},
+ {part:1,t:"Your office",x:`This is your office. It's a supply closet. You're the new security engineer at Precarium, and this is what they had.\n\nOutlined in green:\n• <b>your laptop</b> on the desk, where GitGuardian runs\n• the <b>shelves</b> and the <b>mop bucket</b> (people around the building lose things)\n• the <b>sticky note</b> and the <b>sign</b>\n• the <b>door</b> out to Floor 2\n\nPoint at anything and it gets a thin outline.`,labels:[["closet","desklaptop","Your laptop"],["closet","shelves","Shelves"],["closet","bucket","Mop bucket"],["closet","sticky","Sticky note"],["closet","sign","Sign"],["closet","door","Door to Floor 2"]],next:"Next"},
+ {part:1,t:"1 · Open your laptop",x:`The buttons under the picture are <b>actions</b>. <b>Use</b> (the hand) is already picked, and it does almost everything.\n\nClick your <b>laptop</b> on the desk.\n\nAnywhere else in the building, the <b>Laptop</b> button under the picture does the same thing. You carry it everywhere.`,sel:["closet","desklaptop"],done:pcOpen},
+ {part:1,t:"2 · Open GitGuardian",x:`Your laptop runs a homemade copy of Windows 3.1. This is <b>Program Manager</b>, where every program starts.\n\nIn the group called <b>Secruity Toolz</b> (yes, it's misspelled), click <b>GitGuardian</b>.`,sel:'#w31 [data-pc="gg"]',done:ggOpen},
+ {part:1,t:"3 · Close the laptop",x:`That's GitGuardian. It runs in a browser, full screen. You'll come back to it in part 2.\n\nTo get back to the room, click <b>Close the laptop</b> at the bottom right.`,sel:'[data-pcclose]',done:()=>!pcOpen()},
+ {part:1,t:"4 · Walk out the door",x:`Click the <b>door</b> on the right. Use works on doors too.\n\nYou can also click <b>Floor 2</b> in the list under the picture.`,sel:["closet","door"],done:()=>S.room==="f2"},
+ {part:1,t:"5 · Talk to someone",x:`This is Floor 2. Every level has a <b>boss</b>: someone you have to convince before they'll change a setting or give you access. Marisol, the IT Director who runs GitGuardian, is the first.\n\nClick <b>Marisol</b> in her glass office to talk to her.`,sel:["f2","marisol"],done:dlgOpen},
+ {part:1,t:"6 · Choose what to say",x:`Conversations are buttons:\n• <b>Yellow ▸ buttons</b> are your pitch to a boss. Three good ones fill the <b>Convinced</b> meter.\n• <b>Blue buttons</b> use something you're carrying, like "Give Marisol the silver pen".\n• <b>"Anything I can help with?"</b> starts a favor: find someone's lost thing for points.\n\nYou could pitch now, but bosses want evidence, and you don't have any yet. Click <b>Bye</b> for now.`,sel:'#msglayer .dlg button.bye',done:()=>!dlgOpen()},
+ {part:1,t:"7 · Take the elevator",x:`Click the <b>elevator</b> doors in the middle of the room.`,sel:["f2","lift"],done:()=>S.room==="lift"},
+ {part:1,t:"8 · Ride to B1",x:`Floors with a red light are locked. Your badge opens Floor 2 and B1 today. You get more floors by winning people over.\n\nClick <b>B1</b>: the basement, where the help desk is.`,sel:["lift","btnB1"],done:()=>S.room==="b1"},
+ {part:1,t:"9 · The Quest pad",x:`The <b>blue bar</b> at the top of the picture always names your next step.\n\nClick <b>Quest</b> on the right end of it to see the whole level, the favors you've heard about, and what you're allowed to touch.`,sel:'#goalBtn',done:()=>!!document.getElementById("padwrap")},
+ {part:1,t:"That's how to play",x:`• <b>Use</b> does almost everything: doors, objects, people, the elevator\n• <b>Look</b> tells you what something is (often with a hint)\n• <b>Talk</b> and <b>Walk</b> are there if you want them\n• <b>Items</b> lists what you're carrying\n• The <b>Laptop</b> button opens your laptop anywhere\n\nPeople only answer <b>Slack</b> once you've met them in person. Every level screen shows a <b>save code</b>: write it down to pick up there on any device.`,next:"Part 2: GitGuardian",end:"End training",
+  enter:()=>{const p=document.getElementById("padwrap");if(p)p.remove();}},
+ {part:2,t:"Open GitGuardian again",x:`Click the <b>Laptop</b> button under the picture, then <b>GitGuardian</b> in Program Manager.\n\nIn the real game you start <b>Restricted</b> and only see incidents someone shares with you. For training, you can see everything.`,sel:()=>pcOpen()?'#w31 [data-pc="gg"]':'[data-laptop]',done:ggOpen,enter:()=>{S.gg="Member · Can view";}},
+ {part:2,t:"What GitGuardian watches for",x:`Programs log in to other services the way you log in to a website, except they use a <b>secret</b>: an API key, a token or a password written into their settings.\n\nWhen a secret ends up somewhere it shouldn't, like code on GitHub, anyone who finds it can act as your company. In 2024, <b>23.8 million</b> secrets leaked on public GitHub alone, and <b>70%</b> of the secrets leaked in 2022 still worked years later.\n\nGitGuardian scans code, laptops and servers for secrets and raises an <b>incident</b> for each one. Each row here is one.`,sel:()=>ggList(),next:"Next"},
+ {part:2,t:"Open the PayRail incident",x:`Click the <b>PayRail</b> row. PayRail is Precarium's payment provider: this key moves real money for checkout and payouts.`,sel:()=>ggList(),done:()=>ggOpen()&&ggRoute.page==="incident"&&String(ggRoute.id)==="2871"},
+ {part:2,t:"What leaked, and who's on it",x:`The title says what kind of secret it is.\n\nThe <b>Incident details</b> panel is the paperwork: <b>Status</b> (Triggered means nobody has handled it yet), <b>Severity</b>, who's assigned, and <b>Your access</b>. With edit access you'd also get <b>Resolve</b> and <b>Ignore</b> buttons.\n\nResolving is a label. It doesn't make the key stop working.`,sel:'#w31 .ggaside',next:"Next"},
+ {part:2,t:"Is it still valid?",x:`<b>Secret validity</b> is the most important word on the page. <b>Valid</b> means the key still works right now. Think of a lost house key: until the locks change, whoever finds it can walk in.\n\n<b>Check validity</b> asks again. Try it.`,sel:'#w31 [data-act="valid:2871"]',next:"Next"},
+ {part:2,t:"The exploration map",x:`Click <b>Exploration map</b> on the incident.`,sel:'#w31 [data-act="ggmap:2871"]',done:()=>ggOpen()&&ggRoute.page==="map"},
+ {part:2,t:"Who depends on this key",x:`The map has three columns:\n• <b>Consumers</b>: the programs that use this key. Cancel the key and they break. Here, that's <b>checkout-api</b> and <b>payouts-worker</b>.\n• The dashed box, <b>Unmapped sources may exist</b>, is a warning: machines not connected to GitGuardian don't show up. Remember that later.\n• <b>Secret</b>: the key itself, and the vault it's stored in, if any.\n• <b>Accessed resources</b>: what the key unlocks.\n\nThis is how you avoid breaking prod: you know who to warn before you change anything.`,next:"Next"},
+ {part:2,t:"Back, like a browser",x:`GitGuardian runs in a browser. Click <b>◀ Back</b> at the top left to return to the incident.`,sel:'[data-ggnav="back"]',done:()=>ggRoute.page==="incident"},
+ {part:2,t:"How you fix it",x:`Click the <b>Remediation</b> tab.`,sel:'#w31 [data-act="tab:rem"]',done:()=>ggRoute.page==="incident"&&ggRoute.tab==="rem"},
+ {part:2,t:"The order matters",x:`The fix, in order:\n1. Find everything that uses the key\n2. Put it in a vault\n3. Point the programs at the vault\n4. Make a new key, and test that everything still works\n5. Only then revoke the old key\n6. Check the logs for anyone who used it\n\nRevoke too early and checkout goes down. Revoke too late and a stranger keeps the key.\n\nYou can't do any of this alone. Each level is about convincing the person who can, with GitGuardian as your evidence.`,next:"Next"},
+ {part:2,t:"Training complete",x:`You know the controls and what GitGuardian is telling you.\n\nWhen you're ready, start Level 1. Your badge opens two floors, your office is a closet, and your GitGuardian account can see exactly one incident.`,next:"Start Level 1",end:"Back to title",final:true}];
+/* the Quest pad during training lists the training itself */
+const TUT_CL=[["Part 1 · How to play",[[3,"Open your laptop"],[4,"Open GitGuardian from Program Manager"],[5,"Close the laptop"],[6,"Walk out the door"],[7,"Talk to Marisol"],[8,"Choose what to say"],[9,"Take the elevator"],[10,"Ride to B1"],[11,"Open the Quest pad"]]],
+ ["Part 2 · What GitGuardian shows",[[14,"What GitGuardian watches for"],[15,"Open the PayRail incident"],[17,"Validity"],[19,"The exploration map"],[20,"Back, like a browser"],[22,"Remediation: the order of the fix"]]]];
+function startTutorial(){S=fresh("Trainee");S.tut=true;clearMsgs();LVMAIL[1]();showGame();TUT.on=true;TUT.n=0;TUT.last=-1;TUT.min=false;tutRender();clearInterval(TUT.timer);TUT.timer=setInterval(tutTick,250);requestAnimationFrame(tutOverlay);}
+function tutEnd(toTitle){TUT.on=false;clearInterval(TUT.timer);const c=document.getElementById("coach");if(c)c.remove();["tutbox","tutarrow","tutlabels"].forEach(i=>{const e=document.getElementById(i);if(e)e.remove();});if(toTitle)title();}
+function tutSel(st){return typeof st.sel==="function"?st.sel():st.sel;}
+/* a step's target: a CSS selector, or [room, hotspot id] for something drawn in the scene */
+function spotRect(room,id){if(pcOpen()||!S||S.room!==room)return null;const sp=(SPOTS[room]||[]).find(x=>x.id===id);const c=document.getElementById("scene");if(!sp||!c)return null;const r=c.getBoundingClientRect(),k=r.width/320,q=r.height/170;if(!r.width)return null;
+  return {left:r.left+sp.r[0]*k,top:r.top+sp.r[1]*q,width:sp.r[2]*k,height:sp.r[3]*q,right:r.left+(sp.r[0]+sp.r[2])*k,bottom:r.top+(sp.r[1]+sp.r[3])*q};}
+function tutEl(st){const sel=st&&tutSel(st);if(!sel||Array.isArray(sel))return null;return document.querySelector(sel);}
+function tutRect(st){const sel=st&&tutSel(st);if(!sel)return null;if(Array.isArray(sel))return spotRect(sel[0],sel[1]);
+  const el=document.querySelector(sel);if(!el)return null;const r=el.getBoundingClientRect();return r.width&&r.height?r:null;}
+/* a message box covers the scene: hide the marker unless the thing to click is inside that box */
+function covered(st){const w=document.querySelector("#msglayer .msgwrap");if(!w)return false;const el=tutEl(st);return !(el&&w.contains(el));}
+function tutTick(){if(!TUT.on||!S||!S.tut)return tutEnd(false);const st=TSTEPS[TUT.n];if(!st)return;
+  if(st.done&&st.done()){TUT.n++;return tutRender();}
+  const sig=screenSig();if(sig!==TUT.sig){TUT.sig=sig;if(TUT.min){TUT.min=false;return tutRender();}}
+  if(!document.getElementById("coach"))tutRender();placeCoach();}
+function screenSig(){return [S.room,pcOpen(),(WM.wins||[]).map(w=>w.app+(w.min?"-":"")+(w.max?"+":"")).join(","),ggRoute.page,ggRoute.id||"",ggRoute.tab||"",dlgOpen()].join("|");}
+function tutLabels(){let lay=document.getElementById("tutlabels");const st=TSTEPS[TUT.n];const ls=(st&&st.labels)||[];
+  if(!ls.length||document.querySelector("#msglayer .msgwrap")){if(lay)lay.innerHTML="";return;}
+  if(!lay){lay=document.createElement("div");lay.id="tutlabels";lay.setAttribute("aria-hidden","true");document.body.appendChild(lay);}
+  lay.innerHTML=ls.map(([room,id,txt])=>{const r=spotRect(room,id);if(!r)return "";return `<div class="tl-box" style="left:${r.left}px;top:${r.top}px;width:${r.width}px;height:${r.height}px"></div><div class="tl-tag" style="left:${Math.max(4,Math.min(innerWidth-170,r.left))}px;top:${Math.max(4,r.top-22)}px">${txt}</div>`;}).join("");}
+/* a still green outline over the thing to click, and an arrow pointing at it. Re-measured every frame, so it follows windows and re-renders; it never animates. */
+function tutOverlay(){if(!TUT.on)return;tutLabels();
+  let box=document.getElementById("tutbox"),ar=document.getElementById("tutarrow");
+  if(!box){box=document.createElement("div");box.id="tutbox";box.setAttribute("aria-hidden","true");document.body.appendChild(box);}
+  if(!ar){ar=document.createElement("div");ar.id="tutarrow";ar.setAttribute("aria-hidden","true");ar.innerHTML='<svg viewBox="0 0 64 40" width="64" height="40"><path d="M2 14h38V2l22 18-22 18V26H2z" fill="#39FF14" stroke="#062B00" stroke-width="3" stroke-linejoin="round"/></svg>';document.body.appendChild(ar);}
+  const st=TSTEPS[TUT.n];const r=tutRect(st);if(!r||covered(st)||TUT.min&&false){box.hidden=true;ar.hidden=true;}else{box.hidden=false;ar.hidden=false;const p=5;
+    Object.assign(box.style,{left:r.left-p+"px",top:r.top-p+"px",width:r.width+2*p+"px",height:r.height+2*p+"px"});
+    const cx=r.left+r.width/2,cy=r.top+r.height/2;let x,y,rot;
+    if(r.left>84){x=r.left-p-74;y=cy-20;rot=0;}else if(r.top>60){x=cx-32;y=r.top-p-50;rot=90;}else if(innerWidth-r.right>84){x=r.right+p+10;y=cy-20;rot=180;}else{x=cx-32;y=r.bottom+p+10;rot=-90;}
+    ar.style.left=x+"px";ar.style.top=y+"px";ar.style.setProperty("--rot",rot+"deg");}
+  requestAnimationFrame(tutOverlay);}
+/* put the coach in the corner that covers the least of its target, the labels and the action bar */
+function placeCoach(){const c=document.getElementById("coach");if(!c)return;
+  if(matchMedia("(max-width:760px)").matches){c.style.left=c.style.top="";const bar=document.getElementById("iconbar");const off=document.querySelector(".bezel .off");
+    const br=bar&&bar.getBoundingClientRect();c.style.bottom=(pcOpen()?(off?off.offsetHeight+14:56):(br&&br.height?Math.max(8,innerHeight-br.top+6):8))+"px";return;}
+  c.style.bottom="";const vw=innerWidth,vh=innerHeight,w=c.offsetWidth,h=c.offsetHeight,m=12;const tr=tutRect(TSTEPS[TUT.n]);
+  const ov=(x,y,r)=>!r?0:Math.max(0,Math.min(x+w,r.right+40)-Math.max(x,r.left-40))*Math.max(0,Math.min(y+h,r.bottom+30)-Math.max(y,r.top-30));
+  const avoid=[];if(tr)avoid.push([tr,10]);const st2=TSTEPS[TUT.n];for(const [room,id] of (st2&&st2.labels)||[]){const r=spotRect(room,id);if(r)avoid.push([r,4]);}
+  const dl=document.querySelector("#msglayer .dlg, #msglayer .pad");if(dl)avoid.push([dl.getBoundingClientRect(),3]);
+  if(!pcOpen()){const bar=document.getElementById("iconbar");if(bar)avoid.push([bar.getBoundingClientRect(),6]);}
+  const cands=pcOpen()?[[m,vh-h-m],[vw-w-m,vh-h-m],[vw-w-m,m],[m,m]]:[[vw-w-m,vh-h-m],[m,vh-h-m],[m,m],[vw-w-m,m]];
+  let best=cands[0],bs=Infinity;for(const [x,y] of cands){const sc=avoid.reduce((t,[r,wt])=>t+wt*ov(x,y,r),0);if(sc<bs){bs=sc;best=[x,y];}}
+  c.style.left=Math.max(m,best[0])+"px";c.style.top=Math.max(m,best[1])+"px";}
+function tutRender(){let c=document.getElementById("coach");if(!c){c=document.createElement("div");c.id="coach";c.setAttribute("role","dialog");c.setAttribute("aria-live","polite");c.setAttribute("aria-label","How to play");document.body.appendChild(c);}
+  const st=TSTEPS[TUT.n];if(!st)return tutEnd(true);if(TUT.last!==TUT.n){TUT.min=false;if(st.enter)st.enter();}c.classList.toggle("min",!!TUT.min);
+  c.innerHTML=`<div class="ch"><span>How to play · part ${st.part} of 2 · ${TUT.n+1}/${TSTEPS.length}</span><button class="cmin" data-tutmin aria-expanded="${!TUT.min}">${TUT.min?"▴ Show":"▾ Hide"}</button></div><b class="ct">${st.t}</b><div class="cx">${st.x}</div><div class="cb">${st.next?`<button data-tutnext>${st.next}</button>`:`<span class="cw">Do it to continue</span>`}${st.end?`<button data-tutend>${st.end}</button>`:`<button data-tutend class="sub">End training</button>`}</div>`;
+  TUT.last=TUT.n;placeCoach();try{updateBar();}catch(e){}}
+document.addEventListener("click",e=>{if(e.target.closest("[data-tt='tut']"))return startTutorial();
+  if(e.target.closest("[data-tutmin]")){TUT.min=!TUT.min;TUT.sig=screenSig();return tutRender();}
+  if(e.target.closest("[data-tutnext]")){const st=TSTEPS[TUT.n];if(st&&st.final){tutEnd(true);const b=document.querySelector('[data-tt="new"]');if(b)b.click();return;}TUT.n++;return tutRender();}
+  if(e.target.closest("[data-tutend]")){tutEnd(true);}});
 
 /* ---- 99-a11y.js ---- */
 

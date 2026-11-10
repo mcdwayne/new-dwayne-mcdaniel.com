@@ -56,7 +56,7 @@ function fresh(name){return {v:1,player:name||randomName(),lv:1,room:"closet",t:
   c:{checkout:"v1",payouts:"v1",recon:"hard"},vault:{production:["v1"],default:[]},pr:{v2:false,v1:true},ht:null};}
 const hhmm=t=>{t=((t%1440)+1440)%1440;const h=Math.floor(t/60),m=t%60;return `${((h+11)%12)+1}:${String(m).padStart(2,"0")} ${h<12?"AM":"PM"}`;};
 function advance(m){if(!S||S.dead)return;S.t+=m||1;htTick();}
-function award(k){if(!S||S.got[k]||!POINTS[k])return 0;S.got[k]=1;S.score+=POINTS[k];return POINTS[k];}
+function award(k){if(!S||S.tut||S.got[k]||!POINTS[k])return 0;S.got[k]=1;S.score+=POINTS[k];return POINTS[k];}
 const has=it=>S.inv.includes(it);
 function give(it){if(!has(it)){S.inv.push(it);}}
 function take(it){S.inv=S.inv.filter(x=>x!==it);if(heldItem===it)heldItem=null;}

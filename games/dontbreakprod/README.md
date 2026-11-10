@@ -35,6 +35,7 @@ Perfect starts for facilitators: `DBP-PERF-L1` to `DBP-PERF-L6` start that level
 python3 build.py                  # index.html, plus site/ with the landing page
 python3 build.py --web-root ..    # rebuild here, and ../dontbreakprod.html and its screenshots
 python3 tests/playthrough.py      # main quest only (165 of 183), plus the three ways to break prod
+python3 tests/tutorial.py        # How to play: follows the coach through both parts, clicks only
 python3 tests/clickthrough.py     # every favor too, clicks only, no typing: 183/183
 python3 tests/savecodes.py        # save code round trips at every level
 python3 tests/gitguardian.py      # every GitGuardian feature from the shared spec (34 checks)

@@ -43,10 +43,11 @@ function renderHere(){const el=document.getElementById("here");if(!el||!S)return
 document.addEventListener("click",e=>{const b=e.target.closest("[data-here]");if(!b||!S||S.dead)return;const id=b.dataset.here;
   if(heldItem){const it=heldItem;heldItem=null;iconbar();return interact("item",id,it);}
   const s=SPOTS[S.room].find(x=>x.id===id);interact((s&&(s.exit||s.floor))&&verb!=="look"?"use":{walk:"walk",look:"look",hand:"use",talk:"talk"}[verb],id);});
-function updateBar(){if(!S)return;renderHere();document.getElementById("stScore").textContent=`Score: ${S.score} of ${MAXSCORE}`;
+function updateBar(){if(!S)return;renderHere();document.getElementById("stScore").textContent=S.tut?"How to play · no score":`Score: ${S.score} of ${MAXSCORE}`;
   document.getElementById("stTitle").textContent=`Level ${S.lv} · ${ROOMNAME[S.room]}`;document.getElementById("stTime").textContent=hhmm(S.t);
   const n=nextStep(),g=document.getElementById("goal");g.classList.toggle("urgent",!!n.boss);document.getElementById("goalTxt").textContent=(n.win?"★ ":n.boss?"⚔ ":"Next: ")+n.t;
-  const c=stepCount();document.getElementById("goalBtn").textContent=`Quest ${c[0]}/${c[1]}`;}
+  const c=stepCount();document.getElementById("goalBtn").textContent=`Quest ${c[0]}/${c[1]}`;
+  if(S.tut&&typeof TUT!=="undefined"){const st=TSTEPS[TUT.n];g.classList.remove("urgent");document.getElementById("goalTxt").textContent="Training: "+(st?st.t.replace(/^\d+ · /,""):"complete");document.getElementById("goalBtn").textContent=`Quest ${Math.min(TUT.n,TSTEPS.length)}/${TSTEPS.length}`;}}
 function draw(){if(!S)return;g.clearRect(0,0,320,170);SCENES[S.room]();if(night()&&S.room!=="lift"){g.fillStyle="rgba(0,0,40,.35)";g.fillRect(0,0,320,170);}drawCues();updateBar();}
 function spotAt(ev){const r=cv.getBoundingClientRect();const x=(ev.clientX-r.left)*320/r.width,y=(ev.clientY-r.top)*170/r.height;
   return SPOTS[S.room].filter(s=>x>=s.r[0]&&x<s.r[0]+s.r[2]&&y>=s.r[1]&&y<s.r[1]+s.r[3]).sort((a,b)=>(a.talk?0:1)-(b.talk?0:1)||a.r[2]*a.r[3]-b.r[2]*b.r[3])[0];}
@@ -92,6 +93,8 @@ function parse(raw){const words=raw.replace(/[^a-z0-9 #]/g," ").replace(/\b(the|
 
 /* ============================== quest pad ============================== */
 function showTasks(){if(document.getElementById("padwrap"))return;const Lr=ML();const w=document.createElement("div");w.className="msgwrap";w.id="padwrap";const st=STEPS[S.lv]||[];
+  if(S.tut&&typeof TUT_CL!=="undefined"){w.innerHTML=`<div class="pad" role="dialog" aria-modal="true" aria-label="Quest"><h2>How to play · checklist</h2><div class="win">In the real game this pad lists the level's steps, the favors you've heard about, and your access. Training has no score and saves nothing.</div>${TUT_CL.map(([t,its])=>`<div class="final"><b>${t}</b><ol>${its.map(([n,x])=>`<li class="${TUT.n>=n?"ok":""}"><span>${TUT.n>=n?"[x]":"[ ]"}</span> ${esc(x)}</li>`).join("")}</ol></div>`).join("")}<div class="btns"><button data-padclose>Close</button></div></div>`;
+   Lr.appendChild(w);w.querySelector("[data-padclose]").onclick=()=>w.remove();return;}
   w.innerHTML=`<div class="pad" role="dialog" aria-modal="true" aria-label="Quest"><h2>Level ${S.lv}: ${esc(LV[S.lv].name)}</h2><div class="win">${esc(LV[S.lv].tag)}</div>
    <ol>${st.map(([t,d])=>`<li class="${d()?"ok":""}"><span>${d()?"[x]":"[ ]"}</span> ${esc(t)}</li>`).join("")}</ol>
    <div class="final"><b>Favors</b> <span style="font-size:15px">(optional, ask people "Anything I can help with?")</span><ul>${FAVORS.filter(favHeard).length?FAVORS.filter(favHeard).map(f=>`<li>${f.done()?'<span class="x">✓</span>':"•"} ${esc(f.t)}${f.done()?"":` <span style="font-size:15px">· ${esc(f.where)}</span>`}</li>`).join(""):"<li>None yet. People around the building could use a hand.</li>"}</ul></div>
@@ -108,7 +111,7 @@ document.addEventListener("click",e=>{const b=e.target.closest("[data-mn]");if(!
 
 /* ============================== saving (this browser only) ============================== */
 const SKEY="dontbreakprod.save.v1";
-function save(){if(!S)return;try{localStorage.setItem(SKEY,JSON.stringify(S));}catch(e){}}
+function save(){if(!S||S.tut)return;try{localStorage.setItem(SKEY,JSON.stringify(S));}catch(e){}}
 function load(){try{const s=localStorage.getItem(SKEY);return s?JSON.parse(s):null;}catch(e){return null;}}
 function retryLevel(){if(!S||!S.ckpt)return;const ck=JSON.parse(S.ckpt);ck.ckpt=S.ckpt;S=ck;S.dead=null;PL().innerHTML="";ED=null;WM.wins=[];modal=null;clearMsgs();showGame();save();say(`Back to the start of level ${S.lv}: ${LV[S.lv].name}. ${nextStep().t}.`);}
 
@@ -135,7 +138,7 @@ function beginLevel(n){S.lv=n;S.t=Math.max(S.t,START_T[n]);S.dead=null;
    6:"11:00 PM. The building is quiet. Everyone is on #payrail-rotation, watching you.\n\nOpen your laptop. Your runbook is the plan. Checkout is taking about 1,200 PayRail calls a minute, and they all need to keep working."}[n];
   say(open);}
 function showGame(){WM.wins=[];modal=null;pcApp="progman";document.getElementById("game").hidden=false;verb="hand";heldItem=null;iconbar();draw();}
-function death(k){const d=DEATHS[k];PL().innerHTML="";ED=null;clearMsgs();const Lr=ML();const w=document.createElement("div");w.className="msgwrap";
+function death(k){if(S&&S.tut)return;const d=DEATHS[k];PL().innerHTML="";ED=null;clearMsgs();const Lr=ML();const w=document.createElement("div");w.className="msgwrap";
   w.innerHTML=`<div class="msg death" role="alertdialog" aria-modal="true"><span class="who" style="font-size:24px">${d[0]}</span>${esc(d[1])}\n\nNobody loses their job over this. It's a game. Try the change again.<div class="btns"><button data-dd="retry">Retry the change window</button><button data-dd="title">Title screen</button></div></div>`;Lr.appendChild(w);}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-dd]");if(!b)return;if(b.dataset.dd==="retry")return retryLevel();title();});
 function finish(){if(S.ended)return;S.ended=true;save();PL().innerHTML="";clearMsgs();const pct=Math.round(S.score*100/MAXSCORE);
@@ -158,13 +161,13 @@ It's your first day as the only security person. GitGuardian has been screaming 
 
 Six levels, six floors. Convince people, one at a time.
 <label for="pname" style="display:block;margin-top:12px;font-size:16px">Your name <input id="pname" value="${esc(randomName())}" style="font:18px var(--f-pix);padding:4px 8px;border:2px solid #555;width:200px;max-width:100%"></label>
-<div class="btns tmenu"><button data-tt="new" class="big go">New game <small>Level 1: Restricted</small></button>${cont}<button data-tt="code">Enter a save code</button></div><div class="thint">About 30 to 45 minutes · Saves in this browser</div>
+<div class="btns tmenu"><button data-tt="new" class="big go">New game <small>Level 1: Restricted</small></button>${cont}<button data-tt="tut" class="big">How to play <small>The controls and GitGuardian, step by step · 5 minutes · no score</small></button><button data-tt="code">Enter a save code</button></div><div class="thint">About 30 to 45 minutes · Saves in this browser</div>
 <span style="display:block;margin-top:10px;font-size:13px;color:#555">An original game. Simulated tools follow GitGuardian's documented workflows. Build ${BUILD}</span></div></div>`;
   setTimeout(()=>{const f=document.querySelector(".tmenu button");if(f)try{f.focus({preventScroll:true});}catch(e){}},0);
   const lc=document.getElementById("logo").getContext("2d");if(lc&&lc.fillRect){const P2=(x,y,w,h,c)=>{lc.fillStyle=PAL[c];lc.fillRect(x,y,w,h);};P2(0,0,160,60,1);for(let i=0;i<30;i++)P2((i*37)%160,(i*23)%30,1,1,15);
     for(let k=0;k<6;k++){const x=20+k*20,h=14+k*5;P2(x,52-h,16,h,k===5?7:8);for(let j=0;j<h-4;j+=4)P2(x+3,52-h+2+j,2,2,k===5?14:11);}P2(0,52,160,8,2);P2(132,10,22,30,7);P2(134,12,18,20,0);P2(136,15,10,2,10);P2(136,19,14,2,10);P2(136,23,8,2,12);P2(130,40,26,4,8);}}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-tt]");if(!b)return;
-  if(b.dataset.tt==="code")return;
+  if(b.dataset.tt==="code"||b.dataset.tt==="tut")return;
   if(b.dataset.tt==="new"){const n=(document.getElementById("pname").value||"").trim().slice(0,40)||randomName();S=fresh(n);clearMsgs();return levelCard(1);}
   const sv=load();if(!sv)return;S=sv;clearMsgs();showGame();if(S.dead)return death(S.dead);say(`Welcome back, ${first()}. Level ${S.lv}: ${LV[S.lv].name}.\n\n${lookRoom()}`);});
 setInterval(()=>{if(reduce)return;frame++;if(S&&!document.getElementById("game").hidden&&!document.getElementById("pcroot"))draw();},120);
