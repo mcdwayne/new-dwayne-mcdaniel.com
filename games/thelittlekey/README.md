@@ -14,6 +14,7 @@ Open `index.html` in a browser, or the landing page at `../thelittlekey.html`. A
 - Click any object to look at it: the key says what it thinks it is, then the narrator corrects it. Once revoked, some objects get a sadder key line. Data lives in `LOOKS`, per scene.
 - The key never makes a choice. The player's only choice is at a split, when the key is copied: pick which key to follow.
 - **Back** steps back one line. **Back to the last split** returns to the last fork.
+- The ring strip at the top: hovering shows which key a ring belongs to, or the color to look for if not found. Clicking a found ring shows it on a cushion to admire (`RINGINFO`).
 - Keyboard: Enter or → continues, ← goes back, P pokes.
 
 ## Story rules
@@ -45,6 +46,10 @@ Open `index.html` in a browser, or the landing page at `../thelittlekey.html`. A
 | Birthday | backup_service_02's new key | Access review deletes the account |
 | Hard Hat | Build pipeline | Logs expire, build server shut down |
 | Onion | Container image | Registry cleanup deletes the layers |
+
+## The prize
+
+With all 11 rings, an **Open the exploration map** button appears. It opens GitGuardian as it appears in Lossy Inc: the same browser chrome, nav, incident page and exploration map styles (copied from `lossy/src`). Incident #2001 (PostgreSQL Credentials, app_admin@prod-db) with its occurrences, remediation and activity; the map shows the key's family tree with a time picker (day 0 to year 9); Inventory shows backup_service_02. Code: `prize.js`.
 
 ## Look
 
