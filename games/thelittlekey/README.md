@@ -11,6 +11,7 @@ Open `index.html` in a browser, or the landing page at `../thelittlekey.html`. A
 ## How it plays
 
 - No menus. Click anywhere to continue. Click the key to poke it.
+- Click any object to look at it: the key says what it thinks it is, then the narrator corrects it. Once revoked, some objects get a sadder key line. Data lives in `LOOKS`, per scene.
 - The key never makes a choice. The player's only choice is at a split, when the key is copied: pick which key to follow.
 - **Back** steps back one line. **Back to the last split** returns to the last fork.
 - Keyboard: Enter or → continues, ← goes back, P pokes.

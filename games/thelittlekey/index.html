@@ -34,6 +34,9 @@ button{font:inherit}
 .jump{position:absolute;pointer-events:auto;background:transparent;border:3px solid transparent;cursor:pointer;display:flex;align-items:flex-end;justify-content:center;padding:0;line-height:1.2}
 .jump span{transform:translateY(calc(100% + 8px));background:var(--win);color:var(--win-ink);border:2px solid var(--win-gold);padding:3px 8px;font:700 15px/1.2 var(--f-text);text-align:center;max-width:100%}
 .jump:hover,.jump:focus-visible{border-color:#FFE27A;outline:none}
+.hot{position:absolute;pointer-events:auto;background:transparent;border:0;padding:0;cursor:zoom-in}
+.hot:focus-visible{outline:2px dashed #FFE27A;outline-offset:0}
+.hover{position:absolute;left:0;right:0;top:6px;text-align:center;font:22px/1 var(--f-term);color:#fff;text-shadow:2px 2px 0 #000;pointer-events:none}
 .cap{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:start;background:var(--win);color:var(--win-ink);border:4px solid var(--win-gold);box-shadow:inset 0 0 0 2px var(--win-edge);padding:12px 16px;min-height:132px;cursor:pointer;text-align:left}
 .cap.narr{grid-template-columns:minmax(0,1fr)}
 #portrait{width:96px;height:96px;image-rendering:pixelated;border:3px solid;border-color:#3A2810 #E8CF8E #E8CF8E #3A2810;background:#2B2140}
@@ -55,7 +58,7 @@ button{font:inherit}
 <h1 class="sr">The Little Key</h1>
 <div class="wrap">
   <div class="status"><span>The Little Key</span><span class="strip" id="strip" aria-label="Rings found"></span><span id="count"></span></div>
-  <div class="stage"><canvas id="scene" width="320" height="200" role="img" aria-label="Scene"></canvas><div id="jumps"></div></div>
+  <div class="stage"><canvas id="scene" width="320" height="200" role="img" aria-label="Scene"></canvas><div id="jumps"></div><div class="hover" id="hover" aria-hidden="true"></div></div>
   <div class="cap" id="cap" role="button" tabindex="0" aria-live="polite"><canvas id="portrait" width="52" height="52" aria-hidden="true"></canvas><div><span class="who" id="who"></span><span id="say"></span><span class="meta"><span id="age"></span><span id="hint"></span></span></div></div>
   <div class="ctl"><button type="button" id="bk">◀ Back</button><button type="button" id="bj">Back to the last split</button><span class="place" id="place"></span><button type="button" id="rs">Start over</button></div>
 </div>
@@ -293,6 +296,78 @@ SC.attacker=()=>{grad(0,0,W,H,["#04060A","#0A1410"]);
  /* database door */ R(14,50,50,96,"#1A2A3A");R(18,54,42,88,"#2A4A6A");ctxt("PROD",39,64,"#9AC8FF");ctxt("DB",39,72,"#9AC8FF");ell(54,100,2,2,"#9AC8FF");
  /* bug bounty mailbox */ R(272,150,28,22,"#3A7A3A");ell(286,150,14,6,"#3A7A3A");R(284,172,4,24,"#2A2A30");txt("REPORT",264,140,"#9AFF9A");};
 
+/* ---------------- looking at things ----------------
+   Click anything in a scene: the key says what it thinks it is, then the narrator gently corrects it.
+   [name, [x,y,w,h], [expression, key line], narrator line, optional key line once the key is revoked] */
+const LOOKS={
+ vault:[
+  ["the vault door",[114,24,92,92],["proud","That's my front door. Nobody gets through it without me!"],"Anybody holding the key's 528 bytes gets through it. The door can't tell who's holding them.","My front door. It doesn't open for me anymore. I knock and knock."],
+  ["the server racks",[66,36,38,98],["proud","All those blinky lights are MY records. I can read every single one!"],"Customer names, addresses, payment history. The app only needed one table. The key was given all of them."],
+  ["the server racks",[216,36,38,98],["excited","More blinky lights! Hello, records! I love you all equally!"],"Every row in the production database. Nobody ever asked whether one key should reach all of it."],
+  ["the app pipe",[12,90,30,60],["curious","A tube! Things go whoosh in it. I think it's a slide for keys."],"It's how the running app fetches its credentials. Used, then let go. That part is fine."],
+  ["Mel's laptop",[196,120,44,48],["excited","Mel's laptop! Mel is my best friend. Mel will take good care of me."],"Mel means well. Mel also has a file called Secrets.txt."],
+  ["the build robot",[258,84,48,76],["excited","A robot! I bet it wants to be my friend too."],"It's the CI system. It will hold on to anything you give it, for as long as nobody takes it back."]],
+ memory:[
+  ["the gears",[30,18,270,72],["excited","Gears! I make them go round! Round and round!"],"This is the running app. The key is held in memory while it works and isn't written down anywhere. That's the safest place a key can be."],
+  ["the round hatch",[22,150,54,26],["curious","A round door in the floor. I wonder where it goes."],"When the process ends, its memory is released. Nothing comes back out of there."],
+  ["the notepad",[108,118,40,36],["idle","Somebody's notes. I bet they're boring."],"A notepad by a debugger. If a crash dump is ever saved, it holds everything in memory, keys included."],
+  ["the conveyor",[220,108,100,46],["excited","A conveyor belt to CI! Is CI a theme park?"],"CI is the build pipeline. It is not a theme park, though it does have a lot of rides."]],
+ desk:[
+  ["Secrets.txt",[117,39,102,80],["proud","This is my house. It's called Secrets, so it must be very safe, like a vault."],"It's a plain text file. Naming it Secrets.txt doesn't lock it. It does make it very easy to search for.","My house. The name still says Secrets. I'm not a secret anymore. I'm just old."],
+  ["the window",[18,18,72,62],["excited","The city! Everyone out there is asleep, and I'm still working!"],"It's 2 AM. Mel is debugging. Things pasted at 2 AM have a way of staying pasted.","It's always night in the drawer. I can't see the city anymore."],
+  ["the trash can",[22,144,38,48],["confused","A bin. I don't throw things away. I keep EVERYTHING."],"Deleting a file removes that one file. It doesn't change what the key can open. Only revoking does that."],
+  ["the little robot",[258,86,42,44],["curious","A little robot with a smiley face. It looks like a good listener."],"It's an AI coding assistant. It is a good listener. It also keeps a record of everything it's told."],
+  ["the chat window",[62,84,48,38],["excited","Little boxes of messages! People talking to each other!"],"Team chat. 412 people, and everything posted there stays searchable for years."],
+  ["the coffee mug",[28,104,22,18],["curious","Mel's mug. Mel drinks a LOT of this."],"Cold coffee. Mel has been up for a while."],
+  ["the lamp",[214,18,38,48],["proud","A lamp! It's like a little sun, just for me."],"It's just a lamp. You can relax."]],
+ chat:[
+  ["the chat bubbles",[66,8,200,52],["excited","'Has anyone got the prod key?' They need ME! Everybody needs me!"],"They need access. Posting the key is the fastest way to give it, and the hardest to take back.","Nobody asks for me anymore. They ask for 'the new one'."],
+  ["the member count",[96,62,128,9],["proud","412 members! That's 412 people who love me."],"Plus guests, a few bots, and three people who left the company last year and still have accounts."],
+  ["the wiki door",[12,46,50,94],["curious","A door that says WIKI. Is that a secret clubhouse?"],"It's the company knowledge base. Every employee can read it, and so can the contractors."],
+  ["the ticket window",[128,84,64,48],["excited","A little window that says TICKETS! Is there a show?"],"It's the issue tracker. People file requests there, often with whatever they're looking at pasted in."],
+  ["the PUBLIC mailbox",[258,98,40,72],["excited","A mailbox that says PUBLIC. Letters for everybody!"],"Public means anyone on the internet. It's not a mailbox anyone can empty."],
+  ["a coworker",[92,110,24,32],["excited","A new friend! They waved at me. Or at the coffee machine."],"A coworker. Like most people in this channel, they never needed this key."],
+  ["a coworker",[220,110,24,32],["curious","This one looks busy. Do they need access to something? I can help!"],"They're ordering lunch. They don't need production access to do it."]],
+ wiki:[
+  ["the INTERNAL USE ONLY sign",[110,40,100,14],["proud","INTERNAL USE ONLY. So I'm completely safe here!"],"The sign is a label, not a lock. Everyone inside can read it, and 'inside' is bigger than it sounds.","Internal use only. Nobody uses me, internally or anywhere."],
+  ["the bookshelves",[6,6,84,124],["excited","So many books! I'm in one of them. Page 3!"],"Thousands of pages, and nobody owns most of them. Pages here outlive the projects they describe."],
+  ["the bookshelves",[230,6,84,124],["curious","Do all these books have keys in them too? I'd love a pen pal."],"Some of them do. Wikis are one of the most common places to find old credentials."],
+  ["the archive drawers",[24,128,62,56],["idle","Little drawers. Where old pages go to have a nap."],"The archive. Things go in. Almost nothing comes out, and nothing is ever checked."],
+  ["the ticket slot",[138,96,46,36],["curious","A ticket slot! Like a mailbox for chores."],"Links to the issue tracker. Every link is one more place someone can copy text from."],
+  ["the copier",[238,130,62,46],["excited","A copy machine! I wonder what it's for."],"Exports. Anyone with access can download a whole wiki space and take it with them."]],
+ aichat:[
+  ["the friendly robot",[120,14,80,114],["excited","My new friend! It smiles at everything I say."],"It's an AI assistant. It's friendly, and it has no idea the text it's reading is a live production key.","My friend stopped smiling at me. It just says the conversation is old."],
+  ["the transcript",[10,124,70,64],["proud","That's our conversation. It's so long! We're so close."],"Conversation history: saved, synced to Mel's other devices, and kept until someone deletes it."],
+  ["the ACCEPT button",[248,138,52,30],["curious","A green button. Green means good, right?"],"Accepting a suggestion puts its code into the project exactly as written, key included."],
+  ["the share link",[136,160,54,28],["proud","A shiny chain. For hanging nice things on."],"A share link. Anyone who has it can read the whole conversation."]],
+ github:[
+  ["the billboard",[80,10,160,74],["excited","That's me up there, in lights! '528 BYTES'! I'm a star!"],"A public repository. Search engines, bots and strangers read it all day, every day.","The billboard says I'm here. Everybody who tries me goes away disappointed."],
+  ["a passerby",[26,140,22,32],["excited","Friendly people! They're taking pictures of me."],"Some are curious. Some are copying everything they find."],
+  ["a passerby",[202,130,22,32],["curious","This one has been reading me for a long time. A fan!"],"A developer who forked the repo. Their fork has its own copy of every file, forever."],
+  ["the stranger in the hoodie",[260,132,38,58],["curious","That one has a cozy hood. I like their style."],"They run a scanner that checks new public commits for working keys. It takes them seconds."],
+  ["the DELETE bucket",[90,156,32,36],["idle","A bucket that says DELETE. For litter, I guess."],"Deleting the commit hides it from this page. Every clone and fork made before then still has it."],
+  ["the alert bell",[138,120,30,68],["excited","A bell! Does it ring when I'm famous?"],"It's a secret-scanning alert. It rings at the security desk, and someone there has to answer it."]],
+ attacker:[
+  ["the green screen",[107,37,106,78],["proud","They're reading about ME! FOUND, VALID, READ WRITE USERS. That's my resume!"],"It's a scanner's report. 'Valid' tells them the key works. The rest tells them how much it can do.","It says INVALID now. That's a very rude word."],
+  ["the pizza box",[244,114,40,16],["excited","Pizza! This must be a party."],"It's a work night. For them."],
+  ["the PROD DB door",[12,48,54,100],["excited","That's my home! They're taking me home!"],"They're using the key to log into the database from a laptop the company has never seen."],
+  ["the REPORT mailbox",[262,136,40,40],["curious","A green mailbox that says REPORT. For thank-you notes?"],"Some people who find a leaked key report it to the company. This person hasn't."]],
+ docker:[
+  ["the layers",[88,102,64,38],["proud","Layers, like a cake! I'm in layer three, the cozy middle."],"A container image is a stack of layers. Each one keeps exactly what it held when it was built.","Layer three. Still cozy. Nobody comes down here anymore."],
+  ["the PUBLIC ship",[194,92,110,40],["excited","A big ship that says PUBLIC! I hope I get to go on a cruise."],"It's a public registry. Anyone can pull the image and unpack every layer, one at a time."],
+  ["the RM bucket",[26,146,34,40],["idle","A paint bucket that says RM. Redecorating!"],"Adding 'rm' in a new layer hides a file from the layers above. The layer below still has it."],
+  ["the scanning booth",[244,132,52,48],["curious","A little booth with a window. Tickets for the boat?"],"A scanner. The good ones check every layer, not just the top one."],
+  ["the crane",[36,16,90,104],["proud","A crane! Strong, like me."],"It only loads containers. It never checks what's inside them."],
+  ["the sunset",[230,70,40,40],["idle","The sunset is so pretty. Today was a good day."],"It was. They tend to be, right up until the key is revoked."]],
+ ci:[
+  ["the build board",[110,10,100,30],["proud","BUILD PASSED. USES PROD_DB_KEY. That's me, on the big board!"],"The build reads the key from its config on every run. Anyone who can read the config can read the key.","BUILD FAILED. That's me too, now."],
+  ["the log printer",[14,66,48,74],["excited","They print my name on paper! I'm FAMOUS!"],"Build logs. Debug mode prints configuration values, and these logs are kept for 400 days."],
+  ["the IMAGE crate",[138,100,50,40],["curious","A wooden box that says IMAGE. Is it a present?"],"A container image being built. Whatever files are in the build folder go in with it."],
+  ["the GIT PUSH lever",[260,72,44,70],["excited","A big red lever. I bet it does something fun."],"Git push. It sends the code, and its config file, up to the repository."],
+  ["the robot arms",[56,0,70,80],["excited","Robot arms! They wave at me every day."],"They run 38 builds a day, and every one of them uses the key."],
+  ["the robot arms",[236,0,70,80],["proud","My robot friends. They can't do anything without me."],"True. Which is why nobody has ever wanted to change the key."]]
+};
+
 /* ---------------- where the key stands in each scene ---------------- */
 const POS={vault:[150,178],memory:[180,172],desk:[238,122],ci:[110,170],chat:[170,174],wiki:[180,176],docker:[200,180],aichat:[110,176],github:[180,186],attacker:[180,186]};
 const PLACE={vault:"The production database",memory:"The app's memory",desk:"Mel's laptop · Secrets.txt",ci:"The build pipeline",chat:"Team chat · #general",wiki:"The wiki",docker:"The container registry",aichat:"The AI assistant",github:"A public repository",attacker:"A stranger's laptop"};
@@ -455,7 +530,7 @@ const POKES={live:["Hee! That tickles!","Oop! Hi! Do you need access to somethin
  peace:["Shhh. I'm resting.","Mmm. That's nice."]};
 
 /* ---------------- state ---------------- */
-let pos={node:"birth",i:0}, hist=[], got=loadRings(), poke=null, pokeN=0;
+let pos={node:"birth",i:0}, hist=[], got=loadRings(), poke=null, pokeN=0, aside=null;
 function loadRings(){try{const v=JSON.parse(localStorage.getItem("littlekey.rings2")||"[]");return Array.isArray(v)?v:[];}catch(e){return[];}}
 function saveRings(){try{localStorage.setItem("littlekey.rings2",JSON.stringify(got));}catch(e){}}
 /* replay a node up to beat i to get day, grey, dust */
@@ -497,7 +572,7 @@ function drawEnding(rid){G=cx;const r=RINGS.find(x=>x.id===rid);
 let boxes=[];
 const $=id=>document.getElementById(id);
 function render(){const n=STORY[pos.node];const st=stateAt(pos);
- $("jumps").innerHTML="";boxes=[];
+ $("jumps").innerHTML="";$("hover").textContent="";boxes=[];
  let who,text,ex,isKey=false,label;
  if(atEnd(pos)&&n.split){boxes=drawSplit(n);
   who="Narrator";text="Which one do you follow? (The keys will never know.)";label="The story splits into "+n.split.length+" keys.";
@@ -511,14 +586,16 @@ function render(){const n=STORY[pos.node];const st=stateAt(pos);
  else{const b=n.beats[pos.i];const last=pos.i===n.beats.length-1;
   if(b[0]==="k"){isKey=true;ex=b[1];text=b[2];who=pos.node==="nk1"?"backup_service_02's key":"The Little Key";}else{who="Narrator";text=b[1];ex=st.g?"revoked":"idle";}
   if(poke){isKey=true;who=pos.node==="nk1"?"backup_service_02's key":"The Little Key";text=poke[1];ex=poke[0];}
+  if(aside){const a=aside[0];if(a[0]==="k"){isKey=true;who=pos.node==="nk1"?"backup_service_02's key":"The Little Key";ex=a[1];text=a[2];}else{isKey=false;who="Narrator";text=a[1];ex=st.g?"revoked":"idle";}}
   G=cx;sceneInto(n.sc,n.acc,ex,st,last&&b[1]==="peace");quantize(cx,W,H);
-  label=PLACE[n.sc]+". "+(st.g?"The key is grey and still.":"The key is here.");$("place").textContent=PLACE[n.sc];}
+  label=PLACE[n.sc]+". "+(st.g?"The key is grey and still.":"The key is here.");$("place").textContent=PLACE[n.sc];
+  addHots(n,st);}
  cv.setAttribute("aria-label",label);
  $("who").textContent=who;$("say").textContent=text;
  const pc=$("portrait");if(isKey){pc.hidden=false;const c=pc;G=c.getContext("2d");grad(0,0,52,52,["#3A2E5A","#1C1530"]);glow(26,24,26,"rgba(255,220,140,.25)");drawKey(26,92,1.55,ex,STORY[pos.node].acc,{gray:st.g});G=cx;quantize(c.getContext("2d"),52,52);}else pc.hidden=true;
  $("cap").classList.toggle("narr",!isKey);
  const split=atEnd(pos)&&!!n.split,end=atEnd(pos)&&!n.split;
- $("hint").textContent=split?"Pick a picture to follow that key.":end?"":"Click to continue · poke the key";
+ $("hint").textContent=split?"Pick a picture to follow that key.":end?"":aside?"Click to continue":"Click to continue · click things to look at them · poke the key";
  $("age").textContent=end||split?"":"Key is "+ageStr(st.day);
  $("bk").disabled=!hist.length;$("bj").disabled=!hist.some(h=>atEnd(h)&&STORY[h.node].split);
  drawStrip();}
@@ -527,16 +604,28 @@ function drawStrip(){const s=$("strip");if(!s.children.length)RINGS.forEach(r=>{
  $("count").textContent=got.length+" of 11 rings";}
 
 /* ---------------- moving through the story ---------------- */
-function go(p){hist.push(pos);pos=p;poke=null;render();focusMain();}
-function advance(){const n=STORY[pos.node];if(atEnd(pos))return;poke=null;go({node:pos.node,i:pos.i+1});}
-function back(){if(!hist.length)return;pos=hist.pop();poke=null;render();focusMain();}
-function backJump(){while(hist.length){const h=hist.pop();if(atEnd(h)&&STORY[h.node].split){pos=h;break;}}poke=null;render();focusMain();}
-function restart(){hist=[];pos={node:"birth",i:0};poke=null;render();focusMain();}
+function go(p){hist.push(pos);pos=p;poke=null;aside=null;render();focusMain();}
+function advance(){if(aside){aside.shift();if(!aside.length)aside=null;render();return;}if(atEnd(pos))return;poke=null;go({node:pos.node,i:pos.i+1});}
+function back(){if(aside){aside=null;render();return;}if(!hist.length)return;pos=hist.pop();poke=null;render();focusMain();}
+function backJump(){while(hist.length){const h=hist.pop();if(atEnd(h)&&STORY[h.node].split){pos=h;break;}}poke=null;aside=null;render();focusMain();}
+function restart(){hist=[];pos={node:"birth",i:0};poke=null;aside=null;render();focusMain();}
 function focusMain(){const j=document.querySelector(".jump");if(j)j.focus({preventScroll:true});else $("cap").focus({preventScroll:true});}
 function onKey(px,py){if(atEnd(pos))return false;const n=STORY[pos.node],[kx,ky]=POS[n.sc];return px>kx-14&&px<kx+14&&py>ky-52&&py<ky+2;}
 function doPoke(){const st=stateAt(pos),b=STORY[pos.node].beats[pos.i],peace=b[0]==="k"&&b[1]==="peace";
  const pool=peace?POKES.peace:st.g?POKES.grey:POKES.live,ex=peace?"peace":st.g?"revoked":["excited","proud","curious","excited"][pokeN%4];
- poke=[ex,pool[pokeN++%pool.length]];render();}
+ aside=null;poke=[ex,pool[pokeN++%pool.length]];render();}
+function addHots(n,st){const L=(LOOKS[n.sc]||[]).slice().sort((p,q)=>q[1][2]*q[1][3]-p[1][2]*p[1][3]);const box=$("jumps");
+ L.forEach(h=>{const[x,y,w,hh]=h[1],b=document.createElement("button");b.type="button";b.className="hot";
+  b.style.left=(x/W*100)+"%";b.style.top=(y/H*100)+"%";b.style.width=(w/W*100)+"%";b.style.height=(hh/H*100)+"%";
+  b.setAttribute("aria-label","Look at "+h[0]);
+  b.onmouseenter=b.onfocus=()=>{$("hover").textContent="Look at "+h[0];};b.onmouseleave=b.onblur=()=>{$("hover").textContent="";};
+  b.onclick=e=>{e.stopPropagation();look(h,st);};box.appendChild(b);});
+ const[kx,ky]=POS[n.sc],k=document.createElement("button");k.type="button";k.className="hot";k.style.cursor="pointer";
+ k.style.left=((kx-13)/W*100)+"%";k.style.top=((ky-52)/H*100)+"%";k.style.width=(26/W*100)+"%";k.style.height=(54/H*100)+"%";
+ k.setAttribute("aria-label","Poke the key");k.onmouseenter=k.onfocus=()=>{$("hover").textContent="Poke the key";};k.onmouseleave=k.onblur=()=>{$("hover").textContent="";};
+ k.onclick=e=>{e.stopPropagation();doPoke();};box.appendChild(k);}
+function look(h,st){poke=null;const grey=st.g;const kl=grey&&h[4]?h[4]:h[2][1];
+ aside=[["k",grey?"revoked":h[2][0],kl],["n",h[3]]];render();$("cap").focus({preventScroll:true});}
 cv.addEventListener("click",e=>{const b=cv.getBoundingClientRect(),x=(e.clientX-b.left)*W/b.width,y=(e.clientY-b.top)*H/b.height;
  if(onKey(x,y)&&!poke)return doPoke();advance();});
 $("cap").addEventListener("click",advance);
