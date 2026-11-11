@@ -530,7 +530,7 @@ const POKES={live:["Hee! That tickles!","Oop! Hi! Do you need access to somethin
  peace:["Shhh. I'm resting.","Mmm. That's nice."]};
 
 /* ---------------- state ---------------- */
-let pos={node:"birth",i:0}, hist=[], got=loadRings(), poke=null, pokeN=0, aside=null;
+let pos={node:"birth",i:0}, hist=[], got=loadRings(), poke=null, pokeN=0, aside=null, lookAt=null;
 function loadRings(){try{const v=JSON.parse(localStorage.getItem("littlekey.rings2")||"[]");return Array.isArray(v)?v:[];}catch(e){return[];}}
 function saveRings(){try{localStorage.setItem("littlekey.rings2",JSON.stringify(got));}catch(e){}}
 /* replay a node up to beat i to get day, grey, dust */
@@ -587,7 +587,7 @@ function render(){const n=STORY[pos.node];const st=stateAt(pos);
   if(b[0]==="k"){isKey=true;ex=b[1];text=b[2];who=pos.node==="nk1"?"backup_service_02's key":"The Little Key";}else{who="Narrator";text=b[1];ex=st.g?"revoked":"idle";}
   if(poke){isKey=true;who=pos.node==="nk1"?"backup_service_02's key":"The Little Key";text=poke[1];ex=poke[0];}
   if(aside){const a=aside[0];if(a[0]==="k"){isKey=true;who=pos.node==="nk1"?"backup_service_02's key":"The Little Key";ex=a[1];text=a[2];}else{isKey=false;who="Narrator";text=a[1];ex=st.g?"revoked":"idle";}}
-  G=cx;sceneInto(n.sc,n.acc,ex,st,last&&b[1]==="peace");quantize(cx,W,H);
+  G=cx;sceneInto(n.sc,n.acc,ex,st,last&&b[1]==="peace");if(aside&&lookAt)highlight(lookAt);quantize(cx,W,H);
   label=PLACE[n.sc]+". "+(st.g?"The key is grey and still.":"The key is here.");$("place").textContent=PLACE[n.sc];
   addHots(n,st);}
  cv.setAttribute("aria-label",label);
@@ -614,6 +614,11 @@ function onKey(px,py){if(atEnd(pos))return false;const n=STORY[pos.node],[kx,ky]
 function doPoke(){const st=stateAt(pos),b=STORY[pos.node].beats[pos.i],peace=b[0]==="k"&&b[1]==="peace";
  const pool=peace?POKES.peace:st.g?POKES.grey:POKES.live,ex=peace?"peace":st.g?"revoked":["excited","proud","curious","excited"][pokeN%4];
  aside=null;poke=[ex,pool[pokeN++%pool.length]];render();}
+function highlight(r){const[x,y,w,h]=r;G.save();
+ G.fillStyle="rgba(255,236,160,.14)";G.fillRect(x,y,w,h);
+ G.strokeStyle="rgba(0,0,0,.55)";G.lineWidth=3;G.strokeRect(x+.5,y+.5,w-1,h-1);
+ G.strokeStyle="#FFE27A";G.lineWidth=1;G.strokeRect(x+.5,y+.5,w-1,h-1);
+ const c=4;G.fillStyle="#FFF6C8";[[x,y],[x+w-c,y],[x,y+h-c],[x+w-c,y+h-c]].forEach(p=>G.fillRect(p[0],p[1],c,c));G.restore();}
 function addHots(n,st){const L=(LOOKS[n.sc]||[]).slice().sort((p,q)=>q[1][2]*q[1][3]-p[1][2]*p[1][3]);const box=$("jumps");
  L.forEach(h=>{const[x,y,w,hh]=h[1],b=document.createElement("button");b.type="button";b.className="hot";
   b.style.left=(x/W*100)+"%";b.style.top=(y/H*100)+"%";b.style.width=(w/W*100)+"%";b.style.height=(hh/H*100)+"%";
@@ -625,7 +630,7 @@ function addHots(n,st){const L=(LOOKS[n.sc]||[]).slice().sort((p,q)=>q[1][2]*q[1
  k.setAttribute("aria-label","Poke the key");k.onmouseenter=k.onfocus=()=>{$("hover").textContent="Poke the key";};k.onmouseleave=k.onblur=()=>{$("hover").textContent="";};
  k.onclick=e=>{e.stopPropagation();doPoke();};box.appendChild(k);}
 function look(h,st){poke=null;const grey=st.g;const kl=grey&&h[4]?h[4]:h[2][1];
- aside=[["k",grey?"revoked":h[2][0],kl],["n",h[3]]];render();$("cap").focus({preventScroll:true});}
+ aside=[["k",grey?"revoked":h[2][0],kl],["n",h[3]]];lookAt=h[1];render();$("cap").focus({preventScroll:true});}
 cv.addEventListener("click",e=>{const b=cv.getBoundingClientRect(),x=(e.clientX-b.left)*W/b.width,y=(e.clientY-b.top)*H/b.height;
  if(onKey(x,y)&&!poke)return doPoke();advance();});
 $("cap").addEventListener("click",advance);
