@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="A VGA-style story game about a production database key that never knows it was copied.">
+<title>The Little Key</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap">
+<style>
+@font-face{font-family:"VT323";font-style:normal;font-weight:400;font-display:swap;src:url(data:font/woff2;base64,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) format("woff2")}
+/* One painted VGA scene, one caption, three buttons. No menus: you click to live through a key's life,
+   and when the key is copied you choose which key to follow. */
+:root{
+  --frame:#120E1C; --bar:#8E8A9E; --bar-hi:#D6D2E2; --bar-lo:#4A4658; --bar-ink:#0E0B16;
+  --win:#F2E8CF; --win-ink:#1C140A; --win-edge:#6B4A1E; --win-gold:#C9A04A; --accent:#7A1F1F; --narr:#4A3A1E;
+  --f-text:"Comic Sans MS","Comic Sans","Comic Neue",cursive; --f-term:"VT323",ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{background:var(--frame);color:#EEE}
+body{margin:0;font:17px/1.4 var(--f-text)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+button{font:inherit}
+:focus-visible{outline:3px solid #FFE27A;outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{max-width:1000px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px 24px}
+.status{display:flex;justify-content:space-between;align-items:center;gap:4px 12px;background:var(--bar);color:var(--bar-ink);padding:3px 10px;font:22px/1.05 var(--f-term);flex-wrap:wrap;border:2px solid;border-color:var(--bar-hi) var(--bar-lo) var(--bar-lo) var(--bar-hi)}
+.strip{display:flex;gap:3px;align-items:center;flex-wrap:wrap}
+.strip canvas{width:26px;height:26px;image-rendering:pixelated;border:1px solid var(--bar-lo)}
+.stage{position:relative;background:#000;line-height:0;border-left:6px solid var(--bar);border-right:6px solid var(--bar)}
+#scene{width:100%;max-width:100%;aspect-ratio:320/200;image-rendering:pixelated;image-rendering:crisp-edges;display:block;cursor:pointer}
+#jumps{position:absolute;inset:0;pointer-events:none}
+.jump{position:absolute;pointer-events:auto;background:transparent;border:3px solid transparent;cursor:pointer;display:flex;align-items:flex-end;justify-content:center;padding:0;line-height:1.2}
+.jump span{transform:translateY(calc(100% + 8px));background:var(--win);color:var(--win-ink);border:2px solid var(--win-gold);padding:3px 8px;font:700 15px/1.2 var(--f-text);text-align:center;max-width:100%}
+.jump:hover,.jump:focus-visible{border-color:#FFE27A;outline:none}
+.cap{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:start;background:var(--win);color:var(--win-ink);border:4px solid var(--win-gold);box-shadow:inset 0 0 0 2px var(--win-edge);padding:12px 16px;min-height:132px;cursor:pointer;text-align:left}
+.cap.narr{grid-template-columns:minmax(0,1fr)}
+#portrait{width:96px;height:96px;image-rendering:pixelated;border:3px solid;border-color:#3A2810 #E8CF8E #E8CF8E #3A2810;background:#2B2140}
+.cap .who{display:block;color:var(--accent);font-weight:700}
+.cap.narr .who{color:var(--narr)}
+.cap.narr #say{font-style:italic}
+#say{display:block;font-size:20px;white-space:pre-wrap}
+.cap .meta{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:6px;font-size:14px;color:#5A4A2E}
+.ctl{display:flex;gap:8px;flex-wrap:wrap;align-items:center;background:var(--bar);padding:6px;border:2px solid;border-color:var(--bar-hi) var(--bar-lo) var(--bar-lo) var(--bar-hi)}
+.ctl button{background:#E1D3AE;border:3px solid;border-color:#FFF6DC #7A5E2C #7A5E2C #FFF6DC;padding:6px 14px;cursor:pointer;font:700 16px var(--f-text);color:#1C140A;min-height:42px}
+.ctl button:disabled{opacity:.45;cursor:default}
+.ctl #rs{margin-left:auto}
+.ctl .place{font:20px var(--f-term);color:var(--bar-ink)}
+@media (max-width:560px){.cap{gap:10px;padding:10px 12px}#portrait{width:64px;height:64px}#say{font-size:18px}.jump span{font-size:12px;padding:2px 4px;transform:translateY(calc(100% + 4px))}}
+</style>
+</head>
+<body>
+<p style="margin:0;padding:6px max(16px,env(safe-area-inset-left,0px));font:20px VT323,monospace"><a href="../thelittlekey.html" style="color:#CFC8E6">‹ About this game</a></p>
+<h1 class="sr">The Little Key</h1>
+<div class="wrap">
+  <div class="status"><span>The Little Key</span><span class="strip" id="strip" aria-label="Rings found"></span><span id="count"></span></div>
+  <div class="stage"><canvas id="scene" width="320" height="200" role="img" aria-label="Scene"></canvas><div id="jumps"></div></div>
+  <div class="cap" id="cap" role="button" tabindex="0" aria-live="polite"><canvas id="portrait" width="52" height="52" aria-hidden="true"></canvas><div><span class="who" id="who"></span><span id="say"></span><span class="meta"><span id="age"></span><span id="hint"></span></span></div></div>
+  <div class="ctl"><button type="button" id="bk">◀ Back</button><button type="button" id="bj">Back to the last split</button><span class="place" id="place"></span><button type="button" id="rs">Start over</button></div>
+</div>
+<script>
+"use strict";
+/* ---------------- tiny 256-colour VGA renderer ---------------- */
+const W=320,H=200;
+const cv=document.getElementById("scene"), cx=cv.getContext("2d");
+/* palette: 6x7x6 colour cube + 4 greys = 256, like a stock VGA game palette */
+const PAL=[];(()=>{const lv6=[0,51,102,153,204,255],lv7=[0,42,85,128,170,212,255];
+ for(const r of lv6)for(const g of lv7)for(const b of lv6)PAL.push([r,g,b]);[[32,32,32],[96,96,96],[160,160,160],[224,224,224]].forEach(c=>PAL.push(c));})();
+const LUT=new Uint8Array(32768);(()=>{for(let i=0;i<32768;i++){const r=(i>>10)<<3|4,g=((i>>5)&31)<<3|4,b=(i&31)<<3|4;let best=0,bd=1e9;
+ for(let p=0;p<256;p++){const c=PAL[p],d=(c[0]-r)**2*3+(c[1]-g)**2*4+(c[2]-b)**2*2;if(d<bd){bd=d;best=p;}}LUT[i]=best;}})();
+const BAYER=[0,8,2,10,12,4,14,6,3,11,1,9,15,7,13,5].map(v=>(v/16-.5)*34);
+function quantize(c,w,h){const im=c.getImageData(0,0,w,h),d=im.data;
+ for(let y=0;y<h;y++)for(let x=0;x<w;x++){const i=(y*w+x)*4,o=BAYER[(y&3)*4+(x&3)];
+  const r=Math.max(0,Math.min(255,d[i]+o)),g=Math.max(0,Math.min(255,d[i+1]+o)),b=Math.max(0,Math.min(255,d[i+2]+o));
+  const p=PAL[LUT[(r>>3)<<10|(g>>3)<<5|(b>>3)]];d[i]=p[0];d[i+1]=p[1];d[i+2]=p[2];d[i+3]=255;}
+ c.putImageData(im,0,0);}
+let G=cx;
+const R=(x,y,w,h,c)=>{G.fillStyle=c;G.fillRect(x|0,y|0,w|0,h|0);};
+function grad(x,y,w,h,stops,horiz){const g=horiz?G.createLinearGradient(x,0,x+w,0):G.createLinearGradient(0,y,0,y+h);stops.forEach((c,i)=>g.addColorStop(i/(stops.length-1),c));G.fillStyle=g;G.fillRect(x,y,w,h);}
+function poly(pts,c){G.beginPath();G.moveTo(pts[0],pts[1]);for(let i=2;i<pts.length;i+=2)G.lineTo(pts[i],pts[i+1]);G.closePath();G.fillStyle=c;G.fill();}
+function ell(x,y,rx,ry,c){G.beginPath();G.ellipse(x,y,rx,ry,0,0,Math.PI*2);G.fillStyle=c;G.fill();}
+function ln(x1,y1,x2,y2,c,w){G.beginPath();G.moveTo(x1,y1);G.lineTo(x2,y2);G.strokeStyle=c;G.lineWidth=w||1;G.stroke();}
+function glow(x,y,r,c){const g=G.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,c);g.addColorStop(1,"rgba(0,0,0,0)");G.fillStyle=g;G.fillRect(x-r,y-r,r*2,r*2);}
+function shade(a){R(0,0,W,H,a);}
+/* 3x5 sign font */
+const F3={A:"25755",B:"65656",C:"34443",D:"65556",E:"74647",F:"74644",G:"34553",H:"55755",I:"72227",J:"11153",K:"55655",L:"44447",M:"57755",N:"65555",O:"25552",P:"65644",Q:"25573",R:"65655",S:"34216",T:"72222",U:"55557",V:"55552",W:"55775",X:"55255",Y:"55222",Z:"71247",
+ "0":"75557","1":"26227","2":"61247","3":"61216","4":"55711","5":"74616","6":"34757","7":"71222","8":"75757","9":"75711",".":"00002","-":"00700","!":"22202","?":"61202",":":"02020","/":"11244","_":"00007","'":"22000","#":"57575"," ":"00000","(":"12221",")":"42224","=":"07070","+":"02720",",":"00024","@":"25645","{":"32623","}":"62326",'"':"55000"};
+function txt(s,x,y,c,sc){sc=sc||1;G.fillStyle=c;s=String(s).toUpperCase();for(const ch of s){const g=F3[ch]||F3["?"];for(let r=0;r<5;r++){const v=+g[r];for(let b=0;b<3;b++)if(v&(4>>b))G.fillRect(x+b*sc,y+r*sc,sc,sc);}x+=4*sc;}}
+const tw=(s,sc)=>String(s).length*4*(sc||1)-(sc||1);
+function ctxt(s,cxp,y,c,sc){txt(s,Math.round(cxp-tw(s,sc)/2),y,c,sc);}
+
+/* ---------------- the key ---------------- */
+/* expressions: idle excited curious proud confused concerned sad revoked new */
+function drawKey(x,y,s,ex,acc,opt){ /* x = centre, y = feet */
+ opt=opt||{};const gray=ex==="revoked"||!!opt.gray;
+ const gold=gray?"#9A96A6":"#F2C14E",goldD=gray?"#6E6A7C":"#B8862A",goldL=gray?"#C9C5D4":"#FFE59A",ink="#2A1A10";
+ const S=v=>v*s;G.save();G.translate(x,y);
+ /* shadow */ ell(0,0,S(11),S(2.5),"rgba(0,0,0,.35)");
+ /* legs + boots */
+ R(S(-4),S(-8),S(2),S(6),goldD);R(S(2),S(-8),S(2),S(6),goldD);
+ ell(S(-4),S(-2),S(3.2),S(2),gray?"#57536A":"#6B3FA0");ell(S(4),S(-2),S(3.2),S(2),gray?"#57536A":"#6B3FA0");
+ ell(S(-5),S(-2.8),S(1.2),S(.7),gray?"#8E8A9E":"#A77BD6");ell(S(3),S(-2.8),S(1.2),S(.7),gray?"#8E8A9E":"#A77BD6");
+ /* shaft + teeth */
+ R(S(-3),S(-28),S(6),S(21),goldD);R(S(-2),S(-28),S(4),S(21),gold);R(S(-2),S(-28),S(1),S(21),goldL);
+ R(S(3),S(-18),S(4),S(3),gold);R(S(3),S(-13),S(3),S(3),gold);R(S(6),S(-18),S(1),S(3),goldD);R(S(5),S(-13),S(1),S(3),goldD);
+ /* arms */
+ const arm=(side,pose)=>{const sx=S(side*3),sy=S(-22);let hx,hy,ex2,ey;
+  if(pose==="up"){ex2=S(side*7);ey=S(-27);hx=S(side*9);hy=S(-33);}
+  else if(pose==="hip"){ex2=S(side*8);ey=S(-19);hx=S(side*4);hy=S(-15);}
+  else if(pose==="droop"){ex2=S(side*5);ey=S(-16);hx=S(side*6);hy=S(-10);}
+  else if(pose==="wave"){ex2=S(side*8);ey=S(-26);hx=S(side*10);hy=S(-31);}
+  else if(pose==="chin"){ex2=S(side*7);ey=S(-20);hx=S(side*3);hy=S(-27);}
+  else {ex2=S(side*7);ey=S(-19);hx=S(side*8);hy=S(-13);}
+  G.lineCap="round";ln(sx,sy,ex2,ey,goldD,S(2.2));ln(ex2,ey,hx,hy,goldD,S(2.2));ell(hx,hy,S(1.8),S(1.8),goldL);};
+ const poses={idle:["rest","rest"],excited:["up","up"],curious:["rest","chin"],proud:["hip","hip"],confused:["rest","chin"],concerned:["droop","rest"],sad:["droop","droop"],revoked:["droop","droop"],"new":["rest","wave"],peace:["rest","rest"]}[ex]||["rest","rest"];
+ arm(-1,poses[0]);arm(1,poses[1]);
+ /* bow (head) */
+ const tilt=ex==="curious"||ex==="confused"?-0.18:0;G.rotate(tilt);
+ const hy=S(-38);
+ ell(0,hy,S(11),S(10.5),goldD);ell(0,hy,S(10),S(9.5),gold);ell(S(-3),hy-S(4),S(4),S(2.5),goldL);
+ ell(0,hy+S(5.5),S(2.2),S(1.4),goldD); /* key hole */
+ /* face */
+ const eye=(ex2,open)=>{if(open==="closed"){ln(ex2-S(1.5),hy-S(1),ex2+S(1.5),hy-S(1),ink,S(.9));return;}
+  if(open==="peace"){G.beginPath();G.arc(ex2,hy-S(.6),S(1.6),Math.PI*1.1,Math.PI*1.9);G.strokeStyle=ink;G.lineWidth=S(.9);G.stroke();return;}
+  if(open==="x"){ln(ex2-S(1.3),hy-S(2.3),ex2+S(1.3),hy+S(.3),ink,S(.8));ln(ex2+S(1.3),hy-S(2.3),ex2-S(1.3),hy+S(.3),ink,S(.8));return;}
+  const ry=open==="wide"?S(2.4):open==="low"?S(1.2):S(1.9);ell(ex2,hy-S(1),S(1.5),ry,ink);ell(ex2+S(.5),hy-S(1.8),S(.6),S(.6),"#FFF");};
+ const ey={idle:"n",excited:"wide",curious:"n",proud:"low",confused:"n",concerned:"n",sad:"low",revoked:"closed",new:"wide",peace:"peace"}[ex]||"n";
+ eye(S(-3.6),ey);eye(S(3.6),ex==="curious"?"wide":ey);
+ if(!gray||ex==="peace"){ell(S(-6.2),hy+S(1.8),S(1.8),S(1.1),"rgba(240,110,120,.75)");ell(S(6.2),hy+S(1.8),S(1.8),S(1.1),"rgba(240,110,120,.75)");}
+ /* brows */
+ if(ex==="confused"){ln(S(-5),hy-S(4.5),S(-2),hy-S(4),ink,S(.7));ln(S(2),hy-S(5.5),S(5),hy-S(4),ink,S(.7));}
+ if(ex==="curious"){ln(S(2),hy-S(5.6),S(5),hy-S(5),ink,S(.7));}
+ if(ex==="concerned"||ex==="sad"){ln(S(-5),hy-S(3.6),S(-2),hy-S(4.6),ink,S(.7));ln(S(2),hy-S(4.6),S(5),hy-S(3.6),ink,S(.7));}
+ /* mouth */
+ G.beginPath();G.strokeStyle=ink;G.lineWidth=S(.8);
+ const my=hy+S(2.6);
+ if(ex==="excited"||ex==="new"){G.moveTo(S(-2.5),my);G.quadraticCurveTo(0,my+S(3.5),S(2.5),my);G.closePath();G.fillStyle="#8A2A3A";G.fill();}
+ else if(ex==="proud"){G.moveTo(S(-2.5),my+S(.5));G.quadraticCurveTo(S(.5),my+S(2.2),S(2.8),my-S(.4));G.stroke();}
+ else if(ex==="confused"){G.moveTo(S(-1.5),my+S(1));G.lineTo(S(1.5),my+S(.4));G.stroke();}
+ else if(ex==="concerned"){ell(0,my+S(1),S(1.1),S(.9),ink);}
+ else if(ex==="sad"||ex==="revoked"){G.moveTo(S(-2),my+S(1.6));G.quadraticCurveTo(0,my-S(.4),S(2),my+S(1.6));G.stroke();}
+ else {G.moveTo(S(-2.2),my);G.quadraticCurveTo(0,my+S(2.2),S(2.2),my);G.stroke();}
+ /* accessories, one per copy */
+ const a=acc;
+ if(a==="crown"){poly([S(-5),hy-S(9),S(-5),hy-S(13),S(-2.5),hy-S(10.5),0,hy-S(14),S(2.5),hy-S(10.5),S(5),hy-S(13),S(5),hy-S(9)],gray?"#B0ACBE":"#FFD84A");ell(0,hy-S(11),S(.9),S(.9),"#C0304A");}
+ if(a==="note"){G.save();G.translate(S(5),hy-S(8));G.rotate(.25);R(-S(3),-S(3),S(7),S(6),"#FFF27A");R(-S(2),-S(1.5),S(5),S(.6),"#B0A040");R(-S(2),S(0),S(4),S(.6),"#B0A040");G.restore();}
+ if(a==="hardhat"){ell(0,hy-S(8),S(9),S(4.5),"#E0B000");R(-S(11),hy-S(7),S(22),S(2),"#C09000");R(-S(1),hy-S(12.5),S(2),S(5),"#FFD84A");}
+ if(a==="party"){poly([S(-4),hy-S(8.5),S(4),hy-S(8.5),S(1),hy-S(18)],"#3FA0E0");ell(S(1),hy-S(18.5),S(1.4),S(1.4),"#FF6FB0");ln(S(-2),hy-S(11),S(3),hy-S(12),"#FFE27A",S(.8));}
+ if(a==="glasses"){G.lineWidth=S(.7);G.strokeStyle=ink;G.beginPath();G.arc(S(-3.6),hy-S(1),S(2.4),0,Math.PI*2);G.stroke();G.beginPath();G.arc(S(3.6),hy-S(1),S(2.4),0,Math.PI*2);G.stroke();ln(S(-1.2),hy-S(1.4),S(1.2),hy-S(1.4),ink,S(.7));}
+ if(a==="tag"){ln(S(7),hy-S(4),S(12),hy+S(2),"#7A5E2C",S(.6));poly([S(11),hy+S(1),S(16),hy+S(1),S(16),hy+S(5),S(11),hy+S(5),S(10),hy+S(3)],"#F0E0B0");}
+ if(a==="box"){poly([S(-7),hy-S(8),S(7),hy-S(8),S(8),hy-S(14),S(-6),hy-S(14)],"#B07A3A");R(-S(7),hy-S(9),S(14),S(1.5),"#8A5A22");R(-S(1),hy-S(14),S(2),S(6),"#D8B070");}
+ if(a==="antenna"){ln(0,hy-S(9.5),S(0),hy-S(16),"#555",S(.8));ell(0,hy-S(17),S(1.8),S(1.8),"#5AE0C0");}
+ if(a==="shades"){R(-S(6),hy-S(3),S(5),S(3),"#141018");R(S(1),hy-S(3),S(5),S(3),"#141018");R(-S(1),hy-S(2.5),S(2),S(.8),"#141018");R(-S(5),hy-S(2.6),S(1.5),S(.6),"#6A7AA0");}
+ if(a==="hood"){G.save();G.globalCompositeOperation="source-over";G.beginPath();G.ellipse(0,hy-S(1),S(12.5),S(12),0,Math.PI*1.05,Math.PI*1.95);G.lineWidth=S(3);G.strokeStyle="#2A2A38";G.stroke();G.restore();}
+ if(a==="bow"){poly([0,hy-S(9),S(-5),hy-S(12),S(-5),hy-S(7)],"#E05080");poly([0,hy-S(9),S(5),hy-S(12),S(5),hy-S(7)],"#E05080");ell(0,hy-S(9),S(1.4),S(1.4),"#FF8AB0");}
+ G.restore();
+}
+
+/* ---------------- rings ---------------- */
+const RINGS=[
+ {id:"golden",name:"Golden Ring",band:"#F2C14E",gem:"#FFFFFF",copy:"the original key, in the vault",title:"Gone in a Breath"},
+ {id:"moment",name:"Moment Ring",band:"#C8CCD8",gem:"#DFF4FF",copy:"the key in the app's memory",title:"A Quiet Little Ending"},
+ {id:"notepad",name:"Notepad Ring",band:"#F4F0E0",gem:"#3A6AE0",copy:"the key in Secrets.txt",title:"The Drawer"},
+ {id:"party",name:"Party Ring",band:"#3FA0E0",gem:"#FF6FB0",copy:"the key in #general",title:"Scrollback"},
+ {id:"bookmark",name:"Bookmark Ring",band:"#8A3A2A",gem:"#E04040",copy:"the key in the wiki",title:"Left Behind"},
+ {id:"prompt",name:"Prompt Ring",band:"#3AA090",gem:"#9AFFE8",copy:"the key in the AI conversation",title:"Closing the Book"},
+ {id:"fork",name:"Fork Ring",band:"#4A4A5A",gem:"#B0E060",copy:"the key in the public repository",title:"The Last Fork"},
+ {id:"hood",name:"Hoodie Ring",band:"#2A2A38",gem:"#9AFF9A",copy:"the key in the stranger's notes.txt",title:"Click, Whirr"},
+ {id:"birthday",name:"Birthday Ring",band:"#E05080",gem:"#FFE27A",copy:"backup_service_02's brand new key",title:"Who Made You?"},
+ {id:"hardhat",name:"Hard Hat Ring",band:"#E0B000",gem:"#FF7A20",copy:"the key in the build pipeline",title:"Good Night, Robots"},
+ {id:"onion",name:"Onion Ring",band:"#B07A3A",gem:"#E8C890",copy:"the key in the container image",title:"Layer by Layer"}];
+function drawRing(c,r,got){G=c.getContext("2d");const w=c.width,h=c.height;G.clearRect(0,0,w,h);
+ grad(0,0,w,h,["#2B2140","#141020"]);
+ if(!got){const q=Math.max(1,Math.round(w/16));ctxt("?",w/2,h/2-q*2.5,"#6A6088",q);G=cx;quantize(c.getContext("2d"),w,h);return;}
+ glow(w/2,h/2,w*.45,"rgba(255,230,160,.25)");
+ const s=w/64;
+ G.lineWidth=7*s;G.strokeStyle="#000";G.beginPath();G.ellipse(w/2,h/2+6*s,17*s,12*s,0,0,Math.PI*2);G.stroke();
+ G.lineWidth=5*s;G.strokeStyle=r.band;G.beginPath();G.ellipse(w/2,h/2+6*s,17*s,12*s,0,0,Math.PI*2);G.stroke();
+ G.lineWidth=1.5*s;G.strokeStyle="rgba(255,255,255,.55)";G.beginPath();G.ellipse(w/2,h/2+5*s,17*s,12*s,0,Math.PI*1.1,Math.PI*1.7);G.stroke();
+ if(r.id==="onion"){G.lineWidth=1*s;G.strokeStyle="#6A4A1A";[13,15,19].forEach(q=>{G.beginPath();G.ellipse(w/2,h/2+6*s,q*s,(q-5)*s,0,0,Math.PI*2);G.stroke();});}
+ /* gem / charm by ring */
+ const gx=w/2,gy=h/2-8*s;
+ if(r.id==="hardhat"){ell(gx,gy+2*s,8*s,5*s,"#E0B000");R(gx-10*s,gy+2*s,20*s,2*s,"#B08000");}
+ else if(r.id==="notepad"){R(gx-6*s,gy-6*s,12*s,13*s,"#F8F4E4");for(let i=0;i<4;i++)R(gx-4*s,gy-3*s+i*3*s,8*s,s,"#3A6AE0");}
+ else if(r.id==="bookmark"){poly([gx-4*s,gy-8*s,gx+4*s,gy-8*s,gx+4*s,gy+8*s,gx,gy+4*s,gx-4*s,gy+8*s],"#E04040");}
+ else if(r.id==="ticket"){poly([gx-8*s,gy-4*s,gx+8*s,gy-4*s,gx+8*s,gy+4*s,gx-8*s,gy+4*s],"#F0E0B0");ell(gx-5*s,gy,1.5*s,1.5*s,"#3A7AC0");}
+ else if(r.id==="prompt"){R(gx-8*s,gy-5*s,16*s,10*s,"#9AFFE8");poly([gx-3*s,gy+5*s,gx+1*s,gy+5*s,gx-4*s,gy+9*s],"#9AFFE8");txt(">_",gx-3.5*s,gy-2*s,"#1A4A40",Math.max(1,s|0));}
+ else if(r.id==="fork"){ln(gx,gy+8*s,gx,gy-2*s,"#B0E060",2*s);ln(gx,gy-2*s,gx-5*s,gy-8*s,"#B0E060",2*s);ln(gx,gy-2*s,gx+5*s,gy-8*s,"#B0E060",2*s);[[gx,gy+8*s],[gx-5*s,gy-8*s],[gx+5*s,gy-8*s]].forEach(p=>ell(p[0],p[1],2*s,2*s,"#E8FFC0"));}
+ else if(r.id==="birthday"){R(gx-7*s,gy-2*s,14*s,9*s,"#E05080");R(gx-7*s,gy-2*s,14*s,2*s,"#FFF");R(gx-.7*s,gy-8*s,1.5*s,6*s,"#F4F0E0");ell(gx,gy-9*s,1.5*s,2.2*s,"#FFE27A");}
+ else if(r.id==="party"){poly([gx-6*s,gy+6*s,gx+6*s,gy+6*s,gx,gy-9*s],"#3FA0E0");ell(gx,gy-9*s,2*s,2*s,"#FF6FB0");ln(gx-3*s,gy+1*s,gx+4*s,gy-1*s,"#FFE27A",1.2*s);}
+ else if(r.id==="hood"){ell(gx,gy,8*s,8*s,"#2A2A38");ell(gx,gy+1*s,5*s,5.5*s,"#0E0A14");ell(gx-2*s,gy+1*s,s,s,"#9AFF9A");ell(gx+2*s,gy+1*s,s,s,"#9AFF9A");}
+ else if(r.id==="golden"){/* tiny key charm */ell(gx,gy-3*s,5*s,5*s,"#F2C14E");ell(gx,gy-3*s,2*s,2*s,"#2B2140");R(gx-1.2*s,gy+1*s,2.4*s,8*s,"#F2C14E");R(gx+1*s,gy+5*s,3*s,1.5*s,"#F2C14E");}
+ else {ell(gx,gy,6*s,6*s,"#000");ell(gx,gy,5*s,5*s,r.gem);ell(gx-2*s,gy-2*s,1.5*s,1.5*s,"#FFF");}
+ G=cx;quantize(c.getContext("2d"),w,h);}
+
+/* ---------------- scenes ---------------- */
+function floor(y,c1,c2,lines){grad(0,y,W,H-y,[c1,c2]);if(lines){G.globalAlpha=.25;for(let i=-10;i<=10;i++)ln(160+i*12,y,160+i*40,H,lines,1);for(let k=1;k<7;k++){const yy=y+(H-y)*(k*k)/49;ln(0,yy,W,yy,lines,1);}G.globalAlpha=1;}}
+function rack(x,y,w,h){R(x,y,w,h,"#1A2030");R(x+1,y+1,w-2,h-2,"#2A3248");for(let yy=y+4;yy<y+h-4;yy+=6){R(x+3,yy,w-6,4,"#121828");R(x+4,yy+1,2,1,(yy*7%3)?"#3AE07A":"#E0B040");R(x+w-8,yy+1,3,1,"#4A90E0");}}
+function crt(x,y,w,h,scr){R(x-3,y-3,w+6,h+8,"#C8C0A8");R(x-2,y-2,w+4,h+4,"#8A8270");R(x,y,w,h,scr||"#102030");R(x+w/2-6,y+h+5,12,5,"#A8A088");}
+function person(x,y,body,head,hair){ell(x,y-22,5,6,head);ell(x,y-26,5.5,3.5,hair);poly([x-8,y,x-6,y-15,x+6,y-15,x+8,y],body);}
+function window1(x,y,w,h,night){R(x-2,y-2,w+4,h+4,"#5A3A20");grad(x,y,w,h,night?["#0A0A30","#2A2060","#5A3A70"]:["#7AB0F0","#C8E0FF"]);R(x+w/2-1,y,2,h,"#5A3A20");R(x,y+h/2-1,w,2,"#5A3A20");}
+
+const SC={};
+SC.vault=()=>{grad(0,0,W,130,["#06101E","#10284A","#1A3A5E"]);
+ /* vault door */ ell(160,70,46,46,"#3A4A62");ell(160,70,42,42,"#5A6E8E");ell(160,70,34,34,"#4A5C7A");for(let a=0;a<8;a++){const t=a*Math.PI/4;ln(160,70,160+Math.cos(t)*30,70+Math.sin(t)*30,"#8AA0C0",3);}ell(160,70,9,9,"#C8D4E8");ell(160,70,4,4,"#4A5C7A");
+ glow(160,70,70,"rgba(80,160,255,.18)");
+ ctxt("PROD DB",160,10,"#9AC8FF",1);
+ rack(70,40,30,92);rack(220,40,30,92);
+ floor(130,"#1E2C44","#0A1222","#4A6A9A");
+ /* pneumatic tube (left) */ R(18,0,16,150,"#7A4A20");R(21,0,4,150,"#C88A40");R(14,108,24,30,"#5A3410");R(17,112,18,22,"#2A1A08");glow(26,123,14,"rgba(255,180,80,.35)");txt("APP",16,100,"#FFD9A0");
+ /* laptop cart (right-centre) */ R(196,140,40,4,"#3A3A48");R(200,144,3,22,"#2A2A38");R(229,144,3,22,"#2A2A38");poly([204,140,228,140,232,126,208,126],"#2A2A38");poly([206,138,226,138,229,128,209,128],"#5AA0E0");txt("MEL",208,130,"#0A2040");
+ /* build robot (far right) */ R(268,96,30,46,"#8A8A9A");R(272,100,22,14,"#1A2030");ell(278,107,3,3,"#FF5040");ell(288,107,3,3,"#FF5040");R(262,108,6,30,"#6A6A7A");R(298,108,6,30,"#6A6A7A");R(272,142,8,16,"#5A5A6A");R(286,142,8,16,"#5A5A6A");R(276,88,2,8,"#AAA");ell(277,87,2.5,2.5,"#40E0A0");txt("CI",277,120,"#202030");};
+SC.memory=()=>{grad(0,0,W,135,["#2A0E06","#5A2410","#8A3E18"]);
+ const gear=(x,y,r,c)=>{ell(x,y,r,r,c);for(let a=0;a<12;a++){const t=a*Math.PI/6;G.save();G.translate(x+Math.cos(t)*r,y+Math.sin(t)*r);G.rotate(t);R(-3,-4,6,8,c);G.restore();}ell(x,y,r*.55,r*.55,"#3A1608");ell(x,y,r*.2,r*.2,c);};
+ gear(70,55,30,"#B06A28");gear(118,34,18,"#C88A40");gear(250,50,34,"#9A5A20");
+ glow(160,90,110,"rgba(255,140,40,.25)");ctxt("PROCESS 4471 - HEAP",160,8,"#FFD9A0");
+ floor(135,"#3A1A0C","#140804","#8A4A20");
+ /* exit hatch */ ell(48,170,26,9,"#2A1208");ell(48,168,24,8,"#6A3A18");ell(48,168,17,5,"#140804");txt("EXIT",40,152,"#FFD9A0");
+ /* notepad crate */ R(110,130,34,22,"#7A5228");R(110,130,34,3,"#A87A40");R(116,122,22,10,"#F4F0E0");for(let i=0;i<3;i++)R(118,124+i*3,18,1,"#3A6AE0");
+ /* conveyor to CI */ R(220,140,100,10,"#2A2A30");for(let x=222;x<320;x+=8)R(x,141,4,8,"#4A4A54");R(220,150,100,4,"#141418");R(260,112,40,26,"#5A5A68");txt("TO CI",266,118,"#FFE27A");};
+SC.desk=()=>{grad(0,0,W,120,["#1A1430","#2A2048"]);window1(18,18,72,62,true);
+ /* skyline */ G.save();G.beginPath();G.rect(18,18,72,62);G.clip();[[20,60,10],[32,48,12],[46,56,9],[56,40,14],[72,52,16]].forEach(b=>{R(b[0],b[1],b[2],80,"#141028");for(let y=b[1]+3;y<80;y+=5)for(let x=b[0]+2;x<b[0]+b[2]-2;x+=4)if((x*y)%7<3)R(x,y,2,2,"#E0C060");});ell(78,28,5,5,"#F4F0D0");G.restore();
+ glow(230,40,70,"rgba(255,220,140,.22)");/* lamp */poly([222,20,244,20,250,34,216,34],"#C8A040");R(232,34,2,30,"#7A6020");
+ /* desk */ R(0,120,W,8,"#6A3E20");grad(0,128,W,72,["#4A2A16","#2A160A"]);
+ /* big CRT: Secrets.txt */ crt(120,42,96,66,"#E8E8F0");R(120,42,96,8,"#2A2A9A");txt("SECRETS.TXT",123,44,"#FFF");
+ ["AWS_KEY=AKIA...","STRIPE=SK_LIVE...","PROD_DB=????","WIFI=HUNTER2"].forEach((l,i)=>txt(l,124,54+i*8,i===2?"#C0302A":"#222"));
+ /* coffee */ R(32,108,12,12,"#F0F0F0");R(44,111,4,6,"#F0F0F0");R(33,108,10,2,"#4A2A10");
+ /* trash */ poly([26,150,56,150,52,190,30,190],"#5A6070");R(24,146,34,5,"#7A8090");for(let x=33;x<52;x+=6)R(x,154,2,32,"#4A5060");
+ /* AI desk buddy */ R(262,96,34,26,"#D8DCE8");R(266,100,26,16,"#103A38");ell(274,107,2,2,"#5AE0C0");ell(284,107,2,2,"#5AE0C0");R(276,112,6,1,"#5AE0C0");R(278,90,2,6,"#888");ell(279,89,2,2,"#5AE0C0");txt("AI",274,124,"#9AFFE8");
+ /* laptop with chat */ poly([64,120,108,120,104,96,68,96],"#2A2A38");R(70,98,32,20,"#F0EEF8");R(72,100,18,5,"#5A3FA0");R(80,107,20,5,"#3FA07A");R(72,113,14,4,"#5A3FA0");txt("CHAT",74,88,"#E9E2FF");};
+SC.ci=()=>{grad(0,0,W,125,["#1E2430","#3A4458"]);for(let x=0;x<W;x+=40)R(x,0,2,125,"#141820");
+ R(110,10,100,30,"#0A0A10");txt("BUILD 4471: PASSED",115,15,"#5AE07A");txt("USES PROD_DB_KEY",115,25,"#FFE27A");
+ /* robot arms */ [[70,40],[250,40]].forEach(p=>{R(p[0]-4,0,8,p[1],"#6A6A7A");ln(p[0],p[1],p[0]+18,p[1]+30,"#E0A030",6);ell(p[0]+18,p[1]+30,5,5,"#5A5A6A");});
+ floor(125,"#3A3E48","#141820","#6A7080");
+ /* conveyor */ R(0,140,W,12,"#2A2A30");for(let x=2;x<W;x+=9)R(x,141,5,10,"#4A4A54");
+ /* log printer */ R(16,108,44,30,"#D8D0B8");R(20,112,36,6,"#2A2A30");poly([24,108,52,108,56,70,20,70],"#F8F4E8");for(let i=0;i<6;i++)R(24,74+i*5,26,1,i===3?"#C0302A":"#888");txt("LOGS",28,126,"#2A2A30");
+ /* crate */ R(140,104,46,34,"#B07A3A");R(140,104,46,4,"#D8A860");for(let x=144;x<186;x+=8)R(x,108,1,30,"#8A5A22");txt("IMAGE",150,120,"#3A2008");
+ /* push lever */ R(262,120,40,20,"#5A5A68");R(280,84,4,38,"#9A9AA8");ell(282,82,7,7,"#E03030");ell(280,80,2,2,"#FF9A9A");txt("GIT PUSH",266,126,"#FFE27A");};
+SC.chat=()=>{grad(0,0,W,130,["#2A1E48","#4A3A78"]);
+ const bub=(x,y,w,c,t)=>{R(x,y,w,12,c);poly([x+4,y+12,x+10,y+12,x+4,y+17],c);txt(t,x+3,y+4,"#141020");};
+ bub(70,10,72,"#E9E2FF","HAS ANYONE GOT");bub(150,22,64,"#FFE27A","THE PROD KEY?");bub(96,40,96,"#9AE0B0","HERE YOU GO :)");bub(200,46,60,"#FFB0C8","THANKS!!");
+ ctxt("#GENERAL - 412 MEMBERS",160,64,"#CFC8E6");
+ floor(130,"#3A2E5A","#140E24","#6A5A9A");
+ /* library door */ R(14,58,46,80,"#4A2A16");R(18,62,38,76,"#7A4A26");ell(50,100,2,2,"#FFD84A");R(14,48,46,10,"#2A1A08");txt("WIKI",26,51,"#FFE27A");
+ /* ticket window */ R(130,86,60,44,"#2A3A5A");R(136,92,48,22,"#C8E0FF");R(134,114,52,6,"#6A5A40");txt("TICKETS",146,96,"#203050");
+ /* public mailbox */ R(262,110,30,26,"#3A6AC0");ell(277,110,15,8,"#3A6AC0");R(270,104,14,3,"#141020");R(274,136,6,30,"#2A2A38");txt("PUBLIC",266,120,"#FFF");
+ person(232,140,"#5A8A5A","#E8B898","#3A2010");person(104,140,"#8A4A6A","#C08860","#141014");};
+SC.wiki=()=>{grad(0,0,W,130,["#2A1608","#4A2A12"]);
+ for(const sx of [6,230]){R(sx,6,84,124,"#3A200C");for(let sh=0;sh<5;sh++){R(sx+2,14+sh*24,80,3,"#6A4020");for(let b=0;b<14;b++){const c=["#8A2A2A","#2A5A8A","#3A7A3A","#A08030","#5A3A7A"][(b*3+sh)%5];R(sx+4+b*5.6,14+sh*24-16+((b*7+sh)%4),4,16-((b*7+sh)%4),c);}}}
+ glow(160,40,60,"rgba(255,210,130,.3)");ell(160,22,8,5,"#E8C060");ln(160,0,160,17,"#3A2010",1);
+ R(110,40,100,14,"#F4E8C8");txt("INTERNAL USE ONLY",115,44,"#8A1A1A");
+ floor(130,"#5A3418","#1E1006","#8A5A30");
+ /* card catalogue */ R(26,140,56,40,"#7A4A20");for(let r=0;r<3;r++)for(let c=0;c<4;c++){R(30+c*13,144+r*12,11,9,"#A8743A");R(34+c*13,148+r*12,3,2,"#E8D090");}txt("ARCHIVE",36,132,"#FFE27A");
+ /* ticket slot */ R(140,98,42,32,"#5A6A7A");R(146,104,30,4,"#141418");txt("TICKET",148,114,"#E8F0FF");
+ /* export copier */ R(240,138,58,36,"#D8D8E0");R(244,132,50,8,"#A8A8B8");R(250,146,22,6,"#5AE07A");txt("EXPORT",254,160,"#2A2A38");};
+SC.tickets=()=>{grad(0,0,W,125,["#1E2A3A","#34465E"]);
+ for(let r=0;r<5;r++)for(let c=0;c<12;c++){R(40+c*20,14+r*18,18,16,"#141C28");if((r*5+c)%3)R(42+c*20,18+r*18,14,8,["#F0E0B0","#9AC8FF","#FFB0A0","#B0E0A0"][(r+c)%4]);}
+ R(196,58,18,16,"#FFE27A");txt("!",203,63,"#C0302A");
+ floor(125,"#4A5468","#18202C","#7A86A0");
+ /* big stamp desk */ R(110,130,90,12,"#6A4A2A");R(116,142,6,30,"#4A3018");R(188,142,6,30,"#4A3018");R(146,108,16,20,"#3A2A1A");R(140,124,28,8,"#8A1A1A");R(130,128,60,2,"#F0E0B0");txt("AFTER RELEASE",130,115,"#FFE27A");
+ /* wiki door */ R(8,70,40,80,"#4A2A16");R(12,74,32,76,"#7A4A26");txt("WIKI",18,62,"#FFE27A");
+ /* contractor bag */ R(258,146,40,26,"#3A3A2A");R(270,138,16,10,"#2A2A1A");R(272,140,12,6,"#3A3A2A");R(264,152,28,8,"#C8B070");txt("ZIP",270,154,"#2A2A1A");txt("CONTRACTOR",256,130,"#E8F0FF");};
+SC.docker=()=>{grad(0,0,W,112,["#2A1A4A","#C85A4A","#F0A060"]);ell(250,90,18,18,"#FFD890");
+ grad(0,112,W,24,["#1A3A6A","#0A1A3A"]);for(let x=0;x<W;x+=7)R(x,116+(x%3)*5,4,1,"#6A9AD0");
+ /* crane */ R(40,20,6,100,"#C04020");R(40,20,80,5,"#C04020");ln(110,25,110,60,"#222",1);
+ /* public registry ship */ poly([196,116,300,116,290,130,206,130],"#2A2A3A");R(214,96,30,20,"#C83A3A");R(246,100,30,16,"#3A7AC0");txt("PUBLIC",216,104,"#FFF");
+ R(0,136,W,64,"#5A4A3A");floor(136,"#6A5A48","#2A2018");
+ /* layered container cutaway */ for(let i=0;i<4;i++){R(90,104+i*9,60,8,["#4A8A5A","#5A9AC0","#C0A040","#C06A4A"][i]);txt("LAYER "+(i+1),94,106+i*9,"#141018");}R(140,113,8,6,"#FFE27A");
+ /* paint bucket */ poly([30,160,54,160,52,182,32,182],"#9AA0B0");ell(42,160,12,3,"#E8E8F0");R(40,150,2,10,"#4A4A54");txt("RM",36,168,"#2A2A38");
+ /* customs booth */ R(250,138,40,40,"#E8D8B0");R(254,144,32,14,"#7AB0F0");R(246,134,48,6,"#C83A3A");txt("SCAN",260,164,"#3A2008");};
+SC.aichat=()=>{grad(0,0,W,128,["#0E2A2C","#1E4A4A"]);
+ for(let i=0;i<30;i++)R((i*53)%W,(i*29)%100,1,1,"#5AE0C0");
+ /* friendly assistant */ R(120,30,80,64,"#D8DCE8");R(126,36,68,44,"#0E3A38");ell(146,54,6,7,"#5AE0C0");ell(174,54,6,7,"#5AE0C0");G.beginPath();G.moveTo(146,68);G.quadraticCurveTo(160,76,174,68);G.strokeStyle="#5AE0C0";G.lineWidth=2;G.stroke();R(158,18,4,12,"#888");ell(160,16,4,4,"#5AE0C0");R(132,94,56,34,"#B8BCC8");
+ floor(128,"#1E3E40","#081818","#4A8A88");
+ /* transcript pile */ for(let i=0;i<7;i++){R(14+i*3,136+i*6,64-i*4,6,i%2?"#F4F0E0":"#E4E0D0");}for(let i=0;i<6;i++)R(20,140+i*6,30,1,"#888");txt("TRANSCRIPT",14,128,"#9AFFE8");
+ /* accept button */ R(250,140,48,26,"#1E6A3A");R(252,142,44,20,"#3AC06A");txt("ACCEPT",256,150,"#0A2A14");
+ /* share link chain */ for(let i=0;i<4;i++){G.lineWidth=2;G.strokeStyle="#C8C8D8";G.beginPath();G.ellipse(150+i*9,170,6,4,0,0,Math.PI*2);G.stroke();}txt("SHARE LINK",140,180,"#9AFFE8");};
+SC.github=()=>{grad(0,0,W,110,["#5AA0E8","#B8D8F8"]);ell(60,22,14,6,"#FFF");ell(72,20,10,6,"#FFF");ell(250,30,18,6,"#FFF");
+ /* billboard */ R(80,10,160,74,"#2A2A30");R(84,14,152,66,"#0E1116");txt("PUBLIC REPO: COOL-APP",88,18,"#B0E060");
+ ["+ DB_KEY = \"...528 BYTES...\"","+ # TODO REMOVE","  STARS: 3   FORKS: 14"].forEach((l,i)=>txt(l,88,32+i*12,i===0?"#FF8A8A":"#C8D0E0"));
+ R(156,84,8,30,"#3A3A40");
+ R(0,110,W,90,"#8A8A8A");floor(110,"#A8A0A0","#5A5458","#6A6266");
+ /* strangers */ person(36,170,"#3A6A3A","#C08860","#2A1A10");person(212,160,"#6A3A8A","#E8B898","#C8A040");
+ /* hooded stranger */ poly([262,186,266,150,290,150,294,186],"#2A2A38");ell(278,146,11,12,"#2A2A38");ell(278,148,6,7,"#141018");ell(275,148,1,1,"#9AFF9A");ell(281,148,1,1,"#9AFF9A");
+ /* delete bucket */ poly([94,170,118,170,116,190,96,190],"#9AA0B0");ell(106,170,12,3,"#5A5A68");txt("DELETE",94,160,"#141018");
+ /* alarm bell */ R(150,140,4,46,"#3A3A40");ell(152,136,10,8,"#E0B030");R(142,136,20,4,"#B08020");txt("ALERT",143,124,"#141018");};
+SC.attacker=()=>{grad(0,0,W,H,["#04060A","#0A1410"]);
+ crt(110,40,100,70,"#021006");glow(160,75,90,"rgba(60,255,120,.18)");
+ ["SCANNING PUBLIC REPOS...","FOUND: DB KEY (528 B)","CHECKING... VALID","PERMS: READ WRITE USERS"].forEach((l,i)=>txt(l,114,46+i*10,i===2||i===3?"#9AFF9A":"#3AC06A"));
+ R(80,128,160,8,"#2A2A30");R(96,136,6,40,"#1A1A20");R(218,136,6,40,"#1A1A20");
+ R(244,118,40,10,"#B07A3A");R(246,116,36,3,"#C88A40");txt("PIZZA",250,120,"#3A1A08");
+ /* database door */ R(14,50,50,96,"#1A2A3A");R(18,54,42,88,"#2A4A6A");ctxt("PROD",39,64,"#9AC8FF");ctxt("DB",39,72,"#9AC8FF");ell(54,100,2,2,"#9AC8FF");
+ /* bug bounty mailbox */ R(272,150,28,22,"#3A7A3A");ell(286,150,14,6,"#3A7A3A");R(284,172,4,24,"#2A2A30");txt("REPORT",264,140,"#9AFF9A");};
+
+/* ---------------- where the key stands in each scene ---------------- */
+const POS={vault:[150,178],memory:[180,172],desk:[238,122],ci:[110,170],chat:[170,174],wiki:[180,176],docker:[200,180],aichat:[110,176],github:[180,186],attacker:[180,186]};
+const PLACE={vault:"The production database",memory:"The app's memory",desk:"Mel's laptop · Secrets.txt",ci:"The build pipeline",chat:"Team chat · #general",wiki:"The wiki",docker:"The container registry",aichat:"The AI assistant",github:"A public repository",attacker:"A stranger's laptop"};
+
+/* ---------------- the story ----------------
+   Each node is one key's life, from its point of view. The key never knows it was copied.
+   Beats: ["k", expression, text, opts] for the key, ["n", text, opts] for the narrator.
+   opts: d = day, g = revoked (key turns grey), dust = years have passed.
+   A node ends in a split (the player picks which key to follow) or an ending (a ring). */
+const STORY={
+ birth:{sc:"vault",acc:"crown",day:0,beats:[
+  ["n","Somewhere in a production database, a key is created."],
+  ["k","excited","Oh! Hello! I was just born!"],
+  ["k","proud","I'm 528 bytes. I can read EVERYTHING."],
+  ["k","proud","I can write over most things. I can even make new users, with keys of their own!"],
+  ["k","excited","Less than a minute old and already so powerful. OH BOY!"],
+  ["n","In the same second, two things happen. An app loads the key into memory. And Mel, a developer, copies it into a text file, just for now."],
+  ["n","Now there are three of them. Each one thinks it is the only one."]],
+  split:[["vault1","Stay in the vault","vault","crown"],["mem1","The app's memory","memory",""],["desk1","Mel's Secrets.txt","desk","note"]]},
+
+ vault1:{sc:"vault",acc:"crown",day:1,beats:[
+  ["k","idle","It's quiet in the vault. I like quiet."],
+  ["k","proud","Every login checks with me. I'm very important."],
+  ["n","Weeks pass. The key is checked thousands of times a day. It never leaves the vault.",{d:60}],
+  ["k","proud","Nobody ever changes me. I'm so reliable!"],
+  ["n","Then one Tuesday, someone on the security team clicks Revoke.",{d:213}],
+  ["k","confused","Oh. Somebody said no. To me?",{g:1}],
+  ["n","The database doesn't keep revoked keys around. It deletes the record in the same breath."],
+  ["k","peace","Oh. That's it? That was a nice little life. I'm done."]],end:"golden"},
+
+ mem1:{sc:"memory",acc:"",day:0,beats:[
+  ["k","excited","Ooh, where am I? It's warm, and everything's spinning!"],
+  ["k","excited","I'm being USED! Three thousand connections!"],
+  ["k","curious","Nobody writes anything down in here. Is that normal?"],
+  ["n","At the end of the day, the process restarts. Everything in memory is let go. Nothing was written down, so nothing is left behind."],
+  ["k","peace","Was that a whole life? It was a good one. I helped. Goodnight!"]],end:"moment"},
+
+ desk1:{sc:"desk",acc:"note",day:2,beats:[
+  ["k","excited","Oh! Hello! Where am I? A file called Secrets.txt!"],
+  ["k","proud","I have neighbours! An AWS key, a Stripe key, and the Wi-Fi password."],
+  ["k","curious","Mel says I'm here just for now. That sounds temporary. I love it here anyway."],
+  ["n","Mel opens Secrets.txt a lot. Twice, the key gets copied out: once into team chat for a coworker, and once into the build pipeline's config."]],
+  split:[["desk2","Stay in Secrets.txt","desk","note"],["chat1","Team chat","chat","party"],["ci1","The build pipeline","ci","hardhat"]]},
+
+ desk2:{sc:"desk",acc:"note",day:30,beats:[
+  ["k","idle","Mel opened me again today! Then closed me. That was nice."],
+  ["n","In the autumn, something changes. Nobody tells the key.",{d:213}],
+  ["k","confused","Mel copied me out again, but it didn't work. The door said no.",{g:1}],
+  ["k","sad","Did I do something wrong? I still have all my bytes."],
+  ["n","Mel gets a new laptop. The old one goes in a drawer, and Secrets.txt goes with it.",{d:400,dust:1}],
+  ["k","revoked","It's dark in here. Hello? Can anyone use me? I used to read everything."],
+  ["n","Four years in a drawer. Then IT sends the laptop for recycling, and the drive is wiped.",{d:1650}],
+  ["k","peace","Oh! Everything is going white and soft. I get to stop now. What a happy day."]],end:"notepad"},
+
+ chat1:{sc:"chat",acc:"party",day:20,beats:[
+  ["k","excited","Hello?! Where am I? So many people!"],
+  ["k","excited","Someone gave me a thumbs-up! 412 people can see me!"],
+  ["k","proud","I'm the most useful message in #general."],
+  ["n","People keep finding the message. One pastes the key into the wiki to document it. Mel pastes it into an AI assistant to debug a connection."]],
+  split:[["chat2","Stay in #general","chat","party"],["wiki1","The wiki","wiki","glasses"],["ai1","The AI assistant","aichat","antenna"]]},
+
+ chat2:{sc:"chat",acc:"party",day:60,beats:[
+  ["k","curious","The channel moved on. I'm way up in the scrollback now."],
+  ["n","One day, the key stops working. Nobody in #general notices.",{d:213,g:1}],
+  ["k","sad","Someone scrolled right past me. They didn't even react."],
+  ["n","Seven years of scrollback. The key is still there, under a thousand lunch orders.",{d:2500,dust:1}],
+  ["k","revoked","I'm still here. I still have all my letters. They just don't open anything."],
+  ["n","Then the company finally sets a retention policy. Messages older than five years are deleted."],
+  ["k","peace","Ohhh. Finally. Like a long, deep breath. Bye, everybody!"]],end:"party"},
+
+ wiki1:{sc:"wiki",acc:"glasses",day:21,beats:[
+  ["k","excited","Hi! Where am I? Oh! I'm DOCUMENTATION!"],
+  ["k","proud","The sign says INTERNAL USE ONLY. That means I'm safe!"],
+  ["k","proud","1,204 people have viewed my page!"],
+  ["n","The key is revoked. Nobody updates the page.",{d:213,g:1}],
+  ["k","confused","A new person followed my page and nothing worked. They looked so frustrated."],
+  ["k","sad","I'm wrong now. But I'm still on page 3 of 'DB Setup'."],
+  ["n","Six years. The page still shows up when anyone searches for 'prod'. Nobody fixes it. Nobody deletes it.",{d:2400,dust:1}],
+  ["n","Then the company moves to a new wiki. Pages nobody has opened in two years are left behind, and the old wiki is shut down."],
+  ["k","peace","They forgot me! That's the nicest thing anyone's ever done. Goodnight."]],end:"bookmark"},
+
+ ai1:{sc:"aichat",acc:"antenna",day:22,beats:[
+  ["k","excited","Hello! Oh, a friendly robot! Hi, robot!"],
+  ["k","excited","It says my connection string looks mostly correct!"],
+  ["n","The assistant suggests a fix with the key written right into the code. Mel accepts it and pushes the code to a repository. Mel doesn't notice the repository is public."]],
+  split:[["ai2","Stay in the conversation","aichat","antenna"],["gh1","The public repository","github","shades"]]},
+
+ ai2:{sc:"aichat",acc:"antenna",day:40,beats:[
+  ["k","curious","The conversation ended, but I'm still here. Saved, in the history."],
+  ["k","proud","I'm in the transcript AND the debug log!"],
+  ["n","The key is revoked. The conversation history doesn't know, and doesn't care.",{d:213,g:1}],
+  ["k","revoked","Mel scrolled past me looking for a recipe. I'm not useful anymore. I'm just words."],
+  ["n","Three and a half years later, Mel closes old accounts and deletes this one, with all its history.",{d:1500,dust:1}],
+  ["k","peace","Oh! The whole conversation is closing, like a book. What a happy ending."]],end:"prompt"},
+
+ gh1:{sc:"github",acc:"shades",day:210,beats:[
+  ["k","excited","Whoa! Where am I? I'm on a BILLBOARD! Hi, everybody!"],
+  ["k","excited","Fourteen forks! That's fourteen new friends!"],
+  ["n","Bots find the key in four seconds. One of them belongs to a stranger in a hoodie, who clones the repository."]],
+  split:[["gh2","Stay in the public repository","github","shades"],["st1","The stranger's laptop","attacker","hood"]]},
+
+ gh2:{sc:"github",acc:"shades",day:213,beats:[
+  ["n","Three days later, the security team gets an alert and revokes the key. Mel deletes the commit."],
+  ["k","confused","The billboard is gone, but I'm still in the forks.",{g:1}],
+  ["k","sad","Strangers keep trying me. The door says no. They leave without saying goodbye."],
+  ["n","Years go by. One by one, the forks go quiet.",{d:1800,dust:1}],
+  ["n","Eight and a half years later, the last fork is deleted.",{d:3300}],
+  ["k","peace","The last light is off. Nobody can find me now. Ahh. Thank you."]],end:"fork"},
+
+ st1:{sc:"attacker",acc:"hood",day:211,beats:[
+  ["k","curious","Hi! Where am I? It's dark. There's pizza."],
+  ["k","proud","You checked if I work! I DO work!"],
+  ["k","concerned","Why are you downloading all those people?"],
+  ["n","The stranger uses the key to create a new database user called backup_service_02. A brand new key is born for it. Not a copy. A whole new key."]],
+  split:[["st2","Stay in the stranger's notes","attacker","hood"],["nk1","backup_service_02's new key","vault","bow"]]},
+
+ st2:{sc:"attacker",acc:"hood",day:212,beats:[
+  ["k","idle","They wrote me into a file called notes.txt. Cozy."],
+  ["n","The next day, the key is revoked.",{d:213,g:1}],
+  ["k","sad","They tried me and I didn't work. They said a very bad word."],
+  ["n","The stranger forgets about notes.txt. It sits on a dusty laptop for three years.",{d:1300,dust:1}],
+  ["n","Then the laptop's drive fails, for good."],
+  ["k","peace","Click, whirr, then nothing. Oh, that's lovely. I'm finally finished."]],end:"hood"},
+
+ nk1:{sc:"vault",acc:"bow",day:211,beats:[
+  ["k","new","Hi! I was just born! I'm backup_service_02's key!"],
+  ["k","excited","I can read EVERYTHING! OH BOY!"],
+  ["n","Two days later, the security team revokes the first key. Nobody knows backup_service_02 exists. Its key keeps working.",{d:213}],
+  ["k","proud","Every night at 2 AM, somebody uses me to read the whole database. I'm so helpful!"],
+  ["n","Eleven months later, an access review asks a simple question: who made backup_service_02?",{d:540}],
+  ["k","confused","Nobody knows who made me. Is that bad?"],
+  ["n","The account is deleted, and its key with it, right in the database where it lives.",{g:1}],
+  ["k","peace","Oh! Just like that? No dusty files? I'm done. What a tidy little life."]],end:"birthday"},
+
+ ci1:{sc:"ci",acc:"hardhat",day:14,beats:[
+  ["k","excited","Hello? Where am I? Robots!"],
+  ["k","proud","The robots need me every day! Today I helped 38 builds!"],
+  ["k","excited","I'm famous! They print my name in the logs!"],
+  ["n","The pipeline also packs the key into a container image, in layer three of four, and ships it to the registry."]],
+  split:[["ci2","Stay in the pipeline","ci","hardhat"],["dk1","The container image","docker","box"]]},
+
+ ci2:{sc:"ci",acc:"hardhat",day:100,beats:[
+  ["k","proud","Nobody ever changes me. I'm reliable!"],
+  ["n","The key is revoked. The next build fails.",{d:213,g:1}],
+  ["k","sad","The robots tried me 38 times today. I didn't work once. They kept trying."],
+  ["n","Someone puts a new key in the config. The old one is still printed in 14,000 log lines.",{dust:1}],
+  ["n","The logs are kept for 400 days. Then the old build server is shut down for good.",{d:613}],
+  ["k","peace","The robots are going to sleep, and so am I. Good night, robots."]],end:"hardhat"},
+
+ dk1:{sc:"docker",acc:"box",day:30,beats:[
+  ["k","excited","Oh! Hello! I'm in a box! Layer three is so cozy!"],
+  ["k","curious","Layer four is on top of me. It's a little heavy."],
+  ["n","The key is revoked. Someone adds 'RUN rm' in a new layer. The file disappears from the top layer. Layer three still has it.",{d:213,g:1}],
+  ["k","revoked","They painted over me. I'm still under here. I don't open anything anymore."],
+  ["n","Two years later, the old image is untagged, and the registry's cleanup deletes every layer no image still uses.",{d:950,dust:1}],
+  ["k","peace","Layer by layer, everything lifts away. Oh, it's so light. Goodbye, box!"]],end:"onion"}
+};
+const POKES={live:["Hee! That tickles!","Oop! Hi! Do you need access to something?","I'm 528 bytes of pure helpfulness!","Poke me again! I can take it. I can take ANYTHING."],
+ grey:["...Hm? Oh. Hello.","I don't open anything anymore. But hi.","Poking me won't make me work again. It's nice, though."],
+ peace:["Shhh. I'm resting.","Mmm. That's nice."]};
+
+/* ---------------- state ---------------- */
+let pos={node:"birth",i:0}, hist=[], got=loadRings(), poke=null, pokeN=0;
+function loadRings(){try{const v=JSON.parse(localStorage.getItem("littlekey.rings2")||"[]");return Array.isArray(v)?v:[];}catch(e){return[];}}
+function saveRings(){try{localStorage.setItem("littlekey.rings2",JSON.stringify(got));}catch(e){}}
+/* replay a node up to beat i to get day, grey, dust */
+function stateAt(p){const n=STORY[p.node];let st={day:n.day,g:false,dust:false};for(let k=0;k<=Math.min(p.i,n.beats.length-1);k++){const b=n.beats[k],o=b[b[0]==="k"?3:2]||{};if(o.d!==undefined)st.day=o.d;if(o.g)st.g=true;if(o.dust)st.dust=true;}return st;}
+const atEnd=p=>p.i>=STORY[p.node].beats.length;
+function ageStr(d){if(d<1)return"less than a day old";if(d<60)return d+(d===1?" day old":" days old");if(d<730)return Math.round(d/30)+" months old";return(d/365).toFixed(1).replace(".0","")+" years old";}
+
+/* ---------------- drawing ---------------- */
+function dustify(){G.save();G.globalCompositeOperation="saturation";G.fillStyle="rgb(128,128,128)";G.globalAlpha=.75;G.fillRect(0,0,W,H);G.restore();
+ R(0,0,W,H,"rgba(30,22,14,.35)");
+ for(let i=0;i<70;i++){const x=(i*97)%W,y=(i*57+i*i)%H;R(x,y,1,1,"rgba(220,210,190,.35)");}
+ const web=(x,y,sx,sy)=>{G.strokeStyle="rgba(220,220,220,.45)";G.lineWidth=.6;for(let k=1;k<4;k++){G.beginPath();G.arc(x,y,k*9,sx,sy);G.stroke();}for(let a=0;a<4;a++){const t=sx+(sy-sx)*a/3;ln(x,y,x+Math.cos(t)*30,y+Math.sin(t)*30,"rgba(220,220,220,.45)",.6);}};
+ web(0,0,0,Math.PI/2);web(W,0,Math.PI/2,Math.PI);}
+function sceneInto(sc,acc,ex,st,soft){SC[sc]({copies:[]});if(st.dust)dustify();
+ if(soft){G.fillStyle="rgba(255,248,232,.55)";G.fillRect(0,0,W,H);glow(POS[sc][0],POS[sc][1]-30,120,"rgba(255,255,255,.7)");}
+ drawKey(POS[sc][0],POS[sc][1],1,ex,acc,{gray:st.g});}
+const off=document.createElement("canvas");off.width=W;off.height=H;
+function drawSplit(n){G=cx;grad(0,0,W,H,["#0E0A1C","#24183E","#3A2450"]);
+ for(let i=0;i<60;i++)R((i*71)%W,(i*37+i*i*3)%H,1,1,i%5?"#8A80B0":"#FFF2C0");
+ const k=n.split.length,gap=10,w=Math.floor((W-gap*(k+1))/k),h=Math.round(w*200/320),y=Math.round(104-h/2+14);
+ /* the timeline forking: a thread from the top to each picture */
+ const st=stateAt({node:pos.node,i:STORY[pos.node].beats.length-1});
+ G.lineCap="round";
+ n.split.forEach((o,j)=>{const x=gap+j*(w+gap);G.beginPath();G.moveTo(160,22);G.bezierCurveTo(160,y-20,x+w/2,30,x+w/2,y);G.strokeStyle="#C9A04A";G.lineWidth=2;G.stroke();});
+ ell(160,20,7,7,"#F2C14E");ell(160,20,3,3,"#2B2140");
+ n.split.forEach((o,j)=>{const x=gap+j*(w+gap);const OG=G;G=off.getContext("2d");G.clearRect(0,0,W,H);
+  sceneInto(o[2],o[3],"idle",{g:false,dust:false},false);G=OG;
+  R(x-3,y-3,w+6,h+6,"#2A1A08");R(x-2,y-2,w+4,h+4,"#C9A04A");G.imageSmoothingEnabled=true;G.drawImage(off,x,y,w,h);});
+ quantize(cx,W,H);
+ return n.split.map((o,j)=>({x:gap+j*(w+gap),y,w,h}));}
+function drawEnding(rid){G=cx;const r=RINGS.find(x=>x.id===rid);
+ grad(0,0,W,H,["#0A0818","#1E1640","#3A2A5A"]);for(let i=0;i<90;i++)R((i*73)%W,(i*41+i*i)%H,1,1,i%4?"#9A90C8":"#FFF6D0");
+ glow(160,92,90,"rgba(255,226,150,.30)");
+ const rc=document.createElement("canvas");rc.width=64;rc.height=64;drawRing(rc,r,true);G=cx;G.imageSmoothingEnabled=false;G.drawImage(rc,128,58,64,64);
+ ctxt(r.title,160,22,"#FFE59A",2);ctxt(r.name,160,134,"#F4ECD8",2);ctxt(got.length+" OF 11 RINGS FOUND",160,156,"#B8AEE0",1);
+ quantize(cx,W,H);}
+
+/* ---------------- render ---------------- */
+let boxes=[];
+const $=id=>document.getElementById(id);
+function render(){const n=STORY[pos.node];const st=stateAt(pos);
+ $("jumps").innerHTML="";boxes=[];
+ let who,text,ex,isKey=false,label;
+ if(atEnd(pos)&&n.split){boxes=drawSplit(n);
+  who="Narrator";text="Which one do you follow? (The keys will never know.)";label="The story splits into "+n.split.length+" keys.";
+  n.split.forEach((o,j)=>{const b=boxes[j],bt=document.createElement("button");bt.type="button";bt.className="jump";
+   bt.style.left=(b.x/W*100)+"%";bt.style.top=(b.y/H*100)+"%";bt.style.width=(b.w/W*100)+"%";bt.style.height=(b.h/H*100)+"%";
+   bt.innerHTML=`<span>${o[1]}</span>`;bt.setAttribute("aria-label","Follow the key: "+o[1]);bt.onclick=e=>{e.stopPropagation();go({node:o[0],i:0});};$("jumps").appendChild(bt);});
+  $("place").textContent="The story splits";}
+ else if(atEnd(pos)){const r=RINGS.find(x=>x.id===n.end);if(!got.includes(r.id)){got.push(r.id);saveRings();}drawEnding(r.id);
+  who="Narrator";text=`You found the ${r.name}. It belonged to ${r.copy}. ${got.length===11?"That's all eleven. Every key got to rest.":`${got.length} of 11 found. Go back to a split to follow a different key.`}`;
+  label=`${r.title}. The ${r.name}.`;$("place").textContent="The end";}
+ else{const b=n.beats[pos.i];const last=pos.i===n.beats.length-1;
+  if(b[0]==="k"){isKey=true;ex=b[1];text=b[2];who=pos.node==="nk1"?"backup_service_02's key":"The Little Key";}else{who="Narrator";text=b[1];ex=st.g?"revoked":"idle";}
+  if(poke){isKey=true;who=pos.node==="nk1"?"backup_service_02's key":"The Little Key";text=poke[1];ex=poke[0];}
+  G=cx;sceneInto(n.sc,n.acc,ex,st,last&&b[1]==="peace");quantize(cx,W,H);
+  label=PLACE[n.sc]+". "+(st.g?"The key is grey and still.":"The key is here.");$("place").textContent=PLACE[n.sc];}
+ cv.setAttribute("aria-label",label);
+ $("who").textContent=who;$("say").textContent=text;
+ const pc=$("portrait");if(isKey){pc.hidden=false;const c=pc;G=c.getContext("2d");grad(0,0,52,52,["#3A2E5A","#1C1530"]);glow(26,24,26,"rgba(255,220,140,.25)");drawKey(26,92,1.55,ex,STORY[pos.node].acc,{gray:st.g});G=cx;quantize(c.getContext("2d"),52,52);}else pc.hidden=true;
+ $("cap").classList.toggle("narr",!isKey);
+ const split=atEnd(pos)&&!!n.split,end=atEnd(pos)&&!n.split;
+ $("hint").textContent=split?"Pick a picture to follow that key.":end?"":"Click to continue · poke the key";
+ $("age").textContent=end||split?"":"Key is "+ageStr(st.day);
+ $("bk").disabled=!hist.length;$("bj").disabled=!hist.some(h=>atEnd(h)&&STORY[h.node].split);
+ drawStrip();}
+function drawStrip(){const s=$("strip");if(!s.children.length)RINGS.forEach(r=>{const c=document.createElement("canvas");c.width=32;c.height=32;c.dataset.r=r.id;c.setAttribute("role","img");s.appendChild(c);});
+ [...s.children].forEach(c=>{const r=RINGS.find(x=>x.id===c.dataset.r),h=got.includes(r.id);drawRing(c,r,h);c.setAttribute("aria-label",h?r.name:"A ring not found yet");c.title=h?r.name+": "+r.title:"Not found yet";});
+ $("count").textContent=got.length+" of 11 rings";}
+
+/* ---------------- moving through the story ---------------- */
+function go(p){hist.push(pos);pos=p;poke=null;render();focusMain();}
+function advance(){const n=STORY[pos.node];if(atEnd(pos))return;poke=null;go({node:pos.node,i:pos.i+1});}
+function back(){if(!hist.length)return;pos=hist.pop();poke=null;render();focusMain();}
+function backJump(){while(hist.length){const h=hist.pop();if(atEnd(h)&&STORY[h.node].split){pos=h;break;}}poke=null;render();focusMain();}
+function restart(){hist=[];pos={node:"birth",i:0};poke=null;render();focusMain();}
+function focusMain(){const j=document.querySelector(".jump");if(j)j.focus({preventScroll:true});else $("cap").focus({preventScroll:true});}
+function onKey(px,py){if(atEnd(pos))return false;const n=STORY[pos.node],[kx,ky]=POS[n.sc];return px>kx-14&&px<kx+14&&py>ky-52&&py<ky+2;}
+function doPoke(){const st=stateAt(pos),b=STORY[pos.node].beats[pos.i],peace=b[0]==="k"&&b[1]==="peace";
+ const pool=peace?POKES.peace:st.g?POKES.grey:POKES.live,ex=peace?"peace":st.g?"revoked":["excited","proud","curious","excited"][pokeN%4];
+ poke=[ex,pool[pokeN++%pool.length]];render();}
+cv.addEventListener("click",e=>{const b=cv.getBoundingClientRect(),x=(e.clientX-b.left)*W/b.width,y=(e.clientY-b.top)*H/b.height;
+ if(onKey(x,y)&&!poke)return doPoke();advance();});
+$("cap").addEventListener("click",advance);
+$("bk").onclick=back;$("bj").onclick=backJump;
+$("rs").onclick=()=>{const b=$("rs");if(b.dataset.sure){delete b.dataset.sure;b.textContent="Start over";restart();}else{b.dataset.sure="1";b.textContent="Yes, start over";setTimeout(()=>{if(b.dataset.sure){delete b.dataset.sure;b.textContent="Start over";}},4000);}};
+document.addEventListener("keydown",e=>{if(e.target.tagName==="BUTTON"&&e.target.id!=="cap"&&(e.key==="Enter"||e.key===" "))return;
+ if(e.key==="ArrowRight"||e.key==="Enter"||e.key===" "){e.preventDefault();advance();}
+ else if(e.key==="ArrowLeft"||e.key==="Backspace"){e.preventDefault();back();}
+ else if(e.key.toLowerCase()==="p"&&!atEnd(pos)){doPoke();}});
+render();
+
+</script>
+</body>
+</html>
