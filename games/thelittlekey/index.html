@@ -176,6 +176,16 @@ button{font:inherit}
 #ggprize .gg main{padding:12px}
 }
 
+.codes{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:rgba(10,8,20,.6);padding:16px}
+.codes[hidden]{display:none}
+.cbox{width:min(520px,100%);background:var(--win);color:var(--win-ink);border:4px solid var(--win-gold);box-shadow:inset 0 0 0 2px var(--win-edge),0 0 0 3px #2A1A08,8px 8px 0 3px #000;padding:16px 18px;display:grid;gap:10px}
+.cbox h2{margin:0;font:700 22px var(--f-text);color:var(--accent)}
+.cbox p{margin:0;font-size:16px}
+.crow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.crow.end{justify-content:flex-end}
+.crow label{font-weight:700}
+.crow input{flex:1;min-width:0;font:24px var(--f-term);padding:4px 10px;border:2px solid var(--win-edge);background:#FFFDF6;color:var(--win-ink);letter-spacing:.06em}
+.cbox button{background:#E1D3AE;border:3px solid;border-color:#FFF6DC #7A5E2C #7A5E2C #FFF6DC;padding:6px 14px;cursor:pointer;font:700 16px var(--f-text);color:#1C140A;min-height:42px}
+.cmsg{min-height:1.4em;color:var(--accent);font-weight:700}
 @media (max-width:560px){.cap{gap:10px;padding:10px 12px}#portrait{width:64px;height:64px}#say{font-size:18px}.jump span{font-size:12px;padding:2px 4px;transform:translateY(calc(100% + 4px))}}
 </style>
 </head>
@@ -186,7 +196,12 @@ button{font:inherit}
   <div class="status"><span>The Little Key</span><span class="strip" id="strip" aria-label="Rings found"></span><span id="count"></span></div>
   <div class="stage"><canvas id="scene" width="320" height="200" role="img" aria-label="Scene"></canvas><div id="jumps"></div><div class="hover" id="hover" aria-hidden="true"></div></div>
   <div class="cap" id="cap" role="button" tabindex="0" aria-live="polite"><canvas id="portrait" width="52" height="52" aria-hidden="true"></canvas><div><span class="who" id="who"></span><span id="say"></span><span class="meta"><span id="age"></span><span id="hint"></span></span></div></div>
-  <div class="ctl"><button type="button" id="bk">◀ Back</button><button type="button" id="bj">Back to the last split</button><span class="place" id="place"></span><button type="button" id="mp" hidden>Open the exploration map</button><button type="button" id="rs">Start over</button></div>
+  <div class="ctl"><button type="button" id="bk">◀ Back</button><button type="button" id="bj">Back to the last split</button><span class="place" id="place"></span><button type="button" id="mp" hidden>Open the exploration map</button><button type="button" id="cd">Save code</button><button type="button" id="rs">Start over</button></div>
+  <div id="codes" class="codes" hidden role="dialog" aria-modal="true" aria-labelledby="codesh"><div class="cbox"><h2 id="codesh">Save code</h2>
+   <p>Nothing is saved in your browser. Refreshing the page starts over. Write this code down to come back to exactly this spot, with your rings.</p>
+   <div class="crow"><label class="sr" for="mycode">Your save code</label><input id="mycode" type="text" readonly><button type="button" id="copycode">Copy</button></div>
+   <form id="codef" class="crow"><label for="codein">Have a code?</label><input id="codein" type="text" autocomplete="off" spellcheck="false" placeholder="LK-1A2B-3C4D"><button type="submit">Load</button></form>
+   <p id="codemsg" class="cmsg" role="status" aria-live="polite"></p><div class="crow end"><button type="button" id="codex">Back to the story</button></div></div></div>
 </div>
 <div id="ggprize" hidden role="dialog" aria-modal="true" aria-label="The exploration map, in GitGuardian"><div class="pzbar"><span>The key ring is complete · Exploration map</span><button type="button" class="pzclose">Close the map</button></div><div class="gghost"></div></div>
 <script>
@@ -657,9 +672,22 @@ const POKES={live:["Hee! That tickles!","Oop! Hi! Do you need access to somethin
  peace:["Shhh. I'm resting.","Mmm. That's nice."]};
 
 /* ---------------- state ---------------- */
-let pos={node:"birth",i:0}, hist=[], got=loadRings(), poke=null, pokeN=0, aside=null, lookAt=null, admire=null;
-function loadRings(){try{const v=JSON.parse(localStorage.getItem("littlekey.rings2")||"[]");return Array.isArray(v)?v:[];}catch(e){return[];}}
-function saveRings(){try{localStorage.setItem("littlekey.rings2",JSON.stringify(got));}catch(e){}}
+let pos={node:"birth",i:0}, hist=[], got=[], poke=null, pokeN=0, aside=null, lookAt=null, admire=null;
+/* No saved memory. A hard refresh starts completely fresh. Progress is carried by save codes,
+   and the browser's own Back/Forward keeps the game as you left it (the page cache, with a per-tab
+   fallback that is only read on a back/forward navigation and is wiped on every reload). */
+function saveRings(){keepTab();}
+const NODES=Object.keys(STORY);
+const SUM=v=>{let x=v>>>0,c=0;for(let k=0;k<27;k+=3)c=(c*7+((x>>>k)&7)+1)&31;return c;};
+function makeCode(){const v=(got.reduce((m,id)=>m|1<<RINGS.findIndex(r=>r.id===id),0)&2047)|(NODES.indexOf(pos.node)<<11)|(Math.min(31,pos.i)<<16);
+ const full=((v|SUM(v)<<27)>>>0).toString(16).toUpperCase().padStart(8,"0");return "LK-"+full.slice(0,4)+"-"+full.slice(4);}
+function readCode(txt){const h=String(txt).toUpperCase().replace(/O/g,"0").replace(/^\s*LK/,"").replace(/[^0-9A-F]/g,"");if(h.length!==8)return null;
+ const n=parseInt(h,16)>>>0,v=n&0x7FFFFFF;if((n>>>27)!==SUM(v))return null;const node=NODES[(v>>>11)&31],i=(v>>>16)&31;
+ if(!node||i>STORY[node].beats.length)return null;return{got:RINGS.filter((r,k)=>v&1<<k).map(r=>r.id),pos:{node,i}};}
+const TABKEY="littlekey.tab";
+function keepTab(){try{sessionStorage.setItem(TABKEY,JSON.stringify({pos,hist,got}));}catch(e){}}
+function navType(){try{const e=performance.getEntriesByType("navigation")[0];return e?e.type:"navigate";}catch(e){return"navigate";}}
+function bootState(){try{if(navType()==="back_forward"){const v=JSON.parse(sessionStorage.getItem(TABKEY)||"null");if(v&&STORY[v.pos.node]){pos=v.pos;hist=v.hist||[];got=v.got||[];return;}}sessionStorage.removeItem(TABKEY);}catch(e){}}
 /* replay a node up to beat i to get day, grey, dust */
 function stateAt(p){const n=STORY[p.node];let st={day:n.day,g:false,dust:false};for(let k=0;k<=Math.min(p.i,n.beats.length-1);k++){const b=n.beats[k],o=b[b[0]==="k"?3:2]||{};if(o.d!==undefined)st.day=o.d;if(o.g)st.g=true;if(o.dust)st.dust=true;}return st;}
 const atEnd=p=>p.i>=STORY[p.node].beats.length;
@@ -712,7 +740,7 @@ function render(){const n=STORY[pos.node];const st=stateAt(pos);
    bt.innerHTML=`<span>${o[1]}</span>`;bt.setAttribute("aria-label","Follow the key: "+o[1]);bt.onclick=e=>{e.stopPropagation();go({node:o[0],i:0});};$("jumps").appendChild(bt);});
   $("place").textContent="The story splits";}
  else if(atEnd(pos)){const r=RINGS.find(x=>x.id===n.end);if(!got.includes(r.id)){got.push(r.id);saveRings();}drawEnding(r.id);
-  who="Narrator";text=`You found the ${r.name}. It belonged to ${r.copy}. ${got.length===11?"That's all eleven. Every key got to rest. Your prize: the exploration map. Open it from the button below.":`${got.length} of 11 found. Go back to a split to follow a different key.`}`;
+  who="Narrator";text=`You found the ${r.name}. It belonged to ${r.copy}. ${got.length===11?"That's all eleven. Every key got to rest. Your prize: the exploration map. Open it from the button below.":`${got.length} of 11 found. Go back to a split to follow a different key.`} Your save code is ${makeCode()}.`;
   label=`${r.title}. The ${r.name}.`;$("place").textContent="The end";}
  else{const b=n.beats[pos.i];const last=pos.i===n.beats.length-1;
   if(b[0]==="k"){isKey=true;ex=b[1];text=b[2];who=pos.node==="nk1"?"backup_service_02's key":"The Little Key";}else{who="Narrator";text=b[1];ex=st.g?"revoked":"idle";}
@@ -747,7 +775,7 @@ function drawStrip(){const s=$("strip");if(!s.children.length)RINGS.forEach(r=>{
   const c=document.createElement("canvas");c.width=32;c.height=32;c.setAttribute("aria-hidden","true");const t=document.createElement("span");t.className="tip";t.setAttribute("role","tooltip");
   b.append(c,t);b.onclick=()=>admireRing(r.id);s.appendChild(b);});
  [...s.children].forEach(b=>{const r=RINGS.find(x=>x.id===b.dataset.r),h=got.includes(r.id);drawRing(b.firstChild,r,h);const tip=ringTip(r);b.lastChild.textContent=tip;b.setAttribute("aria-label",tip);b.classList.toggle("found",h);});
- $("count").textContent=got.length+" of 11 rings";}
+ $("count").textContent=got.length+" of 11 rings";keepTab();}
 function admireRing(id){const r=RINGS.find(x=>x.id===id);poke=null;aside=null;
  if(!got.includes(id)){admire={id,found:false};}else admire={id,found:true};render();$("cap").focus({preventScroll:true});}
 function drawAdmire(r,found=true){G=cx;grad(0,0,W,H,["#0A0818","#1E1640","#3A2A5A"]);for(let i=0;i<90;i++)R((i*73)%W,(i*41+i*i)%H,1,1,i%4?"#9A90C8":"#FFF6D0");
@@ -789,10 +817,21 @@ cv.addEventListener("click",e=>{const b=cv.getBoundingClientRect(),x=(e.clientX-
 $("cap").addEventListener("click",advance);
 $("bk").onclick=back;$("mp").onclick=()=>openPrize();$("bj").onclick=backJump;
 $("rs").onclick=()=>{const b=$("rs");if(b.dataset.sure){delete b.dataset.sure;b.textContent="Start over";restart();}else{b.dataset.sure="1";b.textContent="Yes, start over";setTimeout(()=>{if(b.dataset.sure){delete b.dataset.sure;b.textContent="Start over";}},4000);}};
-document.addEventListener("keydown",e=>{if(e.target.tagName==="BUTTON"&&e.target.id!=="cap"&&(e.key==="Enter"||e.key===" "))return;
+document.addEventListener("keydown",e=>{if(e.target.tagName==="INPUT"||!$("codes").hidden||!$("ggprize").hidden)return;if(e.target.tagName==="BUTTON"&&e.target.id!=="cap"&&(e.key==="Enter"||e.key===" "))return;
  if(e.key==="ArrowRight"||e.key==="Enter"||e.key===" "){e.preventDefault();advance();}
  else if(e.key==="ArrowLeft"||e.key==="Backspace"){e.preventDefault();back();}
  else if(e.key.toLowerCase()==="p"&&!atEnd(pos)){doPoke();}});
+/* ---------------- save codes ---------------- */
+function openCodes(){const d=$("codes");d.hidden=false;$("mycode").value=makeCode();$("codemsg").textContent="";$("codein").value="";$("mycode").focus();$("mycode").select();}
+function closeCodes(){$("codes").hidden=true;$("cd").focus({preventScroll:true});}
+$("cd").onclick=openCodes;$("codex").onclick=closeCodes;
+$("codes").addEventListener("keydown",e=>{if(e.key==="Escape"){e.preventDefault();closeCodes();}});
+$("copycode").onclick=()=>{const t=$("mycode");const ok=()=>{$("codemsg").textContent="Copied.";};
+ try{navigator.clipboard.writeText(t.value).then(ok,()=>{t.focus();t.select();$("codemsg").textContent="Selected. Press Ctrl+C or Cmd+C to copy.";});}catch(e){t.focus();t.select();$("codemsg").textContent="Selected. Press Ctrl+C or Cmd+C to copy.";}};
+$("codef").addEventListener("submit",e=>{e.preventDefault();const v=readCode($("codein").value);
+ if(!v){$("codemsg").textContent="That code doesn't look right. It should look like LK-1A2B-3C4D. Check for a typo.";$("codein").focus();return;}
+ got=v.got;pos=v.pos;hist=[];poke=null;aside=null;admire=null;$("codes").hidden=true;render();focusMain();});
+bootState();
 render();
 
 /* ============================== The prize: GitGuardian, as in Lossy Inc ==============================

@@ -6,7 +6,13 @@ Everything is fiction. The game is one HTML file. It contacts no real system.
 
 ## Play
 
-Open `index.html` in a browser, or the landing page at `../thelittlekey.html`. About 15 minutes to see every ending. Found rings are kept in the browser's localStorage (`littlekey.rings2`).
+Open `index.html` in a browser, or the landing page at `../thelittlekey.html`. About 15 minutes to see every ending. Nothing is stored between visits: a reload starts fresh.
+
+## Save codes
+
+`LK-XXXX-XXXX`, 32 bits in hex: rings found (bits 0 to 10, in `RINGS` order), story node (bits 11 to 15, index into `STORY`), line in that node (bits 16 to 20), checksum (bits 27 to 31). A bad checksum is rejected with a typo message. Letter O is read as zero, and case, spaces and dashes don't matter. Every ending shows the code; the Save code button shows it any time.
+
+Browser Back and Forward keep the game: the page cache usually holds it, and as a fallback the state is mirrored to `sessionStorage`, which is only read when the page is reached by Back or Forward and is cleared on every other load, including a refresh.
 
 ## How it plays
 
