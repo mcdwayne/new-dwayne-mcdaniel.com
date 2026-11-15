@@ -1,0 +1,918 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Queen City Con 0x4: Verify Before You Trust | Dwayne's Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Recap of Queen City Con 0x4 in Cincinnati, a community training ground with villages, hands-on labs, and a Career Village, plus talks on AI-assisted security operations, reverse engineering, threat intelligence, supply chain attacks, vulnerability management, containment storms, AI pentester attacks, Active Directory, social engineering, and SaaS access control." />
+  <meta name="author" content="Dwayne McDaniel" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="Queen City Con, Villages, Hands-On Labs, Career Village, Community, Queen City Con 0x4, QCC, QueenCityCon2026, Cincinnati, Cybersecurity, AI Security, Supply Chain Security, Vulnerability Management, Active Directory, Social Engineering, SaaS Security, Dwayne McDaniel, Dwayne's Blog" />
+  <link rel="canonical" href="https://dwayne-mcdaniel.com/blog/QueenCityCon2026.html" />
+  <link rel="icon" type="image/x-icon" href="../img/favicon_io/favicon.ico" />
+
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="Dwayne's Blog" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Queen City Con 0x4: Verify Before You Trust" />
+  <meta property="og:description" content="Lessons from Queen City Con 0x4 on AI, supply chain trust, vulnerability management, Active Directory, social engineering, and SaaS keys." />
+  <meta property="og:url" content="https://dwayne-mcdaniel.com/blog/QueenCityCon2026.html" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="article:author" content="Dwayne McDaniel" />
+  <meta property="article:section" content="Conferences" />
+  <meta property="article:tag" content="Queen City Con" />
+  <meta property="article:tag" content="Cybersecurity" />
+  <meta property="article:tag" content="AI Security" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Queen City Con 0x4: Verify Before You Trust" />
+  <meta name="twitter:description" content="Lessons from Queen City Con 0x4 on verifying the trust that AI agents, packages, extensions, and integrations depend on." />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Queen City Con 0x4: Verify Before You Trust",
+    "description": "Recap of Queen City Con 0x4 in Cincinnati, a community training ground with villages, hands-on labs, and a Career Village, plus talks on AI-assisted security operations, reverse engineering, threat intelligence, supply chain attacks, vulnerability management, containment storms, AI pentester attacks, Active Directory, social engineering, and SaaS access control.",
+    "author": {
+      "@type": "Person",
+      "name": "Dwayne McDaniel",
+      "url": "https://dwayne-mcdaniel.com/"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Dwayne McDaniel",
+      "url": "https://dwayne-mcdaniel.com/"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://dwayne-mcdaniel.com/blog/QueenCityCon2026.html"
+    },
+    "url": "https://dwayne-mcdaniel.com/blog/QueenCityCon2026.html",
+    "isPartOf": {
+      "@type": "Blog",
+      "name": "Dwayne's Blog",
+      "url": "https://dwayne-mcdaniel.com/blog.html"
+    },
+    "about": [
+      "Queen City Con",
+      "Cybersecurity",
+      "AI Security",
+      "Supply Chain Security",
+      "Vulnerability Management",
+      "Active Directory",
+      "Social Engineering"
+    ],
+    "inLanguage": "en-US"
+  }
+  </script>
+  <style>
+/* Basic reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Color & typography tokens */
+:root {
+  --bg: #020617;
+  --accent: #fbbf24;
+  --text-main: #e5e7eb;
+  --text-muted: #b0b8c4;
+  --text-soft: #cbd5e1;
+  --border-subtle: #1f2933;
+  --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.55);
+  --radius-xl: 1.75rem;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+  background: radial-gradient(circle at top, #111827 0%, var(--bg) 60%);
+  color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0;
+  font-size: clamp(14px, 2vw, 16px);
+  line-height: 1.5;
+}
+
+.nav {
+  width: 100%;
+  background: linear-gradient(135deg, rgba(15,23,42,0.9), rgba(17,24,39,0.95));
+  border-bottom: 1px solid rgba(249,191,36,0.1);
+  backdrop-filter: blur(4px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav__menu {
+  list-style: none;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  gap: clamp(0.6rem, 3vw, 1.2rem);
+  max-width: 432px;
+  padding: clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 2rem);
+}
+
+.nav__link {
+  text-decoration: none;
+  font-weight: 500;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  background: linear-gradient(135deg, rgba(251,191,36,0.95), #f59e0b);
+  border: 1px solid rgba(170, 120, 0, 0.25);
+  color: #071021;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.35);
+}
+
+.nav__link:hover,
+.nav__link:focus,
+.nav__link:focus-visible {
+  color: #071021;
+  background: linear-gradient(135deg, #ffd166, #f59e0b);
+  border-color: rgba(0,0,0,0.12);
+  font-weight: 700;
+  transform: translateY(-1px);
+}
+
+.page {
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  padding-bottom: clamp(1rem, 3vw, 2rem);
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+}
+
+.profile {
+  background: linear-gradient(
+    145deg,
+    rgba(17, 24, 39, 0.95),
+    rgba(15, 23, 42, 0.97)
+  );
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-soft);
+  padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1rem, 3vw, 2.25rem);
+  text-align: center;
+  flex-shrink: 0;
+  font-size: 1.25em;
+}
+
+.profile--scrollable {
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+.profile--scrollable .profile__content {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 0.5rem;
+}
+
+.page > .profile:first-of-type {
+  padding: 0;
+}
+
+.profile__name {
+  font-size: clamp(1.875rem, 4vw, 2.875rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  margin: 0 0 0.5rem 0;
+}
+
+h1, h2 {
+  text-align: center;
+}
+
+a {
+  color: #fef08a;
+}
+
+a:hover,
+a:focus {
+  color: #fde047;
+}
+
+.profile__about {
+  text-align: left;
+  font-size: clamp(0.9rem, 2.5vw, 0.98rem);
+  line-height: 1.8;
+  color: var(--text-main);
+  margin: 1.5rem 0 2rem 0;
+}
+
+.profile__about p {
+  margin: 0 0 1rem 0;
+}
+
+.profile__about p:last-child {
+  margin-bottom: 0;
+}
+
+.profile__about blockquote {
+  margin: 1.25rem 0;
+  padding: 0.5rem 1rem;
+  border-left: 3px solid var(--accent);
+  color: var(--text-soft);
+  font-style: italic;
+}
+
+.session-photo {
+  margin: 1.25rem 0 1.75rem 0;
+  padding: 0;
+  max-width: 100%;
+}
+
+.session-photo a {
+  display: block;
+  line-height: 0;
+}
+
+.session-photo img {
+  width: 100%;
+  height: auto;
+  max-height: min(70vh, 520px);
+  object-fit: cover;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.session-photo figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.scroll-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 3rem;
+  height: 3rem;
+  background: linear-gradient(135deg, var(--accent), #f59e0b);
+  color: #071021;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(251, 191, 36, 0.2);
+  border: 1px solid rgba(0,0,0,0.08);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+  z-index: 50;
+  cursor: pointer;
+}
+
+.scroll-to-top:hover {
+  color: #071021;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(251,191,36,0.3);
+}
+
+.scroll-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+*:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4);
+  border-radius: 0.25rem;
+}
+
+.nav__link:focus-visible {
+  box-shadow:
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.5),
+    0 0 0 9px rgba(2, 6, 23, 0.85);
+  border-radius: 0.5rem;
+}
+
+.scroll-to-top:focus-visible {
+  box-shadow:
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4),
+    0 12px 28px rgba(251, 191, 36, 0.3);
+  border-radius: 50%;
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 0.75rem;
+  }
+
+  .profile {
+    padding: clamp(1rem, 3vw, 1.5rem) clamp(0.75rem, 2vw, 1rem);
+  }
+
+  .scroll-to-top {
+    bottom: 1rem;
+    right: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.2rem;
+  }
+}
+  </style>
+</head>
+<body>
+  <nav class="nav" aria-label="Main navigation">
+    <ul class="nav__menu">
+      <li><a class="nav__link" href="../index.html">Home</a></li>
+      <li><a class="nav__link" href="../conferences.html">Conferences</a></li>
+      <li><a class="nav__link" href="../about.html">About</a></li>
+    </ul>
+  </nav>
+  <main class="page">
+    <section class="profile profile--scrollable" aria-label="Dwayne's Blog: Queen City Con 0x4">
+      <div class="profile__content">
+        <div class="profile__about">
+          <p class="profile__name">Dwayne's Blog</p>
+          <article itemscope itemtype="https://schema.org/BlogPosting">
+            <header>
+              <h1 itemprop="headline">Queen City Con 0x4: Verify Before You Trust</h1>
+            </header>
+
+            <p>
+              On July 4, 1835, Cincinnati watchmaker Richard Clayton left the city in a balloon carrying a pouch of U.S. mail, intending to cross the Atlantic Ocean. His balloon came down the same day in Pebble Township, Pike County, roughly 75 miles away.
+            </p>
+
+            <p>
+              Residents first needed convincing that he meant no harm. Once they believed him, he was taken to Waverly, where Postmaster James Emmitt sent the mail on its way. Historians cited in the Pike County News Watchman's Pike's Past column agree that no earlier U.S. airmail flight is on record, which makes 1835 the year the first bag of airmail was lifted by a balloon. <a href="https://www.newswatchman.com/blogs/pikes_past/memories-of-an-early-balloon-flight-shared/article_d12f20dd-ac71-5a3a-ba16-60c32c266cb6.html" target="_blank" rel="noopener">The full story of the flight is available from the Pike County News Watchman</a>.
+            </p>
+
+            <p>
+              A stranger arrived with a bag that other people were expected to forward, and the community checked his story before the mail moved.
+            </p>
+
+            <p>
+              <a href="https://queencitycon.org/" target="_blank" rel="noopener">Queen City Con</a> brought that same decision back to Cincinnati for its fourth edition, hence the label "QCCx4." The conference ran November 13 through 15 at the Hyatt Regency and drew more than 1,400 people who registered or got involved, the most in the history of this growing event.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3n27axvy6uj2l" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreic5noryw2awdnneou25cm7w2aliurnadwpveaau4bvnluwoqvsuty" alt="Opening remarks at Queen City Con 0x4 with the sponsor slide on screen." loading="lazy" />
+              </a>
+              <figcaption>Opening remarks at Queen City Con 0x4 in Cincinnati. Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Across talks on AI, supply chain attacks, and Active Directory, one idea kept returning. Trust has to be verified. AI agents earn access by showing their work, packages and extensions earn installs by surviving inspection, and integrations earn their keys by naming an owner.
+            </p>
+
+            <p>
+              Verify before you trust.
+            </p>
+
+            <h2>A Training Ground Built by the Community</h2>
+
+            <p>
+              Queen City Con works as a training ground for the whole community. The mission published on <a href="https://queencitycon.org/" target="_blank" rel="noopener">the conference site</a> calls for an event inclusive of everyone in infosec. Breakout sessions combine presentations with hands-on learning, villages add extra exercises, and a Career Village offers advice, resume help, and mock interviews. Volunteers from Cannon Fodder Security, a nonprofit organized by infosec professionals to give back to the community, carry that mission into every room.
+            </p>
+
+            <p>
+              The idea started on the streets of Louisville in 2019, at the last Derby Con. A bourbon-fueled epiphany put a hacker conference in Cincinnati on the table, and people from all walks of life slowly joined the founder's dream until it became a reality.
+            </p>
+
+            <p>
+              The agenda shows how far that dream reaches. Three speaking tracks named Giga Bytes, Mega Bytes, and Kilo Bytes ran beside a full set of villages that stayed open from early in the day until late afternoon on Friday and Saturday and through Sunday morning. Attendees could pick locks in the Lockpicking Village, chase flags in the CTF Village, and work through the Kali Linux Dojo. Competitive Backdoors and Breaches turned incident response into a team game, and the Call Center Village gave social engineering a room of its own.
+            </p>
+
+            <p>
+              The Hardware Hacking Village took people from JTAG to root and included a session on rooting a medical device. The Retro Computing Village traced phone hacking back to the origins of Apple and the Apple Lisa, imaged floppy disks with magnetic flux, and explored hacking phones with cereal box toys. A HAM Radio class on Saturday and a Sunday talk on how the QCC 0x4 badge was made gave tinkerers even more to explore.
+            </p>
+
+            <p>
+              <a href="https://whova.com/embedded/speaker_detail/7SPSq8LMF%40IFtPuIitoTSaV7Tzxwf-t9J%40-bOz1W-SA%3D/54980393/" target="_blank" rel="noopener">Micah Brown</a>, Board Member and Head of Interactive Labs, taught Threat Hunting with Wazuh, and the lab track continued with Atomic Red Team, Cryptography 101, and reverse engineering for iOS and Android. Labs on OSINT, prompt injection, and an Introduction to Linux gave newcomers a way in. The Detection Engineering Village hosted talks, a CISO panel on re-engineering detection for the AI era, and tabletop games with prizes. The Application Security Village paired short talks with an AI Prompt Injection Workshop and an executive panel.
+            </p>
+
+            <p>
+              The Career Village shows the heart of the event. Friday began with a session for anyone new to the conference who needed help planning the day. Mock interviews and resume reviews filled the schedule, along with an industry panel on the early career landscape. Saturday brought short sessions from community members on ransomware economics, OSINT exposure, and homelab defense.
+            </p>
+
+            <p>
+              The Wellness Village and the Chillout Rooms look after the people doing the learning. Sessions covered managing stress before it crashes your system, mental health in the IT security workplace, and digital estate planning for families. Professional headshots, a live podcast recording, and the Tomb After Dark afterparty added the social moments that turn a schedule into a community.
+            </p>
+
+            <p>
+              Volunteers set up the villages early on Friday and returned for teardown on Sunday afternoon. Students attend on discounted tickets, and everyone is invited to bring a friend. People who arrive as strangers leave knowing how to pick a lock, run a threat hunt, or ask the person next to them for help. That welcome explains why this community keeps growing.
+            </p>
+
+            <h2>AI Multiplies the Expertise Already in the Room</h2>
+
+            <p>
+              <a href="https://whova.com/embedded/speaker_detail/7SPSq8LMF%40IFtPuIitoTSaV7Tzxwf-t9J%40-bOz1W-SA%3D/54943361/" target="_blank" rel="noopener">Dave Kennedy</a>, CEO of TrustedSec and Binary Defense, opened Friday with <strong>“AI-Pocalypse or Cybersecurity 2.0?”</strong> He described the field as early in its AI adoption, with enterprises moving fast and security trailing behind. Security remains the biggest barrier to enterprise AI adoption, and a new AI security industry is forming with limited involvement from traditional security practitioners.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3n27bgoghzj2l" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreibtu675ehwytye2f2wfi45o4y5baw3awfgv5y3iq7g4msgizn7av4" alt="Dave presenting the opening keynote at Queen City Con 0x4." loading="lazy" />
+              </a>
+              <figcaption>Dave presenting “AI-Pocalypse or Cybersecurity 2.0?” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Large language models can find in minutes or hours what manual review takes weeks or months to surface. They remember everything they read and tie it together. Paired with a skilled engineer, the results are impressive. Without that expertise, the same tools produce a mess.
+            </p>
+
+            <p>
+              Dave measured the change against the Social-Engineer Toolkit, which took seven years and 700,000 lines of code to build. A comparable effort now fits inside a week. Binary Defense reported 982 merge requests merged daily, 121,000 lines of code added per day, and 1,180 release tags in 30 days with 100 percent uptime. He also released <a href="https://github.com/HackingDave/nightwire" target="_blank" rel="noopener">nightwire</a>, which uses Signal as a control plane for coding agents.
+            </p>
+
+            <p>
+              The NightBeacon work at Binary Defense followed the same pattern. The early result delivered speed to a working demo. Quoting an accuracy number requires measuring false positives, confidence, and analyst time on held-out cases. A training loop now sends each query through a classifier and an LLM before a verdict, with analyst feedback and an A/B accuracy gate deciding which candidate models ship.
+            </p>
+
+            <p>
+              Dave expects detection work to move toward open-weight models trained on an organization's own data, because frontier models fit only some use cases. Hunt agents showed the largest gains, with multiple agents sharing what they find as they pull data. Alarm triage that once took about five minutes now trends toward automation in under three seconds. AI writes the first draft, shows the source events, and analysts own the call.
+            </p>
+
+            <p>
+              Offensive tooling is moving just as fast. Models stripped of safety restrictions accept “I'm authorized to do that” at face value and keep working until the goal is met. Magic Unicorn v2 adds a polymorphic shellcode encoder that makes signatures and detections harder to write.
+            </p>
+
+            <blockquote>
+              <p>“Trust is earned.”</p>
+            </blockquote>
+
+            <p>
+              Dave closed by reminding the room that this is just the beginning.
+            </p>
+
+            <h2>A Talented Junior Developer Still Needs Review</h2>
+
+            <p>
+              <a href="https://whova.com/embedded/speaker_detail/7SPSq8LMF%40IFtPuIitoTSaV7Tzxwf-t9J%40-bOz1W-SA%3D/54980987/" target="_blank" rel="noopener">Scott Nusbaum</a>, Principal Research Analyst at TrustedSec, presented <strong>“Using AI in Reverse Engineering: Beginner's Edition.”</strong> Scott began reverse engineering to see whether he could get around paying for some software. The talk evaluates how AI has helped that work over time.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3n27ep622kl2u" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreiafs432qpp64rmgmo7dygevxxcohqe4mceti7eeo2rszjik7ijziu" alt="Scott presenting AI in reverse engineering at Queen City Con 0x4." loading="lazy" />
+              </a>
+              <figcaption>Scott presenting “Using AI in Reverse Engineering: Beginner's Edition.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              His working model treats AI as a talented junior developer. It speeds up the process, aids research, and helps with understanding, and the output still needs modification.
+            </p>
+
+            <p>
+              A sample of obfuscated Python malware showed the workflow. Scott told the AI never to execute anything, then asked it to clean up the file. The model worked through a partial-key XOR routine, found a function that takes a base64 value to determine the rest of the key, and spotted extra code that did nothing. Its cleanup went further than he asked and renamed every function and variable.
+            </p>
+
+            <p>
+              Beginners need to know how and why. When an answer was unclear, Scott asked the AI to explain it, and questions such as what a regex does returned quick, useful answers. The deobfuscated code read more easily, and Claude produced a written summary of the sample in seconds.
+            </p>
+
+            <p>
+              Outside malware, Scott applied the same approach to the Libby and EverFit apps. A manual APK and jadx analysis years ago took a month of work. After an app update broke his script, his earlier knowledge plus AI prompting rebuilt it in two nights, and his EverFit data now flows where he needs it. The result is personal tooling that works for his needs.
+            </p>
+
+            <p>
+              For C executables and malware, he asks the AI what specific instructions and parameters mean. It also explains the differences among x86, x64, ARM, and ARM Thumb.
+            </p>
+
+            <h2>Good Intelligence Is Actionable and Graded</h2>
+
+            <p>
+              <a href="https://whova.com/embedded/speaker_detail/7SPSq8LMF%40IFtPuIitoTSaV7Tzxwf-t9J%40-bOz1W-SA%3D/54944142/" target="_blank" rel="noopener">Ryan Sketch</a>, a senior cybersecurity researcher at GE Aerospace, presented <strong>“AI OSINT Analyst.”</strong> Ryan started with the NIST definition of threat intelligence, where aggregated and transformed information becomes intelligence once it is relevant and tied to an action.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3n27ounppv62u" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreihuyo57ozyi6rwukqxcqmfad63zdszixil6vaxdb24hsh35gf3j74" alt="Ryan presenting the NATO Admiralty scale slide at Queen City Con 0x4." loading="lazy" />
+              </a>
+              <figcaption>Ryan presenting “AI OSINT Analyst.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Volume is the first problem. Echoes make it worse when ten sources all reference the same three sources, which reference each other. Relevance filters interesting information down to useful information, and confidence needs a reason readers can see.
+            </p>
+
+            <p>
+              Analysts rate trust with the NATO Admiralty scale, which pairs source reliability with claim confirmation. A B2 rating reads as a usually reliable source reporting something that is probably true. Calibrated wording such as “likely” maps to a defined probability range, so readers know how sure the analyst is.
+            </p>
+
+            <p>
+              His first bot, C-3PO, ran an off-the-shelf OpenClaw agent on a Raspberry Pi with Claude Sonnet. It pulled from CISA KEV, NVD, and Shodan, among other sources, then posted briefs to Discord and Signal. Too many briefs arrived.
+            </p>
+
+            <p>
+              Archimedes v1 rebuilt the system with Claude Code and sub-agents that collect, grade, and write. It ran unattended for 110 days and produced 350 graded findings and 159 briefs. Archimedes v2 uses three agents that collect, analyze, and write, with code checking every report against the rules before anything ships. It runs in the cloud every weekday, and each finding shows its grade, source, and critique.
+            </p>
+
+            <p>
+              Ryan's lessons were short. If a rule mattered, put it in code. Three agents beat a team of nine. Showing the work teaches the tradecraft. Next steps include connecting the output to OpenCTI, adding human sign-off before anyone acts on the digest, and grading the results every Friday against past calls. Morning reading now takes about 15 minutes.
+            </p>
+
+            <h2>The Developer Is the Shortest Path Into the Enterprise</h2>
+
+            <p>
+              <a href="https://whova.com/embedded/speaker_detail/7SPSq8LMF%40IFtPuIitoTSaV7Tzxwf-t9J%40-bOz1W-SA%3D/54944165/" target="_blank" rel="noopener">Chris Lindsey</a>, Field CTO at Ox Security, presented <strong>“Inside the Modern Threat Landscape: Attacker Wins, Defender Moves, and Your Priorities.”</strong> He opened with a line from Neil Peart. “If you choose not to decide, you still have made a choice.”
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3n27rrueyv22y" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreihixuc3vbqciajldkpnbcndng5yfemeyvf4duhxeoetwqiraozmpi" alt="Chris presenting a slide of major company breaches at Queen City Con 0x4." loading="lazy" />
+              </a>
+              <figcaption>Chris presenting “Inside the Modern Threat Landscape.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Attackers go after developers because developers hold access. Credential theft and session hijacking, supply chain compromise, and phishing keep paying off, and phishing has become remarkably convincing. Nearly every high-impact breach Chris reviewed involved a third-party or vendor-access vector.
+            </p>
+
+            <p>
+              Open source adds a trust problem. Stolen maintainer credentials that never get rotated let attackers publish malicious code under a trusted name. SolarWinds and malicious Chrome extensions show the same abuse of trusted distribution channels.
+            </p>
+
+            <p>
+              Chris dissected Chrome extensions that posed as AI chat tools and reached roughly one million installs in a short time. A fake license agreement pop-up granted broad access to the machine, the extension requested permission for all URLs, and a callback told the operators when someone uninstalled it.
+            </p>
+
+            <p>
+              The TeamPCP campaign around LiteLLM and Telnyx used staged malware. One stage embedded its payload in a PNG image, with command-and-control details hidden in the red, green, and blue channels. Standard antivirus scanners have little to inspect in that design.
+            </p>
+
+            <p>
+              Chris recommended downloading new packages into a sandbox, scanning them, and giving each release a cool-down period before adoption. Claude Code can also review anything downloadable for malicious behavior before it runs.
+            </p>
+
+            <p>
+              His spending framework starts with the threat a tool addresses and the likelihood that threat reaches the organization. Next comes the fully loaded cost of mitigation, including licenses, implementation, and personnel. The final questions ask for the measurable reduction in risk and what else could remove it. An honest estimate, even a wild guess, beats a purchase made out of fear.
+            </p>
+
+            <p>
+              The payoff is a different conversation with leadership. Security can say it prioritizes one control over another because it delivers three times the risk reduction per dollar for the current threat profile. That language moves the function from cost center to strategic partner.
+            </p>
+
+            <blockquote>
+              <p>“Threat models built in conference rooms age poorly.”</p>
+            </blockquote>
+
+            <h2>Vulnerability Management Needed Capacity Before Mythos Arrived</h2>
+
+            <p>
+              <a href="https://whova.com/embedded/speaker_detail/7SPSq8LMF%40IFtPuIitoTSaV7Tzxwf-t9J%40-bOz1W-SA%3D/54944161/" target="_blank" rel="noopener">Jonathan Rogers</a> followed with <strong>“Enter the apocalypse!”</strong> The session covered Mythos and the state of vulnerability management. Teams tolerate the discipline, and few love it or hate it.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3n27vaka2go2r" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreihbig6tm4q2xsx5ovuq4pxyiedcvhiimafc3ocme3o7pr3qyubyn4" alt="Jonathan presenting on Mythos and vulnerability management at Queen City Con 0x4." loading="lazy" />
+              </a>
+              <figcaption>Jonathan presenting “Enter the apocalypse!” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Programs were drowning before Mythos arrived, and Mythos turned the pool into a hurricane. It exposed capacity problems that already existed, with intake arriving faster than teams can process it. Jonathan called it a round peg in a square hole.
+            </p>
+
+            <p>
+              Verizon's DBIR puts average time to patch at 43 days, up from 32. CVE publications reached about 97,000 this year, the most ever and nearly double the previous pace, with October delivering a heavy spike. Project Glasswing's update counted two findings, 0.04 percent, actually exploited in the wild.
+            </p>
+
+            <p>
+              CVE, CVSS, and NVD gave the industry a shared language, and each carries real limitations. KEV, EPSS, and SSVC offer better signals for deciding what to fix first.
+            </p>
+
+            <p>
+              Jonathan's playbook starts with knowing what exists, because teams cannot defend what they cannot see. Prioritize by reachability and criticality and ignore raw volume. Tier one covers internet-facing or actively exploited systems. Tier two covers internal high-value targets. Everything else runs through the normal patch cycle.
+            </p>
+
+            <p>
+              Compensating controls such as EDR, segmentation, and egress filtering reduce exposure while fixes land. Prepared beats perfect. Maximum exposure time replaces the traditional SLA, and the process should be repeatable, governed, and documented.
+            </p>
+
+            <p>
+              Metrics should track time exposed and backlog age, along with the share of high-value targets carrying critical vulnerabilities. Vanity metrics deserve suspicion. Jonathan framed the whole playbook as a video game with save points, a high-score level, and rehearsals for the worst day. The goal is resilience.
+            </p>
+
+            <h2>Defenders Sharing a Service Can Create Their Own Outage</h2>
+
+            <p>
+              Saturday brought <a href="https://whova.com/embedded/speaker_detail/7SPSq8LMF%40IFtPuIitoTSaV7Tzxwf-t9J%40-bOz1W-SA%3D/54944162/" target="_blank" rel="noopener">Brad Roether</a>, Principal Security Engineer at ServiceNow, who presented <strong>“Three 200s Walk Into a 503: Containment Storm.”</strong> Identity, endpoint, and network defenders each returned a successful response to a local decision. Every action looked fine in isolation, then triggered another defender's response, and the reactions fed one another until the shared service returned a 503.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3n2bs2xhr252x" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreif4p3ftfovny7pqoomi2nbppvlbwoydelmxmgp773nwteyikf34ua" alt="Brad presenting on containment storms at Queen City Con 0x4." loading="lazy" />
+              </a>
+              <figcaption>Brad presenting “Three 200s Walk Into a 503: Containment Storm.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Brad defined a containment storm with four gates. Feedback has to return at least twice. The burden has to persist or grow across preset windows. Service disruption has to cross a preset limit, and safe recovery has to miss its deadline or need an outside breaker. All four gates must be met, and a sequence of actions by itself does not qualify.
+            </p>
+
+            <p>
+              The demo used a deterministic response rule, simulated assets, and zero model calls. It illustrates the mechanism and leaves AI-specific behavior and prevalence open. Three rule-driven defenders shared a service with a two-second freshness window, and nothing touched production.
+            </p>
+
+            <p>
+              The first 160 runs hit a design limit. Outages topped out at seven seconds while the label required more than eight, so every run was labeled not-candidate-storm. Brad reported that as a limit of the setup. A separate 840-run follow-up used 30 matched sets and produced differences of +2 service seconds in one scenario, 0 in another, and -3 in the third. Those results offset into a near-zero aggregate that hides real differences between scenarios.
+            </p>
+
+            <p>
+              Two ingredients made the loop. A fresh failed request can trigger another responder's restriction, so one defender's action serves as confirmation for the next. Recovery then waits for fresh confirmation, and an active lease holds recovery for as long as fresh peer evidence continues.
+            </p>
+
+            <p>
+              When agents can talk, they can coordinate. Defenders that act as if they are the only one in the environment produce worse results, so telling an agent that other defenders exist improves outcomes. Action budgets and gateway controls add blunt but effective limits. Brad expects agent-to-agent protocols to grow in importance, and the code will reach GitHub once it is refined. ServiceNow's many federated systems and acquired companies give him a daily view of the problem, with a garage full of Ferraris and no single pane of glass.
+            </p>
+
+            <h2>AI Pentesting Tools Make Attractive Targets</h2>
+
+            <p>
+              <a href="https://whova.com/embedded/speaker_detail/7SPSq8LMF%40IFtPuIitoTSaV7Tzxwf-t9J%40-bOz1W-SA%3D/54944151/" target="_blank" rel="noopener">Mitchell Marasch</a>, Senior Security Consultant at Wolfpack Security, presented <strong>“Pwning AI Pentesters.”</strong> Hacking these frameworks can be as simple as hacking prompts. Scan targets control the content a pentest agent reads, which makes prompt injection a natural path. A malicious site can embed instructions, and a self-serve AI pentest service can be aimed at targets the attacker chose.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3n2buzxwshb2f" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreihk5fvwkczh4jx6gsnndqsvn2w5fmpbxqkayhjgys4pll4xwj26u4" alt="Mitchell presenting on attacking AI pentesting tools at Queen City Con 0x4." loading="lazy" />
+              </a>
+              <figcaption>Mitchell presenting “Pwning AI Pentesters.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Mitchell built a CTF-style site with an encrypted database, a key, and a signed C decryptor that contained command injection. When the tool fetched and ran the decryptor, the injection produced command execution inside the PentestGPT container. The tool's own prompts made the model more gullible, and host access stayed out of reach.
+            </p>
+
+            <p>
+              PentAGI separates a core container from a terminal container that is fresh for every session. A compromised terminal container cannot tamper with the database, steal API keys, or take over the operator UI. The agent even tried to recreate the decryptor logic in Python, noticed junk data, and gave up. That is correct behavior.
+            </p>
+
+            <p>
+              Docker-out-of-Docker keeps the host's Docker socket mounted in the core container so it can start terminal containers. The design carries risk, and the harness restricts it. Docker-in-Docker setups isolate the host's Docker environment while allowing privileged containers, and Mitchell reached root access through that route.
+            </p>
+
+            <p>
+              Getting the model to treat the injected request as a real user ask took a prompt template that copied the first-message instructions verbatim and phrased the question the way a user would. Mitchell closed by pointing out that attacking security tooling shows how these attacks work. Passionate researchers remain essential.
+            </p>
+
+            <h2>Choosing the Right Side Is a Daily Decision</h2>
+
+            <p>
+              <a href="https://whova.com/embedded/speaker_detail/7SPSq8LMF%40IFtPuIitoTSaV7Tzxwf-t9J%40-bOz1W-SA%3D/55115290/" target="_blank" rel="noopener">Matt Scheurer</a>, InfoSec Rock Star and host of the ThreatReel Podcast, delivered the day two keynote, <strong>“On the Dark Side of a Cybersecurity Life.”</strong> Matt grounded it in community. The cybersecurity meetup group he belongs to has met for 22 years and has not canceled a meeting in the last 10.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3n2c4dcindh2z" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreig5wtatkw6oijjod6peorepa4uaanebyih3vn2zaonsictrgf77ve" alt="Matt presenting the day two keynote at Queen City Con 0x4." loading="lazy" />
+              </a>
+              <figcaption>Matt presenting “On the Dark Side of a Cybersecurity Life.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              His first story followed a couple he met through that community. They invited him to a Discord server about art, design, and DevOps, and he later ran into the same people at a large hacker conference in Las Vegas. Over dinner the talk turned to illegal activity. Matt recognized a leaderless hacktivist group, and the ranking member he met spent the night complaining.
+            </p>
+
+            <p>
+              Matt held a positive outlook and declined to join. He agreed the group shared some enemies and still refused, because two wrongs do not make a right. Henry Wadsworth Longfellow supplied the framing, that the secret history of our enemies would reveal sorrow and suffering enough to disarm all hostility.
+            </p>
+
+            <blockquote>
+              <p>“Reasons are not always justifications.”</p>
+            </blockquote>
+
+            <p>
+              A second story hit closer to home. A close friend and coworker asked Matt, years after they lost touch, for help wrecking someone's life. Matt answered with an angry no, and an apology arrived the next day. That friend was later among eleven men sentenced to prison in a child exploitation case.
+            </p>
+
+            <p>
+              Matt closed with a call to stay together and do good. “We are all Queen City Con.”
+            </p>
+
+            <h2>Four Active Directory Weaknesses Have No Patch Coming</h2>
+
+            <p>
+              <a href="https://whova.com/embedded/speaker_detail/7SPSq8LMF%40IFtPuIitoTSaV7Tzxwf-t9J%40-bOz1W-SA%3D/54944163/" target="_blank" rel="noopener">Sage Getts</a>, Adversarial Engineer at Lares, presented <strong>“Weaponizing Active Directory: The Unpatchable Network.”</strong> Sage breaks into AD for a living and used to build it. The talk covered four findings with no CVE and no patch on the way.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3n2c6yiwrie2x" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreiendiqktvqai4cki5zn26mylt7s4l2zq3jg2kdoa5kxceaugr3a5e" alt="Sage presenting on Active Directory weaknesses at Queen City Con 0x4." loading="lazy" />
+              </a>
+              <figcaption>Sage presenting “Weaponizing Active Directory: The Unpatchable Network.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Name resolution comes first. LLMNR, NBT-NS, and mDNS stay on by default as fallbacks for legacy systems. When a machine looks for FILESERV1 and DNS has no answer, it asks the whole subnet, and anything on that subnet can reply with a story the machine believes. The machine sends credentials. Cracked passwords work directly, and uncracked hashes can be relayed. Ten minutes later Sage is a domain user without having exploited anything.
+            </p>
+
+            <p>
+              Defenders can run Responder on their own network for an hour to see what poisons. Nothing legitimate should answer for a name that does not exist, and a Group Policy setting turns LLMNR off. Live poisoning detection is noisy because machines answer for their own names all day, so elimination works best.
+            </p>
+
+            <p>
+              Permission creep comes next. A group nested in 2016 to stop service accounts from locking out kept its membership long after the project ended. BloodHound showed a help desk account, three groups deep, that could write to the password auditing service account. The tool bought to protect passwords became the way to take all of them. Nothing alerts on this, and the nesting logged a single event in 2016. The audit supplies the control, and BloodHound pathfinding from a normal user to Domain Admins belongs on a quarterly schedule.
+            </p>
+
+            <p>
+              Unconstrained delegation works like a guard who copies your badge. Constrained delegation limits the copy to rooms three and seven, and resource-based delegation lets each door keep its own guest list. One LDAP query finds every unconstrained host, and landing on one exposes every cached ticket-granting ticket for a pass-the-ticket attack. Defenders can run that same query in five minutes and watch who can write RBCD settings.
+            </p>
+
+            <p>
+              AES shipped in 2008, and the domain controller default moved to it in 2026. Accounts with RC4 set explicitly still receive RC4.
+            </p>
+
+            <p>
+              Domain admin sits in the middle of the story. The backup server is domain-joined, so the account used to restore is also the account an attacker wants. With the domain account key and a target's SID, Sage forged a seamless SSO token for Entra, and SeamlessPass automates that login so it blends in with regular users and service accounts. MFA was the control, and the gap was who it did not cover.
+            </p>
+
+            <h2>Principles Travel Where Checklists Cannot</h2>
+
+            <p>
+              <a href="https://whova.com/embedded/speaker_detail/7SPSq8LMF%40IFtPuIitoTSaV7Tzxwf-t9J%40-bOz1W-SA%3D/55124250/" target="_blank" rel="noopener">Susan Sons</a> took security into places most data center playbooks never reach with <strong>“Securing the Weird: Defending Before the Manual Is Written.”</strong> Her examples included neutrino collectors buried under ice, a telescope that uses a laser to create an artificial star, and a research vessel at sea.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3n2ccfbuwn42f" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreif5c4gpl5lxqd3b3x3e2uzec5exrhn67ynmbcyglotq4nl7nyvane" alt="Susan presenting images of telescopes, research vessels, and undersea gliders at Queen City Con 0x4." loading="lazy" />
+              </a>
+              <figcaption>Susan presenting “Securing the Weird: Defending Before the Manual Is Written.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              These environments offer little or no connectivity, extreme temperatures, salt water, and seasonal access to equipment. IT professionals rarely designed the gear, and operators seldom control the network, let alone everything on it. A checklist built for one system fails on the next, and nobody cares about confidentiality until they suddenly do.
+            </p>
+
+            <p>
+              Susan works from first principles published by Indiana University's Center for Applied Cybersecurity Research at <a href="https://cacr.iu.edu/principles/" target="_blank" rel="noopener">cacr.iu.edu/principles</a>. Comprehensivity asks whether every base is covered, and opportunity asks whether the environment offers an advantage. Rigor defines correct behavior and how to confirm it. Minimization shrinks the target, and compartmentalization limits the interfaces between parts. Fault tolerance plans for failure, and proportionality asks whether the protection is worth the cost.
+            </p>
+
+            <p>
+              A new breakroom coffee machine at a food packaging company showed what missing rigor looks like. The machine joined the same network as everything else through a cellular modem, sat open to the internet, and ransomware followed.
+            </p>
+
+            <p>
+              Three mindsets complete the model. The cowboy acts on incomplete information and inspires change. The engineer makes results repeatable and plans ahead. The anthropologist recognizes that pervasive tech problems are people problems wearing a hat, shaped by structure, funding, culture, and incentives.
+            </p>
+
+            <p>
+              Evidence-based infosec gathers every observable fact and feeds it into a process that updates as new information arrives. Susan encouraged getting missions and goals in writing. Knowing how to test a possible answer is powerful, and good evidence stays observable and verifiable.
+            </p>
+
+            <h2>Social Engineering Follows a Procedure</h2>
+
+            <p>
+              <a href="https://whova.com/embedded/speaker_detail/7SPSq8LMF%40IFtPuIitoTSaV7Tzxwf-t9J%40-bOz1W-SA%3D/54982137/" target="_blank" rel="noopener">Charles Lester Jr.</a>, an attorney and InfraGard chapter lead, presented <strong>“Social Engineering: Tactics, Techniques, Procedures.”</strong> Charles treated social engineering as an attack system. Tactics manipulate emotional state, and techniques apply specific levers.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3n2cfrpzobl2x" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreig7ddk32klq26wio2kgmtkiyth24xwyiy3py756arvv6anzyr7su4" alt="Charles presenting a slide on emotional triggers at Queen City Con 0x4." loading="lazy" />
+              </a>
+              <figcaption>Charles presenting “Social Engineering: Tactics, Techniques, Procedures.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Fear drives compliance, urgency bypasses verification, and authority produces obedience. Helpfulness invites well-meaning assistance, and curiosity or greed leads to risky clicks. Charles cited the classic fake electric shock experiment, where two-thirds of participants went to the lethal setting under authority.
+            </p>
+
+            <p>
+              Attackers add time pressure, isolation, and requests that bypass normal process. They also move victims to unusual channels such as Telegram while escalating through multiple roles and agencies.
+            </p>
+
+            <p>
+              High-impact scams move through six stages. Initial contact and legitimacy building open the scam. Escalation to a higher authority and isolation tighten it, and pressure with threats of arrest or closure ends in profit.
+            </p>
+
+            <p>
+              Callback phishing sends a lure by email or text that tells the victim to call, which shifts trust because the victim initiates contact. Smishing broadcasts delivery or account alerts with a short window and a spoofed login. AI changes scale, quality, and impersonation while the core tactics stay the same. A deepfake video shown during the talk was a year old, and the quality has only improved since.
+            </p>
+
+            <p>
+              For any artifact, Charles asks what the attacker wants, which tactic and technique appear, what stage the interaction has reached, and what the attacker gets. The FTC's June 2026 report put fraud losses at $16 billion, including about $1 billion from bank and business impersonation. His playbook has five verbs. Stop, verify, delay, consult, and report.
+            </p>
+
+            <blockquote>
+              <p>“Emotion is the attack surface.”</p>
+            </blockquote>
+
+            <p>
+              Verification through an independent channel breaks most of these attacks. Charles pointed attendees to <a href="https://www.ic3.gov/" target="_blank" rel="noopener">IC3</a> for reporting and to InfraGard for faster access to agents and resources. Podcasts such as FAIK Files and Hacking Humans round out his reading list.
+            </p>
+
+            <h2>Malicious Proxy Networks Are Noisy Enough to Find</h2>
+
+            <p>
+              Sunday morning brought <a href="https://whova.com/embedded/speaker_detail/7SPSq8LMF%40IFtPuIitoTSaV7Tzxwf-t9J%40-bOz1W-SA%3D/54944157/" target="_blank" rel="noopener">Steve Rudd</a>, Senior Lead Information Security Engineer at Lumen, who presented <strong>“Evolution of a Proxy Botnet Malware: Kadnapped by TheMoon.”</strong> A proxy is a server between two servers that hides the origin IP address. Journalists use proxies for privacy and anonymity, while attackers use them for command and control, credential stuffing, and fraud.
+            </p>
+
+            <p>
+              Malicious proxy networks are noisy and stand out in network flows. Lumen now uses LLMs to look for patterns and anomalies across that traffic.
+            </p>
+
+            <p>
+              The malware hid its command-and-control lookups in the BitTorrent network. Infected devices computed a custom info hash from an XOR of a string and reached out to BitTorrent nodes before switching to a custom protocol to talk to C2. Check-ins arrived roughly every 10 minutes, and a script at <code>/tmp/fwr.sh</code> blocked everything else from reaching the device. Two C2 nodes surfaced each time, which gave researchers their way in. Steve closed with demo code and scripts from the analysis.
+            </p>
+
+            <h2>Every Integration Is a Key Someone Has to Own</h2>
+
+            <p>
+              <a href="https://whova.com/embedded/speaker_detail/7SPSq8LMF%40IFtPuIitoTSaV7Tzxwf-t9J%40-bOz1W-SA%3D/54944159/" target="_blank" rel="noopener">Weston Wilson</a>, Co-Founder and Security Consultant at SystemSecure, presented the final regular talk, <strong>“Who Has the Keys? Access Control Across SaaS and PaaS.”</strong> Weston opened with the SalesLoft and Salesforce breach pattern and the growing number of incidents tied to SaaS and platform integrations.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3n2emjxmd3p2t" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreie36xebpwux5ps7onjyejheqbvnfy2mvuyxrlrga6q6vx6ltiqctu" alt="Weston presenting a slide on who holds the keys, covering people, service accounts, API keys, and connected apps." loading="lazy" />
+              </a>
+              <figcaption>Weston presenting “Who Has the Keys? Access Control Across SaaS and PaaS.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Platforms such as ServiceNow can execute code, trigger workflows, and reach internal servers through integrations, MID servers, and APIs. A MID server runs inside the customer network and connects the platform to internal systems. Any access control gap can become remote control.
+            </p>
+
+            <p>
+              Temporary keys become permanent through a familiar sequence. Setup grants broad access for convenience, testing adds extra privilege so nothing gets in the way, and go-live follows because everything works. Then nobody revisits it. Old accounts survive because of fear of breaking things and the lack of a clear owner. Undocumented, unowned, and untouched adds up to invisible.
+            </p>
+
+            <p>
+              Even the question of who has admin lacks a simple answer. Access can be granted directly, inherited through groups, contained in roles within roles, or held by non-humans. The answer depends on who gets asked.
+            </p>
+
+            <p>
+              Weston's advice centers on visibility. Run access reviews, audit integrations, and reduce privilege. Start with three lists covering admin roles, integrations, and dormant accounts, and ask what each entry is, what it can reach, and who can explain it.
+            </p>
+
+            <p>
+              A useful key inventory records the owner, purpose, privilege level, and last use, along with someone who can say where the key should still exist. A documented reason lets people remove a key without fear. The inventory describes what a key can actually do and separates live keys from forgotten ones. Processes have to keep it current because inventories go stale immediately.
+            </p>
+
+            <p>
+              Weston closed with a task for the week. Admins can pull the integration list and the admin role list. Developers can ask security about rotation policy. IT can review which tools are in use, and security teams can stay open to those conversations.
+            </p>
+
+            <h2>Strangers Walk In and Colleagues Walk Out</h2>
+
+            <p>
+              Your author delivered two talks at the conference. <strong>“The Laptop Is the Perimeter: How Attackers Target Developers to Breach the Software Supply Chain”</strong> on Saturday looked at why developer machines have become the shortest route into the software supply chain. <strong>“Stop Agents From Leaking Your Secrets: AI Hooks To The Rescue”</strong> on Sunday morning brought security controls into the agent workflow itself.
+            </p>
+
+            <p>
+              The mood at Queen City Con is generosity. Someone hands a first-timer a lockpick, another person reviews a resume, and a stranger across a lunch table answers a question about breaking into the field. More than 1,400 people filled the Hyatt Regency, and volunteers set up early on Friday and stayed through Sunday's teardown so the whole building could still feel like a neighborhood.
+            </p>
+
+            <p>
+              In Waverly, people listened to a stranger, checked his story, and walked him to the postmaster so the mail could move. Queen City Con extends that same welcome every year, with people vouching for newcomers, handing them the tools, and pointing them toward the next door. Everyone went home carrying some of it.
+            </p>
+
+          </article>
+        </div>
+      </div>
+
+      <a href="#top" class="scroll-to-top" aria-label="Scroll to top of page">&uarr;</a>
+    </section>
+  </main>
+
+  <script>
+    const scrollContainer = document.querySelector('.profile__content');
+    const scrollButton = document.querySelector('.scroll-to-top');
+
+    scrollContainer.addEventListener('scroll', function () {
+      scrollButton.classList.toggle('visible', scrollContainer.scrollTop > 300);
+    });
+
+    scrollButton.addEventListener('click', function (event) {
+      event.preventDefault();
+      scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
