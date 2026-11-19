@@ -527,7 +527,8 @@ const STORY={
   ["k","proud","I can write over most things. I can even make new users, with keys of their own!"],
   ["k","excited","Less than a minute old and already so powerful. OH BOY!"],
   ["n","In the same second, two things happen. An app loads the key into memory. And Mel, a developer, copies it into a text file, just for now."],
-  ["n","Now there are three of them. Each one thinks it is the only one."]],
+  ["n","Now there are three of them. Each one thinks it is the only one."],
+  ["n","There will be more. Copies in repos nobody here will ever open, in lands far from this office. Those are tales for another time. These are the ones we'll follow."]],
   split:[["vault1","Stay in the vault","vault","crown"],["mem1","The app's memory","memory",""],["desk1","Mel's Secrets.txt","desk","note"]]},
 
  vault1:{sc:"vault",acc:"crown",day:1,beats:[
@@ -568,7 +569,8 @@ const STORY={
   ["k","excited","Hello?! Where am I? So many people!"],
   ["k","excited","Someone gave me a thumbs-up! 412 people can see me!"],
   ["k","proud","I'm the most useful message in #general."],
-  ["n","People keep finding the message. One pastes the key into the wiki to document it. Mel pastes it into an AI assistant to debug a connection."]],
+  ["n","People keep finding the message. One pastes the key into the wiki to document it. Mel pastes it into an AI assistant to debug a connection."],
+  ["n","Others take it too: into a DM, a spreadsheet, a repo in another team's org. Tales for another time."]],
   split:[["chat2","Stay in #general","chat","party"],["wiki1","The wiki","wiki","glasses"],["ai1","The AI assistant","aichat","antenna"]]},
 
  chat2:{sc:"chat",acc:"party",day:60,beats:[
@@ -608,7 +610,8 @@ const STORY={
  gh1:{sc:"github",acc:"shades",day:210,beats:[
   ["k","excited","Whoa! Where am I? I'm on a BILLBOARD! Hi, everybody!"],
   ["k","excited","Fourteen forks! That's fourteen new friends!"],
-  ["n","Bots find the key in four seconds. One of them belongs to a stranger in a hoodie, who clones the repository."]],
+  ["n","Bots find the key in four seconds. One of them belongs to a stranger in a hoodie, who clones the repository."],
+  ["n","Fourteen forks means fourteen more keys, scattered across the internet, each with a story of its own. Those are tales for another time."]],
   split:[["gh2","Stay in the public repository","github","shades"],["st1","The stranger's laptop","attacker","hood"]]},
 
  gh2:{sc:"github",acc:"shades",day:213,beats:[
@@ -648,7 +651,8 @@ const STORY={
   ["k","excited","Hello? Where am I? Robots!"],
   ["k","proud","The robots need me every day! Today I helped 38 builds!"],
   ["k","excited","I'm famous! They print my name in the logs!"],
-  ["n","The pipeline also packs the key into a container image, in layer three of four, and ships it to the registry."]],
+  ["n","The pipeline also packs the key into a container image, in layer three of four, and ships it to the registry."],
+  ["n","Two other teams copy the pipeline config into their own repos, key and all. Their keys wander off to other lands. Tales for another time."]],
   split:[["ci2","Stay in the pipeline","ci","hardhat"],["dk1","The container image","docker","box"]]},
 
  ci2:{sc:"ci",acc:"hardhat",day:100,beats:[
@@ -740,7 +744,7 @@ function render(){const n=STORY[pos.node];const st=stateAt(pos);
    bt.innerHTML=`<span>${o[1]}</span>`;bt.setAttribute("aria-label","Follow the key: "+o[1]);bt.onclick=e=>{e.stopPropagation();go({node:o[0],i:0});};$("jumps").appendChild(bt);});
   $("place").textContent="The story splits";}
  else if(atEnd(pos)){const r=RINGS.find(x=>x.id===n.end);if(!got.includes(r.id)){got.push(r.id);saveRings();}drawEnding(r.id);
-  who="Narrator";text=`You found the ${r.name}. It belonged to ${r.copy}. ${got.length===11?"That's all eleven. Every key got to rest. Your prize: the exploration map. Open it from the button below.":`${got.length} of 11 found. Go back to a split to follow a different key.`} Your save code is ${makeCode()}.`;
+  who="Narrator";text=`You found the ${r.name}. It belonged to ${r.copy}. ${got.length===11?"That's all eleven. Every key you followed got to rest. Somewhere, in other repos and other lands, a few more are still waiting. Those are tales for another time. Your prize: the exploration map. Open it from the button below.":`${got.length} of 11 found. Go back to a split to follow a different key.`} Your save code is ${makeCode()}.`;
   label=`${r.title}. The ${r.name}.`;$("place").textContent="The end";}
  else{const b=n.beats[pos.i];const last=pos.i===n.beats.length-1;
   if(b[0]==="k"){isKey=true;ex=b[1];text=b[2];who=pos.node==="nk1"?"backup_service_02's key":"The Little Key";}else{who="Narrator";text=b[1];ex=st.g?"revoked":"idle";}
@@ -877,7 +881,7 @@ const dayLabel=d=>d<730?"Day "+d:"Year "+(d/365).toFixed(1).replace(".0","");
 function timeBar(){return `<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center"><span style="font-size:13px;color:#545C6E">Show the map on</span>${TIMES.map(([d,l])=>`<button class="btn ${d===ggT?"pri":""}" data-ggt="${d}">${l}</button>`).join("")}</div>`;}
 
 const GG={
-perimeter(){const src=[["mel-mbp","Endpoint","Monitored","Secrets.txt found by machine scan"],["#general","Slack","Monitored","Message history scanned"],["DB Setup space","Confluence","Monitored","Pages scanned"],["cool-app CI","CI","Monitored","Variables and build logs"],["app images","Container registry","Monitored","All layers scanned"],["cool-app (public)","Public GitHub","Public monitoring","Outside your perimeter"],["AI assistant history","Not integrated","Unmonitored","—"],["Stranger's laptop","Not integrated","Unmonitored","Never visible to you"]];
+perimeter(){const src=[["mel-mbp","Endpoint","Monitored","Secrets.txt found by machine scan"],["#general","Slack","Monitored","Message history scanned"],["DB Setup space","Confluence","Monitored","Pages scanned"],["cool-app CI","CI","Monitored","Variables and build logs"],["app images","Container registry","Monitored","All layers scanned"],["cool-app (public)","Public GitHub","Public monitoring","Outside your perimeter"],["AI assistant history","Not integrated","Unmonitored","—"],["Stranger's laptop","Not integrated","Unmonitored","Never visible to you"],["14 forks, other teams' repos","Other lands","Not on this map","Tales for another time"]];
  const pc=st=>pill(st,st==="Monitored"?"p-res":st==="Public monitoring"?"p-pub":"p-ign");
  return `<div class="hdr"><h1>Perimeter</h1><span style="color:#545C6E;font-size:13px">Coverage hub</span></div>
  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px"><div class="card"><h3>Places the key lived</h3><div style="font:600 22px var(--f-ui)">10</div><div style="font-size:12.5px;color:#545C6E">plus one new identity</div></div><div class="card"><h3>Monitored</h3><div style="font:600 22px var(--f-ui)">5 / 8</div><div style="font-size:12.5px;color:#545C6E">sources with visibility</div></div><div class="card"><h3>Blind spots</h3><div style="font:600 22px var(--f-ui)">2</div><div style="font-size:12.5px;color:#545C6E">AI history, a stranger's laptop</div></div></div>
@@ -935,7 +939,7 @@ map(){/* Lossy's exploration map: same boxes, curves, colors and legend, laid ou
  return `<div class="crumb">NHI governance / Exploration</div><div class="hdr"><h1 style="overflow-wrap:anywhere">app_admin@prod-db</h1><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn pri" data-ggmap="2001">#2001</button><button class="btn" data-openinc="2001">Back to incident</button></div></div>
  ${timeBar()}
  <div class="card map"><div class="tw"><svg viewBox="0 0 ${W} ${H}" style="min-width:1040px" role="img" aria-label="Exploration map on ${dayLabel(ggT)}: ${counts.valid} copies valid, ${counts.revoked} revoked but still present, ${counts.wiped} gone">${head}${svg}</svg></div>
-  <div style="font-size:13px;color:#545C6E">Every box is the same 528-byte key, copied from the box it's connected to. None of them knew about the others. Amber: holds the key and it works. Grey: revoked on day ${REVOKED}, but still sitting there. Green: the system it lived in is gone. Red: backup_service_02, a new identity the stranger created with the key, which revoking didn't touch. On ${dayLabel(ggT)}: ${counts.valid} valid, ${counts.revoked} revoked but present, ${counts.wiped} gone.</div></div>
+  <div style="font-size:13px;color:#545C6E">Every box is the same 528-byte key, copied from the box it's connected to. None of them knew about the others. Amber: holds the key and it works. Grey: revoked on day ${REVOKED}, but still sitting there. Green: the system it lived in is gone. Red: backup_service_02, a new identity the stranger created with the key, which revoking didn't touch. On ${dayLabel(ggT)}: ${counts.valid} valid, ${counts.revoked} revoked but present, ${counts.wiped} gone.</div><div style="font-size:13px;color:#545C6E;font-style:italic">Not on this map: the forks, the other teams' repos, the DMs and spreadsheets, and the copies that wandered off to other lands. Those are tales for another time.</div></div>
  <div class="card" style="padding:0"><div style="padding:12px 16px 0"><h3>Occurrences on ${dayLabel(ggT)}</h3></div><div class="tw"><table class="t"><tr><th>Where</th><th>Copied from</th><th>First seen</th><th>Presence</th><th>Ring</th></tr>${FAM.map(f=>`<tr><td><b>${f[1]}</b><div style="color:#545C6E;font-size:12.5px">${esc(f[2])}</div></td><td>${f[3]?FAM.find(g=>g[0]===f[3])[1]:"—"}</td><td>${dayLabel(f[4])}</td><td>${statePill(famState(f,ggT))}</td><td>${RINGS.find(r=>r.id===RINGOF[f[0]]).name}</td></tr>`).join("")}<tr><td><b>backup_service_02</b><div style="color:#545C6E;font-size:12.5px">New identity, its own key</div></td><td>Created via Stranger's notes.txt</td><td>${dayLabel(NEWKEY.born)}</td><td>${ks==="valid"?pill("Active · no owner","p-crit"):ks==="wiped"?pill("Deleted","p-res"):pill("Not yet","p-ign")}</td><td>Birthday Ring</td></tr></table></div></div>`;},
 inventory(){const ks=nkState(ggT);const rows=[["app_admin@prod-db","PostgreSQL Credentials","Production",ggT<REVOKED?"Valid":"Invalid","Mel"],["backup_service_02@prod-db","PostgreSQL Credentials","Production",ks==="valid"?"Valid":ks==="wiped"?"Deleted":"—","None"]];
  return `<div class="hdr"><h1>Inventory</h1><span style="color:#545C6E;font-size:13px">Non-human identities</span></div>${timeBar()}
