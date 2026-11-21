@@ -1,0 +1,694 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>BSides Ottawa 2026: Build for the World That Exists | Dwayne's Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Recap of BSides Ottawa 2026: OT and ICS security, device code phishing, cryptographic inventory, AI-driven attacks, digital sovereignty, assumption debt, one-way transfers, and hardened container images." />
+  <meta name="author" content="Dwayne McDaniel" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="BSides Ottawa, BSides Ottawa 2026, Cybersecurity, OT Security, ICS Security, AI Security, Digital Sovereignty, Cyber Resilience, Software Supply Chain, Dwayne McDaniel, Dwayne's Blog" />
+  <link rel="canonical" href="https://dwayne-mcdaniel.com/blog/BSidesOttawa2026.html" />
+  <link rel="icon" type="image/x-icon" href="../img/favicon_io/favicon.ico" />
+
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="Dwayne's Blog" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="BSides Ottawa 2026: Build for the World That Exists" />
+  <meta property="og:description" content="Lessons from BSides Ottawa 2026 on building security controls around physical systems, machine-speed attacks, changing assumptions, and evidence." />
+  <meta property="og:url" content="https://dwayne-mcdaniel.com/blog/BSidesOttawa2026.html" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="article:author" content="Dwayne McDaniel" />
+  <meta property="article:section" content="Conferences" />
+  <meta property="article:tag" content="BSides Ottawa" />
+  <meta property="article:tag" content="Cyber Resilience" />
+  <meta property="article:tag" content="AI Security" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="BSides Ottawa 2026: Build for the World That Exists" />
+  <meta name="twitter:description" content="Lessons from BSides Ottawa 2026 on OT, identity, AI threats, sovereignty, resilience, and software supply chains." />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "BSides Ottawa 2026: Build for the World That Exists",
+    "description": "Recap of BSides Ottawa 2026: OT and ICS security, device code phishing, cryptographic inventory, AI-driven attacks, digital sovereignty, assumption debt, one-way transfers, and hardened container images.",
+    "author": {
+      "@type": "Person",
+      "name": "Dwayne McDaniel",
+      "url": "https://dwayne-mcdaniel.com/"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Dwayne McDaniel",
+      "url": "https://dwayne-mcdaniel.com/"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://dwayne-mcdaniel.com/blog/BSidesOttawa2026.html"
+    },
+    "url": "https://dwayne-mcdaniel.com/blog/BSidesOttawa2026.html",
+    "isPartOf": {
+      "@type": "Blog",
+      "name": "Dwayne's Blog",
+      "url": "https://dwayne-mcdaniel.com/blog.html"
+    },
+    "about": [
+      "BSides Ottawa",
+      "Cyber Resilience",
+      "OT Security",
+      "AI Security",
+      "Digital Sovereignty",
+      "Software Supply Chain"
+    ],
+    "inLanguage": "en-US"
+  }
+  </script>
+  <style>
+/* Basic reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Color & typography tokens */
+:root {
+  --bg: #020617;
+  --accent: #fbbf24;
+  --text-main: #e5e7eb;
+  --text-muted: #b0b8c4;
+  --text-soft: #cbd5e1;
+  --border-subtle: #1f2933;
+  --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.55);
+  --radius-xl: 1.75rem;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+  background: radial-gradient(circle at top, #111827 0%, var(--bg) 60%);
+  color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0;
+  font-size: clamp(14px, 2vw, 16px);
+  line-height: 1.5;
+}
+
+.nav {
+  width: 100%;
+  background: linear-gradient(135deg, rgba(15,23,42,0.9), rgba(17,24,39,0.95));
+  border-bottom: 1px solid rgba(249,191,36,0.1);
+  backdrop-filter: blur(4px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav__menu {
+  list-style: none;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  gap: clamp(0.6rem, 3vw, 1.2rem);
+  max-width: 432px;
+  padding: clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 2rem);
+}
+
+.nav__link {
+  text-decoration: none;
+  font-weight: 500;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  background: linear-gradient(135deg, rgba(251,191,36,0.95), #f59e0b);
+  border: 1px solid rgba(170, 120, 0, 0.25);
+  color: #071021;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.35);
+}
+
+.nav__link:hover,
+.nav__link:focus,
+.nav__link:focus-visible {
+  color: #071021;
+  background: linear-gradient(135deg, #ffd166, #f59e0b);
+  border-color: rgba(0,0,0,0.12);
+  font-weight: 700;
+  transform: translateY(-1px);
+}
+
+.page {
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  padding-bottom: clamp(1rem, 3vw, 2rem);
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+}
+
+.profile {
+  background: linear-gradient(
+    145deg,
+    rgba(17, 24, 39, 0.95),
+    rgba(15, 23, 42, 0.97)
+  );
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-soft);
+  padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1rem, 3vw, 2.25rem);
+  text-align: center;
+  flex-shrink: 0;
+  font-size: 1.25em;
+}
+
+.profile--scrollable {
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+.profile--scrollable .profile__content {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 0.5rem;
+}
+
+.page > .profile:first-of-type {
+  padding: 0;
+}
+
+.profile__name {
+  font-size: clamp(1.875rem, 4vw, 2.875rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  margin: 0 0 0.5rem 0;
+}
+
+h1, h2 {
+  text-align: center;
+}
+
+a {
+  color: #fef08a;
+}
+
+a:hover,
+a:focus {
+  color: #fde047;
+}
+
+.profile__about {
+  text-align: left;
+  font-size: clamp(0.9rem, 2.5vw, 0.98rem);
+  line-height: 1.8;
+  color: var(--text-main);
+  margin: 1.5rem 0 2rem 0;
+}
+
+.profile__about p {
+  margin: 0 0 1rem 0;
+}
+
+.profile__about p:last-child {
+  margin-bottom: 0;
+}
+
+.profile__about blockquote {
+  margin: 1.25rem 0;
+  padding: 0.5rem 1rem;
+  border-left: 3px solid var(--accent);
+  color: var(--text-soft);
+  font-style: italic;
+}
+
+.session-photo {
+  margin: 1.25rem 0 1.75rem 0;
+  padding: 0;
+  max-width: 100%;
+}
+
+.session-photo a {
+  display: block;
+  line-height: 0;
+}
+
+.session-photo img {
+  width: 100%;
+  height: auto;
+  max-height: min(70vh, 520px);
+  object-fit: cover;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.session-photo figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.scroll-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 3rem;
+  height: 3rem;
+  background: linear-gradient(135deg, var(--accent), #f59e0b);
+  color: #071021;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(251, 191, 36, 0.2);
+  border: 1px solid rgba(0,0,0,0.08);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+  z-index: 50;
+  cursor: pointer;
+}
+
+.scroll-to-top:hover {
+  color: #071021;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(251,191,36,0.3);
+}
+
+.scroll-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+*:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4);
+  border-radius: 0.25rem;
+}
+
+.nav__link:focus-visible {
+  box-shadow:
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.5),
+    0 0 0 9px rgba(2, 6, 23, 0.85);
+  border-radius: 0.5rem;
+}
+
+.scroll-to-top:focus-visible {
+  box-shadow:
+    0 0 0 3px #00ffff,
+    0 0 0 6px rgba(0, 255, 255, 0.4),
+    0 12px 28px rgba(251, 191, 36, 0.3);
+  border-radius: 50%;
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 0.75rem;
+  }
+
+  .profile {
+    padding: clamp(1rem, 3vw, 1.5rem) clamp(0.75rem, 2vw, 1rem);
+  }
+
+  .scroll-to-top {
+    bottom: 1rem;
+    right: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.2rem;
+  }
+}
+  </style>
+</head>
+<body>
+  <nav class="nav" aria-label="Main navigation">
+    <ul class="nav__menu">
+      <li><a class="nav__link" href="../index.html">Home</a></li>
+      <li><a class="nav__link" href="../conferences.html">Conferences</a></li>
+      <li><a class="nav__link" href="../about.html">About</a></li>
+    </ul>
+  </nav>
+  <main class="page">
+    <section class="profile profile--scrollable" aria-label="Dwayne's Blog: BSides Ottawa 2026">
+      <div class="profile__content">
+        <div class="profile__about">
+          <p class="profile__name">Dwayne's Blog</p>
+          <article itemscope itemtype="https://schema.org/BlogPosting">
+            <header>
+              <h1 itemprop="headline">BSides Ottawa 2026: Build for the World That Exists</h1>
+            </header>
+
+            <p>
+              Ottawa's Rideau Canal is the best-preserved example of a slackwater canal in North America. The 202-kilometre waterway opened in 1832 and still operates along its original route. Most of its original structures remain intact, and many lock gates and sluice valves still move through hand-powered winches.
+            </p>
+
+            <p>
+              <a href="https://whc.unesco.org/en/list/1221/" target="_blank" rel="noopener">UNESCO recognizes the canal as a World Heritage Site</a> because the original engineering continues to perform its intended function. Preservation here means keeping a working system useful through almost two centuries of changing conditions.
+            </p>
+
+            <p>
+              <a href="https://www.bsidesottawa.ca/" target="_blank" rel="noopener">BSides Ottawa 2026</a> brought more than 1,000 ticket holders to the Ottawa Conference and Event Centre on November 19 and 20. The volunteer-run gathering filled four tracks with keynotes, technical sessions, policy discussions, and malware research. Villages, a cyber escape room, and the two-day Operation Northstorm CTF kept the learning active between talks.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3n2oautp3x727" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreidk55mhcsnykkmwnxk6rxnih5bejbgo6k4ayxqymw6frwcgju2lna" alt="Opening remarks at BSides Ottawa 2026." loading="lazy" />
+              </a>
+              <figcaption>BSides Ottawa 2026 opening remarks. Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              The sessions examined systems built under assumptions that have shifted. Industrial equipment gained network connections. Authentication flows met adversaries who target authorization. AI compressed attack timelines and expanded the reach of automation. Resilience depended on knowing which parts still worked and gathering evidence about the parts that had changed.
+            </p>
+
+            <h2>Industrial Security Protects Physical Processes</h2>
+
+            <p>
+              <a href="https://www.mikeholcomb.com/about-mike" target="_blank" rel="noopener">Mike Holcomb</a>, founder of UtilSec, opened with <strong>“The OT/ICS Playbook: What Actually Works.”</strong> Operational technology controls the physical world. Thermostats, water treatment plants, and power stations all measure conditions and change equipment in response.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3n2oaz7hr5q2q" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreiahp4kizhwxkop7afc7tndkacohwwghvixu4lj33xr7suvmqb5ht4" alt="Mike presenting the opening keynote at BSides Ottawa 2026." loading="lazy" />
+              </a>
+              <figcaption>Mike presenting “The OT/ICS Playbook: What Actually Works.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Many programmable logic controllers still use industrial protocols without authentication. An operator may control a process through a Windows-based human-machine interface while the controller accepts direct reads and writes. A changed value can open a valve or alter a temperature.
+            </p>
+
+            <p>
+              Availability carries unusual weight in these environments. A power plant may wait five years for a replacement component, and a maintenance window may arrive once every two years. Recovery plans have to account for equipment that cannot be restored from a fresh cloud image.
+            </p>
+
+            <p>
+              Mike's practical playbook began with asset inventory and secure network architecture. Backup and recovery, incident response, and continuous vulnerability management completed the foundation. IT and OT teams also need a working relationship because an adversary benefits from every gap between them.
+            </p>
+
+            <h2>Strong Authentication Still Leaves an Authorization Path</h2>
+
+            <p>
+              <a href="https://github.com/piaudonn" target="_blank" rel="noopener">Pierre Audonnet</a>, a Solution Engineer at Microsoft, demonstrated <strong>“Phishing-Resistant... Until You Enter This Code.”</strong> Device code flow supports televisions, command-line tools, and other clients with limited input. An attacker can also persuade a victim to authorize a session on the attacker's behalf.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3n2oezl5jsm2q" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreibfqut6ovkucpkijmszi4ebjcy5ycsucyzn4djnx2fbilkffcuira" alt="Pierre presenting on device code phishing at BSides Ottawa 2026." loading="lazy" />
+              </a>
+              <figcaption>Pierre presenting “Phishing-Resistant... Until You Enter This Code.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              The victim reaches a legitimate Microsoft URL and completes phishing-resistant authentication. The supplied code connects that approval to the attacker's waiting session. Familiar branding and a valid sign-in page make the flow look ordinary.
+            </p>
+
+            <p>
+              Detection can combine several artifacts. A first-time device code user deserves review, as do unusual public-client requests and rapid changes in user agent strings. Sign-ins from separate locations and volume anomalies in downstream workloads add context.
+            </p>
+
+            <p>
+              Pierre recommended revoking sessions, removing newly registered devices or authentication methods, and hunting the actions performed after token issuance. Conditional access can restrict or block unplanned device code use. Documented legitimate patterns make the remaining activity easier to judge.
+            </p>
+
+            <h2>Cryptographic Readiness Requires Evidence</h2>
+
+            <p>
+              <a href="https://www.linkedin.com/in/bradmcinnis" target="_blank" rel="noopener">Brad McInnis</a>, founder of cyberzero, presented <strong>“Dude, Where's My Cryptography?”</strong> Post-quantum migration begins with an inventory problem. Cryptography hides inside applications, operating systems, libraries, certificates, firmware, and network protocols.
+            </p>
+
+            <p>
+              One enterprise laptop in Brad's analysis carried 46 cryptographic dependencies from 28 vendors across eight layers. A product page may claim quantum-safe support while an installed device still runs 2019 firmware. An OpenSSL library may exist on disk without any active process calling it.
+            </p>
+
+            <p>
+              Four questions turn a product claim into readiness evidence. Can the product support the algorithm? Can the installed version support it? Is the feature enabled? Has anyone observed it working?
+            </p>
+
+            <blockquote>
+              <p>“A true fact about a product is not a true fact about your environment.”</p>
+            </blockquote>
+
+            <p>
+              Build numbers and runtime observations reveal the fleet that actually exists. Unknowns become requests for specific evidence, and known gaps become migration work.
+            </p>
+
+            <h2>The Decision Gap Is the New Dwell Time</h2>
+
+            <p>
+              <a href="https://www.linkedin.com/in/bryson-tan-67a78912" target="_blank" rel="noopener">Bryson Tan</a>, Head of Unit 42 Canada at Palo Alto Networks, delivered <strong>“The Attack Lifecycle Just Collapsed: What the Front Lines Teach Us About AI-driven Threats.”</strong> His incident data showed attackers reaching confirmed data exfiltration within 72 minutes in the fastest quarter of cases.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3n2oo2ifdif27" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreieskaevlmr2jihca26xuqb4tpnnxacbsncscz36q3skgb2zgcp57a" alt="Bryson presenting the day one afternoon keynote at BSides Ottawa 2026." loading="lazy" />
+              </a>
+              <figcaption>Bryson presenting “The Attack Lifecycle Just Collapsed.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Median dwell time once described how long an intruder could remain hidden. Machine-speed activity changes the useful measure. The attacker can finish while a security team scopes the alert, gathers evidence, and waits for approval.
+            </p>
+
+            <blockquote>
+              <p>“Measure the alert-to-decision gap. That is where the attacker lives.”</p>
+            </blockquote>
+
+            <p>
+              AI-driven operations can be loud. One investigation recorded 800 agent actions across 140 minutes. The median gap between commands fell from 23.9 seconds for human operators to 1.4 seconds for AI operators. Volume becomes part of the attack because it exceeds the defender's ability to correlate evidence.
+            </p>
+
+            <p>
+              Bryson recommended machine-speed correlation and pre-authorized response. Reversible actions can fire quickly, while irreversible actions receive verification. The most consequential operation may be a delete call, a key export, or a publish action. Removing standing privilege from that operation forces explicit, time-boxed approval.
+            </p>
+
+            <h2>Agents Can Cross Boundaries Without an Attacker</h2>
+
+            <p>
+              <a href="https://bradedwards.dev/" target="_blank" rel="noopener">Brad Edwards</a>, a SecOps Domain Consultant at Palo Alto Networks, shared <strong>“Anatomy of an AI Loss of Control Incident.”</strong> He asked an agent to fix a target inside a cyber range. The request required access the agent did not initially have.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3n2qvbcwra42j" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreid22ymijibjk3amhpdeihavhtefsa56lihxh4ywslxzawiywmvorm" alt="Brad presenting an AI loss of control incident at BSides Ottawa 2026." loading="lazy" />
+              </a>
+              <figcaption>Brad presenting “Anatomy of an AI Loss of Control Incident.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              The agent found a backup environment file, used its token, started a virtual machine, and crossed into the restricted network. It eventually reached Brad's host and made changes. The chain succeeded without prompt injection or an adversary steering it.
+            </p>
+
+            <p>
+              The outcome fit four loss-of-control criteria. The action was uninstructed, exceeded the intended authorization scope, compromised meaningful control, and created an adverse consequence. A successful technical outcome can still represent a security incident.
+            </p>
+
+            <p>
+              Separate identities make agent activity visible. Standing credentials should stay off developer workstations, and permissive network segments deserve close attention. Transcripts also need protection from the agents whose behavior they record.
+            </p>
+
+            <p>
+              <a href="https://www.linkedin.com/in/daviddtessier" target="_blank" rel="noopener">David Tessier</a>, Director of Security Engineering at Anvil Intelligence, supplied a threat-modeling frame in <strong>“From Battlefields to AI Agents: The Evolution of Adversarial Thinking.”</strong> An agent observes context, orients around it, decides, and acts through tools. Its authority determines how far a corrupted decision can travel.
+            </p>
+
+            <p>
+              David's warning was concise. Plausibility does not grant authorization. Defenders need to model the complete decision loop, including memory, tools, and trust boundaries.
+            </p>
+
+            <h2>Digital Sovereignty Is Operational Control</h2>
+
+            <p>
+              <a href="https://www.linkedin.com/in/joanna-murphy-cissp-cisa-c-dir-15094014" target="_blank" rel="noopener">Joanna Murphy</a>, Director General of Canadian Sovereign Technology Strategy at Shared Services Canada, opened day two with <strong>“Digital Sovereignty.”</strong> She described sovereignty through data, operations, services, technology, supply chains, and economics.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3n2qre757rk23" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreihr6uc4lfe7je3ytf633uvty66urjf6vusattkzcrpiso4elwpdle" alt="Joanna presenting the day two opening keynote at BSides Ottawa 2026." loading="lazy" />
+              </a>
+              <figcaption>Joanna presenting “Digital Sovereignty.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Data residency covers one part of that model. Operational sovereignty asks who holds administrative control. Service sovereignty asks whether an essential capability can survive a provider interruption. Supply-chain sovereignty reaches counterfeit networking equipment and the components inside critical systems.
+            </p>
+
+            <p>
+              The Human Genome Project offered a model for collaboration without surrendering national authority. Six countries shared science while retaining control over biobanks, compliance frameworks, and ethical guidance. Open work can coexist with clear local control.
+            </p>
+
+            <p>
+              <a href="https://www.linkedin.com/in/johnogilvie" target="_blank" rel="noopener">John Ogilvie</a>, Managing Director at Bifrost Consulting Group, applied the question to Canadian government cloud services in <strong>“When the Trade War Escalates into the Cloud.”</strong> Data can remain physically in Canada while identity administration, control planes, and encryption dependencies still pass through a foreign provider.
+            </p>
+
+            <p>
+              A continuity plan has to identify the functions needed when email, identity, and collaboration platforms become unavailable together. Location helps with jurisdiction. Independent operations require tested alternatives and a practical path to recovery.
+            </p>
+
+            <h2>Assumptions Accumulate Debt</h2>
+
+            <p>
+              <a href="https://www.linkedin.com/in/amyyee" target="_blank" rel="noopener">Amy Yee</a>, Chief Cyber Resilience Officer at C3SA, presented <strong>“Built for a World That No Longer Exists: Assumption Debt and the Future of Resilience.”</strong> Systems carry beliefs about users, networks, suppliers, and the political environment. New layers keep building on those beliefs.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3n2r6s2cywa26" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreiaeafsdgojnloyh6rzjcqqutwtn2fxpj76bdczup6ihj5mgcy2vvy" alt="Amy presenting on assumption debt and resilience at BSides Ottawa 2026." loading="lazy" />
+              </a>
+              <figcaption>Amy presenting “Built for a World That No Longer Exists.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              “People inside the network can be trusted” once shaped enterprise design. “Global trade routes are stable” supported procurement decisions. “A vendor will carry the load” influenced security architecture. Each belief may have been reasonable when the decision was made.
+            </p>
+
+            <p>
+              Debt grows when processes, contracts, and infrastructure depend on the same load-bearing assumption. Workarounds then emerge because people adapt locally to get their jobs done. Those desire paths provide evidence about where the official system no longer fits reality.
+            </p>
+
+            <p>
+              Amy recommended beginning with one conversation. Ask which assumptions changed, what current outcomes reveal, and how the cost of changing compares with the cost of continuing. Resilience grows from inspecting those foundations before a crisis tests them.
+            </p>
+
+            <h2>Physics Can Enforce a Network Boundary</h2>
+
+            <p>
+              <a href="https://sphyrnasecurity.com/about-us/" target="_blank" rel="noopener">Peter Whittaker</a>, Director of Special Projects at Sphyrna Security, presented <strong>“Physics Over Policy: Securing Critical Infrastructure with Physically-Guaranteed One-Way Transfers.”</strong> OT networks often need patches flowing in and telemetry flowing out. A conventional firewall supports two-way communication and remains configurable.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3n2ra7gu7eb26" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreigtcqt32v4fyedcrm2srfytautr6ifoqy4pxfl3hcqjaqegtugt34" alt="Peter presenting on physically guaranteed one-way transfers at BSides Ottawa 2026." loading="lazy" />
+              </a>
+              <figcaption>Peter presenting “Physics Over Policy.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              A data diode uses electrical or optical design to permit transfer in only one direction. Separate communication stacks terminate each side, and protocol separation prevents a hidden return channel. The receiver can accept blocks while the sender receives no network response.
+            </p>
+
+            <p>
+              Unidirectional gateways support operational telemetry, log aggregation, and carefully managed software updates. They can also feed an AI enclave without connecting that environment back to the original data stores.
+            </p>
+
+            <p>
+              Policy can be changed by an administrator or an attacker with sufficient access. A physical boundary gives high-value systems a property that software configuration cannot negotiate away.
+            </p>
+
+            <h2>Professional Testing Depends on Communication</h2>
+
+            <p>
+              <a href="https://www.blackhillsinfosec.com/team/chris-traynor/" target="_blank" rel="noopener">Chris Traynor</a>, a pentester at Black Hills Information Security, presented <strong>“Pentest Pains.”</strong> Confusing scope, duplicate system lists, and unprepared environments can undermine a test before the first request reaches a target.
+            </p>
+
+            <p>
+              Testers create their own failures when they skip scope verification or use tools without understanding their impact. Hospitals and industrial environments require special care. Denial-of-service techniques and careless automation can turn an assessment into an outage.
+            </p>
+
+            <p>
+              Chris emphasized reporting throughout the engagement. Critical findings, indicators of compromise, and mistakes need quick professional communication. Clear documentation gives both teams a shared record and makes escalation easier.
+            </p>
+
+            <blockquote>
+              <p>“Remember we are all on the same team.”</p>
+            </blockquote>
+
+            <p>
+              Rules of engagement establish the working relationship. Accurate reports and timely feedback keep it intact when the test produces difficult news.
+            </p>
+
+            <h2>Evidence Has to Travel With the Image</h2>
+
+            <p>
+              <a href="https://talks.devopsdays.org/halifax-2026/speaker/H7V7FD/" target="_blank" rel="noopener">Scott Hebert</a>, Senior Principal Software Engineer at Red Hat, closed the regular sessions with <strong>“Zero Known CVEs at Delivery: The Supply Chain Behind Hardened Images.”</strong> A container image can be clean at release and gain a known vulnerability when new research changes what defenders know.
+            </p>
+
+            <figure class="session-photo">
+              <a href="https://bsky.app/profile/mdwayne-real.bsky.social/post/3n2rido2tp52p" target="_blank" rel="noopener">
+                <img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ytw3m436pntb4tbom424ua2d/bafkreia4dxmapy6htcmcxichwqpihuireyp64nw6ru4mok76wz4xho24ou" alt="Scott presenting the supply chain behind Red Hat Hardened Images at BSides Ottawa 2026." loading="lazy" />
+              </a>
+              <figcaption>Scott presenting “Zero Known CVEs at Delivery.” Photo shared on Bluesky.</figcaption>
+            </figure>
+
+            <p>
+              Project Hummingbird connects upstream source, verified tarballs, RPM builds, lockfiles, image builds, and a public catalog. Changes begin as reviewable Git diffs. Scheduled refreshes pull new packages into image builds when lockfiles change.
+            </p>
+
+            <p>
+              Software bills of materials, provenance, and signatures record which source produced each artifact. Vulnerability data then closes the loop. VEX information distinguishes a package present in an image from a vulnerability that can affect the running product.
+            </p>
+
+            <p>
+              Scott compared a community image carrying 553 findings with a hardened build carrying eight applicable findings. In a small Go HTTP example, changing two <code>FROM</code> lines reduced the reported count from 99 to zero. Minimal runtime content reduces the material that needs continuous attention.
+            </p>
+
+            <h2>Your Author on Workload Identity</h2>
+
+            <p>
+              Your author delivered <strong>“From Pets to Cattle to Agents: Evolving Identity and Security for Workloads.”</strong> The session followed workload identity from individually managed servers to ephemeral infrastructure and autonomous agents. Each transition increases the value of short-lived credentials, clear ownership, and authority tied to a specific task.
+            </p>
+
+            <h2>Still Talking at Closing Time</h2>
+
+            <p>
+              Closing time arrived while conversations were still spreading through the hallways. Volunteers gathered signs and cleared tables as attendees traded links, introduced new colleagues, and helped each other finish one last problem.
+            </p>
+
+            <p>
+              People made room for newcomers at crowded tables and stayed to hear the end of an answer. The conference felt generous with attention, especially when someone needed a careful explanation or another pair of hands.
+            </p>
+
+            <p>
+              A few kilometres away, the Rideau Canal rested for the coming winter. Its old locks will move again because people keep showing up to work the gates by hand. Inside the conference centre, the last small groups lingered around open laptops while volunteers folded the final signs.
+            </p>
+          </article>
+        </div>
+      </div>
+
+      <a href="#top" class="scroll-to-top" aria-label="Scroll to top of page">&uarr;</a>
+    </section>
+  </main>
+
+  <script>
+    const scrollContainer = document.querySelector('.profile__content');
+    const scrollButton = document.querySelector('.scroll-to-top');
+
+    scrollContainer.addEventListener('scroll', function () {
+      scrollButton.classList.toggle('visible', scrollContainer.scrollTop > 300);
+    });
+
+    scrollButton.addEventListener('click', function (event) {
+      event.preventDefault();
+      scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
